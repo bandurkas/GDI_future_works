@@ -1,0 +1,306 @@
+.page {
+    background: #FAFAFB;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #FAFAFB;
+    padding-top: max(16px, env(safe-area-inset-top));
+}
+
+.cancelBtn {
+    color: #2563EB;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    text-decoration: none;
+    flex: 1;
+}
+
+.headerTitle {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #111827;
+    flex: 1;
+    text-align: center;
+}
+
+.headerSpacer {
+    flex: 1;
+}
+
+.main {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.progressRow {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 18px var(--space-6);
+    margin-bottom: var(--space-8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.progressStep {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: var(--space-3);
+}
+
+.progressStep:last-child {
+    flex: 0;
+}
+
+.stepBubble {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.active {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: white !important;
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.done {
+    background: var(--success) !important;
+    border-color: var(--success) !important;
+    color: white !important;
+}
+
+.stepLabel {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.activeLbl {
+    color: var(--accent) !important;
+}
+
+.line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    margin: 0 var(--space-2);
+}
+
+.lineDone {
+    background: var(--success);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    font-size: 0.8125rem;
+    color: #6B7280;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+}
+
+.paymentMethods {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.accordionHeader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid #D1D5DB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    background: var(--bg-card);
+}
+
+.radioSelected {
+    border-color: #3B82F6;
+    background: #3B82F6;
+    box-shadow: inset 0 0 0 4px var(--bg-card);
+}
+
+.methodName {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.accordionBody {
+    padding: 0 0 16px 36px;
+}
+
+.inputWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #EBF5FF;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cardInput {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #194C9B;
+    padding: 16px 44px 16px 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    outline: none;
+    pointer-events: none;
+}
+
+.inputCheck {
+    position: absolute;
+    right: 16px;
+}
+
+.divider {
+    height: 1px;
+    background: #E5E7EB;
+    width: 100%;
+    border-radius: 1px;
+}
+
+.qrisDesc {
+    font-size: 0.8125rem;
+    color: #6B7280;
+    line-height: 1.5;
+}
+
+.footer {
+    padding: 20px;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+}
+
+.payBtn {
+    width: 100%;
+    max-width: 400px;
+    background: #111827;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 100px;
+    padding: 18px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.payBtn:active {
+    transform: scale(0.97);
+}
+
+.payBtnLoading {
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    .progressRow {
+        padding: 16px 8px;
+        align-items: flex-start;
+    }
+
+    .progressStep {
+        flex-direction: column;
+        gap: 8px;
+        position: relative;
+    }
+
+    .stepBubble {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+        border-width: 2px;
+        background: #FFFFFF;
+        z-index: 2;
+    }
+
+    .stepLabel {
+        font-size: 0.65rem;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.2;
+        letter-spacing: 0;
+    }
+
+    .line {
+        position: absolute;
+        top: 14px;
+        left: calc(50% + 14px);
+        width: calc(100% - 28px);
+        margin: 0;
+        z-index: 1;
+    }
+
+    .active {
+        box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+}
+
+@media (min-width: 768px) {
+    .page {
+        max-width: 480px;
+        margin: 0 auto;
+        border-left: 1px solid #E5E7EB;
+        border-right: 1px solid #E5E7EB;
+        background: #FFFFFF;
+    }
+}
