@@ -1,5 +1,5 @@
 "use server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, UserRole } from "@prisma/client";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
@@ -13,43 +13,26 @@ export async function updateUserPermissions(prevState: any, formData: FormData) 
 
     const userId = formData.get("user_id") as string;
     const role = formData.get("role") as string;
-    const is_active = formData.get("is_active") === "true";
+    const isActive = formData.get("isActive") === "true";
 
     if (!userId || !role) {
         return { error: "Missing required fields." };
     }
 
     try {
-        await prisma.$transaction(async (tx) => {
-            // 1. Update core AppUser config
-            await tx.appUser.update({
-                where: { id: userId },
-                data: { role, is_active }
-            });
-
-            // 2. Clear all existing boolean overrides to avoid dangling permissions
-            await tx.userPermission.deleteMany({
-                where: { user_id: userId }
-            });
-
-            // 3. Process new boolean overrides
-            // All checkboxes pass their name as a key and "on" as the value
-            const inserts: { user_id: string; permission_key: string; granted: boolean }[] = [];
-            
-            for (const [key, value] of formData.entries()) {
-                if (key.startsWith("perm_") && value === "on") {
-                    inserts.push({
-                        user_id: userId,
-                        permission_key: key.replace("perm_", ""),
-                        granted: true
-                    });
-                }
+        const permissions: Record<string, boolean> = {};
+        for (const [key, value] of formData.entries()) {
+            if (key.startsWith("perm_") && value === "on") {
+                permissions[key.replace("perm_", "")] = true;
             }
+        }
 
-            if (inserts.length > 0) {
-                await tx.userPermission.createMany({
-                    data: inserts
-                });
+        await prisma.user.update({
+            where: { id: userId },
+            data: { 
+                role: role as UserRole, 
+                isActive,
+                permissions: permissions
             }
         });
 

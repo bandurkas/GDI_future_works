@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { Course } from '@/data/courses';
 import styles from './CourseCard.module.css';
 import { useLanguage } from './LanguageContext';
+import { useCurrency } from './CurrencyContext';
+import { formatPrice } from '@/lib/currency';
 
 interface Props {
     course: Course;
@@ -36,15 +38,18 @@ export default function CourseCard({ course, featured }: Props) {
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
     const { language } = useLanguage();
+    const { currency } = useCurrency();
 
     const isID = language === 'id';
-    const displayPrice = isID
-        ? `Rp ${course.priceIDR.toLocaleString('id-ID')}`
-        : `RM ${course.priceMYR}`;
-    const displayOriginal = isID
-        ? `Rp ${course.originalPriceIDR.toLocaleString('id-ID')}`
-        : `RM ${course.originalPriceMYR}`;
-    const savePct = Math.round((1 - (isID ? course.priceIDR / course.originalPriceIDR : course.priceMYR / course.originalPriceMYR)) * 100);
+    
+    // Use localized prices from the course object (which matches DB after seeding)
+    const currentPrice = currency === 'IDR' ? course.priceIDR : course.priceMYR;
+    const originalPrice = currency === 'IDR' ? course.originalPriceIDR : course.originalPriceMYR;
+
+    const displayPrice = formatPrice(currentPrice, currency);
+    const displayOriginal = formatPrice(originalPrice, currency);
+    
+    const savePct = Math.round((1 - (currentPrice / originalPrice)) * 100);
 
     const minSwipeDistance = 50;
 

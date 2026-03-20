@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Translate } from '@/components/ClientTranslations';
+import { Translate } from '@/components/LanguageContext';
 import CourseCardLazy from '@/components/CourseCardLazy';
+import PathCard from '@/components/PathCard';
 import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
 import styles from './page.module.css';
@@ -193,48 +194,43 @@ export default function HomePage() {
                         <div className={styles.geBadge}>SMART PARTNERSHIP</div>
                         <h2 className={styles.geTitle}>International TEFL Training Institute (iTTi)</h2>
                         <p className={styles.geDesc}>
-                            Partnered with iTTI, a globally recognized teacher training institute dedicated to developing English proficiency and professional educators worldwide.
+                            Partnered with iTTi, a globally recognized teacher training institute dedicated to developing English proficiency and professional educators worldwide.
                         </p>
                         
-                        <div style={{ marginTop: '40px', width: '100%' }}>
+                        <div className={styles.gePathHeader}>
+                            <h3 className={styles.gePathTitle}>Choose Your Path</h3>
 
-                            <h3 style={{ color: 'white', fontSize: '1.25rem', marginBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>Choose Your Path</h3>
+                            <div className={styles.geGrid}>
+                                <PathCard 
+                                    title="Learn English"
+                                    description="Build strong English communication skills for academic success, IELTS, and global career opportunities."
+                                    list={[
+                                        "Academic Success",
+                                        "IELTS Preparation",
+                                        "Career Advancement",
+                                        "Global Opportunities"
+                                    ]}
+                                    ctaText="Start Learning →"
+                                    ctaHref="https://wa.me/628211704707"
+                                    variant="secondary"
+                                />
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-                                {/* Learn English Path */}
-                                <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: '24px', display: 'flex', flexDirection: 'column' }}>
-                                    <h4 style={{ color: 'white', fontSize: '1.125rem', marginBottom: '12px' }}>Learn English</h4>
-                                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9375rem', marginBottom: '12px' }}>
-                                        Build strong English communication skills for:
-                                    </p>
-                                    <ul style={{ color: 'rgba(255, 255, 255, 0.9)', paddingLeft: '20px', fontSize: '0.9375rem', lineHeight: 1.6, marginBottom: '24px', flex: 1 }}>
-                                        <li>Academic Success</li>
-                                        <li>IELTS Preparation</li>
-                                        <li>Career Advancement</li>
-                                        <li>Global Opportunities</li>
-                                    </ul>
-                                    <Link href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} style={{ textAlign: 'center', background: 'transparent', color: 'white', borderColor: 'rgba(255,255,255,0.3)', width: '100%' }}>
-                                        Start Learning →
-                                    </Link>
-                                </div>
-
-                                {/* Teach English Path */}
-                                <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: '24px', display: 'flex', flexDirection: 'column' }}>
-                                    <h4 style={{ color: 'white', fontSize: '1.125rem', marginBottom: '12px' }}>Teach English</h4>
-                                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9375rem', marginBottom: '12px', lineHeight: 1.6 }}>
-                                        Passionate about Education? Earn an internationally recognized certification and learn the skills to teach English anywhere in the world.
-                                    </p>
-                                    <p style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.9375rem', marginBottom: '24px', fontWeight: 500, flex: 1 }}>
-                                        Become part of the next gen global educators.
-                                    </p>
-                                    <Link href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary} style={{ textAlign: 'center', width: '100%' }}>
-                                        Get Certified →
-                                    </Link>
-                                </div>
+                                <PathCard 
+                                    title="Teach English"
+                                    description="Passionate about Education? Earn an internationally recognized certification and learn the skills to teach English anywhere in the world."
+                                    list={[
+                                        "Internationally Recognized",
+                                        "Global Educator Network",
+                                        "Career Support"
+                                    ]}
+                                    ctaText="Get Certified →"
+                                    ctaHref="https://wa.me/628211704707"
+                                    variant="primary"
+                                />
                             </div>
                             
-                            <div style={{ textAlign: 'center', marginTop: '40px' }}>
-                                <span style={{ display: 'inline-block', background: 'rgba(255, 255, 255, 0.1)', color: 'white', padding: '8px 24px', borderRadius: '100px', fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em' }}>
+                            <div className={styles.geStatusWrapper}>
+                                <span className={styles.geStatusBadge}>
                                     Pre-enrolment starts now.
                                 </span>
                             </div>
@@ -256,7 +252,7 @@ export default function HomePage() {
                             <div key={c.slug} className={styles.cohortCard}>
                                 <div className={styles.cohortTop}>
                                     <span className={styles.cohortCourseName}>{c.course}</span>
-                                    <span className={styles.cohortUrgency} style={{ background: c.seatsLeft <= 3 ? '#ef4444' : '#f59e0b' }}>
+                                    <span className={`${styles.cohortUrgency} ${c.seatsLeft <= 3 ? styles.cohortUrgencyHigh : styles.cohortUrgencyLow}`}>
                                         {c.seatsLeft} <Translate tKey="cohort.seats" />
                                     </span>
                                 </div>

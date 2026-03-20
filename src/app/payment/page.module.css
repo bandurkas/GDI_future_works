@@ -362,3 +362,16 @@
     color: var(--text-primary);
     font-size: 1.1rem;
 }
+
+.currencyNote {
+    margin-top: 12px;
+    font-size: 0.8125rem;
+    color: #6B7280;
+    font-style: italic;
+    text-align: right;
+}
+
+.currencyNote strong {
+    color: #111827;
+}
+

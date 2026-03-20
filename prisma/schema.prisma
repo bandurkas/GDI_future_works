@@ -18,6 +18,10 @@ enum UserRole {
   STUDENT
   TUTOR
   ADMIN
+  Owner
+  SalesManager
+  Instructor
+  Support
 }
 
 enum StudentStatus {
@@ -111,6 +115,10 @@ model User {
   phone        String?
   passwordHash String?
   role         UserRole
+  isActive     Boolean   @default(true)
+  avatarUrl    String?
+  lastLogin    DateTime?
+  permissions  Json?    @default("{}")
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
@@ -201,7 +209,7 @@ model Course {
   tutor         Tutor       @relation(fields: [tutorId], references: [id], onDelete: Restrict)
   title         String
   description   String?     @db.Text
-  price         Decimal     @db.Decimal(10, 2)
+  prices        CoursePrice[]
   durationWeeks Int
   level         CourseLevel
   isPublished   Boolean     @default(false)
@@ -214,6 +222,18 @@ model Course {
   reviews       Review[]
 
   @@index([tutorId, isPublished])
+}
+
+model CoursePrice {
+  id        String   @id @default(uuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  currency  String   // "IDR" | "MYR"
+  amount    Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([courseId, currency])
 }
 
 model CourseModule {
@@ -313,6 +333,7 @@ model Payment {
   status     PaymentStatus   @default(PENDING)
   provider   PaymentProvider
   externalId String?         @unique
+  transactionId String?      @unique
   metadata   Json? // For provider-specific response data
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt

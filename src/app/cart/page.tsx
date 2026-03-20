@@ -1,20 +1,101 @@
 'use client';
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/components/CartContext';
 import { useLanguage } from '@/components/LanguageContext';
+import { useCurrency } from '@/components/CurrencyContext';
+import { formatPrice } from '@/lib/currency';
 import styles from './page.module.css';
+import CheckoutModal from '@/components/CheckoutModal';
+import { useRouter } from 'next/navigation';
+
+declare global {
+    interface Window {
+        snap: any;
+    }
+}
 
 export default function CartPage() {
-    const { items, removeItem, totalItems } = useCart();
+    const { items, removeItem, totalItems, clearCart } = useCart();
     const { language } = useLanguage();
+    const { currency } = useCurrency();
+    const router = useRouter();
 
-    const totalPriceIDR = items.reduce((sum, item) => sum + item.priceIDR, 0);
-    const totalPriceMYR = items.reduce((sum, item) => sum + item.priceMYR, 0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [snapLoaded, setSnapLoaded] = useState(false);
 
-    const displayTotal = language === 'id' 
-        ? `Rp ${totalPriceIDR.toLocaleString('id-ID')}`
-        : `RM ${totalPriceMYR.toLocaleString('en-MY', { minimumFractionDigits: 2 })}`;
+    // Load Midtrans Snap Script
+    useEffect(() => {
+        const snapScriptUrl = 'https://app.midtrans.com/snap/snap.js';
+        const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || 'SB-Mid-client-XXXX';
+        
+        const script = document.createElement('script');
+        script.src = snapScriptUrl;
+        script.setAttribute('data-client-key', clientKey);
+        script.onload = () => setSnapLoaded(true);
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    const totalAmount = items.reduce((sum, item) => 
+        sum + (currency === 'IDR' ? item.priceIDR : item.priceMYR), 0
+    );
+
+    const displayTotal = formatPrice(totalAmount, currency);
+
+    const handleCheckoutClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCheckoutSubmit = async (customerData: { name: string; phone: string; email?: string }) => {
+        try {
+            const response = await fetch('/api/tokenize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    items,
+                    customerName: customerData.name,
+                    customerPhone: customerData.phone,
+                    customerEmail: customerData.email,
+                    currency,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.token && window.snap) {
+                window.snap.pay(data.token, {
+                    onSuccess: (result: any) => {
+                        console.log('Success:', result);
+                        clearCart();
+                        router.push('/dashboard?status=success');
+                    },
+                    onPending: (result: any) => {
+                        console.log('Pending:', result);
+                        clearCart();
+                        router.push('/dashboard?status=pending');
+                    },
+                    onError: (err: any) => {
+                        console.error('Error:', err);
+                        alert('Payment failed. Please try again.');
+                    },
+                    onClose: () => {
+                        console.log('User closed the popup');
+                    }
+                });
+                setIsModalOpen(false);
+            } else {
+                throw new Error(data.error || 'Failed to initialize payment');
+            }
+        } catch (error: any) {
+            console.error('Checkout error:', error);
+            throw error;
+        }
+    };
 
     if (totalItems === 0) {
         return (
@@ -52,7 +133,7 @@ export default function CartPage() {
                                     </div>
                                 </div>
                                 <div className={styles.itemPrice}>
-                                    {language === 'id' ? `Rp ${item.priceIDR.toLocaleString('id-ID')}` : `RM ${item.priceMYR}`}
+                                    {formatPrice(currency === 'IDR' ? item.priceIDR : item.priceMYR, currency)}
                                 </div>
                                 <button 
                                     className={styles.removeBtn} 
@@ -81,13 +162,14 @@ export default function CartPage() {
                                 <span>{displayTotal}</span>
                             </div>
 
-                            <Link 
-                                href="/checkout" 
+                            <button 
+                                onClick={handleCheckoutClick}
                                 className="btn btn-primary btn-xl btn-full"
                                 style={{ marginTop: '24px' }}
+                                disabled={!snapLoaded}
                             >
-                                Proceed to Checkout →
-                            </Link>
+                                {snapLoaded ? 'Secure Checkout →' : 'Loading Security...'}
+                            </button>
                             
                             <p className={styles.guaranteeNote}>
                                 🔒 Secure multi-course checkout
@@ -102,6 +184,14 @@ export default function CartPage() {
                     </div>
                 </div>
             </div>
+
+            <CheckoutModal 
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleCheckoutSubmit}
+                totalAmount={displayTotal}
+                currency={currency}
+            />
         </div>
     );
 }

@@ -40,7 +40,7 @@ export default function SchedulePage() {
                                 borderRadius: 20,
                                 padding: '20px 24px',
                                 transition: 'box-shadow 0.2s, transform 0.2s',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                boxShadow: 'var(--shadow-sm)',
                                 cursor: 'pointer',
                             }}>
                                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -52,7 +52,7 @@ export default function SchedulePage() {
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                                    <span style={{ background: '#dcfce7', color: '#166534', fontSize: '0.75rem', fontWeight: 700, padding: '4px 10px', borderRadius: 100 }}>
+                                    <span style={{ background: 'var(--success-light)', color: 'var(--success)', fontSize: '0.75rem', fontWeight: 700, padding: '4px 10px', borderRadius: 100 }}>
                                         Dates available
                                     </span>
                                     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="var(--text-muted)" strokeWidth="2">
@@ -67,7 +67,7 @@ export default function SchedulePage() {
                 <div style={{ marginTop: 40, padding: '24px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 20, textAlign: 'center' }}>
                     <p style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: 8 }}>Need a custom schedule?</p>
                     <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', marginBottom: 16 }}>We open new cohorts based on demand. Chat with us and we&apos;ll find a time that works.</p>
-                    <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: '#25D366', color: 'white', fontWeight: 700, fontSize: '0.9375rem', padding: '12px 24px', borderRadius: 100, textDecoration: 'none' }}>
+                    <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'var(--whatsapp)', color: 'white', fontWeight: 700, fontSize: '0.9375rem', padding: '12px 24px', borderRadius: 100, textDecoration: 'none' }}>
                         Chat on WhatsApp →
                     </a>
                 </div>

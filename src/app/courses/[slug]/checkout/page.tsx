@@ -2,8 +2,7 @@
 import { useState, use } from 'react';
 import Link from 'next/link';
 import { getCourseBySlug } from '@/data/courses';
-import { Translate } from '@/components/ClientTranslations';
-import { useLanguage } from '@/components/LanguageContext';
+import { useLanguage, Translate } from '@/components/LanguageContext';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };

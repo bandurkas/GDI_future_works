@@ -49,17 +49,18 @@
     align-items: center;
     text-decoration: none;
     flex-shrink: 0;
-    margin-left: var(--space-4);
+    margin-right: var(--space-4);
 }
 
 .logoImage {
-    height: 34px !important; /* Force 34px Notion ratio */
+    height: 44px !important; /* Increased for better visibility */
     width: auto;
     object-fit: contain;
+    transition: height var(--transition-base);
 }
 
 .header.scrolled .logoImage {
-    height: 30px !important;
+    height: 38px !important;
 }
 
 /* Desktop nav */
@@ -82,7 +83,7 @@
 
 .navLink:hover {
     color: var(--text-primary);
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--bg-secondary);
 }
 
 /* Actions Group */
@@ -129,14 +130,14 @@
 
 .iconBtn:hover {
     color: var(--text-primary);
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--bg-secondary);
 }
 
 .cartBadge {
     position: absolute;
     top: -2px;
     right: -2px;
-    background: #455DD3;
+    background: var(--accent);
     color: white;
     font-size: 0.65rem;
     font-weight: 700;
@@ -146,7 +147,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--bg-overlay);
+    border: 2px solid var(--bg-card);
 }
 
 /* Hamburger - SPECIFICALLY GLOBAL FIX */
@@ -170,7 +171,7 @@
     padding: 80px 40px;
     transform: translateX(100%);
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-accent);
 }
 
 .menuOpen {
@@ -193,14 +194,14 @@
 }
 
 .mobileNavLink:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--bg-secondary);
 }
 
 .mobileAuthBtn {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #455DD3;
+    background: var(--accent);
     color: white !important;
     padding: 12px 24px;
     border-radius: 8px;
@@ -208,6 +209,142 @@
     font-weight: 600;
     text-decoration: none;
     margin-top: 2rem;
+}
+
+/* Segmented Control (Currency) - Premium Glass */
+.segmentedWrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 100px;
+    padding: 2px;
+    position: relative;
+    height: 36px;
+    width: 124px;
+    margin: 0 4px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .segmentedWrapper {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.segmentBtn {
+    flex: 1;
+    height: 100%;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    outline: none;
+    position: relative;
+    text-transform: uppercase;
+    padding: 0 4px;
+}
+
+.segmentBtnActive {
+    color: #FFFFFF !important;
+}
+
+[data-theme='light'] .segmentBtnActive {
+    color: #FFFFFF !important;
+}
+
+.flagIcon {
+    border-radius: 1px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.flagIconCombined {
+    border-radius: 1px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.langLabel {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: inherit;
+}
+
+.segmentHighlight {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(50% - 2px);
+    height: calc(100% - 4px);
+    background: #1a1a1a; /* Subtle dark highlight instead of bright red */
+    border-radius: 100px;
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='dark'] .segmentHighlight {
+    background: #FFFFFF;
+}
+
+[data-theme='dark'] .segmentBtnActive {
+    color: #000000 !important;
+}
+
+.segmentMYR {
+    transform: translateX(100%);
+}
+
+/* Lang Toggle - Premium Pill */
+.langToggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 100px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    margin-left: 4px;
+}
+
+[data-theme='dark'] .langToggle {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.langToggle:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+[data-theme='dark'] .langToggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.langIcon {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.langToggle:hover .langIcon {
+    opacity: 1;
 }
 
 @media (max-width: 1024px) {

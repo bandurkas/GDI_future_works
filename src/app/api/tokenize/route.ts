@@ -1,100 +1,106 @@
+
 import { NextResponse } from 'next/server';
-import { courses } from '@/data/courses';
 import { PrismaClient } from '@prisma/client';
+import { convertToIdr } from '@/lib/currency';
 
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        // Updated to handle multiple items
-        const { items, customerName, customerPhone } = body;
+        const { items, customerName, customerPhone, currency = 'IDR' } = body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return NextResponse.json({ error: 'No items in cart' }, { status: 400 });
         }
 
         const midtransItems = [];
-        let totalAmount = 0;
+        let totalAmountLocal = 0;
 
         for (const cartItem of items) {
-            const course = courses.find(c => c.id === String(cartItem.courseId));
+            console.log('Fetching course for cart item:', cartItem.courseId);
+            const course = await prisma.course.findUnique({
+                where: { id: String(cartItem.courseId) },
+                include: { prices: true }
+            });
+
             if (!course) {
-                return NextResponse.json({ error: `Course ${cartItem.courseId} not found` }, { status: 400 });
+                console.error('Course not found:', cartItem.courseId);
+                return NextResponse.json({ error: `Course not found: ${cartItem.courseId}` }, { status: 404 });
             }
-            
+
+            const coursePrice = course.prices.find(p => p.currency === currency);
+            if (!coursePrice) {
+                console.error(`Price for currency ${currency} not found for course ${course.id}`);
+                return NextResponse.json({ error: `Price for ${currency} not found` }, { status: 400 });
+            }
+
+            const amount = Number(coursePrice.amount);
+            totalAmountLocal += amount;
+
+            const itemPrice = currency === 'IDR' ? Number(coursePrice.amount) : convertToIdr(Number(coursePrice.amount), currency);
+            console.log(`Item Price for ${course.title}: ${itemPrice} IDR (Original: ${coursePrice.amount} ${currency})`);
+
+            // For Midtrans, if currency is MYR, we convert to IDR but keep the label localized
+            const priceInIdr = convertToIdr(amount, currency);
+
             midtransItems.push({
                 id: `${course.id}-${cartItem.dateId}`,
-                price: course.priceIDR, // always server-side IDR price
+                price: priceInIdr,
                 quantity: 1,
-                name: `${course.title.substring(0, 30)} (${cartItem.dateLabel})`,
+                name: `${currency === 'MYR' ? 'RM ' + amount + ' ' : ''}${course.title.substring(0, 30)}`,
             });
-            totalAmount += course.priceIDR;
         }
+
+        const totalAmountIdr = convertToIdr(totalAmountLocal, currency);
 
         const serverKey = process.env.MIDTRANS_SERVER_KEY || '';
         const authString = Buffer.from(serverKey + ':').toString('base64');
 
-        // Readable order ID
-        const firstSlug = items[0].slug;
-        const count = items.length;
-        const orderId = `GDI-${firstSlug}${count > 1 ? '-multi' : ''}-${Date.now()}`;
+        // Order ID generation
+        const firstSlug = items[0].slug || 'course';
+        const orderId = `GDI-${currency}-${firstSlug}-${Date.now()}`;
 
-        // --- CRM DATABASE INTEGRATION (v1.1) ---
-        const emailToUse = body.customerEmail || items[0]?.email || `${Date.now()}@temp.client.com`;
+        // CRM Integration
+        const emailToUse = (body.customerEmail || items[0]?.email || `${Date.now()}@temp.client.com`).toLowerCase();
         
-        // 1. Find or create the Client
-        let dbClient = await prisma.client.findUnique({ where: { email: emailToUse } });
-        if (!dbClient) {
-            dbClient = await prisma.client.create({
-                data: {
-                    full_name: customerName || 'Student',
-                    phone_whatsapp: customerPhone || '',
-                    email: emailToUse,
-                    source: 'website'
-                }
-            });
-        }
+        const dbUser = await prisma.user.upsert({
+            where: { email: emailToUse },
+            update: {},
+            create: {
+                email: emailToUse,
+                name: customerName || 'Student',
+                role: 'STUDENT',
+                isActive: true,
+            }
+        });
 
-        // 2. Map items to Enrollments
-        await Promise.all(items.map(async (cartItem: any) => {
-            const course = courses.find(c => c.id === String(cartItem.courseId));
-            if (!course) return;
-            
-            // Safely find the specified cohort, or fallback to the first upcoming one.
-            let activeCohort = await prisma.cohort.findFirst({
-                where: { course_id: course.id, name: cartItem.dateLabel }
-            });
-            
-            if (!activeCohort) {
-                activeCohort = await prisma.cohort.findFirst({
-                    where: { course_id: course.id, status: 'upcoming' },
-                    orderBy: { start_date: 'asc' }
-                });
-                
-                // If there is no exact string match and no upcoming cohorts, fallback to any active one
-                if (!activeCohort) {
-                    activeCohort = await prisma.cohort.findFirst({
-                        where: { course_id: course.id, status: 'active' },
-                        orderBy: { start_date: 'asc' }
-                    });
-                }
-                
-                if (!activeCohort) {
-                     console.error(`Checkout failed: No available cohorts for course ${course.id}`);
-                     throw new Error('No available cohorts for this course.');
+        const student = await prisma.student.upsert({
+            where: { userId: dbUser.id },
+            update: {},
+            create: {
+                userId: dbUser.id,
+                status: 'LEAD',
+            }
+        });
+
+        // Log payment in IDR (Midtrans reality) but store original currency in metadata
+        await prisma.payment.create({
+            data: {
+                studentId: student.id,
+                amount: totalAmountIdr,
+                currency: 'IDR',
+                status: 'PENDING',
+                provider: 'MIDTRANS',
+                externalId: orderId,
+                metadata: { 
+                    items: midtransItems,
+                    userCurrency: currency,
+                    userAmount: totalAmountLocal,
+                    conversionRate: currency === 'MYR' ? 3337 : 1
                 }
             }
-
-            await prisma.enrollment.create({
-                data: {
-                    client_id: dbClient.id,
-                    cohort_id: activeCohort.id,
-                    price_agreed: course.priceIDR,
-                }
-            });
-        }));
-        // --------------------------------
+        });
 
         const response = await fetch('https://app.midtrans.com/snap/v1/transactions', {
             method: 'POST',
@@ -106,18 +112,25 @@ export async function POST(req: Request) {
             body: JSON.stringify({
                 transaction_details: {
                     order_id: orderId,
-                    gross_amount: totalAmount,
+                    gross_amount: totalAmountIdr,
                 },
                 item_details: midtransItems,
                 customer_details: {
                     first_name: customerName || 'Student',
                     phone: customerPhone || '',
+                    email: emailToUse,
                 },
             }),
         });
 
         const data = await response.json();
-        return NextResponse.json(data);
+        if (!response.ok) {
+            console.error('Midtrans Tokenize Error Response:', data);
+            return NextResponse.json({ error: data.error_messages ? data.error_messages[0] : 'Failed to create transaction' }, { status: response.status });
+        }
+
+        console.log('Midtrans Transaction Created:', data.token);
+        return NextResponse.json({ token: data.token, redirect_url: data.redirect_url });
     } catch (error) {
         console.error('Midtrans API Error:', error);
         return NextResponse.json({ error: 'Failed to create transaction' }, { status: 500 });

@@ -1,4 +1,6 @@
 'use client';
+// Force re-compile for multi-currency refined state sync
+
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
@@ -7,7 +9,6 @@ type Language = 'en' | 'id';
 interface LanguageContextType {
     language: Language;
     setLanguage: (lang: Language) => void;
-    formatPrice: (usdPrice: number) => string;
     t: (key: string) => string;
 }
 
@@ -345,35 +346,25 @@ const translations: Record<Language, Record<string, string>> = {
 const LanguageContext = createContext<LanguageContextType>({
     language: 'en',
     setLanguage: () => { },
-    formatPrice: (p) => `$${p}`,
     t: (k) => k,
 });
 
-export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-    const [language, setLanguageState] = useState<Language>('en');
+export const LanguageProvider = ({ children, initialLanguage = 'en' }: { children: React.ReactNode, initialLanguage?: Language }) => {
+    const [language, setLanguageState] = useState<Language>(initialLanguage);
 
     useEffect(() => {
+        // Sync with localStorage if different (client-side preference)
         const saved = localStorage.getItem('gdi_lang') as Language;
-        if (saved && (saved === 'en' || saved === 'id')) {
+        if (saved && (saved === 'en' || saved === 'id') && saved !== initialLanguage) {
             setLanguageState(saved);
-        } else {
-            setLanguageState('en');
         }
-    }, []);
+    }, [initialLanguage]);
 
     const setLanguage = (lang: Language) => {
         setLanguageState(lang);
         localStorage.setItem('gdi_lang', lang);
-    };
-
-    const formatPrice = (usdPrice: number) => {
-        if (language === 'id') {
-            const idrValue = usdPrice * 16800;
-            return `Rp ${idrValue.toLocaleString('id-ID')}`;
-        } else {
-            const myrValue = usdPrice * 4.0;
-            return `RM ${myrValue.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        }
+        // Sync with cookie for SSR consistency on next loads
+        document.cookie = `GDI_LANG=${lang}; path=/; max-age=31536000; SameSite=Lax`;
     };
 
     const t = (key: string) => {
@@ -381,10 +372,19 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     };
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, formatPrice, t }}>
+        <LanguageContext.Provider value={{ language, setLanguage, t }}>
             {children}
         </LanguageContext.Provider>
     );
 };
 
-export const useLanguage = () => useContext(LanguageContext);
+export function useLanguage() {
+    const context = useContext(LanguageContext);
+    return context;
+}
+
+export function Translate({ tKey, defaultText }: { tKey: string, defaultText?: string }) {
+    const { t } = useLanguage();
+    const translated = t(tKey);
+    return <span>{translated !== tKey ? translated : defaultText || tKey}</span>;
+}

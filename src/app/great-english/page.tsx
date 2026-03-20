@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import EnrollButton from '@/components/EnrollButton';
-import { Translate } from '@/components/ClientTranslations';
 import PriceBadge from '@/components/PriceBadge';
 import styles from './page.module.css';
 

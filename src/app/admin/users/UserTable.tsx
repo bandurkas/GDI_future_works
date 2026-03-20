@@ -85,15 +85,15 @@ export function UserTable({ initialUsers }: { initialUsers: any[] }) {
                                 <tr key={user.id} className="hover:bg-gray-50/30 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            {user.avatar_url ? (
-                                                <img src={user.avatar_url} alt="" className="w-9 h-9 rounded-full object-cover border border-gray-200" />
+                                            {user.avatarUrl ? (
+                                                <img src={user.avatarUrl} alt="" className="w-9 h-9 rounded-full object-cover border border-gray-200" />
                                             ) : (
                                                 <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-semibold border border-gray-200">
-                                                    {user.name.charAt(0)}
+                                                    {user.name?.charAt(0) || user.email.charAt(0)}
                                                 </div>
                                             )}
                                             <div>
-                                                <div className="font-semibold text-gray-900">{user.name}</div>
+                                                <div className="font-semibold text-gray-900">{user.name || 'No Name'}</div>
                                                 <div className="text-gray-500 text-xs mt-0.5">{user.email}</div>
                                             </div>
                                         </div>
@@ -106,26 +106,26 @@ export function UserTable({ initialUsers }: { initialUsers: any[] }) {
                                               'bg-gray-50 text-gray-700 border-gray-200'}`}
                                         >
                                             {user.role === 'Owner' && <ShieldAlert className="w-3 h-3" />}
-                                            {formatRole(user.role)}
+                                            {user.role}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border
-                                            ${user.is_active ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}
+                                            ${user.isActive ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}
                                         >
-                                            <span className={`w-1.5 h-1.5 rounded-full ${user.is_active ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
-                                            {user.is_active ? 'Active' : 'Inactive'}
+                                            <span className={`w-1.5 h-1.5 rounded-full ${user.isActive ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+                                            {user.isActive ? 'Active' : 'Inactive'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-gray-500">
-                                        {user.last_login ? format(new Date(user.last_login), "MMM d, yyyy • h:mm a") : 'Never'}
+                                        {user.lastLogin ? format(new Date(user.lastLogin), "MMM d, yyyy • h:mm a") : 'Never'}
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <Link
                                             href={`/admin/users/${user.id}`}
                                             className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
                                         >
-                                            Edit Permissions
+                                            Edit User
                                         </Link>
                                     </td>
                                 </tr>

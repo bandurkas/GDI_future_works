@@ -4,20 +4,25 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import styles from './NavbarPremium.module.css';
-import { useLanguage } from './LanguageContext';
+import { useLanguage, Translate } from './LanguageContext';
 import { useCart } from './CartContext';
-import { Translate } from './ClientTranslations';
+import { useTheme } from './ThemeProvider';
+import { useCurrency } from './CurrencyContext';
 
 export default function NavbarPremium() {
     const [isMounted, setIsMounted] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const { theme, toggleTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const pathname = usePathname();
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [sessionType, setSessionType] = useState<string | null>(null);
+
+    const { language, setLanguage } = useLanguage();
+    const { currency, setCurrency } = useCurrency();
+    const { totalItems } = useCart();
 
     useEffect(() => {
         setIsMounted(true);
@@ -47,25 +52,20 @@ export default function NavbarPremium() {
 
     useEffect(() => {
         if (!isMounted) return;
-        const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setTheme(stored ?? (prefersDark ? 'dark' : 'light'));
         const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isMounted]);
 
-    const toggleTheme = () => {
-        const next = theme === 'light' ? 'dark' : 'light';
-        setTheme(next);
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    };
-
-    const { language, setLanguage } = useLanguage();
-    const { totalItems } = useCart();
     const toggleLanguage = () => {
-        setLanguage(language === 'en' ? 'id' : 'en');
+        const nextLang = language === 'en' ? 'id' : 'en';
+        setLanguage(nextLang);
+        
+        // Auto-sync currency IF user hasn't manually set one yet
+        const manualCurrency = localStorage.getItem('GDI_CURRENCY');
+        if (!manualCurrency) {
+            setCurrency(nextLang === 'id' ? 'IDR' : 'MYR');
+        }
     };
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -90,6 +90,10 @@ export default function NavbarPremium() {
                         <span></span>
                         <span></span>
                     </button>
+
+                    <Link href="/" className={styles.logo} aria-label="GDI FutureWorks Home">
+                        <img src="/logo.svg" alt="GDI FutureWorks Logo" className={styles.logoImage} />
+                    </Link>
 
                     <nav className={styles.nav} aria-label="Main navigation">
                         <Link href="/about" className={styles.navLink}><Translate tKey="nav.about" defaultText="About" /></Link>
@@ -123,26 +127,56 @@ export default function NavbarPremium() {
                             {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
                         </Link>
 
-                        <button className={styles.iconBtn} onClick={toggleTheme} aria-label="Toggle dark mode">
-                            {theme === 'light' ? (
-                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+
+                        <div className={styles.segmentedWrapper}>
+                            <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
+                            <button 
+                                className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`}
+                                onClick={() => setCurrency('IDR')}
+                            >
+                                <svg className={styles.flagIcon} width="16" height="11" viewBox="0 0 24 16">
+                                    <rect width="24" height="8" fill="#FF0000" />
+                                    <rect y="8" width="24" height="8" fill="#FFFFFF" />
+                                </svg>
+                                <span>IDR</span>
+                            </button>
+                            <button 
+                                className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`}
+                                onClick={() => setCurrency('MYR')}
+                            >
+                                <svg className={styles.flagIcon} width="16" height="11" viewBox="0 0 24 16">
+                                    <rect width="24" height="16" fill="#FFFFFF" />
+                                    <rect width="24" height="2" fill="#FF0000" />
+                                    <rect y="3.5" width="24" height="2" fill="#FF0000" />
+                                    <rect y="7" width="24" height="2" fill="#FF0000" />
+                                    <rect y="10.5" width="24" height="2" fill="#FF0000" />
+                                    <rect y="14" width="24" height="2" fill="#FF0000" />
+                                    <rect width="11" height="8.5" fill="#000066" />
+                                    <circle cx="4" cy="4" r="2.2" fill="#FFFF00" />
+                                    <circle cx="5" cy="4" r="2.2" fill="#000066" />
+                                </svg>
+                                <span>MYR</span>
+                            </button>
+                        </div>
+
+                        <button className={styles.langToggle} onClick={toggleLanguage} aria-label="Toggle language">
+                            {language === 'en' ? (
+                                <svg className={styles.flagIconCombined} width="18" height="12" viewBox="0 0 24 16">
+                                    <rect width="24" height="16" fill="#00247D" />
+                                    <path d="M0 0l24 16M24 0L0 16" stroke="#fff" strokeWidth="3" />
+                                    <path d="M0 0l24 16M24 0L0 16" stroke="#CF142B" strokeWidth="2" />
+                                    <path d="M12 0v16M0 8h24" stroke="#fff" strokeWidth="5" />
+                                    <path d="M12 0v16M0 8h24" stroke="#CF142B" strokeWidth="3" />
                                 </svg>
                             ) : (
-                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
+                                <svg className={styles.flagIconCombined} width="18" height="12" viewBox="0 0 24 16">
+                                    <rect width="24" height="8" fill="#FF0000" />
+                                    <rect y="8" width="24" height="8" fill="#FFFFFF" />
                                 </svg>
                             )}
-                        </button>
-
-                        <button className={styles.iconBtn} onClick={toggleLanguage} aria-label="Toggle language" style={{ fontWeight: 800, fontSize: '0.75rem' }}>
-                            {language === 'en' ? 'EN' : 'ID'}
+                            <span className={styles.langLabel}>{language.toUpperCase()}</span>
                         </button>
                     </div>
-
-                    <Link href="/" className={styles.logo}>
-                        <img src="/logo-new.png" alt="GDI FutureWorks Logo" className={styles.logoImage} />
-                    </Link>
                 </div>
             </div>
 

@@ -11,6 +11,10 @@ import { CartProvider } from '@/components/CartContext';
 import { cookies } from 'next/headers';
 import GoogleAuthProvider from '@/components/GoogleAuthProvider';
 import GoogleOneTapPopup from '@/components/GoogleOneTapPopup';
+import { CurrencyProvider } from '@/components/CurrencyContext';
+import { auth } from '@/auth';
+
+// Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
 
 // Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
 // Next.js downloads fonts at build time, serves from same origin, adds <link rel="preload">
@@ -53,16 +57,26 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Fix #9 — Dynamic lang attribute based on cookie
+  const session = await auth();
   const cookieStore = await cookies();
+  
+  // Language detection
   const langCookie = cookieStore.get('GDI_LANG')?.value;
-  const htmlLang = langCookie === 'id' ? 'id' : 'en';
+  const initialLang = (langCookie === 'id' || langCookie === 'en') ? langCookie : 'en';
+
+  // Currency detection
+  const currCookie = cookieStore.get('GDI_CURRENCY')?.value;
+  let initialCurr: 'IDR' | 'MYR' = (currCookie === 'IDR' || currCookie === 'MYR') ? currCookie : 'IDR';
+  
+  // Default currency logic based on language if currency cookie is missing
+  if (!currCookie) {
+    initialCurr = initialLang === 'id' ? 'IDR' : 'MYR';
+  }
 
   return (
     <html
-      lang={htmlLang}
+      lang={initialLang}
       suppressHydrationWarning
-      // Apply font CSS variables so --font-display and --font-body in globals.css resolve correctly
       className={`${jakartaSans.variable} ${poppins.variable}`}
     >
       <head>
@@ -78,11 +92,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             `,
           }}
         />
-        {/* Fix #4 — Preconnect to Midtrans so snap.js TCP handshake starts early (only on payment page) */}
         <link rel="preconnect" href="https://app.midtrans.com" />
         <link rel="dns-prefetch" href="https://app.midtrans.com" />
-        {/* Midtrans snap.js is loaded per-page on /payment to avoid 689KB on every page */}
-        {/* ChunkLoadError recovery — hard reload when a stale JS chunk 404s after a new deploy */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -96,30 +107,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   window.location.reload();
                 }
               }, true);
-              window.addEventListener('unhandledrejection', function(e) {
-                var msg = (e && e.reason && e.reason.message) || '';
-                if (msg.includes('ChunkLoad') || msg.includes('Loading chunk') || msg.includes('Failed to fetch dynamically')) {
-                  window.location.reload();
-                }
-              });
             `,
           }}
         />
       </head>
       <body>
-        <GoogleAuthProvider>
+        <GoogleAuthProvider session={session}>
           <GoogleOneTapPopup />
-          <ThemeProvider>
-            <LanguageProvider>
-              <CartProvider>
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-              <BottomNav />
-              <ScrollReveal />
-            </CartProvider>
-            </LanguageProvider>
-          </ThemeProvider>
+          <CurrencyProvider initialCurrency={initialCurr}>
+            <ThemeProvider>
+              <LanguageProvider initialLanguage={initialLang}>
+                <CartProvider>
+                  <Navbar />
+                  <main>{children}</main>
+                  <Footer />
+                  <BottomNav />
+                  <ScrollReveal />
+                </CartProvider>
+              </LanguageProvider>
+            </ThemeProvider>
+          </CurrencyProvider>
         </GoogleAuthProvider>
       </body>
     </html>

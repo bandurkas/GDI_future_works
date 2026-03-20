@@ -118,7 +118,7 @@ export default async function LeadsAdminPage() {
                                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                                         <button title="Call" style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}><Phone size={16} /></button>
                                         <button title="WhatsApp" style={{ background: 'none', border: 'none', color: '#10B981', cursor: 'pointer' }}><MessageSquare size={16} /></button>
-                                        <button title="Convert to User" style={{ p: '6px 10px', borderRadius: '8px', border: '1px solid #eee', background: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', fontWeight: 600 }}>
+                                        <button title="Convert to User" style={{ padding: '6px 10px', borderRadius: '8px', border: '1px solid #eee', background: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', fontWeight: 600 }}>
                                             Convert <ArrowRight size={14} />
                                         </button>
                                     </div>

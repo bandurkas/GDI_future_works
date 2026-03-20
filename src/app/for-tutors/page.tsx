@@ -1,10 +1,26 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { useTheme } from '../../components/ThemeProvider';
 
 export default function ForTutorsPage() {
+    const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
+    if (!mounted) {
+        return <div className={styles.page} style={{ background: 'var(--bg)', minHeight: '100vh' }} />;
+    }
+
+    const ctaStyle = {
+        background: 'var(--accent, #D42B2B)',
+        color: '#FFFFFF',
+        fontWeight: 700
+    };
+
     return (
-        <div className={styles.page}>
+        <div className={styles.page} data-theme={theme}>
             <div className={styles.container}>
                 {/* HERO */}
                 <section className={styles.hero}>
@@ -18,16 +34,18 @@ export default function ForTutorsPage() {
                         Join the GDI FutureWorks platform and focus on what you do best — TEACH. 
                         We handle the technology, marketing, and payments so you can grow your reputation and income.
                     </p>
-                    <Link href="/for-tutors/apply" className={styles.ctaBtn}>
-                        Apply to become a tutor →
-                    </Link>
+                    {mounted && (
+                        <Link href="/for-tutors/apply" className={styles.ctaBtn} style={ctaStyle}>
+                            Apply to become a tutor →
+                        </Link>
+                    )}
                 </section>
 
                 {/* STRATEGIC OVERVIEW */}
                 <section className={styles.section}>
                     <div className={styles.sectionHeader}>
                         <h2 className={styles.sectionTitle}>The Future of Teaching</h2>
-                        <p style={{ color: 'var(--text-secondary)' }}>We bring together quality expert tutors and motivated students in one trusted ecosystem.</p>
+                        <p className={styles.sectionSubtitle}>We bring together quality expert tutors and motivated students in one trusted ecosystem.</p>
                     </div>
 
                     <div className={styles.comparisonGrid}>
@@ -39,7 +57,7 @@ export default function ForTutorsPage() {
                         </div>
                         <div className={styles.solutionCard}>
                             <h3 className={styles.cardTitle}>Our Solution: Done-for-you Infrastructure</h3>
-                            <p style={{ fontSize: '0.9375rem', lineHeight: 1.6, color: '#166534' }}>
+                            <p className={styles.solutionDesc}>
                                 GDI FutureWorks provides the "business-in-a-box". We handle the marketing, enrollment, payment processing, and scheduling. You focus 100% on delivering impactful live learning.
                             </p>
                         </div>
@@ -50,7 +68,7 @@ export default function ForTutorsPage() {
                 <section className={styles.section}>
                     <div className={styles.sectionHeader}>
                         <h2 className={styles.sectionTitle}>Your Business-in-a-Box</h2>
-                        <p style={{ color: 'var(--text-secondary)' }}>Everything you need to operate at scale from day one.</p>
+                        <p className={styles.sectionSubtitle}>Everything you need to operate at scale from day one.</p>
                     </div>
 
                     <div className={styles.featureGrid}>
@@ -88,28 +106,28 @@ export default function ForTutorsPage() {
                 </section>
 
                 {/* REQUIREMENTS */}
-                <section className={[styles.section].join(' ')} style={{ background: '#F9F9F9', borderRadius: 24, padding: '80px 40px', marginTop: 40 }}>
+                <section className={styles.requirementsSection}>
                     <div className={styles.sectionHeader}>
                         <h2 className={styles.sectionTitle}>Who we are looking for</h2>
-                        <p style={{ color: 'var(--text-secondary)', maxWidth: 600, margin: '0 auto' }}>
+                        <p className={styles.requirementsSubtitle}>
                             We are building a curated network of professional tutors who are passionate about empowering the next generation of professionals.
                         </p>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+                    <div className={styles.requirementsGrid}>
                         <div>
-                            <h4 style={{ fontSize: '1.25rem', marginBottom: 20 }}>Ideal Tutors:</h4>
-                            <ul style={{ padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                            <h4 className={styles.listTitle}>Ideal Tutors:</h4>
+                            <ul className={styles.checkList}>
                                 {['Industry expertise in AI, Data, or Design', 'Clear communication in English', 'Passion for mentoring learners', 'Commitment to student success'].map((item, i) => (
-                                    <li key={i} style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                                        <span style={{ color: '#22C55E' }}>✓</span> {item}
+                                    <li key={i} className={styles.checkItem}>
+                                        <span className={styles.checkIcon}>✓</span> {item}
                                     </li>
                                 ))}
                             </ul>
                         </div>
                         <div>
-                            <h4 style={{ fontSize: '1.25rem', marginBottom: 20 }}>Application Requirements:</h4>
-                            <ul style={{ padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12, fontSize: '0.9375rem' }}>
+                            <h4 className={styles.listTitle}>Application Requirements:</h4>
+                            <ul className={styles.requirementsList}>
                                 <li><strong>1. Professional Profile:</strong> Qualifications & experience</li>
                                 <li><strong>2. Tutor Portfolio:</strong> Credentials & previous work</li>
                                 <li><strong>3. Proposed Curriculum:</strong> Program delivery outline</li>
@@ -145,9 +163,11 @@ export default function ForTutorsPage() {
             <section className={[styles.section, styles.hero].join(' ')} style={{ borderTop: '1px solid var(--border-light)' }}>
                     <h2 className={styles.heroTitle} style={{ fontSize: '2.5rem' }}>Ready to teach with us?</h2>
                     <p className={styles.heroSubtitle}>Join a platform designed to help expert tutors focus on what matters most — teaching and impacting students.</p>
-                    <Link href="/for-tutors/apply" className={styles.ctaBtn}>
-                        Apply to become a tutor →
-                    </Link>
+                    {mounted && (
+                        <Link href="/for-tutors/apply" className={styles.ctaBtn}>
+                            Apply to become a tutor →
+                        </Link>
+                    )}
                 </section>
             </div>
         </div>

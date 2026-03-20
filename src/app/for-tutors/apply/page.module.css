@@ -7,8 +7,9 @@
     min-height: 100vh;
     padding-top: calc(var(--nav-height, 72px) + 48px);
     padding-bottom: 120px;
-    background: #FAFAFA;
+    background: var(--bg);
     font-family: var(--font-body);
+    transition: background-color var(--transition-base);
 }
 
 .container {
@@ -88,9 +89,9 @@
     justify-content: center;
     font-size: 12px;
     font-weight: 700;
-    border: 2px solid var(--border-strong, rgba(0,0,0,0.14));
-    background: white;
-    color: var(--text-secondary, #6B7280);
+    border: 2px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text-secondary);
     transition: all 0.3s var(--ease-out, ease-out);
     position: relative;
     z-index: 1;
@@ -112,7 +113,7 @@
 .progressLine {
     width: 80px;
     height: 2px;
-    background: var(--border-strong, rgba(0,0,0,0.14));
+    background: var(--border-strong);
     flex-shrink: 0;
     transition: background 0.3s;
 }
@@ -144,16 +145,16 @@
 
 /* ── Form Card ── */
 .formCard {
-    background: #fff;
-    border: 1px solid var(--border, rgba(0,0,0,0.08));
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 16px;
-    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.06));
+    box-shadow: var(--shadow-sm);
     overflow: hidden;
 }
 
 .stepHeader {
     padding: 28px 36px 0;
-    border-bottom: 1px solid var(--border, rgba(0,0,0,0.08));
+    border-bottom: 1px solid var(--border);
     padding-bottom: 20px;
     margin-bottom: 0;
 }
@@ -205,12 +206,12 @@
     width: 100%;
     padding: 11px 14px;
     border-radius: 8px;
-    border: 1px solid var(--border-strong, rgba(0,0,0,0.14));
+    border: 1px solid var(--border-strong);
     font-size: 0.9375rem;
     font-family: var(--font-body);
-    color: var(--text-primary, #0D0D0D);
-    background: #FAFAFA;
-    transition: all 0.2s var(--ease-out, ease-out);
+    color: var(--text-primary);
+    background: var(--bg-card-elevated);
+    transition: all var(--transition-base);
     box-sizing: border-box;
 }
 
@@ -223,9 +224,9 @@
 .textarea:focus,
 .select:focus {
     outline: none;
-    border-color: var(--accent, #D42B2B);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(212, 43, 43, 0.1);
+    border-color: var(--accent);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .textarea {
@@ -266,8 +267,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px 36px;
-    border-top: 1px solid var(--border, rgba(0,0,0,0.08));
-    background: #FAFAFA;
+    border-top: 1px solid var(--border);
+    background: var(--bg-secondary);
     gap: 12px;
 }
 
@@ -312,20 +313,20 @@
     gap: 6px;
     padding: 11px 20px;
     border-radius: 8px;
-    background: #fff;
-    color: var(--text-secondary, #6B7280);
+    background: var(--bg-card);
+    color: var(--text-secondary);
     font-size: 0.875rem;
     font-weight: 600;
     font-family: var(--font-body);
-    border: 1px solid var(--border-strong, rgba(0,0,0,0.14));
+    border: 1px solid var(--border-strong);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-base);
     text-decoration: none;
 }
 
 .btnSecondary:hover {
-    background: #F5F5F5;
-    color: var(--text-primary, #0D0D0D);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .stepCounter {
@@ -341,17 +342,17 @@
     align-items: center;
     justify-content: center;
     padding: 60px 24px;
-    background: #FAFAFA;
+    background: var(--bg);
     font-family: var(--font-body);
 }
 
 .successCard {
     max-width: 560px;
     width: 100%;
-    background: #fff;
-    border: 1px solid var(--border, rgba(0,0,0,0.08));
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 20px;
-    box-shadow: var(--shadow-lg, 0 12px 40px rgba(0,0,0,0.1));
+    box-shadow: var(--shadow-lg);
     padding: 64px 48px;
     text-align: center;
 }
@@ -391,7 +392,7 @@
     gap: 6px;
     font-size: 12px;
     color: var(--text-secondary, #6B7280);
-    background: #F5F5F5;
+    background: var(--bg-secondary);
     border-radius: 100px;
     padding: 8px 16px;
     margin-bottom: 28px;

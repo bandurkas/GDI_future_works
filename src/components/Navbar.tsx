@@ -4,9 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import styles from './Navbar.module.css';
-import { useLanguage } from './LanguageContext';
+import { useLanguage, Translate } from './LanguageContext';
 import { useCart } from './CartContext';
-import { Translate } from './ClientTranslations';
 
 export default function Navbar() {
     const [isMounted, setIsMounted] = useState(false);

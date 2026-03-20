@@ -1,11 +1,15 @@
 "use client";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
 export default function GoogleAuthProvider({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: Session | null;
 }) {
   // Hardcoding the Client ID as a fallback to prevent Next.js build-time stripping 
   // (NEXT_PUBLIC variables are public anyway)
@@ -17,8 +21,10 @@ export default function GoogleAuthProvider({
   }
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      {children}
-    </GoogleOAuthProvider>
+    <SessionProvider session={session}>
+      <GoogleOAuthProvider clientId={clientId}>
+        {children}
+      </GoogleOAuthProvider>
+    </SessionProvider>
   );
 }

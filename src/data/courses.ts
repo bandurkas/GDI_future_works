@@ -71,7 +71,7 @@ export interface Course {
 
 export const courses: Course[] = [
     {
-        id: '1',
+        id: 'data-analytics',
         slug: 'data-analytics',
         category: 'Data Analytics',
         title: 'Basic Data Analyst',
@@ -172,7 +172,7 @@ export const courses: Course[] = [
         }
     },
     {
-        id: '2',
+        id: 'python-programming',
         slug: 'python-programming',
         category: 'Python Programming',
         title: 'Python for Professionals',
@@ -275,7 +275,7 @@ export const courses: Course[] = [
         }
     },
     {
-        id: '3',
+        id: 'graphic-design-ai',
         slug: 'graphic-design-ai',
         category: 'Graphic Design & AI',
         title: 'Graphic Design with AI',
@@ -378,7 +378,7 @@ export const courses: Course[] = [
         }
     },
     {
-        id: '4',
+        id: 'llm-ai-engineering',
         slug: 'llm-ai-engineering',
         category: 'LLM & AI Engineering',
         title: 'LLM & AI Engineering',
@@ -481,7 +481,7 @@ export const courses: Course[] = [
         }
     },
     {
-        id: "5",
+        id: "intermediate-data-analytics",
         slug: "intermediate-data-analytics",
         category: "Data Analytics",
         title: "Intermediate Data Analyst",
@@ -548,7 +548,7 @@ export const courses: Course[] = [
         tags: ["SQL", "Modeling", "Analytics", "Intermediate"],
     },
     {
-        id: "6",
+        id: "advanced-data-analytics",
         slug: "advanced-data-analytics",
         category: "Data Analytics",
         title: "Advanced Data Analyst",

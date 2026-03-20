@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './page.module.css';
+import FAQAccordion from '@/components/FAQAccordion';
 
 export const metadata: Metadata = {
     title: 'Contact Us — GDI FutureWorks',
@@ -14,7 +15,7 @@ const faqs = [
         a: 'WhatsApp messages are answered in under 2 minutes during business hours. Emails are responded to within 24 hours.',
     },
     {
-        q: 'I\'m not sure which course to take — can you help?',
+        q: "I'm not sure which course to take — can you help?",
         a: 'Absolutely. Our advisors will ask you a few quick questions and point you to the right course for your goals.',
     },
     {
@@ -86,20 +87,17 @@ export default function ContactPage() {
             </main>
 
             {/* FAQ */}
-            <section style={{ padding: '60px 20px', maxWidth: 760, margin: '0 auto', width: '100%' }}>
-                <p style={{ fontSize: '0.8125rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent)', marginBottom: 8, textAlign: 'center' }}>Common Questions</p>
-                <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--text-primary)', textAlign: 'center', marginBottom: 40 }}>Before you reach out</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                    {faqs.map((faq, i) => (
-                        <div key={i} style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 28px' }}>
-                            <p style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8, fontSize: '1rem' }}>{faq.q}</p>
-                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.6, margin: 0 }}>{faq.a}</p>
-                        </div>
-                    ))}
-                </div>
-                <div style={{ textAlign: 'center', marginTop: 40 }}>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: 16 }}>Still have questions? Browse our full FAQ page.</p>
-                    <Link href="/faq" style={{ color: 'var(--accent)', fontWeight: 600, textDecoration: 'underline' }}>View all FAQs →</Link>
+            <section className={styles.faqSection}>
+                <div className="container-narrow">
+                    <p className={styles.faqBadge}>Frequently Asked Questions</p>
+                    <h2 className={styles.faqTitle}>Everything you need to know about GDI FutureWorks courses and enrollment.</h2>
+                    
+                    <FAQAccordion items={faqs} />
+                    
+                    <div className={styles.faqFooter}>
+                        <p>Still have questions? Browse our full FAQ page.</p>
+                        <Link href="/faq" className={styles.faqLink}>View all FAQs →</Link>
+                    </div>
                 </div>
             </section>
 

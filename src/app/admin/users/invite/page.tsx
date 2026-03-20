@@ -97,9 +97,12 @@ export default function InviteUserPage() {
                                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-gray-800 transition-all font-medium text-gray-900 appearance-none cursor-pointer"
                             >
                                 <option value="Support">Viewer (Read-only)</option>
-                                <option value="Sales Manager">Account Manager</option>
+                                <option value="SalesManager">Account Manager</option>
                                 <option value="Instructor">Video Manager</option>
                                 <option value="Owner">Super Administrator</option>
+                                <option value="ADMIN">Marketplace Admin</option>
+                                <option value="TUTOR">Tutor</option>
+                                <option value="STUDENT">Student</option>
                             </select>
                         </div>
                     </div>

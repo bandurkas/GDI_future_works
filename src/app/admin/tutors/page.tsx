@@ -1,6 +1,7 @@
 import { PrismaClient, Tutor, TutorApplication } from '@prisma/client';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { CheckCircle, XCircle, ExternalLink, Search, Filter } from 'lucide-react';
 
 const prisma = new PrismaClient();
@@ -301,6 +302,74 @@ export default async function TutorsAdminPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pending Applications Section */}
+      <div style={{ marginTop: '64px' }}>
+        <header style={{ marginBottom: '24px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, fontFamily: 'var(--font-display)', marginBottom: '8px' }}>
+            Pending Applications
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+            Review new tutor candidates who haven't been approved yet.
+          </p>
+        </header>
+
+        <div
+          style={{
+            background: 'var(--bg-card)',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid var(--border)',
+            overflow: 'hidden',
+          }}
+        >
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-secondary)' }}>
+                <th style={{ padding: '16px', fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Applicant</th>
+                <th style={{ padding: '16px', fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Expertise</th>
+                <th style={{ padding: '16px', fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Applied On</th>
+                <th style={{ padding: '16px', fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Status</th>
+                <th style={{ padding: '16px', textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {applications.filter(app => !tutors.some(t => t.user.email === app.email)).map((app) => (
+                <tr key={app.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '16px' }}>
+                    <div style={{ fontWeight: 600, fontSize: '14px' }}>{app.name}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{app.email}</div>
+                  </td>
+                  <td style={{ padding: '16px', fontSize: '13px' }}>{app.expertise}</td>
+                  <td style={{ padding: '16px', fontSize: '13px' }}>{new Date(app.createdAt).toLocaleDateString()}</td>
+                  <td style={{ padding: '16px' }}>
+                    <span style={{ 
+                      padding: '4px 8px', borderRadius: '100px', fontSize: '11px', fontWeight: 700,
+                      background: 'var(--warning-light)', color: 'var(--warning)'
+                    }}>
+                      {app.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '16px', textAlign: 'right' }}>
+                    <Link 
+                      href={`/admin/tutor-applications/${app.id}`} 
+                      style={{ fontSize: '13px', color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}
+                    >
+                      View Details →
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+              {applications.filter(app => !tutors.some(t => t.user.email === app.email)).length === 0 && (
+                <tr>
+                  <td colSpan={5} style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px' }}>
+                    No pending applications.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

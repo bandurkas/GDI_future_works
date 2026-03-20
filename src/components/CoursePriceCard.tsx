@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import { Course } from '@/data/courses';
 import { useLanguage } from '@/components/LanguageContext';
+import { useCurrency } from '@/components/CurrencyContext';
+import { formatPrice } from '@/lib/currency';
 
 interface Props {
     course: Course;
@@ -17,18 +19,17 @@ interface Props {
  */
 export default function CoursePriceCard({ course, slug, variant, styles }: Props) {
     const { language } = useLanguage();
+    const { currency } = useCurrency();
     const isID = language === 'id';
 
-    const displayPrice = isID
-        ? `Rp ${course.priceIDR.toLocaleString('id-ID')}`
-        : `RM ${course.priceMYR}`;
+    const currentPrice = currency === 'IDR' ? course.priceIDR : course.priceMYR;
+    const originalPrice = currency === 'IDR' ? course.originalPriceIDR : course.originalPriceMYR;
 
-    const displayOriginal = isID
-        ? `Rp ${course.originalPriceIDR.toLocaleString('id-ID')}`
-        : `RM ${course.originalPriceMYR}`;
+    const displayPrice = formatPrice(currentPrice, currency);
+    const displayOriginal = formatPrice(originalPrice, currency);
 
     const discount = Math.round(
-        (1 - (isID ? course.priceIDR / course.originalPriceIDR : course.priceMYR / course.originalPriceMYR)) * 100
+        (1 - (currentPrice / originalPrice)) * 100
     );
 
     const inclusions = variant === 'hero'

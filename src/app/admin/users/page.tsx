@@ -14,13 +14,10 @@ export default async function UsersPage() {
          redirect("/admin?error=unauthorized");
     }
 
-    // Fetch all System Users and their boolean overrides
-    const users = await prisma.appUser.findMany({
-        include: {
-           permissions: true,
-        },
+    // Fetch all System Users
+    const users = await prisma.user.findMany({
         orderBy: {
-           created_at: 'desc'
+           createdAt: 'desc'
         }
     });
 

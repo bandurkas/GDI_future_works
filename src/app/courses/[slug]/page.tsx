@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { courses, getCourseBySlug } from '@/data/courses';
 import StickyBookingBar from '@/components/StickyBookingBar';
 import CoursePriceCard from '@/components/CoursePriceCard';
-import { Translate } from '@/components/ClientTranslations';
+import { Translate } from '@/components/LanguageContext';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };

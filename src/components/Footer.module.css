@@ -36,7 +36,7 @@
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(232, 0, 29, 0.25);
+    box-shadow: var(--shadow-accent);
 }
 
 .logoText {

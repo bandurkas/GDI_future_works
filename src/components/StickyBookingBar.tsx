@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import { Course } from '@/data/courses';
 import { useLanguage } from '@/components/LanguageContext';
+import { useCurrency } from '@/components/CurrencyContext';
+import { formatPrice } from '@/lib/currency';
 import styles from './StickyBookingBar.module.css';
 
 interface Props { course: Course; }
@@ -9,12 +11,13 @@ interface Props { course: Course; }
 // Fix #6 — replaced ClientPrice (USD conversion) with direct IDR/MYR display
 export default function StickyBookingBar({ course }: Props) {
     const { language } = useLanguage();
-    const displayPrice = language === 'id'
-        ? `Rp ${course.priceIDR.toLocaleString('id-ID')}`
-        : `RM ${course.priceMYR}`;
-    const displayOriginal = language === 'id'
-        ? `Rp ${course.originalPriceIDR.toLocaleString('id-ID')}`
-        : `RM ${course.originalPriceMYR}`;
+    const { currency } = useCurrency();
+
+    const currentPrice = currency === 'IDR' ? course.priceIDR : course.priceMYR;
+    const originalPrice = currency === 'IDR' ? course.originalPriceIDR : course.originalPriceMYR;
+
+    const displayPrice = formatPrice(currentPrice, currency);
+    const displayOriginal = formatPrice(originalPrice, currency);
 
     return (
         <div className={styles.bar}>

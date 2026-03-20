@@ -145,7 +145,7 @@
     position: absolute;
     top: -2px;
     right: -2px;
-    background: #455DD3; /* Notion-Blue */
+    background: var(--accent); /* Brand Red */
     color: white;
     font-size: 0.65rem;
     font-weight: 700;
@@ -245,7 +245,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #455DD3; /* Notion-Blue */
+    background: var(--accent); /* Brand Red */
     color: white !important;
     padding: 12px 24px;
     border-radius: 8px;

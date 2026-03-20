@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { useLanguage } from '@/components/LanguageContext';
 import { useCart } from '@/components/CartContext';
+import { useCurrency } from '@/components/CurrencyContext';
+import { formatPrice, convertToIdr } from '@/lib/currency';
 import styles from './page.module.css';
 
 declare global {
@@ -20,6 +22,7 @@ function PaymentContent() {
     
     const { items, totalItems, clearCart } = useCart();
     const { language } = useLanguage();
+    const { currency } = useCurrency();
     
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -27,10 +30,11 @@ function PaymentContent() {
     
     const snapTokenRef = useRef<string | null>(null);
 
-    const totalPriceIDR = items.reduce((sum, item) => sum + item.priceIDR, 0);
-    const displayTotal = language === 'id' 
-        ? `Rp ${totalPriceIDR.toLocaleString('id-ID')}`
-        : `RM ${items.reduce((sum, item) => sum + item.priceMYR, 0).toLocaleString('en-MY', { minimumFractionDigits: 2 })}`;
+    const totalAmount = items.reduce((sum, item) => 
+        sum + (currency === 'IDR' ? item.priceIDR : item.priceMYR), 0
+    );
+    const displayTotal = formatPrice(totalAmount, currency);
+    const idrEquivalent = convertToIdr(totalAmount, currency);
 
     const handlePay = useCallback(async () => {
         if (loading || items.length === 0) return;
@@ -45,6 +49,7 @@ function PaymentContent() {
                     items,
                     customerName,
                     customerPhone,
+                    currency, // Pass currency to API
                 }),
             });
 
@@ -198,6 +203,11 @@ function PaymentContent() {
                                <span>Total</span>
                                <span>{displayTotal}</span>
                            </div>
+                           {currency === 'MYR' && (
+                               <div className={styles.currencyNote}>
+                                   * You will be charged approximately <strong>Rp {idrEquivalent.toLocaleString('id-ID')}</strong> (IDR)
+                               </div>
+                           )}
                         </div>
                     </div>
                 </div>

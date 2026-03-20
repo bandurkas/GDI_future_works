@@ -3,19 +3,21 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/components/CartContext';
 import { useLanguage } from '@/components/LanguageContext';
+import { useCurrency } from '@/components/CurrencyContext';
+import { formatPrice } from '@/lib/currency';
 import styles from './page.module.css';
 
 export default function GlobalCheckoutPage() {
     const { items, totalItems } = useCart();
     const [form, setForm] = useState({ name: '', whatsapp: '' });
     const { language } = useLanguage();
+    const { currency } = useCurrency();
 
-    const totalPriceIDR = items.reduce((sum, item) => sum + item.priceIDR, 0);
-    const totalPriceMYR = items.reduce((sum, item) => sum + item.priceMYR, 0);
+    const totalAmount = items.reduce((sum, item) => 
+        sum + (currency === 'IDR' ? item.priceIDR : item.priceMYR), 0
+    );
 
-    const displayTotal = language === 'id' 
-        ? `Rp ${totalPriceIDR.toLocaleString('id-ID')}`
-        : `RM ${totalPriceMYR.toLocaleString('en-MY', { minimumFractionDigits: 2 })}`;
+    const displayTotal = formatPrice(totalAmount, currency);
 
     const isValid = form.name.trim().length > 1 && form.whatsapp.trim().length > 6;
 
@@ -126,7 +128,7 @@ export default function GlobalCheckoutPage() {
                                             <p className={styles.summaryMeta}>📅 {item.dateLabel} · {item.timeLabel}</p>
                                         </div>
                                         <div className={styles.summaryPrice}>
-                                            {language === 'id' ? `Rp ${item.priceIDR.toLocaleString('id-ID')}` : `RM ${item.priceMYR}`}
+                                            {formatPrice(currency === 'IDR' ? item.priceIDR : item.priceMYR, currency)}
                                         </div>
                                     </div>
                                 ))}

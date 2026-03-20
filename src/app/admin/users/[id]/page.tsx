@@ -13,11 +13,8 @@ export default async function UserEditPage({ params }: { params: { id: string } 
          redirect("/admin?error=unauthorized");
     }
 
-    const user = await prisma.appUser.findUnique({
-        where: { id: params.id },
-        include: {
-           permissions: true,
-        }
+    const user = await prisma.user.findUnique({
+        where: { id: params.id }
     });
 
     if (!user) {

@@ -1,5 +1,5 @@
 "use server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, UserRole } from "@prisma/client";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
@@ -25,16 +25,16 @@ export async function inviteUser(prevState: any, formData: FormData) {
         // 3. Upsert the User
         // If the user already logged in via Dashboard once, they exist but as 'Support'.
         // Upserting upgrades their scope seamlessly.
-        await prisma.appUser.upsert({
+        await prisma.user.upsert({
             where: { email: email.toLowerCase() },
             update: {
-                role,
+                role: role as UserRole,
             },
             create: {
                 email: email.toLowerCase(),
                 name,
-                role,
-                is_active: true
+                role: role as UserRole,
+                isActive: true
             }
         });
 

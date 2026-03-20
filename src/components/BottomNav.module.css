@@ -11,12 +11,12 @@
         right: 0;
         background: var(--bg-card);
         z-index: 9999;
-        box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.04);
+        box-shadow: var(--shadow-sm);
         justify-content: space-around;
         align-items: center;
         padding-top: 12px;
         padding-bottom: calc(12px + env(safe-area-inset-bottom));
-        border-top: 1px solid #F0F0F0;
+        border-top: 1px solid var(--border-light);
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
     }
@@ -29,7 +29,7 @@
         gap: 6px;
         flex: 1;
         text-decoration: none;
-        color: #9AA0A6;
+        color: var(--text-muted);
         transition: color var(--transition-fast);
         -webkit-tap-highlight-color: transparent;
     }
@@ -56,6 +56,6 @@
     }
 
     .active {
-        color: #FF001A !important;
+        color: var(--accent) !important;
     }
 }

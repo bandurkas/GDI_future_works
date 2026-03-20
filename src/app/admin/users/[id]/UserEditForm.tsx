@@ -99,7 +99,7 @@ export function UserEditForm({ targetUser }: { targetUser: any }) {
                     <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-2">Explicit Overrides</h3>
                     <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                         {ALL_PERMISSIONS.map(perm => {
-                            const isGranted = targetUser.permissions?.some((p: any) => p.permission_key === perm.key && p.granted);
+                            const isGranted = !!(targetUser.permissions as any)?.[perm.key];
                             
                             return (
                                 <label key={perm.key} className="flex items-start gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer group">
