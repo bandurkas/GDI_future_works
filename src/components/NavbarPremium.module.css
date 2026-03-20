@@ -21,14 +21,13 @@
 }
 
 .container {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: space-between;
     height: 100%;
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 var(--space-6);
-    position: relative;
 }
 
 /* Layout Sections */
@@ -51,22 +50,16 @@
     text-decoration: none;
     flex-shrink: 0;
     margin-left: var(--space-4);
-    transition: opacity var(--transition-fast);
 }
 
 .logoImage {
-    height: 34px !important; /* Force 34px Notion-style ratio */
+    height: 34px !important; /* Force 34px Notion ratio */
     width: auto;
     object-fit: contain;
-    transition: height var(--transition-base);
 }
 
 .header.scrolled .logoImage {
     height: 30px !important;
-}
-
-.logo:hover {
-    opacity: 0.8;
 }
 
 /* Desktop nav */
@@ -78,7 +71,7 @@
 
 .navLink {
     padding: 6px 14px;
-    border-radius: 6px; /* Notion soft radius */
+    border-radius: 6px;
     font-size: 0.9375rem;
     font-weight: 500;
     color: var(--text-secondary);
@@ -89,7 +82,7 @@
 
 .navLink:hover {
     color: var(--text-primary);
-    background: rgba(0, 0, 0, 0.05); /* Stealth hover style */
+    background: rgba(0, 0, 0, 0.05);
 }
 
 /* Actions Group */
@@ -99,28 +92,26 @@
     gap: var(--space-2);
 }
 
-.navChatBtn {
+.navActionBtn {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 6px 14px;
     background: var(--bg-secondary);
     border: 1px solid var(--border-light);
-    border-radius: 8px; /* Correct Notion 8px pill */
+    border-radius: 8px;
     color: var(--text-primary);
     font-size: 0.875rem;
     font-weight: 600;
     transition: all var(--transition-base);
     text-decoration: none;
-    letter-spacing: -0.01em;
 }
 
-.navChatBtn:hover {
+.navActionBtn:hover {
     background: var(--border-light);
     transform: translateY(-1px);
 }
 
-/* Icon Buttons (Cart, Theme, Lang) */
 .iconBtn {
     position: relative;
     display: flex;
@@ -128,12 +119,12 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border-radius: 6px; /* Notion-style squircle */
+    border-radius: 6px;
     color: var(--text-secondary);
     background: transparent;
-    transition: all var(--transition-fast);
     border: none;
     cursor: pointer;
+    transition: all var(--transition-fast);
 }
 
 .iconBtn:hover {
@@ -145,7 +136,7 @@
     position: absolute;
     top: -2px;
     right: -2px;
-    background: #455DD3; /* Notion-Blue */
+    background: #455DD3;
     color: white;
     font-size: 0.65rem;
     font-weight: 700;
@@ -158,44 +149,9 @@
     border: 2px solid var(--bg-overlay);
 }
 
-/* Hamburger */
+/* Hamburger - SPECIFICALLY GLOBAL FIX */
 .hamburger {
-    display: none; /* Hidden on desktop */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 36px;
-    height: 36px;
-    background: transparent;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    gap: 4px;
-    transition: background var(--transition-fast);
-    z-index: 1100;
-}
-
-.hamburger:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.hamburger span {
-    width: 18px;
-    height: 1.5px;
-    background-color: var(--text-primary);
-    transition: all 0.3s var(--ease-out);
-}
-
-.hamburgerActive span:nth-child(1) {
-    transform: translateY(2.8px) rotate(45deg);
-}
-
-.hamburgerActive span:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburgerActive span:nth-child(3) {
-    transform: translateY(-2.8px) rotate(-45deg);
+    display: none; /* Force hidden on desktop */
 }
 
 /* Menu Overlay */
@@ -234,7 +190,6 @@
     text-decoration: none;
     padding: 8px 12px;
     border-radius: 8px;
-    transition: background 0.2s;
 }
 
 .mobileNavLink:hover {
@@ -245,7 +200,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #455DD3; /* Notion-Blue */
+    background: #455DD3;
     color: white !important;
     padding: 12px 24px;
     border-radius: 8px;
@@ -253,20 +208,32 @@
     font-weight: 600;
     text-decoration: none;
     margin-top: 2rem;
-    transition: opacity 0.2s;
-}
-
-.mobileAuthBtn:hover {
-    opacity: 0.9;
 }
 
 @media (max-width: 1024px) {
     .nav, .actions {
-        display: none;
+        display: none !important;
     }
     
     .hamburger {
-        display: flex; /* Shown only on mobile/tablet */
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 36px;
+        height: 36px;
+        background: transparent;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        gap: 4px;
+        z-index: 1100;
+    }
+
+    .hamburger span {
+        width: 18px;
+        height: 1.5px;
+        background-color: var(--text-primary);
     }
 
     .menuOverlay {

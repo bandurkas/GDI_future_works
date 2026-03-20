@@ -56,13 +56,13 @@
   --shadow-accent: 0 6px 24px rgba(212, 43, 43, 0.28);
   --shadow-accent-lg: 0 12px 36px rgba(212, 43, 43, 0.35);
 
-  /* Radius — V2 sharper radii */
+  /* Radius — Notion-style 8px squircle */
   --radius-xs: 4px;
   --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 14px;
-  --radius-2xl: 16px;
+  --radius-md: 8px; /* Primary radius */
+  --radius-lg: 8px; /* Notion standard */
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
   --radius-full: 9999px;
 
   /* Spacing */

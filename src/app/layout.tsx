@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans, Poppins } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/NavbarPremium';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
 import ThemeProvider from '@/components/ThemeProvider';
