@@ -42,3 +42,39 @@ export async function appendToLogSheet(rows: string[][]) {
         requestBody: { values: rows },
     });
 }
+
+export async function appendToTutorSheet(rows: string[][]) {
+    const sheets = await getGoogleSheetsClient();
+    const spreadsheetId = process.env.GOOGLE_TUTOR_SHEET_ID || process.env.GOOGLE_SHEET_ID; // Use specific sheet if available, else primary
+    
+    // Check if the sheet "TutorApplications" exists, else use first sheet
+    const meta = await sheets.spreadsheets.get({ spreadsheetId });
+    let sheetName = meta.data.sheets?.find(s => s.properties?.title === 'TutorApplications')?.properties?.title 
+                 || meta.data.sheets?.[0]?.properties?.title 
+                 || 'Sheet1';
+
+    // Header check specifically for TutorApplications
+    const existing = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: `${sheetName}!A1:A1`,
+    });
+    
+    if (!existing.data.values?.length) {
+        await sheets.spreadsheets.values.update({
+            spreadsheetId,
+            range: `${sheetName}!A1`,
+            valueInputOption: 'RAW',
+            requestBody: {
+                values: [['Date', 'Time', 'Name', 'Email', 'Expertise', 'Bio', 'LinkedIn', 'Video Link', 'Portfolio Link', 'Curriculum', 'Lesson Plan']],
+            },
+        });
+    }
+
+    await sheets.spreadsheets.values.append({
+        spreadsheetId,
+        range: `${sheetName}!A:A`,
+        valueInputOption: 'USER_ENTERED',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: rows },
+    });
+}

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import Link from 'next/link';
 import { ClientAccountManagerAssign } from "./ClientAccountManagerAssign";
 

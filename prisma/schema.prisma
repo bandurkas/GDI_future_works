@@ -11,306 +11,395 @@ datasource db {
 }
 
 // ------------------------------------------------------
-// SYSTEM USERS (Super Admin, Account Manager, etc)
+// ENUMS
 // ------------------------------------------------------
-model AppUser {
-  id            String   @id @default(cuid())
-  name          String
-  email         String   @unique
-  password_hash String?  // Optional now because of Google Auth
-  role          String   // 'super_admin', 'account_manager', 'video_manager', 'viewer'
-  is_active     Boolean  @default(true)
-  
-  // Auth & Identity
-  google_id     String?  @unique
-  avatar_url    String?
-  last_login    DateTime?
 
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-  
-  // Relations
-  enrollments_created Enrollment[] @relation("EnrolledBy")
-  payments_recorded   Payment[]    @relation("RecordedBy")
-  notes_authored      Note[]       @relation("AuthoredBy")
-  cohorts             CohortInstructor[]
-  permissions         UserPermission[]
-  managed_clients     Client[]     @relation("ManagedBy")
-  leads_owned         Lead[]       @relation("LeadOwner")
-  tasks_owned         Task[]       @relation("TaskOwner")
-  activities          Activity[]   @relation("ActivityActor")
+enum UserRole {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+enum StudentStatus {
+  LEAD
+  ACTIVE
+  COMPLETED
+  DROPPED
+}
+
+enum TutorStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ProgramCategory {
+  AI
+  DATA
+  CODING
+  TEFL
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum SessionStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingStatus {
+  BOOKED
+  ATTENDED
+  MISSED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  MIDTRANS
+  STRIPE
+}
+
+enum PayoutStatus {
+  PENDING
+  PAID
+}
+
+enum LeadType {
+  STUDENT
+  TUTOR
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+}
+
+enum ActivityType {
+  CALL
+  WHATSAPP
+  EMAIL
+}
+
+enum NotificationType {
+  BOOKING
+  PAYMENT
+  REMINDER
 }
 
 // ------------------------------------------------------
-// USER PERMISSIONS (Granular Role Overrides)
+// 1. USER SYSTEM
 // ------------------------------------------------------
-model UserPermission {
-  id             String   @id @default(cuid())
-  user_id        String
-  user           AppUser  @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  permission_key String   // e.g. "view_all_enrollments"
-  granted        Boolean  @default(true)
-  created_at     DateTime @default(now())
 
-  @@unique([user_id, permission_key])
-}
+model User {
+  id           String    @id @default(uuid())
+  name         String?
+  email        String    @unique
+  phone        String?
+  passwordHash String?
+  role         UserRole
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 
-// ------------------------------------------------------
-// CLIENT DIRECTORY
-// ------------------------------------------------------
-model Client {
-  id             String    @id @default(cuid())
-  full_name      String
-  email          String    @unique
-  phone_whatsapp String
-  city           String?
-  country        String?
-  source         String?   // 'instagram', 'whatsapp', 'website', 'referral', 'other'
-  status         String    @default("active") // 'active', 'completed', 'dropped', 'refunded'
-  tags           String?   // JSON string of arrays
-  follow_up_date DateTime?
-  
-  // Auth & Identity
-  google_id      String?   @unique
-  avatar_url     String?
-  last_login     DateTime?
-  
-  // RBAC Assignment
-  account_manager_id String?
-  account_manager    AppUser?  @relation("ManagedBy", fields: [account_manager_id], references: [id], onDelete: SetNull)
-  
-  // Timestamps (UTC in DB, mapped to WIB locally)
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  deleted_at     DateTime? // Soft deletes for financial integrity
+  student      Student?
+  tutor        Tutor?
+  notifications Notification[]
 
-  // Relations
-  enrollments    Enrollment[]
-  notes          Note[]
-  waitlists      Waitlist[]
-}
-
-// ------------------------------------------------------
-// COURSES & COHORTS
-// ------------------------------------------------------
-model Course {
-  id            String   @id @default(cuid())
-  name          String
-  description   String?
-  default_price Float
-  currency      String   @default("IDR") // 'IDR', 'MYR'
-  is_active     Boolean  @default(true)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-
-  cohorts       Cohort[]
-  leads         Lead[]
-}
-
-model Cohort {
-  id             String   @id @default(cuid())
-  course_id      String
-  course         Course   @relation(fields: [course_id], references: [id], onDelete: Restrict)
-  
-  name           String   // e.g. "Apr 12–13"
-  start_date     DateTime
-  end_date       DateTime
-  max_seats      Int      @default(12)
-  price_override Float?
-  
-  meeting_url    String?  // Zoom
-  resources_url  String?  // Drive
-  status         String   @default("upcoming") // 'upcoming', 'active', 'completed', 'cancelled'
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-
-  // Relations
-  enrollments    Enrollment[]
-  instructors    CohortInstructor[]
-  waitlists      Waitlist[]
-}
-
-// Pivot Table for Many-to-Many
-model CohortInstructor {
-  id        String  @id @default(cuid())
-  cohort_id String
-  user_id   String
-  
-  cohort    Cohort   @relation(fields: [cohort_id], references: [id], onDelete: Cascade)
-  user      AppUser  @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@unique([cohort_id, user_id])
-}
-
-// ------------------------------------------------------
-// ENROLLMENTS & WAITLISTS
-// ------------------------------------------------------
-model Enrollment {
-  id             String   @id @default(cuid())
-  client_id      String
-  cohort_id      String
-  enrolled_by_id String?
-  
-  client         Client   @relation(fields: [client_id], references: [id], onDelete: Restrict)
-  cohort         Cohort   @relation(fields: [cohort_id], references: [id], onDelete: Restrict)
-  enrolled_by    AppUser? @relation("EnrolledBy", fields: [enrolled_by_id], references: [id], onDelete: SetNull)
-
-  price_agreed   Float
-  payment_status String   @default("unpaid") // 'unpaid', 'partial', 'paid', 'refunded'
-  total_paid     Float    @default(0)
-  status         String   @default("active") // 'active', 'completed', 'dropped'
-  
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-
-  // Relations
-  payments       Payment[]
-  attendance     Attendance[]
-}
-
-model Waitlist {
-  id         String   @id @default(cuid())
-  client_id  String
-  cohort_id  String
-  
-  client     Client   @relation(fields: [client_id], references: [id], onDelete: Cascade)
-  cohort     Cohort   @relation(fields: [cohort_id], references: [id], onDelete: Cascade)
-  
-  joined_at  DateTime @default(now())
-
-  @@unique([client_id, cohort_id])
-}
-
-// ------------------------------------------------------
-// FINANCE & TRACKING
-// ------------------------------------------------------
-model Payment {
-  id               String   @id @default(cuid())
-  enrollment_id    String
-  enrollment       Enrollment @relation(fields: [enrollment_id], references: [id], onDelete: Restrict)
-  transaction_id   String?    @unique
-  
-  transaction_type String   @default("payment") // 'payment', 'refund'
-  amount           Float
-  currency         String   @default("IDR")
-  method           String   // 'transfer', 'cash', 'installment', 'midtrans'
-  proof_url        String?
-  notes            String?
-  
-  paid_at          DateTime
-  recorded_by_id   String?
-  recorded_by      AppUser?  @relation("RecordedBy", fields: [recorded_by_id], references: [id], onDelete: SetNull)
-  
-  created_at       DateTime @default(now())
-}
-
-model Attendance {
-  id            String   @id @default(cuid())
-  enrollment_id String
-  enrollment    Enrollment @relation(fields: [enrollment_id], references: [id], onDelete: Cascade)
-  
-  session_date  DateTime
-  status        String   // 'present', 'absent', 'late'
-  created_at    DateTime @default(now())
-
-  @@unique([enrollment_id, session_date])
-}
-
-model Note {
-  id         String   @id @default(cuid())
-  client_id  String
-  author_id  String?
-  
-  client     Client   @relation(fields: [client_id], references: [id], onDelete: Cascade)
-  author     AppUser? @relation("AuthoredBy", fields: [author_id], references: [id], onDelete: SetNull)
-  
-  content    String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-}
-
-model PasswordReset {
-  id         String   @id @default(cuid())
-  email      String
-  token      String   @unique
-  created_at DateTime @default(now())
-  
   @@index([email])
+  @@index([role])
+}
+
+model Student {
+  id        String        @id @default(uuid())
+  userId    String        @unique
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    StudentStatus @default(LEAD)
+  country   String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  deletedAt DateTime?
+
+  bookings  Booking[]
+  payments  Payment[]
+  reviews   Review[]
+}
+
+model Tutor {
+  id           String      @id @default(uuid())
+  userId       String      @unique
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio          String?     @db.Text
+  expertise    String[]
+  ratingAvg    Float       @default(0)
+  totalReviews Int         @default(0)
+  isVerified   Boolean     @default(false)
+  status       TutorStatus @default(PENDING)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
+
+  profile      TutorProfile?
+  courses      Course[]
+  availability TutorAvailability[]
+  payouts      TutorPayout[]
+  reviews      Review[]
+
+  @@index([status])
+}
+
+model TutorProfile {
+  id              String   @id @default(uuid())
+  tutorId         String   @unique
+  tutor           Tutor    @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  headline        String?
+  introVideoUrl   String?
+  hourlyRate      Decimal? @db.Decimal(10, 2)
+  languages       String[]
+  experienceYears Int?
+  portfolioUrl    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 // ------------------------------------------------------
-// CRM V2 PHASE 1: LEADS & PIPELINE
+// 2. LEARNING STRUCTURE
 // ------------------------------------------------------
 
-model PipelineStage {
-  id          String   @id @default(cuid())
-  name        String   // "New Lead", "Contacted", "Consultation", "Application"
-  order       Int
-  color       String?  // for UI pill
-  leads       Lead[]
+model Program {
+  id          String          @id @default(uuid())
+  title       String
+  slug        String          @unique
+  description String?         @db.Text
+  category    ProgramCategory
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  deletedAt   DateTime?
+
+  courses     Course[]
 }
+
+model Course {
+  id            String      @id @default(uuid())
+  programId     String
+  program       Program     @relation(fields: [programId], references: [id], onDelete: Restrict)
+  tutorId       String
+  tutor         Tutor       @relation(fields: [tutorId], references: [id], onDelete: Restrict)
+  title         String
+  description   String?     @db.Text
+  price         Decimal     @db.Decimal(10, 2)
+  durationWeeks Int
+  level         CourseLevel
+  isPublished   Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+
+  modules       CourseModule[]
+  sessions      Session[]
+  reviews       Review[]
+
+  @@index([tutorId, isPublished])
+}
+
+model CourseModule {
+  id         String   @id @default(uuid())
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title      String
+  orderIndex Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  lessons    Lesson[]
+
+  @@unique([courseId, orderIndex])
+}
+
+model Lesson {
+  id              String       @id @default(uuid())
+  moduleId        String
+  module          CourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title           String
+  description     String?      @db.Text
+  durationMinutes Int
+  orderIndex      Int          @default(1)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@unique([moduleId, orderIndex])
+}
+
+// ------------------------------------------------------
+// 3. SCHEDULING & BOOKING
+// ------------------------------------------------------
+
+model TutorAvailability {
+  id         String   @id @default(uuid())
+  tutorId    String
+  tutor      Tutor    @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  dayOfWeek  Int // 0-6
+  startTimeM Int // Minutes from midnight (0 - 1439)
+  endTimeM   Int // Minutes from midnight (0 - 1439)
+  timezone   String   @default("UTC")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([tutorId, dayOfWeek])
+}
+
+model Session {
+  id         String        @id @default(uuid())
+  courseId   String
+  course     Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  startTime  DateTime
+  endTime    DateTime
+  status     SessionStatus @default(SCHEDULED)
+  meetingUrl String?
+  capacity   Int           @default(1)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  deletedAt  DateTime?
+
+  bookings   Booking[]
+
+  @@index([courseId, startTime])
+  @@index([status])
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  sessionId String
+  session   Session       @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  studentId String
+  student   Student       @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  status    BookingStatus @default(BOOKED)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  deletedAt DateTime?
+
+  payments  Payment[]
+
+  @@unique([sessionId, studentId]) // Prevent duplicate bookings for same session
+  @@index([studentId, status])
+}
+
+// ------------------------------------------------------
+// 4. PAYMENTS
+// ------------------------------------------------------
+
+model Payment {
+  id         String          @id @default(uuid())
+  studentId  String
+  student    Student         @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  bookingId  String?
+  booking    Booking?        @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  amount     Decimal         @db.Decimal(10, 2)
+  currency   String          @default("IDR")
+  status     PaymentStatus   @default(PENDING)
+  provider   PaymentProvider
+  externalId String?         @unique
+  metadata   Json? // For provider-specific response data
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@index([studentId, status])
+  @@index([bookingId])
+}
+
+model TutorPayout {
+  id          String       @id @default(uuid())
+  tutorId     String
+  tutor       Tutor        @relation(fields: [tutorId], references: [id], onDelete: Restrict)
+  amount      Decimal      @db.Decimal(10, 2)
+  status      PayoutStatus @default(PENDING)
+  periodStart DateTime
+  periodEnd   DateTime
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([tutorId, status])
+}
+
+// ------------------------------------------------------
+// 5. REVIEWS
+// ------------------------------------------------------
+
+model Review {
+  id        String   @id @default(uuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  tutorId   String
+  tutor     Tutor    @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  rating    Int // 1-5
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, courseId]) // Prevent multiple reviews for same course
+  @@index([tutorId, rating])
+}
+
+// ------------------------------------------------------
+// 6. CRM (STRICTLY SEPARATE)
+// ------------------------------------------------------
 
 model Lead {
-  id             String   @id @default(cuid())
-  firstName      String
-  lastName       String
-  email          String   @unique
-  phone          String
-  country        String?
-  age            Int?
-  englishLevel   String?
-  education      String?
-  careerGoal     String?
-  source         String?
-  campaign       String?
-  leadScore      Float    @default(0)
-  status         String   @default("active") // active, won, lost
+  id        String     @id @default(uuid())
+  type      LeadType
+  name      String
+  email     String
+  phone     String?
+  source    String?
+  status    LeadStatus @default(NEW)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
 
-  interestedCourseId String?
-  interestedCourse   Course? @relation(fields: [interestedCourseId], references: [id])
+  activities LeadActivity[]
 
-  ownerId        String?
-  owner          AppUser? @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: SetNull)
-
-  stageId        String
-  stage          PipelineStage @relation(fields: [stageId], references: [id], onDelete: Restrict)
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  activities     Activity[]
-  tasks          Task[]
+  @@index([email, status])
 }
 
-model Task {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  priority    String   @default("medium") // low, medium, high
-  dueDate     DateTime?
-  status      String   @default("pending") // pending, completed
-  
-  ownerId     String
-  owner       AppUser  @relation("TaskOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  
-  leadId      String?
-  lead        Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model LeadActivity {
+  id        String       @id @default(uuid())
+  leadId    String
+  lead      Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type      ActivityType
+  notes     String?      @db.Text
+  createdAt DateTime     @default(now())
 }
 
-model Activity {
-  id          String   @id @default(cuid())
-  type        String   // "STATUS_CHANGE", "NOTE_ADDED", "TASK_COMPLETED", "MANUAL_LOG"
-  content     String
-  metadata    String?  // JSON string for specific event data
-  
-  actorId     String
-  actor       AppUser  @relation("ActivityActor", fields: [actorId], references: [id], onDelete: Cascade)
-  
-  leadId      String?
-  lead        Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
+// ------------------------------------------------------
+// 7. NOTIFICATIONS
+// ------------------------------------------------------
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  message   String           @db.Text
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, isRead])
 }
 

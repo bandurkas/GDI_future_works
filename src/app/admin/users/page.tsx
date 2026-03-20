@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { UserTable } from "./UserTable";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 const prisma = new PrismaClient();

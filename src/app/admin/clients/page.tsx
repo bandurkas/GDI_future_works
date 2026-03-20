@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 
 const prisma = new PrismaClient();
 

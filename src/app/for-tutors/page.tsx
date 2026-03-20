@@ -18,9 +18,9 @@ export default function ForTutorsPage() {
                         Join the GDI FutureWorks platform and focus on what you do best — TEACH. 
                         We handle the technology, marketing, and payments so you can grow your reputation and income.
                     </p>
-                    <a href="https://wa.me/628211704707?text=Hi%2C%20I%27m%20interested%20in%20becoming%20a%20tutor%20at%20GDI%20FutureWorks." target="_blank" rel="noopener noreferrer" className={styles.ctaBtn}>
+                    <Link href="/for-tutors/apply" className={styles.ctaBtn}>
                         Apply to become a tutor →
-                    </a>
+                    </Link>
                 </section>
 
                 {/* STRATEGIC OVERVIEW */}
@@ -142,12 +142,12 @@ export default function ForTutorsPage() {
                 </section>
 
                 {/* FINAL CTA */}
-                <section className={[styles.section, styles.hero].join(' ')} style={{ borderTop: '1px solid var(--border-light)' }}>
+            <section className={[styles.section, styles.hero].join(' ')} style={{ borderTop: '1px solid var(--border-light)' }}>
                     <h2 className={styles.heroTitle} style={{ fontSize: '2.5rem' }}>Ready to teach with us?</h2>
                     <p className={styles.heroSubtitle}>Join a platform designed to help expert tutors focus on what matters most — teaching and impacting students.</p>
-                    <a href="https://wa.me/628211704707?text=Hi%2C%20I%27m%20ready%20to%20apply%20as%20a%20tutor." target="_blank" rel="noopener noreferrer" className={styles.ctaBtn}>
+                    <Link href="/for-tutors/apply" className={styles.ctaBtn}>
                         Apply to become a tutor →
-                    </a>
+                    </Link>
                 </section>
             </div>
         </div>

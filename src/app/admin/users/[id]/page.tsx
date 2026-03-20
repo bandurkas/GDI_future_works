@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { UserEditForm } from "./UserEditForm";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";

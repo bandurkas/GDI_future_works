@@ -1,0 +1,169 @@
+
+> inner-sagan@0.1.0 dev
+> next dev
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.7:3000
+- Environments: .env.local, .env
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 437ms
+Loading auth.ts -> NextAuth configuration
+ GET /login 200 in 2.1s (compile: 1150ms, proxy.ts: 3ms, render: 900ms)
+ GET /auth/login 404 in 1898ms (compile: 1493ms, render: 405ms)
+ GET /login 200 in 1905ms (compile: 1456ms, proxy.ts: 4ms, render: 445ms)
+ GET /admin/login 200 in 2.1s (compile: 1194ms, proxy.ts: 40ms, render: 894ms)
+ GET /login 200 in 472ms (compile: 15ms, proxy.ts: 26ms, render: 431ms)
+ GET /admin/login 200 in 485ms (compile: 50ms, proxy.ts: 28ms, render: 407ms)
+ GET /login 200 in 226ms (compile: 40ms, proxy.ts: 18ms, render: 168ms)
+ GET /login 200 in 56ms (compile: 1997µs, proxy.ts: 4ms, render: 50ms)
+Loading auth.ts -> NextAuth configuration
+ GET /api/auth/session-ping 401 in 355ms (compile: 340ms, render: 15ms)
+ GET /api/auth/session-ping 401 in 376ms (compile: 367ms, render: 9ms)
+ GET /api/auth/session-ping 401 in 303ms (compile: 301ms, render: 2ms)
+ GET /api/auth/session-ping 401 in 3ms (compile: 737µs, render: 3ms)
+ GET /api/auth/session-ping 401 in 6ms (compile: 3ms, render: 4ms)
+ GET /api/auth/session-ping 401 in 4ms (compile: 735µs, render: 3ms)
+Loading auth.ts -> NextAuth configuration
+ GET /api/auth/providers 200 in 582ms (compile: 577ms, render: 5ms)
+ GET /about 200 in 297ms (compile: 281ms, render: 16ms)
+ GET /api/auth/session-ping 401 in 10ms (compile: 1859µs, render: 8ms)
+ GET /for-tutors 200 in 140ms (compile: 132ms, render: 7ms)
+ GET /api/auth/session-ping 401 in 5ms (compile: 924µs, render: 4ms)
+ GET / 200 in 222ms (compile: 200ms, render: 22ms)
+ GET /api/auth/session-ping 401 in 5ms (compile: 1005µs, render: 4ms)
+ GET /admin/login 200 in 93ms (compile: 15ms, proxy.ts: 30ms, render: 48ms)
+ GET /api/auth/session-ping 401 in 7ms (compile: 3ms, render: 4ms)
+ GET /api/auth/providers 200 in 7ms (compile: 4ms, render: 3ms)
+ GET /api/auth/csrf 200 in 4ms (compile: 850µs, render: 3ms)
+Authorize called with email: admin@gdifuture.works
+Finding user in database...
+User found: Yes
+Comparing passwords...
+Password valid: true
+ POST /api/auth/callback/credentials? 200 in 91ms (compile: 965µs, render: 90ms)
+⨯ ./src/app/admin/page.tsx:2:1
+Export auth doesn't exist in target module
+[0m [90m 1 |[39m [36mimport[39m { [33mPrismaClient[39m } [36mfrom[39m [32m'@prisma/client'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { auth } [36mfrom[39m [32m'@/app/api/auth/[...nextauth]/route'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m [36mimport[39m { redirect } [36mfrom[39m [32m'next/navigation'[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m { 
+ [90m 5 |[39m   [33mUsers[39m[33m,[39m [0m
+
+The export auth was not found in module [project]/src/app/api/auth/[...nextauth]/route.ts [app-rsc] (ecmascript).
+Did you mean to import POST?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+Loading auth.ts -> NextAuth configuration
+ GET /admin 500 in 1016ms (compile: 935ms, proxy.ts: 6ms, render: 75ms)
+⨯ ./src/app/admin/page.tsx:2:1
+Export auth doesn't exist in target module
+[0m [90m 1 |[39m [36mimport[39m { [33mPrismaClient[39m } [36mfrom[39m [32m'@prisma/client'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { auth } [36mfrom[39m [32m'@/app/api/auth/[...nextauth]/route'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m [36mimport[39m { redirect } [36mfrom[39m [32m'next/navigation'[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m { 
+ [90m 5 |[39m   [33mUsers[39m[33m,[39m [0m
+
+The export auth was not found in module [project]/src/app/api/auth/[...nextauth]/route.ts [app-rsc] (ecmascript).
+Did you mean to import POST?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+ GET /admin 500 in 12ms (compile: 4ms, proxy.ts: 4ms, render: 4ms)
+⨯ ./src/app/admin/page.tsx:2:1
+Export auth doesn't exist in target module
+[0m [90m 1 |[39m [36mimport[39m { [33mPrismaClient[39m } [36mfrom[39m [32m'@prisma/client'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { auth } [36mfrom[39m [32m'@/app/api/auth/[...nextauth]/route'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m [36mimport[39m { redirect } [36mfrom[39m [32m'next/navigation'[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m { 
+ [90m 5 |[39m   [33mUsers[39m[33m,[39m [0m
+
+The export auth was not found in module [project]/src/app/api/auth/[...nextauth]/route.ts [app-rsc] (ecmascript).
+Did you mean to import POST?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+
+ GET /admin 500 in 12ms (compile: 5ms, proxy.ts: 4ms, render: 4ms)
+✓ Compiled in 69ms
+Loading auth.ts -> NextAuth configuration
+ GET /auth/login 404 in 308ms (compile: 47ms, render: 261ms)
+ GET /login 200 in 470ms (compile: 155ms, proxy.ts: 7ms, render: 308ms)
+ GET /login 200 in 493ms (compile: 142ms, proxy.ts: 66ms, render: 285ms)
+ GET /auth/login 404 in 278ms (compile: 3ms, render: 275ms)
+ GET /admin 200 in 656ms (compile: 89ms, proxy.ts: 155ms, render: 412ms)
+ GET /admin 200 in 270ms (compile: 27ms, proxy.ts: 18ms, render: 225ms)
+ GET /api/auth/session-ping 401 in 25ms (compile: 8ms, render: 17ms)
+ GET /api/auth/session-ping 200 in 33ms (compile: 7ms, render: 26ms)
+ GET /admin 200 in 383ms (compile: 16ms, proxy.ts: 33ms, render: 334ms)
+ GET /api/auth/session 200 in 32ms (compile: 15ms, render: 17ms)
+ GET /api/auth/session-ping 200 in 19ms (compile: 3ms, render: 16ms)
+ GET /api/auth/session 200 in 13ms (compile: 4ms, render: 9ms)
+ GET / 200 in 786ms (compile: 12ms, render: 774ms)
+ GET /api/auth/session 200 in 12ms (compile: 1547µs, render: 10ms)
+ GET /api/auth/session 200 in 4ms (compile: 1058µs, render: 3ms)
+ GET /api/auth/session 200 in 4ms (compile: 1068µs, render: 3ms)
+ GET /api/auth/session 200 in 5ms (compile: 1794µs, render: 3ms)
+ GET /admin 200 in 278ms (compile: 5ms, proxy.ts: 11ms, render: 263ms)
+ GET /api/auth/session 200 in 6ms (compile: 3ms, render: 3ms)
+ GET /api/auth/session 200 in 4ms (compile: 1278µs, render: 2ms)
+ GET /api/auth/session 200 in 9ms (compile: 2ms, render: 7ms)
+ GET /api/auth/session 200 in 26ms (compile: 11ms, render: 15ms)
+ GET /api/auth/session 200 in 4ms (compile: 806µs, render: 3ms)
+ GET /admin 200 in 68ms (compile: 2ms, proxy.ts: 5ms, render: 61ms)
+ GET /api/auth/session 200 in 4ms (compile: 886µs, render: 3ms)
+ GET /api/auth/session 200 in 5ms (compile: 1204µs, render: 4ms)
+ GET /api/auth/session 200 in 4ms (compile: 904µs, render: 3ms)
+ GET /api/auth/session 200 in 6ms (compile: 837µs, render: 5ms)
+ GET /api/auth/session 200 in 8ms (compile: 1120µs, render: 7ms)
+ GET /api/auth/session 200 in 5ms (compile: 1236µs, render: 4ms)
+ GET /api/auth/session 200 in 5ms (compile: 1084µs, render: 4ms)
+ GET /api/auth/session 200 in 7ms (compile: 1295µs, render: 5ms)
+ GET /api/auth/session 200 in 6ms (compile: 1617µs, render: 4ms)
+ GET /api/auth/session 200 in 3ms (compile: 778µs, render: 2ms)
+ GET /api/auth/session-ping 200 in 5ms (compile: 891µs, render: 4ms)
+ GET /api/auth/session 200 in 3ms (compile: 995µs, render: 2ms)
+ GET /api/auth/session 200 in 4ms (compile: 1069µs, render: 3ms)
+ GET /api/auth/session 200 in 3ms (compile: 797µs, render: 1951µs)
+ GET /api/auth/session 200 in 3ms (compile: 849µs, render: 2ms)
+ GET /api/auth/session 200 in 2ms (compile: 678µs, render: 1701µs)
+ GET /api/auth/session 200 in 3ms (compile: 1099µs, render: 2ms)
+Loading auth.ts -> NextAuth configuration
+ GET /admin/login 200 in 52ms (compile: 6ms, proxy.ts: 9ms, render: 37ms)
+ GET / 200 in 261ms (compile: 8ms, render: 253ms)
+ GET /api/auth/session-ping 401 in 6ms (compile: 3ms, render: 3ms)
+ GET /admin/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fadmin 200 in 41ms (compile: 3ms, proxy.ts: 1731µs, render: 36ms)
+ GET /api/auth/session-ping 401 in 4ms (compile: 1063µs, render: 3ms)
+ GET /api/auth/providers 200 in 17ms (compile: 10ms, render: 7ms)
+ GET /api/auth/csrf 200 in 4ms (compile: 1798µs, render: 2ms)
+Authorize called with email: bandurkas@gmail.com
+Finding user in database...
+User found: Yes
+Comparing passwords...
+Password valid: true
+ POST /api/auth/callback/credentials? 200 in 71ms (compile: 849µs, render: 70ms)
+ GET /admin 200 in 48ms (compile: 3ms, proxy.ts: 3ms, render: 43ms)
+ GET /admin 200 in 28ms (compile: 1041µs, proxy.ts: 1950µs, render: 25ms)
+ GET /api/auth/session 200 in 3ms (compile: 745µs, render: 3ms)
+ GET /api/auth/session-ping 200 in 8ms (compile: 2ms, render: 6ms)
+ GET /api/auth/session 200 in 3ms (compile: 890µs, render: 3ms)
+Loading auth.ts -> NextAuth configuration
+ GET /admin/tutors 200 in 233ms (compile: 203ms, proxy.ts: 8ms, render: 23ms)
+ GET /api/auth/session-ping 200 in 5ms (compile: 1030µs, render: 4ms)
+ GET /admin/students 200 in 197ms (compile: 169ms, proxy.ts: 5ms, render: 23ms)
+ GET /api/auth/session-ping 200 in 7ms (compile: 3ms, render: 4ms)
+ GET /admin 200 in 42ms (compile: 5ms, proxy.ts: 8ms, render: 29ms)
+ GET /api/auth/session-ping 200 in 6ms (compile: 1535µs, render: 4ms)
+ GET /admin/tutors 200 in 32ms (compile: 7ms, proxy.ts: 5ms, render: 20ms)
+ GET /api/auth/session-ping 200 in 6ms (compile: 1662µs, render: 4ms)
+ GET /admin/students 200 in 31ms (compile: 4ms, proxy.ts: 7ms, render: 20ms)
+ GET /api/auth/session-ping 200 in 7ms (compile: 2ms, render: 5ms)
+ GET /admin/programs 200 in 230ms (compile: 186ms, proxy.ts: 8ms, render: 36ms)
+ GET /api/auth/session-ping 200 in 5ms (compile: 1219µs, render: 4ms)
+ GET /admin/leads 200 in 213ms (compile: 177ms, proxy.ts: 4ms, render: 32ms)
+ GET /api/auth/session-ping 200 in 8ms (compile: 2ms, render: 6ms)
