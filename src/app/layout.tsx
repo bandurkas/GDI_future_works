@@ -93,13 +93,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   (msg.includes('ChunkLoad') || msg.includes('Loading chunk') || msg.includes('Failed to fetch dynamically')) ||
                   (src.includes('/_next/static/chunks/') && e.type === 'error')
                 ) {
-                  window.location.reload();
+                  // window.location.reload();
                 }
               }, true);
               window.addEventListener('unhandledrejection', function(e) {
                 var msg = (e && e.reason && e.reason.message) || '';
                 if (msg.includes('ChunkLoad') || msg.includes('Loading chunk') || msg.includes('Failed to fetch dynamically')) {
-                  window.location.reload();
+                  // window.location.reload();
                 }
               });
             `,
