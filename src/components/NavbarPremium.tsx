@@ -93,6 +93,7 @@ export default function NavbarPremium() {
 
                     <nav className={styles.nav} aria-label="Main navigation">
                         <Link href="/about" className={styles.navLink}><Translate tKey="nav.about" defaultText="About" /></Link>
+                        <Link href="/for-tutors" className={styles.navLink}><Translate tKey="nav.forTutors" defaultText="For Tutors" /></Link>
                         <Link href="/community" className={styles.navLink}><Translate tKey="nav.community" defaultText="Community" /></Link>
                         <Link href="/contact" className={styles.navLink}><Translate tKey="nav.contact" defaultText="Contact" /></Link>
                     </nav>
@@ -148,6 +149,7 @@ export default function NavbarPremium() {
             <div className={`${styles.menuOverlay} ${isMenuOpen ? styles.menuOpen : ''}`}>
                 <nav className={styles.mobileNav}>
                     <Link href="/about" className={styles.mobileNavLink}>About</Link>
+                    <Link href="/for-tutors" className={styles.mobileNavLink}>For Tutors</Link>
                     <Link href="/community" className={styles.mobileNavLink}>Community</Link>
                     <Link href="/contact" className={styles.mobileNavLink}>Contact</Link>
                     
