@@ -1,0 +1,40 @@
+import GoogleSignInButton from "@/components/GoogleSignInButton";
+import Link from "next/link";
+import styles from "./Auth.module.css";
+import Image from "next/image";
+
+export default function SignupPage() {
+    return (
+        <div className={styles.authContainer}>
+            <div className={styles.authWrapper}>
+                
+                <Link href="/" className={styles.logoText}>
+                    GDI <span>FutureWorks</span>
+                </Link>
+
+                <div className={styles.card}>
+                    <h2 className={styles.title}>Create a new account</h2>
+                    <p className={styles.subtitle}>Join GDI FutureWorks to launch your tech career</p>
+                    
+                    <div className={styles.buttonWrapper}>
+                        <GoogleSignInButton />
+                    </div>
+
+                    <div className={styles.divider}>
+                        <div className={styles.dividerLine} />
+                        <span className={styles.dividerText}>or</span>
+                        <div className={styles.dividerLine} />
+                    </div>
+
+                    <p className={styles.footerText}>
+                        Already have an account?{" "}
+                        <Link href="/login" className={styles.link}>
+                            Log in here
+                        </Link>
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+    );
+}

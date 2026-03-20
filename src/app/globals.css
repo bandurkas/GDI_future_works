@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+/* Fonts loaded via next/font in layout.tsx — no external @import needed */
+
 
 /* ================================================================
    GDI EDUHUB — DESIGN SYSTEM
@@ -8,22 +9,29 @@
 /* ===== DESIGN TOKENS ===== */
 :root {
   /* Brand */
-  --accent: #E8001D;
-  --accent-hover: #C4001A;
-  --accent-light: rgba(232, 0, 29, 0.08);
-  --accent-glow: rgba(232, 0, 29, 0.18);
-  --accent-strong: rgba(232, 0, 29, 0.25);
+  --accent: #D42B2B;
+  --accent-hover: #A81E1E;
+  --accent-light: rgba(212, 43, 43, 0.08);
+  --accent-glow: rgba(212, 43, 43, 0.18);
+  --accent-strong: rgba(212, 43, 43, 0.25);
 
   /* Backgrounds */
   --bg: #FFFFFF;
-  --bg-secondary: #F2F3F7;
+  --bg-secondary: #F2F2F2;
   --bg-card: #FFFFFF;
   --bg-card-elevated: #FFFFFF;
   --bg-overlay: rgba(255, 255, 255, 0.88);
   --bg-glass: rgba(255, 255, 255, 0.70);
+  
+  /* 2026 Brand Grays & Darks (V2) */
+  --gray2: #CCCCCC;
+  --gray3: #888888;
+  --dark: #141414;
+  --dark2: #1A1A1A;
+  --red-muted: rgba(212, 43, 43, 0.12);
 
   /* Text */
-  --text-primary: #1D2023;
+  --text-primary: #0D0D0D;
   --text-secondary: #5C6470;
   --text-muted: #9CA3AF;
   --text-inverse: #FFFFFF;
@@ -45,16 +53,16 @@
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10), 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.06);
-  --shadow-accent: 0 6px 24px rgba(232, 0, 29, 0.28);
-  --shadow-accent-lg: 0 12px 36px rgba(232, 0, 29, 0.35);
+  --shadow-accent: 0 6px 24px rgba(212, 43, 43, 0.28);
+  --shadow-accent-lg: 0 12px 36px rgba(212, 43, 43, 0.35);
 
-  /* Radius — MTS-signature large radii */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --radius-2xl: 36px;
+  /* Radius — V2 sharper radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
   --radius-full: 9999px;
 
   /* Spacing */
@@ -80,9 +88,9 @@
   --space-2xl: var(--space-16);
   --space-3xl: var(--space-24);
 
-  /* Typography */
-  --font-display: 'Plus Jakarta Sans', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'DM Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography — references next/font variables injected by layout.tsx */
+  --font-display: var(--font-bebas, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-body: var(--font-dm, 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif);
 
   /* Easing */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -97,7 +105,7 @@
 
   /* Layout */
   --nav-height: 66px;
-  --max-width: 1200px;
+  --max-width: 1100px;
   --thumb-zone: 88px;
   /* sticky bottom CTA height */
 }
@@ -198,39 +206,40 @@ h4,
 h5,
 h6 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.15;
   color: var(--text-primary);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .text-display {
   font-size: clamp(2.25rem, 5.5vw, 4rem);
-  font-weight: 800;
+  font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
 
 .text-h1 {
-  font-size: clamp(1.875rem, 4.5vw, 3rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: -2px;
+  line-height: 1.1;
 }
 
 .text-h2 {
-  font-size: clamp(1.5rem, 3vw, 2.375rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.875rem, 4vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -1px;
 }
 
 .text-h3 {
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.3px;
 }
 
 .text-body-lg {
-  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  font-size: 1rem; /* 16px exactly */
   line-height: 1.7;
   color: var(--text-secondary);
   font-weight: 400;
@@ -320,10 +329,10 @@ h6 {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 14px 28px;
-  border-radius: var(--radius-full);
-  font-family: var(--font-display);
-  font-size: 0.9375rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.875rem; /* 14px */
   font-weight: 600;
   line-height: 1;
   transition: all var(--transition-base);
@@ -362,42 +371,39 @@ h6 {
 .btn-primary {
   background: var(--accent);
   color: #FFFFFF;
-  box-shadow: var(--shadow-accent);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
-  box-shadow: var(--shadow-accent-lg);
   transform: translateY(-2px);
 }
 
 .btn-primary:active {
   transform: scale(0.97) translateY(0);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
-  background: var(--bg-card);
+  background: transparent;
   color: var(--text-primary);
   border: 1.5px solid var(--border-strong);
-  box-shadow: var(--shadow-xs);
+  padding: 11px 22px;
 }
 
 .btn-secondary:hover {
-  background: var(--bg-secondary);
-  border-color: var(--text-muted);
+  border-color: var(--text-primary);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-ghost {
-  background: transparent;
-  color: var(--text-primary);
+  background: var(--red-muted);
+  color: var(--accent);
+  border: 1px solid rgba(212, 43, 43, 0.25);
+  padding: 11px 22px;
 }
 
 .btn-ghost:hover {
-  background: var(--bg-secondary);
+  background: rgba(212, 43, 43, 0.18);
 }
 
 /* Sizes */
@@ -435,10 +441,9 @@ h6 {
 /* ===== CARDS ===== */
 .card {
   background: var(--bg-card);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg); /* 12px for cards */
   padding: var(--space-8);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
 }
 
@@ -458,7 +463,7 @@ h6 {
 
 .card-flat {
   background: var(--bg-secondary);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-2xl);
   padding: var(--space-8);
   border: none;
   transition: transform var(--transition-base);
@@ -470,8 +475,8 @@ h6 {
   align-items: center;
   gap: 4px;
   padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-family: var(--font-display);
+  border-radius: var(--radius-xs); /* 4px or 6px */
+  font-family: var(--font-body);
   font-size: 0.6875rem;
   font-weight: 700;
   line-height: 1.5;
@@ -524,6 +529,7 @@ h6 {
   transition: all var(--transition-fast);
   outline: none;
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .form-input:focus {
@@ -567,7 +573,7 @@ h6 {
   align-items: center;
   justify-content: center;
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 400;
   margin-top: 1px;
 }
 
@@ -683,7 +689,7 @@ h6 {
 
   50% {
     transform: scale(1.04);
-    box-shadow: 0 0 0 8px rgba(232, 0, 29, 0);
+    box-shadow: 0 0 0 8px rgba(212, 43, 43, 0);
   }
 }
 

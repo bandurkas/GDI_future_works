@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import EnrollButton from '@/components/EnrollButton';
-import { Translate, ClientPrice } from '@/components/ClientTranslations';
+import { Translate } from '@/components/ClientTranslations';
+import PriceBadge from '@/components/PriceBadge';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -60,7 +61,7 @@ export default function GreatEnglishPage() {
                                 <h4>120-Hour TEFL Certification (With Tutor)</h4>
                                 <ul>
                                     <li><strong>Duration:</strong> 4 weeks</li>
-                                    <li><strong>Fee:</strong> <ClientPrice price={350} /></li>
+                                    <li><strong>Fee:</strong> <PriceBadge priceIDR={6720000} priceMYR={1980} /></li>
                                 </ul>
                                 <EnrollButton courseId="tefl-120-tutor" courseName="120-Hour TEFL Certification (With Tutor)" price={350} />
                             </div>
@@ -69,7 +70,7 @@ export default function GreatEnglishPage() {
                                 <h4>120-Hour TEFL Certification (Without Tutor)</h4>
                                 <ul>
                                     <li><strong>Duration:</strong> 2 weeks</li>
-                                    <li><strong>Fee:</strong> <ClientPrice price={235} /></li>
+                                    <li><strong>Fee:</strong> <PriceBadge priceIDR={4512000} priceMYR={1320} /></li>
                                 </ul>
                                 <EnrollButton courseId="tefl-120-notutor" courseName="120-Hour TEFL Certification (Without Tutor)" price={235} />
                             </div>
@@ -78,7 +79,7 @@ export default function GreatEnglishPage() {
                                 <h4>220-Hour Master TEFL Certification</h4>
                                 <ul>
                                     <li><strong>Duration:</strong> 6–8 weeks</li>
-                                    <li><strong>Fee:</strong> <ClientPrice price={399} /></li>
+                                    <li><strong>Fee:</strong> <PriceBadge priceIDR={7656000} priceMYR={2250} /></li>
                                 </ul>
                                 <EnrollButton courseId="tefl-220-master" courseName="220-Hour Master TEFL Certification" price={399} />
                             </div>
@@ -92,7 +93,7 @@ export default function GreatEnglishPage() {
                                 <h4>50-Hour TOEFL / IELTS Specialization</h4>
                                 <ul>
                                     <li><strong>Duration:</strong> 2 weeks</li>
-                                    <li><strong>Fee:</strong> <ClientPrice price={140} /></li>
+                                    <li><strong>Fee:</strong> <PriceBadge priceIDR={2688000} priceMYR={792} /></li>
                                 </ul>
                                 <EnrollButton courseId="tefl-50-toefl" courseName="50-Hour TOEFL / IELTS Specialization" price={140} />
                             </div>
@@ -101,7 +102,7 @@ export default function GreatEnglishPage() {
                                 <h4>50-Hour Teach Young Learners</h4>
                                 <ul>
                                     <li><strong>Duration:</strong> 1 week</li>
-                                    <li><strong>Fee:</strong> <ClientPrice price={95} /></li>
+                                    <li><strong>Fee:</strong> <PriceBadge priceIDR={1824000} priceMYR={540} /></li>
                                 </ul>
                                 <EnrollButton courseId="tefl-50-young" courseName="50-Hour Teach Young Learners" price={95} />
                             </div>
@@ -110,7 +111,7 @@ export default function GreatEnglishPage() {
                                 <h4>50-Hour Teach Business English</h4>
                                 <ul>
                                     <li><strong>Duration:</strong> 1 week</li>
-                                    <li><strong>Fee:</strong> <ClientPrice price={95} /></li>
+                                    <li><strong>Fee:</strong> <PriceBadge priceIDR={1824000} priceMYR={540} /></li>
                                 </ul>
                                 <EnrollButton courseId="tefl-50-biz" courseName="50-Hour Teach Business English" price={95} />
                             </div>

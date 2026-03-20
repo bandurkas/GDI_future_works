@@ -3,6 +3,7 @@ import { useState, use } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getCourseBySlug } from '@/data/courses';
+import { useCart } from '@/components/CartContext';
 import styles from './page.module.css';
 
 const STEPS = [
@@ -29,8 +30,27 @@ export default function SchedulePage({ params }: Props) {
     const router = useRouter();
     const course = getCourseBySlug(slug);
     const [selectedId, setSelectedId] = useState<string | null>(null);
+    const { addItem } = useCart();
+    const [added, setAdded] = useState(false);
 
     const selected = MOCK_DATES.find(d => d.id === selectedId);
+    const handleAddToCart = () => {
+        if (!selected || !course) return;
+        
+        addItem({
+            courseId: course.id,
+            courseTitle: course.title,
+            slug: course.slug,
+            dateId: selected.id,
+            dateLabel: `${selected.day} ${selected.month}`,
+            timeLabel: selected.time,
+            priceIDR: course.priceIDR,
+            priceMYR: course.priceMYR,
+            icon: course.icon
+        });
+        setAdded(true);
+    };
+
 
     if (!course) return null;
 
@@ -113,18 +133,32 @@ export default function SchedulePage({ params }: Props) {
                         💬 Need a different date? WhatsApp us — we open new sessions based on demand.
                     </div>
 
-                    <Link
-                        href={selectedId ? `/courses/${slug}/checkout` : '#'}
-                        className={`btn btn-primary btn-xl btn-full ${!selectedId ? styles.ctaDisabled : ''}`}
-                        aria-disabled={!selectedId}
-                        id="schedule-continue-cta"
-                    >
-                        {selectedId ? (
-                            <>Continue to Checkout →</>
-                        ) : (
-                            <>Select a date to continue</>
-                        )}
-                    </Link>
+                    {!added ? (
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={!selectedId}
+                            className={`btn btn-primary btn-xl btn-full ${!selectedId ? styles.ctaDisabled : ''}`}
+                            id="schedule-add-to-cart-cta"
+                        >
+                            {selectedId ? (
+                                <>Add to Cart & Continue →</>
+                            ) : (
+                                <>Select a date to continue</>
+                            )}
+                        </button>
+                    ) : (
+                        <div className={styles.addedSuccess}>
+                            <div className={styles.addedIcon}>✓</div>
+                            <div className={styles.addedText}>
+                                <h3>Added to Cart!</h3>
+                                <p>{course.title} — {selected?.day} {selected?.month}</p>
+                            </div>
+                            <div className={styles.addedActions}>
+                                <Link href="/cart" className="btn btn-primary btn-lg">Go to Cart</Link>
+                                <Link href="/" className="btn btn-secondary btn-lg">Browse More</Link>
+                            </div>
+                        </div>
+                    )}
 
                     <button onClick={() => router.back()} className={styles.back}>← Back to previous page</button>
                 </div>

@@ -2,11 +2,12 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    height: auto;
 }
 
 .card {
-    background: #FFFFFF;
-    border-radius: 36px;
+    background: var(--bg-card);
+    border-radius: 16px;
     padding: 32px;
     display: flex;
     flex-direction: column;
@@ -14,23 +15,26 @@
     cursor: pointer;
     transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 400ms ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    border: 1px solid #E5E7EB;
+    border: 1px solid var(--border);
     position: relative;
     overflow: hidden;
+    height: 100%;
+    flex: 1;
 }
 
 .card * {
-    color: #111827;
+    color: var(--text-primary);
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 40px rgba(212, 43, 43, 0.3); 
+    border-color: var(--accent);
 }
 
 .cardIconBox {
-    background: #F4F5F8;
-    border-radius: 24px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
     height: 100px;
     width: 100px;
     display: flex;
@@ -73,13 +77,14 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    flex: 1;
 }
 
 .title {
     font-family: var(--font-display);
     font-size: 1.5rem;
     font-weight: 800;
-    color: #111827 !important;
+    color: var(--text-primary) !important;
     line-height: 1.15;
     letter-spacing: -0.02em;
     margin: 0;
@@ -87,7 +92,7 @@
 
 .description {
     font-size: 1rem;
-    color: #6B7280 !important;
+    color: var(--text-secondary) !important;
     line-height: 1.4;
     font-weight: 500;
     margin: 0;
@@ -103,8 +108,8 @@
 .tagBadge {
     font-size: 0.8125rem;
     font-weight: 600;
-    color: #4B5563 !important;
-    background: #F4F5F8;
+    color: var(--text-secondary) !important;
+    background: var(--bg-secondary);
     border: none;
     padding: 8px 16px;
     border-radius: 100px;
@@ -122,9 +127,92 @@
 
 .metadata {
     font-size: 0.875rem;
-    color: #9CA3AF !important;
+    color: var(--text-secondary) !important;
     font-weight: 600;
     margin-top: 8px;
+}
+
+/* ── PRICE BLOCK ──────────────────────────────────────────────── */
+.priceBlock {
+    margin-top: auto;
+    background: linear-gradient(135deg, rgba(232, 0, 29, 0.05) 0%, rgba(232, 0, 29, 0.1) 100%);
+    border: 1.5px solid rgba(232, 0, 29, 0.18);
+    border-radius: 14px;
+    padding: 14px 16px 10px;
+}
+
+.priceRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.priceMain {
+    font-size: 1.625rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.priceOriginal {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: line-through;
+}
+
+.priceSave {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: white;
+    background: #10B981;
+    padding: 3px 8px;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+}
+
+.priceNote {
+    font-size: 0.775rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-top: 6px;
+    line-height: 1.3;
+}
+
+
+/* Career outcome row on card face */
+.outcomeRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 8px 12px;
+    background: rgba(232, 0, 29, 0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(232, 0, 29, 0.1);
+}
+
+.outcomeArrow {
+    font-size: 0.875rem;
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.outcomeText {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.outcomeSalary {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #10B981;
+    white-space: nowrap;
 }
 
 /* OUTCOMES DRAWER */
@@ -134,7 +222,7 @@
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    z-index: 1000;
+    z-index: 99999;
     display: flex;
     justify-content: flex-end;
     animation: fadeIn 0.3s var(--ease-out);
@@ -295,7 +383,7 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    background: #F4F5F7;
+    background: var(--bg-secondary);
     padding: 14px 16px;
     border-radius: 12px;
     border: none;
@@ -303,6 +391,10 @@
     color: var(--text-primary);
     line-height: 1.5;
     font-weight: 500;
+}
+
+.drawerListItem span {
+    color: var(--text-primary);
 }
 
 .checkIcon {
@@ -321,6 +413,54 @@
 }
 
 /* Infographic Styles */
+.infoGraphicCard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: var(--space-3);
+}
+
+.infoImage {
+    display: none;
+}
+
+.infoList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.infoItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.infoCheck {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #10B981;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* Feature grid styles */
+
 .featureGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -480,7 +620,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #E8001D;
+    color: var(--accent);
     font-size: 1.25rem;
     cursor: pointer;
     flex-shrink: 0;
@@ -512,7 +652,7 @@
 }
 
 .downloadBtn:hover {
-    background: #E5E7EB;
+    background: var(--border);
 }
 
 .scheduleBtn {
@@ -534,7 +674,7 @@
 
 .urgencyTooltip strong {
     font-size: 0.8125rem;
-    color: #991B1B;
+    color: var(--text-secondary);
     display: block;
     margin-bottom: 2px;
 }
@@ -573,4 +713,26 @@
     .drawerContent {
         max-width: 480px;
     }
+}
+
+.testimonialBlock {
+    margin-top: var(--space-4);
+    padding: var(--space-4);
+    background: rgba(232, 0, 29, 0.03);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px 12px 12px 4px;
+}
+
+.testimonialQuote {
+    font-size: 0.9375rem;
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.testimonialAuthor {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-secondary);
 }

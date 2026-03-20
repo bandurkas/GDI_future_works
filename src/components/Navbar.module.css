@@ -43,33 +43,21 @@
     opacity: 0.85;
 }
 
-.logoMark {
-    width: 34px;
-    height: 34px;
-    background: var(--accent);
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 0.5625rem;
-    letter-spacing: 0.04em;
-    transition: transform var(--transition-spring), box-shadow var(--transition-base);
-}
-
-.logo:hover .logoMark {
-    transform: scale(1.06) rotate(-2deg);
-    box-shadow: var(--shadow-accent);
-}
-
 .logoText {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 1.0625rem;
+    font-size: 1.25rem;
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -1px;
+    transition: transform 0.2s;
+}
+
+.logoText span {
+    color: var(--accent);
+}
+
+.logo:hover .logoText {
+    transform: scale(1.02);
 }
 
 /* Desktop nav */
@@ -117,7 +105,7 @@
     cursor: pointer;
 }
 
-.themeToggle:hover {
+.themeToggle:hover { transform: scale(1.1) rotate(5deg); background: var(--bg-secondary); 
     background: var(--border-strong);
     color: var(--text-primary);
     transform: rotate(12deg);
@@ -170,4 +158,40 @@
     .container {
         padding: 0 var(--space-4);
     }
+}
+.cartBtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.cartBtn:hover {
+    color: var(--primary);
+    background: var(--bg-hover);
+    transform: translateY(-1px);
+}
+
+.cartBadge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 400;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-primary);
 }

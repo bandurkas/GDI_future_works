@@ -24,7 +24,7 @@ export default function BottomNav() {
         },
         {
             name: 'LEARN',
-            href: '/courses',
+            href: '/#cohort',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M4 6v14a2 2 0 0 0 2 2h14v-2H6V6z" />
@@ -61,6 +61,18 @@ export default function BottomNav() {
                         key={tab.name}
                         href={tab.href}
                         className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                        onClick={(e) => {
+                            if (tab.name === 'HOME' && pathname === '/') {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            } else if (tab.name === 'LEARN' && pathname === '/') {
+                                const el = document.getElementById('cohort');
+                                if (el) {
+                                    e.preventDefault();
+                                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                                    window.scrollTo({ top: y, behavior: 'smooth' });
+                                }
+                            }
+                        }}
                     >
                         <div className={styles.iconWrapper}>
                             {tab.icon}

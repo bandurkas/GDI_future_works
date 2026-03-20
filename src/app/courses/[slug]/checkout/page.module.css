@@ -18,7 +18,7 @@
 .progress {
     display: flex;
     align-items: center;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
     padding: 18px var(--space-6);
@@ -276,7 +276,7 @@
         height: 28px;
         font-size: 0.75rem;
         border-width: 2px;
-        background: #FFFFFF;
+        background: var(--bg-card);
         z-index: 2;
     }
 

@@ -1,5 +1,7 @@
 'use client';
-import { useState, use } from 'react';
+import { useState, use, useCallback, useRef, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Script from 'next/script';
 import Link from 'next/link';
 import { getCourseBySlug } from '@/data/courses';
 import { useLanguage } from '@/components/LanguageContext';
@@ -7,152 +9,234 @@ import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
 
-declare global {
-    interface Window {
-        snap: any;
-    }
-}
 
-export default function PaymentPage({ params }: Props) {
-    const { slug } = use(params);
+// Inner component — must be separate so <Suspense> can wrap useSearchParams()
+function PaymentContent({ slug }: { slug: string }) {
     const course = getCourseBySlug(slug);
-    const [method, setMethod] = useState<'card' | 'qris' | 'va'>('card');
     const [loading, setLoading] = useState(false);
+    const [popupClosed, setPopupClosed] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    // Cache token so reopenSnap() can reuse it without a new API call
+    const snapTokenRef = useRef<string | null>(null);
     const { language } = useLanguage();
+    const searchParams = useSearchParams();
 
-    if (!course) return null;
+    // Fix #14 — read customer data from URL params (set by checkout page)
+    const customerName = searchParams.get('n') || 'Student';
+    const customerPhone = searchParams.get('p') || '';
 
-    const handlePay = async () => {
-        if (!method || loading) return;
+    const displayPrice = language === 'id'
+        ? `Rp ${course?.priceIDR.toLocaleString('id-ID')}`
+        : `RM ${course?.priceMYR}`;
+
+    // Fix #2 — handlePay defined with useCallback before useEffect so no stale closure
+    const handlePay = useCallback(async () => {
+        if (loading || !course) return;
         setLoading(true);
+        setError(null);
+        setPopupClosed(false);
 
         try {
             const res = await fetch('/api/tokenize', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: course.id,
-                    name: course.title,
-                    price: course.price * 16800,
-                })
+                // Fix #10 — only send id + customer info; price is now server-side
+                body: JSON.stringify({ id: course.id, customerName, customerPhone }),
             });
-
             const data = await res.json();
 
-            if (data.token && typeof window.snap !== 'undefined') {
-                window.snap.pay(data.token, {
-                    onSuccess: function (result: any) {
-                        window.location.href = `/courses/${slug}/confirmation`;
-                    },
-                    onPending: function (result: any) {
-                        alert('Waiting for your payment!');
-                        setLoading(false);
-                    },
-                    onError: function (result: any) {
-                        alert('Payment failed!');
-                        setLoading(false);
-                    },
-                    onClose: function () {
-                        setLoading(false);
-                    }
-                });
-            } else {
-                alert('Payment gateway could not be loaded. Check your internet connection or keys.');
+            if (!data.token) {
+                setError('Could not start payment. Please try again.');
                 setLoading(false);
+                return;
             }
-        } catch (error) {
-            console.error(error);
-            alert('A network error occurred.');
+
+            if (typeof window.snap === 'undefined') {
+                setError('Payment gateway is still loading. Please wait a moment and try again.');
+                setLoading(false);
+                return;
+            }
+
+            // Cache token so reopenSnap() can reuse it without a new API call
+            snapTokenRef.current = data.token;
+
+            window.snap.pay(data.token, {
+                onSuccess: () => {
+                    window.location.href = `/courses/${slug}/confirmation`;
+                },
+                onPending: () => {
+                    setError('Payment is pending. We\'ll notify you once confirmed.');
+                    setLoading(false);
+                },
+                onError: () => {
+                    setError('Payment failed. Please try again or use a different method.');
+                    setLoading(false);
+                },
+                // Normal behavior: popup closes, user sees page with Pay Now button
+                onClose: () => {
+                    setLoading(false);
+                    setPopupClosed(true);
+                },
+            });
+        } catch {
+            setError('A network error occurred. Please check your connection and try again.');
             setLoading(false);
         }
-    };
+    }, [loading, course, customerName, customerPhone, slug]);
+
+    // Reopen popup using cached token — no new API call, no new order created
+    const reopenSnap = useCallback(() => {
+        if (!snapTokenRef.current || typeof window.snap === 'undefined') {
+            handlePay(); // fallback: fetch a fresh token
+            return;
+        }
+        setPopupClosed(false);
+        setError(null);
+        window.snap.pay(snapTokenRef.current, {
+            onSuccess: () => {
+                window.location.href = `/courses/${slug}/confirmation`;
+            },
+            onPending: () => {
+                setError('Payment is pending. We\'ll notify you once confirmed.');
+                setLoading(false);
+            },
+            onError: () => {
+                setError('Payment failed. Please try again or use a different method.');
+                setLoading(false);
+            },
+            onClose: () => {
+                setLoading(false);
+                setPopupClosed(true);
+            },
+        });
+    }, [slug, handlePay]);
+
+
+    if (!course) return null;
 
     return (
         <div className={styles.page}>
             <header className={styles.header}>
-                <Link href={`/courses/${slug}/checkout`} className={styles.cancelBtn}>Cancel</Link>
+                <Link href={`/courses/${slug}/checkout`} className={styles.cancelBtn}>← Back</Link>
                 <div className={styles.headerTitle}>Checkout</div>
                 <div className={styles.headerSpacer} />
             </header>
 
             <main className={styles.main}>
+                {/* Step indicator */}
                 <div className={styles.progressRow}>
-                    {[{ n: 1, l: 'Select Time' }, { n: 2, l: 'Your Details' }, { n: 3, l: 'Payment' }].map((s, i) => (
+                    {[
+                        { n: 1, l: 'Select Time' },
+                        { n: 2, l: 'Your Details' },
+                        { n: 3, l: 'Payment' },
+                    ].map((s, i, arr) => (
                         <div key={s.n} className={styles.progressStep}>
-                            <div className={`${styles.stepBubble} ${s.n < 3 ? styles.done : ''} ${s.n === 3 ? styles.active : ''}`}>
-                                {s.n < 3 ? '✓' : s.n}
+                            <div className={styles.stepInner}>
+                                <div className={`${styles.stepBubble} ${s.n < 3 ? styles.done : ''} ${s.n === 3 ? styles.active : ''}`}>
+                                    {s.n < 3 ? '✓' : s.n}
+                                </div>
+                                <span className={`${styles.stepLabel} ${s.n === 3 ? styles.activeLbl : ''}`}>{s.l}</span>
                             </div>
-                            <span className={`${styles.stepLabel} ${s.n === 3 ? styles.activeLbl : ''}`}>{s.l}</span>
-                            {i < 2 && <div className={`${styles.line} ${s.n < 3 ? styles.lineDone : ''}`} />}
+                            {i < arr.length - 1 && (
+                                <div className={`${styles.line} ${s.n < 3 ? styles.lineDone : ''}`} />
+                            )}
                         </div>
                     ))}
                 </div>
 
                 <div className={styles.content}>
-                    <h1 className={styles.title}>Choose a payment method</h1>
-                    <p className={styles.subtitle}>You won&apos;t be charged until you review the order on the next page</p>
+                    {popupClosed ? (
+                        // User closed the popup — show course summary with Pay Now button
+                        <div className={styles.processingBox}>
+                            <div className={styles.closedIcon}>🔒</div>
+                            <h1 className={styles.processingTitle}>
+                                {language === 'id' ? 'Belum selesai bayar?' : 'Ready to complete payment?'}
+                            </h1>
+                            <p className={styles.processingSubtitle}>
+                                {language === 'id'
+                                    ? 'Tempat Anda masih tersimpan. Klik tombol di bawah untuk melanjutkan.'
+                                    : 'Your spot is still held. Click below to reopen the payment window.'}
+                            </p>
 
-                    <div className={styles.paymentMethods}>
+                            {error && (
+                                <div className={styles.errorBanner} role="alert">
+                                    <span>⚠️ {error}</span>
+                                </div>
+                            )}
 
-                        <div className={styles.accordionHeader} onClick={() => setMethod('card')}>
-                            <div className={`${styles.radio} ${method === 'card' ? styles.radioSelected : ''}`}>
-                                {method === 'card' && <div className={styles.radioDot} />}
-                            </div>
-                            <span className={styles.methodName}>Credit Card</span>
-                        </div>
-
-                        {method === 'card' && (
-                            <div className={styles.accordionBody}>
-                                <div className={styles.inputWrap}>
-                                    <input type="text" className={styles.cardInput} defaultValue="Mastercard xxxx xxxx xxxx 1234" readOnly />
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.inputCheck}><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div className={styles.coursePreview}>
+                                <span className={styles.courseIcon}>{course.icon}</span>
+                                <div>
+                                    <p className={styles.courseName}>{course.title}</p>
+                                    <p className={styles.coursePrice}>{displayPrice}</p>
                                 </div>
                             </div>
-                        )}
-
-                        <div className={styles.divider} />
-
-                        <div className={styles.accordionHeader} onClick={() => setMethod('qris')}>
-                            <div className={`${styles.radio} ${method === 'qris' ? styles.radioSelected : ''}`}>
-                                {method === 'qris' && <div className={styles.radioDot} />}
-                            </div>
-                            <span className={styles.methodName}>QRIS / E-Wallet</span>
                         </div>
-                        {method === 'qris' && (
-                            <div className={styles.accordionBody}>
-                                <p className={styles.qrisDesc}>Pay instantly using GoPay, OVO, Dana, ShopeePay, or any QRIS app.</p>
+                    ) : (
+                        // Popup is loading / open
+                        <div className={styles.processingBox}>
+                            <div className={styles.spinnerWrap}>
+                                <div className={styles.spinner} />
                             </div>
-                        )}
+                            <h1 className={styles.processingTitle}>
+                                {loading ? 'Opening payment gateway…' : 'Redirecting to payment…'}
+                            </h1>
+                            <p className={styles.processingSubtitle}>
+                                {language === 'id'
+                                    ? 'Pembayaran diproses secara aman melalui Midtrans.'
+                                    : 'Your payment is processed securely through Midtrans.'}
+                            </p>
 
-                        <div className={styles.divider} />
+                            {/* Fix #3 — in-page error banner instead of alert() */}
+                            {error && (
+                                <div className={styles.errorBanner} role="alert">
+                                    <span>⚠️ {error}</span>
+                                </div>
+                            )}
 
-                        <div className={styles.accordionHeader} onClick={() => setMethod('va')}>
-                            <div className={`${styles.radio} ${method === 'va' ? styles.radioSelected : ''}`}>
-                                {method === 'va' && <div className={styles.radioDot} />}
+                            <div className={styles.coursePreview}>
+                                <span className={styles.courseIcon}>{course.icon}</span>
+                                <div>
+                                    <p className={styles.courseName}>{course.title}</p>
+                                    <p className={styles.coursePrice}>{displayPrice}</p>
+                                </div>
                             </div>
-                            <span className={styles.methodName}>Bank Transfer (Virtual Account)</span>
                         </div>
-                        {method === 'va' && (
-                            <div className={styles.accordionBody}>
-                                <p className={styles.qrisDesc}>BCA, Mandiri, BNI, BRI, Permata transfers supported.</p>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </div>
+
             </main>
 
-            <div className={styles.footer} style={{ flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-                {language === 'en' && (
-                    <small style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>* Transactions are processed securely in IDR equivalent.</small>
-                )}
+            <div className={styles.footer}>
                 <button
                     className={`${styles.payBtn} ${loading ? styles.payBtnLoading : ''}`}
-                    onClick={handlePay}
+                    onClick={popupClosed ? reopenSnap : handlePay}
                     disabled={loading}
                 >
-                    {loading ? 'Processing...' : 'Continue'}
+                    {loading ? 'Processing…' : popupClosed
+                        ? (language === 'id' ? '💳 Bayar Sekarang' : '💳 Pay Now')
+                        : (language === 'id' ? 'Tap untuk Bayar' : 'Tap to Pay')}
                 </button>
+                <p className={styles.secure}>🔒 {language === 'id' ? 'Transaksi aman & terenkripsi' : 'Secure & encrypted transaction'}</p>
             </div>
         </div>
+    );
+}
+
+// Outer page — wraps PaymentContent in Suspense so useSearchParams() hydrates correctly
+// snap.js is loaded here (not in layout) — keeps 689KB off every other page
+export default function PaymentPage({ params }: Props) {
+    const { slug } = use(params);
+    return (
+        <>
+            <Script
+                src="https://app.midtrans.com/snap/snap.js"
+                data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+                strategy="afterInteractive"
+            />
+            <Suspense fallback={null}>
+                <PaymentContent slug={slug} />
+            </Suspense>
+        </>
     );
 }

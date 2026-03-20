@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { courses, getCourseBySlug } from '@/data/courses';
 import StickyBookingBar from '@/components/StickyBookingBar';
-import { Translate, ClientPrice } from '@/components/ClientTranslations';
+import CoursePriceCard from '@/components/CoursePriceCard';
+import { Translate } from '@/components/ClientTranslations';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -26,8 +27,6 @@ export default async function CourseDetailPage({ params }: Props) {
     const { slug } = await params;
     const course = getCourseBySlug(slug);
     if (!course) notFound();
-
-    const discount = Math.round((1 - course.price / course.originalPrice) * 100);
 
     return (
         <div className={`${styles.page} page-with-sticky-bottom`}>
@@ -80,29 +79,7 @@ export default async function CourseDetailPage({ params }: Props) {
 
                         {/* Price card — desktop hero */}
                         <div className={styles.priceCard}>
-                            <div className={styles.priceTop}>
-                                <div className={styles.priceAmount}><ClientPrice price={course.price} /></div>
-                                <div className={styles.priceRight}>
-                                    <span className={styles.priceOrig}><ClientPrice price={course.originalPrice} /></span>
-                                    <span className="badge badge-accent">{discount}% off</span>
-                                </div>
-                            </div>
-                            <ul className={styles.priceIncludes}>
-                                {['Live interactive training', 'Real-time Q&A', 'Portfolio project', 'Certificate of completion', 'Community access'].map((item) => (
-                                    <li key={item} className={styles.priceItem}>
-                                        <div className="check-icon">✓</div>
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                            <Link
-                                href={`/courses/${slug}/schedule`}
-                                className="btn btn-primary btn-lg btn-full"
-                                id="course-hero-cta"
-                            >
-                                Choose Date & Time →
-                            </Link>
-                            <p className={styles.priceNote}>🔒 Secure checkout · Confirmed in &lt;2 min via WhatsApp</p>
+                            <CoursePriceCard course={course} slug={slug} variant="hero" styles={styles} />
                         </div>
                     </div>
                 </div>
@@ -257,24 +234,7 @@ export default async function CourseDetailPage({ params }: Props) {
                         {/* ===== STICKY SIDEBAR (desktop) ===== */}
                         <aside className={styles.sidebar}>
                             <div className={styles.sidebarCard}>
-                                <div className={styles.priceTop}>
-                                    <div className={styles.priceAmount}><ClientPrice price={course.price} /></div>
-                                    <div className={styles.priceRight}>
-                                        <span className={styles.priceOrig}><ClientPrice price={course.originalPrice} /></span>
-                                        <span className="badge badge-accent">{discount}% off</span>
-                                    </div>
-                                </div>
-                                <ul className={styles.priceIncludes}>
-                                    {['Live interactive training', 'Real-time Q&A', 'Portfolio project', 'Certificate', 'Community access'].map((item) => (
-                                        <li key={item} className={styles.priceItem}>
-                                            <div className="check-icon">✓</div> {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Link href={`/courses/${slug}/schedule`} className="btn btn-primary btn-lg btn-full" id="sidebar-cta">
-                                    Choose Date & Time →
-                                </Link>
-                                <p className={styles.priceNote}>🔒 Secure · Confirmed via WhatsApp</p>
+                                <CoursePriceCard course={course} slug={slug} variant="sidebar" styles={styles} />
                             </div>
                         </aside>
                     </div>

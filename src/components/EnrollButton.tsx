@@ -29,9 +29,14 @@ export default function EnrollButton({ courseId, courseName, price }: Props) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    id: courseId,
-                    name: courseName,
-                    price: price * 16800,
+                    items: [{
+                        courseId: courseId,
+                        dateId: 'immediate',
+                        slug: 'great-english',
+                        dateLabel: 'Immediate Access'
+                    }],
+                    customerName: 'Student',
+                    customerPhone: '',
                 })
             });
 

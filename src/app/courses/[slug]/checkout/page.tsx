@@ -2,7 +2,8 @@
 import { useState, use } from 'react';
 import Link from 'next/link';
 import { getCourseBySlug } from '@/data/courses';
-import { Translate, ClientPrice } from '@/components/ClientTranslations';
+import { Translate } from '@/components/ClientTranslations';
+import { useLanguage } from '@/components/LanguageContext';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -11,11 +12,25 @@ export default function CheckoutPage({ params }: Props) {
     const { slug } = use(params);
     const course = getCourseBySlug(slug);
     const [form, setForm] = useState({ name: '', whatsapp: '' });
+    const { language } = useLanguage();
+
+    const displayPrice = language === 'id'
+        ? `Rp ${course?.priceIDR.toLocaleString('id-ID')}`
+        : `RM ${course?.priceMYR}`;
+
+    const isValid = form.name.trim().length > 1 && form.whatsapp.trim().length > 6;
+
+    // Build the payment URL with customer data as URL params (survives new tabs, no sessionStorage SSR issues)
+    const paymentHref = isValid
+        ? `/courses/${slug}/payment?n=${encodeURIComponent(form.name)}&p=${encodeURIComponent(form.whatsapp)}`
+        : '#';
+
+    const handleProceed = (e: React.MouseEvent) => {
+        if (!isValid) e.preventDefault();
+    };
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setForm(f => ({ ...f, [e.target.name]: e.target.value }));
-
-    const isValid = form.name.trim().length > 1 && form.whatsapp.trim().length > 6;
 
     if (!course) return null;
 
@@ -69,10 +84,11 @@ export default function CheckoutPage({ params }: Props) {
                             </div>
 
                             <Link
-                                href={isValid ? `/courses/${slug}/payment` : '#'}
+                                href={paymentHref}
                                 className={`btn btn-primary btn-lg btn-full ${!isValid ? styles.disabled : ''}`}
                                 aria-disabled={!isValid}
                                 id="checkout-to-payment-btn"
+                                onClick={handleProceed}
                             >
                                 Proceed to Payment →
                             </Link>
@@ -100,7 +116,7 @@ export default function CheckoutPage({ params }: Props) {
 
                             <div className={styles.priceLine}>
                                 <span><Translate tKey="summary.total" defaultText="Total Price" /></span>
-                                <span className={styles.totalAmt}><ClientPrice price={course.price} /></span>
+                                <span className={styles.totalAmt}>{displayPrice}</span>
                             </div>
                         </div>
                     </div>

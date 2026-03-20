@@ -1,294 +1,368 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Translate } from '@/components/ClientTranslations';
-import CourseCard from '@/components/CourseCard';
+import CourseCardLazy from '@/components/CourseCardLazy';
+import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
 import styles from './page.module.css';
 
+// CourseCard is lazily loaded via CourseCardLazy (client wrapper with dynamic import)
+// This keeps the heavy CourseCard JS bundle out of the initial render path
+const CourseCard = CourseCardLazy;
+
 export const metadata: Metadata = {
-    title: 'GDI FutureWorks | Skills for the Future of Work',
-    description: 'Master AI, Communication & Productivity. Professional short courses in Southeast Asia.',
+    title: 'GDI FutureWorks | Get Hired in Tech — Live Courses by Industry Experts',
+    description: 'Live IT training by engineers from Google, Microsoft & Tokopedia. Build real projects, earn a certificate, and get job-ready in 4 weeks.',
 };
+
+// ── STATIC DATA ──────────────────────────────────────────────────────────────
+
+const proofCompanies = ['Google', 'Microsoft', 'Gojek', 'Tokopedia', 'Grab', 'Mars'];
+
+
+
+
+const instructors = [
+    {
+        name: 'Arman Rahman',
+        role: 'Senior Data Analyst',
+        company: 'Google',
+        initials: 'AR',
+        gradient: 'linear-gradient(135deg, #667eea, #764ba2)',
+        tools: ['Python', 'BigQuery', 'Looker'],
+        course: 'Basic Data Analyst',
+    },
+    {
+        name: 'Dian Pratiwi',
+        role: 'Senior Software Engineer',
+        company: 'Tokopedia',
+        initials: 'DP',
+        gradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
+        tools: ['Python', 'Django', 'AWS'],
+        course: 'Python for Professionals',
+    },
+    {
+        name: 'Siti Nurhaliza',
+        role: 'Creative Director & AI Lead',
+        company: 'Grab',
+        initials: 'SN',
+        gradient: 'linear-gradient(135deg, #f093fb, #f5576c)',
+        tools: ['Midjourney', 'Figma', 'DALL-E'],
+        course: 'Graphic Design with AI',
+    },
+    {
+        name: 'Rizky Firmansyah',
+        role: 'AI Engineering Lead',
+        company: 'Microsoft',
+        initials: 'RF',
+        gradient: 'linear-gradient(135deg, #4facfe, #00f2fe)',
+        tools: ['OpenAI', 'LangChain', 'Azure'],
+        course: 'LLM & AI Engineering',
+    },
+];
+
+const testimonials = [
+    {
+        name: 'Arif Setiyawan',
+        before: 'Office admin with no tech background',
+        after: 'Junior Data Analyst at a Jakarta startup',
+        quote: 'After the course I built my first dashboard and landed a data analyst role within 3 weeks.',
+        outcome: '🎯 Hired in 3 weeks',
+        course: 'Basic Data Analyst',
+        initials: 'AS',
+        gradient: 'linear-gradient(135deg, #667eea, #764ba2)',
+        flag: '🇮🇩',
+    },
+    {
+        name: 'Mei Rahayu',
+        before: 'Business analyst doing manual Excel reports',
+        after: 'Python Automation Specialist — same company, 40% pay rise',
+        quote: 'Python finally clicked. I automated half my monthly reporting. My boss noticed immediately.',
+        outcome: '💰 40% salary increase',
+        course: 'Python for Professionals',
+        initials: 'MR',
+        gradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
+        flag: '🇲🇾',
+    },
+    {
+        name: 'Budi Santoso',
+        before: 'Freelance designer, losing clients to cheaper competitors',
+        after: 'AI-augmented designer charging 3× his previous rate',
+        quote: 'By day 2 I was creating assets I used in actual client projects. Nothing comes close.',
+        outcome: '📈 Revenue tripled in 2 months',
+        course: 'Graphic Design with AI',
+        initials: 'BS',
+        gradient: 'linear-gradient(135deg, #f093fb, #f5576c)',
+        flag: '🇮🇩',
+    },
+];
+
+const cohorts = [
+    { course: 'Basic Data Analyst', date: 'Mar 12–13', seatsLeft: 3, slug: 'data-analytics', color: '#667eea' },
+    { course: 'Python for Professionals', date: 'Mar 14–15', seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
+    { course: 'Graphic Design with AI', date: 'Mar 15–16', seatsLeft: 6, slug: 'graphic-design-ai', color: '#f093fb' },
+    { course: 'LLM & AI Engineering', date: 'Mar 18–19', seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
+];
+
+const trustBadges = [
+    { icon: '🎥', label: 'Live Expert Sessions' },
+    { icon: '🛠️', label: 'Real Projects Included' },
+    { icon: '🎓', label: 'Certificate of Completion' },
+    { icon: '🚀', label: 'Job-Ready in 4 Weeks' },
+    { icon: '🌏', label: 'Southeast Asia & Remote' },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
     return (
         <div className={styles.page}>
-            {/* HERO SECTION */}
+
+            {/* ── HERO ── */}
             <section className={styles.heroSection}>
                 <div className={styles.heroContainer}>
                     <div className={styles.trustBadge}>
                         <span className={styles.heroIcon}>🌟</span>
-                        <span>Trusted by 500+ Professionals in Southeast Asia</span>
+                        <span><Translate tKey="hero.badge" /></span>
                     </div>
 
                     <h1 className={styles.heroTitle}>
-                        Choose your path into tech.<br />
-                        <span className={styles.highlight}>Master AI, Communication & Productivity.</span>
+                        <Translate tKey="hero.title1" /><br />
+                        <span className={styles.highlight}><Translate tKey="hero.title2" /></span>
                     </h1>
 
+
                     <p className={styles.heroSubhead}>
-                        Real skills. Live training. Industry experts. Fast-track your career with practical courses designed for the modern workplace.
+                        <Translate tKey="hero.subhead" />
                     </p>
+
 
                     <div className={styles.ctaGroup}>
-                        <a href="#courses" className={`${styles.btnPrimary} ${styles.btnLarge}`}>Enrol Now (3 min) ⚡</a>
-                        <Link href="/contact" className={styles.btnSecondary}>Talk to Advisor &rarr;</Link>
+                        <a href="#courses" className={`${styles.btnPrimary} ${styles.btnLarge}`}>
+                            <Translate tKey="hero.cta1" />
+                        </a>
+                        <a
+                            href="#cohort"
+                            className={styles.btnSecondary}
+                        >
+                            <Translate tKey="hero.cta2" />
+                        </a>
                     </div>
 
-                    <div className={styles.regionalPresence}>
-                        <p>Taught by Active Tech Leads & Industry Experts</p>
-                        <div className={styles.heroFlags}>
-                            <span className={styles.heroFlag}>🇮🇩 Indonesia</span>
-                            <span className={styles.heroFlag}>🇲🇾 Malaysia</span>
+                    <div className={styles.heroStats}>
+                        <div className={styles.heroStat}>
+                            <span className={styles.heroStatNum}>500+</span>
+                            <span className={styles.heroStatLabel}>Career Switchers Enrolled</span>
+                            <div className={styles.heroStatSub}>100% Money-Back Guarantee</div>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* WHY WE EXIST SECTION */}
-            <section className={styles.problemSection}>
-                <div className="container">
-                    <h2>The world is moving fast. Traditional education is falling behind.</h2>
-                    <p className={styles.problemIntro}>We bridge the gap between what you know and what the modern workplace actually demands.</p>
-
-                    <div className={styles.painPoints}>
-                        <div className={styles.painPoint}>
-                            <span className={styles.painIcon}>🎓</span>
-                            <h3>For Graduates</h3>
-                            <p>Degrees don't guarantee jobs anymore. We give you the practical, hard skills employers are looking for right now.</p>
+                        <div className={styles.heroStatDivider} />
+                        <div className={styles.heroStat}>
+                            <span className={styles.heroStatNum}>4h</span>
+                            <span className={styles.heroStatLabel}>Total Course Length</span>
                         </div>
-                        <div className={styles.painPoint}>
-                            <span className={styles.painIcon}>💼</span>
-                            <h3>For Professionals</h3>
-                            <p>Stuck in your career? Upskill in high-demand areas like AI and data to become indispensable and future-proof your income.</p>
-                        </div>
-                        <div className={styles.painPoint}>
-                            <span className={styles.painIcon}>🏢</span>
-                            <h3>For Organizations</h3>
-                            <p>Stop wasting time on theoretical training. Reskill your teams efficiently with workflows they can apply on Monday morning.</p>
-                        </div>
-                    </div>
-
-                    <div className={styles.theSolution}>
-                        <h3>The GDI FutureWorks Solution</h3>
-                        <p>A learning platform that is simple, structured, and relentlessly practical. No fluff. Just real-world application.</p>
-                    </div>
-
-                    <div className={styles.infographicContainer}>
-                        <div className={styles.infographicCard}>
-                            {/* Left Side: The Problem */}
-                            <div className={styles.infoColOld}>
-                                <div className={styles.colHeader}>
-                                    <span className={styles.statusBadgeWarning}>The Old Way</span>
-                                </div>
-                                <ul className={styles.infoList}>
-                                    <li><span className={styles.xIcon}>✕</span> 3-4 years of academic theory</li>
-                                    <li><span className={styles.xIcon}>✕</span> Outdated curriculum</li>
-                                    <li><span className={styles.xIcon}>✕</span> Massive debt & high fees</li>
-                                    <li><span className={styles.xIcon}>✕</span> Left stranded to find a job</li>
-                                </ul>
-                            </div>
-
-                            {/* Middle Divider */}
-                            <div className={styles.infoSplitter}>
-                                <div className={styles.arrowCircle}>&rarr;</div>
-                            </div>
-
-                            {/* Right Side: The Solution */}
-                            <div className={styles.infoColNew}>
-                                <div className={styles.colHeader}>
-                                    <span className={styles.statusBadgeSuccess}>GDI FutureWorks</span>
-                                </div>
-                                <ul className={styles.infoList}>
-                                    <li><span className={styles.checkIcon}>✓</span> 2-4 weeks of intense reskilling</li>
-                                    <li><span className={styles.checkIcon}>✓</span> Taught by active tech experts</li>
-                                    <li><span className={styles.checkIcon}>✓</span> Affordable, immediate ROI</li>
-                                    <li><span className={styles.checkIcon}>✓</span> Built to get you hired instantly</li>
-                                </ul>
-                            </div>
+                        <div className={styles.heroStatDivider} />
+                        <div className={styles.heroStat}>
+                            <span className={styles.heroStatNum}>12</span>
+                            <span className={styles.heroStatLabel}>Max Seats Per Cohort</span>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Special Opportunity feature */}
-            <section className="section-sm" style={{ paddingBottom: 0 }}>
+            {/* ── COURSES ── */}
+            <section className={styles.coursesSection} id="courses">
                 <div className="container">
-                    <div className={styles.geCard}>
-                        <div className={styles.geContent}>
-                            <span className={styles.geTag}><Translate tKey="ge.special" /></span>
-                            <h2 className={styles.geTitle}><Translate tKey="ge.title" /></h2>
-                            <p className={styles.geDesc}><Translate tKey="ge.desc" /></p>
-                            <Link href="/great-english" className="btn btn-primary"><Translate tKey="ge.btn" /></Link>
-                        </div>
-                        <div className={styles.geVisual}>
-                            <div className={styles.geEmoji}>🎓🌐</div>
-                        </div>
+                    <div className={styles.sectionHeader}>
+                        <p className={styles.sectionLabel}><Translate tKey="courses.sub" /></p>
+                        <h2 className={styles.sectionH2}><Translate tKey="courses.h2" /></h2>
                     </div>
-                </div>
-            </section>
-
-            {/* WHAT WE TEACH SECTION WITH INTERACTIVE CARDS */}
-            <section className="section-sm" id="courses" style={{ padding: '80px 0', background: '#f8fafc' }}>
-                <div className="container" style={{ textAlign: 'center', marginBottom: '48px' }}>
-                    <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.5rem)', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>Skills for the Future of Work</h2>
-                    <p style={{ fontSize: '1.125rem', color: '#475569' }}>
-                        Choose your course below to see schedules and checkout, or <Link href="/contact" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Talk to an Advisor</Link>.
-                    </p>
-                </div>
-
-                <div className="container">
-                    {/* Inject original Dynamic CourseCards mapping */}
-                    <div className="grid-2">
+                    <div className={styles.courseCarousel}>
                         {courses.map((course) => <CourseCard key={course.id} course={course} />)}
                     </div>
+                    <div className={styles.coursesFooter}>
+                        <p>Not sure which course is right for you?</p>
+                        <Link href="/contact" className={styles.advisorLink}>Consult Advisor →</Link>
+                    </div>
                 </div>
             </section>
 
-            {/* OUR DIFFERENCE SECTION */}
+            {/* ── SMART PARTNERSHIP ── */}
+            <section className={styles.greatEnglishSection}>
+                <div className="container">
+                    <div className={styles.greatEnglishCard}>
+                        <div className={styles.geBadge}>SMART PARTNERSHIP</div>
+                        <h2 className={styles.geTitle}>International TEFL Training Institute (iTTi)</h2>
+                        <p className={styles.geDesc}>
+                            Partnered with iTTI, a globally recognized teacher training institute dedicated to developing English proficiency and professional educators worldwide.
+                        </p>
+                        
+                        <div style={{ marginTop: '40px', width: '100%' }}>
+
+                            <h3 style={{ color: 'white', fontSize: '1.25rem', marginBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>Choose Your Path</h3>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+                                {/* Learn English Path */}
+                                <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: '24px', display: 'flex', flexDirection: 'column' }}>
+                                    <h4 style={{ color: 'white', fontSize: '1.125rem', marginBottom: '12px' }}>Learn English</h4>
+                                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9375rem', marginBottom: '12px' }}>
+                                        Build strong English communication skills for:
+                                    </p>
+                                    <ul style={{ color: 'rgba(255, 255, 255, 0.9)', paddingLeft: '20px', fontSize: '0.9375rem', lineHeight: 1.6, marginBottom: '24px', flex: 1 }}>
+                                        <li>Academic Success</li>
+                                        <li>IELTS Preparation</li>
+                                        <li>Career Advancement</li>
+                                        <li>Global Opportunities</li>
+                                    </ul>
+                                    <Link href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} style={{ textAlign: 'center', background: 'transparent', color: 'white', borderColor: 'rgba(255,255,255,0.3)', width: '100%' }}>
+                                        Start Learning →
+                                    </Link>
+                                </div>
+
+                                {/* Teach English Path */}
+                                <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: '24px', display: 'flex', flexDirection: 'column' }}>
+                                    <h4 style={{ color: 'white', fontSize: '1.125rem', marginBottom: '12px' }}>Teach English</h4>
+                                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9375rem', marginBottom: '12px', lineHeight: 1.6 }}>
+                                        Passionate about Education? Earn an internationally recognized certification and learn the skills to teach English anywhere in the world.
+                                    </p>
+                                    <p style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.9375rem', marginBottom: '24px', fontWeight: 500, flex: 1 }}>
+                                        Become part of the next gen global educators.
+                                    </p>
+                                    <Link href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary} style={{ textAlign: 'center', width: '100%' }}>
+                                        Get Certified →
+                                    </Link>
+                                </div>
+                            </div>
+                            
+                            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+                                <span style={{ display: 'inline-block', background: 'rgba(255, 255, 255, 0.1)', color: 'white', padding: '8px 24px', borderRadius: '100px', fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.05em' }}>
+                                    Pre-enrolment starts now.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ── COHORT URGENCY ── */}
+            <section className={styles.cohortSection} id="cohort">
+                <div className="container">
+                    <div className={styles.sectionHeader} style={{ color: 'white' }}>
+                        <p className={styles.cohortLabel}><Translate tKey="cohort.sub" /></p>
+                        <h2 className={styles.cohortH2}><Translate tKey="cohort.h2" /></h2>
+                    </div>
+                    <div className={styles.cohortGrid}>
+                        {cohorts.map((c) => (
+                            <div key={c.slug} className={styles.cohortCard}>
+                                <div className={styles.cohortTop}>
+                                    <span className={styles.cohortCourseName}>{c.course}</span>
+                                    <span className={styles.cohortUrgency} style={{ background: c.seatsLeft <= 3 ? '#ef4444' : '#f59e0b' }}>
+                                        {c.seatsLeft} <Translate tKey="cohort.seats" />
+                                    </span>
+                                </div>
+                                <p className={styles.cohortDate}>📅 {c.date}</p>
+                                <p className={styles.cohortFormat}><Translate tKey="cohort.format" /></p>
+                                <Link href={`/courses/${c.slug}/schedule`} className={styles.cohortCta}>
+                                    <Translate tKey="cohort.cta" />
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── WHY US ── */}
             <section className={styles.diffSection}>
                 <div className="container">
-                    <h2>Why Professionals Choose Us</h2>
+                    <h2><Translate tKey="diff.h2" /></h2>
                     <div className={styles.benefitsGrid}>
-                        <div className={styles.benefit}>
-                            <div className={styles.benefitIcon}>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
+                        {[
+                            {
+                                tk: 'benefit1.title', 
+                                dk: 'benefit1.desc', 
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>
+                            },
+                            {
+                                tk: 'benefit2.title', 
+                                dk: 'benefit2.desc', 
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            },
+                            {
+                                tk: 'benefit3.title', 
+                                dk: 'benefit3.desc', 
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            },
+                            {
+                                tk: 'benefit4.title', 
+                                dk: 'benefit4.desc', 
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                            },
+                            {
+                                tk: 'benefit5.title', 
+                                dk: 'benefit5.desc', 
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>
+                            },
+                            {
+                                tk: 'benefit6.title', 
+                                dk: 'benefit6.desc', 
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+                            },
+                        ].map(({ tk, dk, icon }) => (
+                            <div key={tk} className={styles.benefitBox}>
+                                <div className={styles.benefitHeader}>
+                                    <div className={styles.benefitIconWrap}>{icon}</div>
+                                    <h3 className={styles.benefitTitle}><Translate tKey={tk} /></h3>
+                                </div>
+                                <p className={styles.benefitText}><Translate tKey={dk} /></p>
                             </div>
-                            <div>
-                                <strong>Corporate-Tested Tracks</strong>
-                                <p>Learn exactly what enterprise companies demand, bypassing outdated academic theory.</p>
-                            </div>
-                        </div>
-                        <div className={styles.benefit}>
-                            <div className={styles.benefitIcon}>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </div>
-                            <div>
-                                <strong>Immediate Practical Use</strong>
-                                <p>Apply what you learn today to your job tomorrow. No waiting for graduation.</p>
-                            </div>
-                        </div>
-                        <div className={styles.benefit}>
-                            <div className={styles.benefitIcon}>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </div>
-                            <div>
-                                <strong>Small Cohorts</strong>
-                                <p>Get personalized attention and dedicated feedback from instructors who know your name.</p>
-                            </div>
-                        </div>
-                        <div className={styles.benefit}>
-                            <div className={styles.benefitIcon}>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </div>
-                            <div>
-                                <strong>Structured Learning</strong>
-                                <p>Step-by-step guidance so you never feel lost or overwhelmed.</p>
-                            </div>
-                        </div>
-                        <div className={styles.benefit}>
-                            <div className={styles.benefitIcon}>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </div>
-                            <div>
-                                <strong>Real-World Application</strong>
-                                <p>Build a portfolio of actual projects, not just multiple-choice quizzes.</p>
-                            </div>
-                        </div>
-                        <div className={styles.benefit}>
-                            <div className={styles.benefitIcon}>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            </div>
-                            <div>
-                                <strong>Community Support</strong>
-                                <p>Join a network of driven professionals across Malaysia and Indonesia.</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* THE 3-MINUTE ENROLLMENT */}
+            {/* ── 3-STEP ENROLLMENT ── */}
             <section className={styles.enrollStepsSection} id="enroll">
                 <div className="container">
-                    <h2>Start Your Journey Today</h2>
-                    <p className={styles.enrollSubtitle}>No long forms. Instant access. Enroll in just 3 minutes.</p>
-
+                    <h2><Translate tKey="enroll.h2" /></h2>
+                    <p className={styles.enrollSubtitle}><Translate tKey="enroll.sub" /></p>
                     <div className={styles.stepsWrapper}>
-                        <div className={styles.step}>
-                            <div className={styles.stepNumber}>1</div>
-                            <h3>Choose</h3>
-                            <p>Select the path that matches your career goals or let our advisors guide you.</p>
-                        </div>
-                        <div className={styles.step}>
-                            <div className={styles.stepNumber}>2</div>
-                            <h3>Commit</h3>
-                            <p>Lock in your spot before the cohort fills up. A fast, secure checkout stands between you and your next career leap.</p>
-                        </div>
-                        <div className={styles.step}>
-                            <div className={styles.stepNumber}>3</div>
-                            <h3>Start</h3>
-                            <p>Get instant access to your student dashboard and community immediately.</p>
-                        </div>
+                        {[
+                            { num: '1', h: 'step1.h3', p: 'step1.p' },
+                            { num: '2', h: 'step2.h3', p: 'step2.p' },
+                            { num: '3', h: 'step3.h3', p: 'step3.p' },
+                        ].map(({ num, h, p }) => (
+                            <div key={num} className={styles.step}>
+                                <div className={styles.stepNumber}>{num}</div>
+                                <h3><Translate tKey={h} /></h3>
+                                <p><Translate tKey={p} /></p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* OUR VISION & FOUNDERS */}
-            <section className={styles.visionFounders}>
-                <div className="container">
-                    <div className={styles.visionStatement}>
-                        <h2>Our Vision</h2>
-                        <blockquote>
-                            "We believe education must move at the speed of the world. GDI FutureWorks was built to eliminate the noise and deliver the high-impact skills that professionals actually need to thrive."
-                        </blockquote>
-                    </div>
-
-                    <div className={styles.foundersTeam}>
-                        <div className={styles.founder}>
-                            <img src="/team/feonna.png" alt="Feonna Watford" className={styles.founderImg} />
-                            <h3>Feonna Watford</h3>
-                            <p className={styles.role}>Co-Founder</p>
-                            <p className={styles.bio}>With over 20 years of corporate leadership in digital transformation and operations, Feonna builds the systems that ensure our training delivers measurable career impact.</p>
-                        </div>
-
-                        <div className={styles.founder}>
-                            <img src="/team/sergei.png" alt="Sergei Bandurka" className={styles.founderImg} />
-                            <h3>Sergei Bandurka</h3>
-                            <p className={styles.role}>Co-Founder</p>
-                            <p className={styles.bio}>A veteran in corporate strategy and tech execution, Sergei brings two decades of experience designing programs that empower organizations and individuals to lead their industries.</p>
-                        </div>
-                    </div>
-
-                    <p className={styles.combinedExpertise}>Together, they bring over 40 years of combined Fortune 500-level strategy and execution directly to your screen, actively building and refining the platform you use today.</p>
-                </div>
-            </section>
-
-            {/* FINAL CTA */}
+            {/* ── FINAL CTA ── */}
             <section className={styles.finalCta}>
                 <div className="container">
-                    <h2>The future will not slow down.<br />But you can move ahead of it.</h2>
-                    <p>Join hundreds of professionals across Southeast Asia who are transforming their careers today.</p>
-
+                    <h2>
+                        <Translate tKey="cta.h2" /><br />
+                        <Translate tKey="cta.h2b" />
+                    </h2>
+                    <p><Translate tKey="cta.p" /></p>
                     <div className={styles.ctaAction}>
-                        <a href="#courses" className={styles.btnPrimaryWhite}>Enrol in 3 Minutes &rarr;</a>
-                        <p className={styles.guarantee}><span style={{ fontSize: '1.25rem' }}>🔒</span> 100% satisfaction guarantee | Instant access</p>
+                        <a href="#courses" className={styles.btnPrimaryWhite}>
+                            <Translate tKey="cta.btn" />
+                        </a>
+                        <a href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" className={styles.ctaWaBtn}>
+                            💬 Consult Advisor
+                        </a>
                     </div>
+                    <p className={styles.guarantee}>
+                        100% Satisfaction Guaranteed
+                    </p>
                 </div>
             </section>
+
         </div>
     );
 }

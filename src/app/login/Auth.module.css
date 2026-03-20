@@ -1,0 +1,102 @@
+.authContainer {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa;
+    padding: 40px 20px;
+    font-family: var(--font-body);
+}
+
+.authWrapper {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logoText {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 40px;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.logoText span {
+    color: var(--brand);
+}
+
+.card {
+    width: 100%;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eaeaea;
+    text-align: center;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 0 0 10px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--gray3);
+    margin: 0 0 30px;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+}
+
+.dividerLine {
+    flex: 1;
+    height: 1px;
+    background-color: #eaeaea;
+}
+
+.dividerText {
+    padding: 0 16px;
+    color: #a0a0a0;
+    font-size: 13px;
+}
+
+.footerText {
+    font-size: 14px;
+    color: var(--gray3);
+    margin-top: 30px;
+}
+
+.link {
+    color: var(--brand);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 30px 20px;
+    }
+}
