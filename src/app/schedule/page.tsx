@@ -67,7 +67,7 @@ export default function SchedulePage() {
                 <div style={{ marginTop: 40, padding: '24px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 20, textAlign: 'center' }}>
                     <p style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: 8 }}>Need a custom schedule?</p>
                     <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', marginBottom: 16 }}>We open new cohorts based on demand. Chat with us and we&apos;ll find a time that works.</p>
-                    <a href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: '#25D366', color: 'white', fontWeight: 700, fontSize: '0.9375rem', padding: '12px 24px', borderRadius: 100, textDecoration: 'none' }}>
+                    <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: '#25D366', color: 'white', fontWeight: 700, fontSize: '0.9375rem', padding: '12px 24px', borderRadius: 100, textDecoration: 'none' }}>
                         Chat on WhatsApp →
                     </a>
                 </div>

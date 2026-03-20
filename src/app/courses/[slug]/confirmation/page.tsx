@@ -63,7 +63,7 @@ export default function ConfirmationPage({ params }: Props) {
                     {/* Primary CTAs */}
                     <div className={styles.actions}>
                         <a
-                            href="https://wa.me/6282258720974"
+                            href="https://wa.me/628211704707"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`btn btn-primary btn-lg btn-full`}

@@ -213,7 +213,7 @@ export default function HomePage() {
                                         <li>Career Advancement</li>
                                         <li>Global Opportunities</li>
                                     </ul>
-                                    <Link href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} style={{ textAlign: 'center', background: 'transparent', color: 'white', borderColor: 'rgba(255,255,255,0.3)', width: '100%' }}>
+                                    <Link href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} style={{ textAlign: 'center', background: 'transparent', color: 'white', borderColor: 'rgba(255,255,255,0.3)', width: '100%' }}>
                                         Start Learning →
                                     </Link>
                                 </div>
@@ -227,7 +227,7 @@ export default function HomePage() {
                                     <p style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.9375rem', marginBottom: '24px', fontWeight: 500, flex: 1 }}>
                                         Become part of the next gen global educators.
                                     </p>
-                                    <Link href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary} style={{ textAlign: 'center', width: '100%' }}>
+                                    <Link href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary} style={{ textAlign: 'center', width: '100%' }}>
                                         Get Certified →
                                     </Link>
                                 </div>
@@ -353,7 +353,7 @@ export default function HomePage() {
                         <a href="#courses" className={styles.btnPrimaryWhite}>
                             <Translate tKey="cta.btn" />
                         </a>
-                        <a href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" className={styles.ctaWaBtn}>
+                        <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.ctaWaBtn}>
                             💬 Consult Advisor
                         </a>
                     </div>

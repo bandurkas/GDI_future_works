@@ -60,7 +60,7 @@ export default function ContactPage() {
                     <p className={styles.desc}>
                         The quickest way to reach our team. Ask about courses, schedules, pricing, or anything else — we&apos;re online and ready to help.
                     </p>
-                    <a href="https://wa.me/6282258720974" target="_blank" rel="noopener noreferrer" className={styles.buttonWhatsapp}>
+                    <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.buttonWhatsapp}>
                         Open WhatsApp →
                     </a>
                 </div>
@@ -79,7 +79,7 @@ export default function ContactPage() {
                     <p className={styles.desc}>
                         Ideal for partnership inquiries, corporate training proposals, or detailed questions. We&apos;ll get back to you within one business day.
                     </p>
-                    <a href="mailto:hello@gdieduhub.com" className={styles.button}>
+                    <a href="mailto:support@gdifuture.works" className={styles.button}>
                         Email Us →
                     </a>
                 </div>

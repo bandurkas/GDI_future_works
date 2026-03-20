@@ -46,7 +46,7 @@ export default function FAQPage() {
                     </div>
                     <div className={styles.cta}>
                         <p className={styles.ctaTxt}>Still have questions?</p>
-                        <a href="https://wa.me/6282258720974" className="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer">
+                        <a href="https://wa.me/628211704707" className="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer">
                             💬 Chat on WhatsApp
                         </a>
                     </div>

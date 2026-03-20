@@ -164,7 +164,7 @@ export default function LearningHubOnboarding({ firstName }: Props) {
 
       {/* WhatsApp Floating Action Button */}
       <a
-        href="https://wa.me/6282258720974"
+        href="https://wa.me/628211704707"
         target="_blank"
         rel="noopener noreferrer"
         className={styles.fab}
