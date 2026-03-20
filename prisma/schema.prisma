@@ -403,3 +403,25 @@ model Notification {
   @@index([userId, isRead])
 }
 
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model TutorApplication {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  name          String
+  email         String   @unique
+  linkedin      String?
+  bio           String?
+  expertise     String
+  videoLink     String
+  portfolioLink String?
+  curriculum    String?
+  lessonPlan    String?
+  status        ApplicationStatus @default(PENDING)
+}
+
+

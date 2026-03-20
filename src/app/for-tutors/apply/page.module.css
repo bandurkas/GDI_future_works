@@ -1,167 +1,405 @@
+/* ============================================================
+   TUTOR APPLY — GDI FutureWorks Brand-Consistent Design
+   Colors: --accent (#D42B2B), --font-body (DM Sans), --font-display (Bebas)
+   ============================================================ */
+
 .page {
     min-height: 100vh;
-    padding-top: calc(var(--nav-height) + 60px);
-    padding-bottom: 100px;
-    background: #fff;
+    padding-top: calc(var(--nav-height, 72px) + 48px);
+    padding-bottom: 120px;
+    background: #FAFAFA;
     font-family: var(--font-body);
 }
 
 .container {
-    max-width: 600px;
+    max-width: 680px;
     margin: 0 auto;
-    padding: 0 var(--space-6);
+    padding: 0 24px;
 }
 
+/* ── Header ── */
 .header {
     text-align: center;
-    margin-bottom: 48px;
-}
-
-.title {
-    font-size: 2.25rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 12px;
-}
-
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-}
-
-/* Progress Bar */
-.progress {
-    display: flex;
-    gap: 8px;
     margin-bottom: 40px;
 }
 
-.progressStep {
-    flex: 1;
-    height: 4px;
-    background: var(--border-light);
-    border-radius: 2px;
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent, #D42B2B);
+    background: rgba(212, 43, 43, 0.08);
+    border: 1px solid rgba(212, 43, 43, 0.18);
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+}
+
+.title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text-primary, #0D0D0D);
+    margin-bottom: 12px;
+}
+
+.title span {
+    color: var(--accent, #D42B2B);
+}
+
+.subtitle {
+    color: var(--text-secondary, #6B7280);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── Progress Steps ── */
+.progressWrapper {
+    margin-bottom: 40px;
+}
+
+.progressSteps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 12px;
+}
+
+.progressItem {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.progressDot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    border: 2px solid var(--border-strong, rgba(0,0,0,0.14));
+    background: white;
+    color: var(--text-secondary, #6B7280);
+    transition: all 0.3s var(--ease-out, ease-out);
+    position: relative;
+    z-index: 1;
+}
+
+.progressDotActive {
+    border-color: var(--accent, #D42B2B);
+    background: var(--accent, #D42B2B);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(212, 43, 43, 0.15);
+}
+
+.progressDotDone {
+    border-color: var(--accent, #D42B2B);
+    background: var(--accent, #D42B2B);
+    color: white;
+}
+
+.progressLine {
+    width: 80px;
+    height: 2px;
+    background: var(--border-strong, rgba(0,0,0,0.14));
+    flex-shrink: 0;
     transition: background 0.3s;
 }
 
-.progressStepActive {
-    background: #455DD3; /* Notion Blue */
+.progressLineDone {
+    background: var(--accent, #D42B2B);
 }
 
-/* Form Styling */
+.progressLabels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+}
+
+.progressLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary, #6B7280);
+    text-align: center;
+    width: 90px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transition: color 0.3s;
+}
+
+.progressLabelActive {
+    color: var(--accent, #D42B2B);
+}
+
+/* ── Form Card ── */
 .formCard {
     background: #fff;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    padding: 40px;
+    border: 1px solid var(--border, rgba(0,0,0,0.08));
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.06));
+    overflow: hidden;
 }
 
+.stepHeader {
+    padding: 28px 36px 0;
+    border-bottom: 1px solid var(--border, rgba(0,0,0,0.08));
+    padding-bottom: 20px;
+    margin-bottom: 0;
+}
+
+.stepBadge {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent, #D42B2B);
+    margin-bottom: 4px;
+}
+
+.stepTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary, #0D0D0D);
+    letter-spacing: -0.02em;
+}
+
+.stepContent {
+    padding: 28px 36px;
+}
+
+/* ── Form Elements ── */
 .formGroup {
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 
 .label {
     display: block;
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-primary, #0D0D0D);
+    letter-spacing: 0.01em;
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #6B7280);
     margin-bottom: 8px;
-    color: var(--text-primary);
+    line-height: 1.5;
 }
 
-.input, .textarea, .select {
+.input,
+.textarea,
+.select {
     width: 100%;
-    padding: 10px 14px;
+    padding: 11px 14px;
     border-radius: 8px;
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--border-strong, rgba(0,0,0,0.14));
     font-size: 0.9375rem;
-    transition: all 0.2s;
-    background: #fff;
+    font-family: var(--font-body);
+    color: var(--text-primary, #0D0D0D);
+    background: #FAFAFA;
+    transition: all 0.2s var(--ease-out, ease-out);
+    box-sizing: border-box;
 }
 
-.input:focus, .textarea:focus, .select:focus {
+.input::placeholder,
+.textarea::placeholder {
+    color: #BBBFC7;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
     outline: none;
-    border-color: #455DD3;
-    box-shadow: 0 0 0 3px rgba(69, 93, 211, 0.1);
+    border-color: var(--accent, #D42B2B);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(212, 43, 43, 0.1);
 }
 
 .textarea {
-    min-height: 120px;
+    min-height: 130px;
     resize: vertical;
+    line-height: 1.6;
 }
 
 .select {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 12px center;
+    background-position: right 14px center;
     background-size: 16px;
+    cursor: pointer;
 }
 
-/* Buttons */
+/* ── Info Box ── */
+.infoBox {
+    background: rgba(212, 43, 43, 0.05);
+    border: 1px solid rgba(212, 43, 43, 0.15);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    font-size: 0.8125rem;
+    color: var(--text-secondary, #6B7280);
+    line-height: 1.6;
+}
+
+.infoBox strong {
+    color: var(--accent, #D42B2B);
+    font-weight: 700;
+}
+
+/* ── Footer / Buttons ── */
 .footer {
     display: flex;
-    justify-content: space-between;
-    margin-top: 32px;
-    gap: 16px;
-}
-
-.btn {
-    padding: 10px 24px;
-    border-radius: 8px;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    padding: 20px 36px;
+    border-top: 1px solid var(--border, rgba(0,0,0,0.08));
+    background: #FAFAFA;
+    gap: 12px;
 }
 
 .btnPrimary {
-    background: #455DD3;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    border-radius: 8px;
+    background: var(--accent, #D42B2B);
     color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-family: var(--font-body);
     border: none;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: all 0.2s var(--ease-out, ease-out);
+    text-decoration: none;
 }
 
 .btnPrimary:hover {
-    background: #3649A8;
+    background: var(--accent-hover, #A81E1E);
+    box-shadow: var(--shadow-accent, 0 6px 24px rgba(212, 43, 43, 0.28));
+    transform: translateY(-1px);
+}
+
+.btnPrimary:active {
+    transform: translateY(0);
 }
 
 .btnPrimary:disabled {
-    opacity: 0.6;
+    opacity: 0.55;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .btnSecondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 20px;
+    border-radius: 8px;
     background: #fff;
-    border: 1px solid var(--border-light);
-    color: var(--text-primary);
+    color: var(--text-secondary, #6B7280);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    border: 1px solid var(--border-strong, rgba(0,0,0,0.14));
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
 }
 
 .btnSecondary:hover {
-    background: #f9f9f9;
+    background: #F5F5F5;
+    color: var(--text-primary, #0D0D0D);
 }
 
-/* Success State */
-.success {
+.stepCounter {
+    font-size: 12px;
+    color: var(--text-secondary, #6B7280);
+    font-weight: 600;
+}
+
+/* ── Success State ── */
+.successPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    background: #FAFAFA;
+    font-family: var(--font-body);
+}
+
+.successCard {
+    max-width: 560px;
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--border, rgba(0,0,0,0.08));
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg, 0 12px 40px rgba(0,0,0,0.1));
+    padding: 64px 48px;
     text-align: center;
-    padding: 60px 0;
 }
 
-.successIcon {
-    font-size: 4rem;
-    margin-bottom: 24px;
-    display: block;
+.successIconWrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(212, 43, 43, 0.08);
+    border: 2px solid rgba(212, 43, 43, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 28px;
 }
 
 .successTitle {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 800;
-    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    color: var(--text-primary, #0D0D0D);
+    margin-bottom: 12px;
 }
 
 .successText {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 32px;
+    color: var(--text-secondary, #6B7280);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
+
+.successMeta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary, #6B7280);
+    background: #F5F5F5;
+    border-radius: 100px;
+    padding: 8px 16px;
+    margin-bottom: 28px;
+}
+
+.successMetaDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success, #10B981);
 }

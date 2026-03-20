@@ -65,10 +65,11 @@ export default function AdminSidebar({ role, userName }: { role: string; userNam
       height: '100vh',
       position: 'sticky',
       top: 0,
-      fontFamily: 'var(--font-body)'
+      fontFamily: 'var(--font-body)',
+      letterSpacing: '-0.02em'
     }}>
       <div style={{ marginBottom: '32px', padding: '0 8px' }}>
-        <div style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#e43a3d', letterSpacing: '-0.5px' }}>GDI Admin</div>
+        <div style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--accent)', letterSpacing: '-0.5px' }}>GDI Admin</div>
         <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>Marketplace OS v2.0</div>
       </div>
 
@@ -79,7 +80,7 @@ export default function AdminSidebar({ role, userName }: { role: string; userNam
 
           return (
             <div key={section.title}>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#444', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', padding: '0 8px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px', padding: '0 8px' }}>
                 {section.title}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -93,9 +94,9 @@ export default function AdminSidebar({ role, userName }: { role: string; userNam
                       alignItems: 'center',
                       gap: '12px',
                       padding: '10px 12px',
-                      borderRadius: '8px',
-                      background: isActive ? 'rgba(228, 58, 61, 0.1)' : 'transparent',
-                      color: isActive ? '#e43a3d' : '#888',
+                      borderRadius: 'var(--radius-md)',
+                      background: isActive ? 'var(--accent-light)' : 'transparent',
+                      color: isActive ? 'var(--accent)' : '#888',
                       textDecoration: 'none',
                       fontSize: '14px',
                       fontWeight: isActive ? 600 : 500,
@@ -114,7 +115,7 @@ export default function AdminSidebar({ role, userName }: { role: string; userNam
 
       <div style={{ marginTop: 'auto', borderTop: '1px solid #333', paddingTop: '20px', padding: '0 8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '16px', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 600 }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-full)', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 600 }}>
             {userName.charAt(0)}
           </div>
           <div>
@@ -129,7 +130,7 @@ export default function AdminSidebar({ role, userName }: { role: string; userNam
             border: '1px solid #333',
             color: '#888',
             padding: '10px',
-            borderRadius: '8px',
+            borderRadius: 'var(--radius-md)',
             fontSize: '13px',
             fontWeight: 500,
             cursor: 'pointer',
