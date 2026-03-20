@@ -204,10 +204,10 @@
 .textarea,
 .select {
     width: 100%;
-    padding: 11px 14px;
+    padding: 12px 14px;
     border-radius: 8px;
     border: 1px solid var(--border-strong);
-    font-size: 0.9375rem;
+    font-size: 1rem; /* 16px to prevent iOS zoom */
     font-family: var(--font-body);
     color: var(--text-primary);
     background: var(--bg-card-elevated);
@@ -403,4 +403,36 @@
     height: 6px;
     border-radius: 50%;
     background: var(--success, #10B981);
+}
+@media (max-width: 640px) {
+    .page {
+        padding-top: calc(var(--nav-height, 72px) + 24px);
+        padding-bottom: 60px;
+    }
+    .container {
+        padding: 0 16px;
+    }
+    .formCard {
+        border-radius: 12px;
+    }
+    .stepHeader {
+        padding: 24px 20px 16px;
+    }
+    .stepContent {
+        padding: 24px 20px;
+    }
+    .footer {
+        padding: 20px;
+        flex-direction: row; /* Keep row but maybe smaller buttons */
+    }
+    .progressLine {
+        width: 40px;
+    }
+    .progressLabel {
+        width: 70px;
+        font-size: 10px;
+    }
+    .successCard {
+        padding: 40px 24px;
+    }
 }

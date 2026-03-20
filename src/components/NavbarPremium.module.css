@@ -35,12 +35,14 @@
     display: flex;
     align-items: center;
     gap: var(--space-4);
+    flex-shrink: 0;
 }
 
 .rightSection {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+    flex-shrink: 0;
 }
 
 /* Logo */
@@ -97,15 +99,23 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 14px;
+    padding: 10px 18px; /* Slightly more padding for elegance */
     background: var(--bg-secondary);
     border: 1px solid var(--border-light);
-    border-radius: 8px;
+    border-radius: 12px;
     color: var(--text-primary);
     font-size: 0.875rem;
     font-weight: 600;
     transition: all var(--transition-base);
     text-decoration: none;
+    white-space: nowrap;
+}
+
+.desktopActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: nowrap;
 }
 
 .navActionBtn:hover {
@@ -150,9 +160,46 @@
     border: 2px solid var(--bg-card);
 }
 
-/* Hamburger - SPECIFICALLY GLOBAL FIX */
+/* Hamburger */
 .hamburger {
-    display: none; /* Force hidden on desktop */
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px; /* Touch target 44px */
+    height: 44px;
+    background: transparent;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    gap: 5px;
+    z-index: 1100;
+    margin-left: -10px;
+    transition: all var(--transition-base);
+}
+
+.hamburger:active {
+    background: var(--bg-secondary);
+}
+
+.hamburger span {
+    width: 22px;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburgerActive span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburgerActive span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburgerActive span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 /* Menu Overlay */
@@ -162,16 +209,18 @@
     right: 0;
     width: 320px;
     height: 100vh;
-    background: var(--bg-overlay);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--bg); /* Use solid background instead of semi-transparent */
     z-index: 1050;
     display: flex;
     flex-direction: column;
     padding: 80px 40px;
     transform: translateX(100%);
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: var(--shadow-accent);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .menuOverlay {
+    background: var(--bg-card-elevated);
 }
 
 .menuOpen {
@@ -181,20 +230,80 @@
 .mobileNav {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: var(--space-6);
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 40px;
+}
+
+.mobileMenuSection {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mobileMenuLabel {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    padding-left: 12px;
 }
 
 .mobileNavLink {
-    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.05rem;
     font-weight: 500;
     color: var(--text-primary);
     text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
 }
 
-.mobileNavLink:hover {
+.mobileNavLink:active {
     background: var(--bg-secondary);
+    transform: scale(0.98);
+}
+
+.mobileLinkIcon {
+    font-size: 1.25rem;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.mobileSettingsRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 12px;
+}
+
+.themeToggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 100px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.mobileMenuFooter {
+    margin-top: auto;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .mobileAuthBtn {
@@ -203,12 +312,28 @@
     justify-content: center;
     background: var(--accent);
     color: white !important;
-    padding: 12px 24px;
-    border-radius: 8px;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: var(--shadow-accent);
+}
+
+.mobileLogoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: none;
+    color: var(--accent);
     font-size: 1rem;
     font-weight: 600;
-    text-decoration: none;
-    margin-top: 2rem;
+    text-align: left;
+    border-radius: 12px;
+    cursor: pointer;
 }
 
 /* Segmented Control (Currency) - Premium Glass */
@@ -348,33 +473,17 @@
 }
 
 @media (max-width: 1024px) {
-    .nav, .actions {
+    .nav, .desktopActions {
         display: none !important;
     }
     
     .hamburger {
         display: flex !important;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 36px;
-        height: 36px;
-        background: transparent;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        gap: 4px;
-        z-index: 1100;
-    }
-
-    .hamburger span {
-        width: 18px;
-        height: 1.5px;
-        background-color: var(--text-primary);
     }
 
     .menuOverlay {
         width: 100%;
+        padding: 100px 32px 40px; /* More standard mobile padding */
     }
 
     .container {

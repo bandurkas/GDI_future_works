@@ -2,6 +2,13 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
+import { 
+    Briefcase, 
+    Layout, 
+    Zap, 
+    Users,
+    ChevronRight
+} from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'About Us — GDI FutureWorks',
@@ -9,10 +16,10 @@ export const metadata: Metadata = {
 };
 
 const pillars = [
-    { icon: '🎯', title: 'Industry Practitioners Only', desc: 'Every instructor is an active tech professional — not a career academic. They bring the tools, workflows, and insider knowledge you need on day one.' },
-    { icon: '🏗️', title: 'Portfolio-Ready Projects', desc: 'Every course ends with a real project you can show employers immediately. No theoretical assignments. Just work that proves you can do the job.' },
-    { icon: '🎙️', title: 'Fully Live & Interactive', desc: 'Ask questions in real time. Get feedback on your work. Learn at the pace of your curiosity — not a pre-recorded video.' },
-    { icon: '🌐', title: 'Lifetime Community Access', desc: 'Join a private network of driven professionals. Share job leads, get career advice, and stay connected to the people who can open doors.' },
+    { icon: <Briefcase size={24} />, title: 'Industry Practitioners Only', desc: 'Every instructor is an active tech professional — not a career academic. They bring the tools, workflows, and insider knowledge you need on day one.' },
+    { icon: <Layout size={24} />, title: 'Portfolio-Ready Projects', desc: 'Every course ends with a real project you can show employers immediately. No theoretical assignments. Just work that proves you can do the job.' },
+    { icon: <Zap size={24} />, title: 'Fully Live & Interactive', desc: 'Ask questions in real time. Get feedback on your work. Learn at the pace of your curiosity — not a pre-recorded video.' },
+    { icon: <Users size={24} />, title: 'Lifetime Community Access', desc: 'Join a private network of driven professionals. Share job leads, get career advice, and stay connected to the people who can open doors.' },
 ];
 
 const stats = [
@@ -138,7 +145,7 @@ export default function AboutPage() {
                     <div className={styles.ctaBox}>
                         <h2 className={styles.ctaTitle}>Ready to accelerate your tech career?</h2>
                         <div className={styles.ctaBtns}>
-                            <Link href="/#courses" className="btn btn-primary btn-lg">Browse Courses →</Link>
+                            <Link href="/#courses" className="btn btn-primary btn-lg">Browse Courses <ChevronRight size={20} /></Link>
                             <Link href="/contact" className="btn btn-secondary btn-lg">Consult Advisor</Link>
                         </div>
                     </div>

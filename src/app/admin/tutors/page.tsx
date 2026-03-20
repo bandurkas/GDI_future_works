@@ -27,7 +27,7 @@ export default async function TutorsAdminPage() {
   return (
     <div
       style={{
-        padding: '40px',
+        padding: '24px 16px',
         maxWidth: 'var(--max-width)',
         margin: '0 auto',
         fontFamily: 'var(--font-body)',
@@ -41,6 +41,8 @@ export default async function TutorsAdminPage() {
           justifyContent: 'space-between',
           alignItems: 'flex-end',
           marginBottom: '32px',
+          flexWrap: 'wrap',
+          gap: '20px',
         }}
       >
         <div>
@@ -106,7 +108,7 @@ export default async function TutorsAdminPage() {
           background: 'var(--bg-card)',
           borderRadius: 'var(--radius-lg)',
           border: '1px solid var(--border)',
-          overflow: 'hidden',
+          overflowX: 'auto',
           boxShadow: 'var(--shadow-sm)',
         }}
       >
@@ -320,7 +322,7 @@ export default async function TutorsAdminPage() {
             background: 'var(--bg-card)',
             borderRadius: 'var(--radius-lg)',
             border: '1px solid var(--border)',
-            overflow: 'hidden',
+            overflowX: 'auto',
           }}
         >
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>

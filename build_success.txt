@@ -1,0 +1,82 @@
+
+> inner-sagan@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.9s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+Loading auth.ts -> NextAuth configuration
+  Generating static pages using 11 workers (0/44) ...
+  Generating static pages using 11 workers (11/44) 
+  Generating static pages using 11 workers (22/44) 
+  Generating static pages using 11 workers (33/44) 
+Loading auth.ts -> NextAuth configuration
+✓ Generating static pages using 11 workers (44/44) in 495.8ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /about
+├ ƒ /admin
+├ ƒ /admin/leads
+├ ƒ /admin/login
+├ ƒ /admin/payments
+├ ƒ /admin/payouts
+├ ƒ /admin/programs
+├ ƒ /admin/sessions
+├ ƒ /admin/students
+├ ƒ /admin/tutor-applications
+├ ƒ /admin/tutors
+├ ƒ /admin/users
+├ ƒ /admin/users/[id]
+├ ƒ /admin/users/invite
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/auth/google
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/session-ping
+├ ƒ /api/tokenize
+├ ƒ /api/tutor-apply
+├ ƒ /api/webhook
+├ ƒ /cart
+├ ƒ /checkout
+├ ƒ /community
+├ ƒ /confirmation
+├ ƒ /contact
+├ ƒ /courses
+├ ƒ /courses/[slug]
+├ ƒ /courses/[slug]/checkout
+├ ƒ /courses/[slug]/confirmation
+├ ƒ /courses/[slug]/payment
+├ ƒ /courses/[slug]/schedule
+├ ƒ /dashboard
+├ ƒ /faq
+├ ƒ /for-tutors
+├ ƒ /for-tutors/apply
+├ ƒ /great-english
+├ ƒ /login
+├ ƒ /payment
+├ ƒ /profile
+├ ƒ /schedule
+└ ƒ /signup
+
+
+ƒ Proxy (Middleware)
+
+ƒ  (Dynamic)  server-rendered on demand
+

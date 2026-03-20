@@ -8,6 +8,18 @@ import { useLanguage, Translate } from './LanguageContext';
 import { useCart } from './CartContext';
 import { useTheme } from './ThemeProvider';
 import { useCurrency } from './CurrencyContext';
+import { 
+    Home, 
+    BookOpen, 
+    Calendar, 
+    Info, 
+    Users, 
+    MessageSquare, 
+    User, 
+    BarChart3, 
+    LogOut,
+    GraduationCap
+} from 'lucide-react';
 
 export default function NavbarPremium() {
     const [isMounted, setIsMounted] = useState(false);
@@ -104,7 +116,7 @@ export default function NavbarPremium() {
                 </div>
 
                 <div className={styles.rightSection}>
-                    <div className={styles.actions}>
+                    <div className={styles.desktopActions}>
                         {!isLoggedIn && (
                             <Link href="/login" className={styles.navActionBtn}>
                                 <Translate tKey="nav.login" defaultText="Log in" />
@@ -126,7 +138,6 @@ export default function NavbarPremium() {
                             </svg>
                             {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
                         </Link>
-
 
                         <div className={styles.segmentedWrapper}>
                             <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
@@ -182,30 +193,78 @@ export default function NavbarPremium() {
 
             <div className={`${styles.menuOverlay} ${isMenuOpen ? styles.menuOpen : ''}`}>
                 <nav className={styles.mobileNav}>
-                    <Link href="/about" className={styles.mobileNavLink}>About</Link>
-                    <Link href="/for-tutors" className={styles.mobileNavLink}>For Tutors</Link>
-                    <Link href="/community" className={styles.mobileNavLink}>Community</Link>
-                    <Link href="/contact" className={styles.mobileNavLink}>Contact</Link>
-                    
-                    {isLoggedIn ? (
-                        <>
-                            <Link href="/dashboard" className={styles.mobileNavLink}>Dashboard</Link>
-                            <button className={styles.mobileNavLink} onClick={async () => {
-                                if (sessionType === 'admin') {
-                                    await signOut({ callbackUrl: '/' });
-                                } else {
-                                    await fetch("/api/auth/logout", { method: "POST" });
-                                    setIsLoggedIn(false);
-                                    router.push("/");
-                                    router.refresh();
-                                }
-                            }} style={{ background: 'none', border: 'none', textAlign: 'left', padding: '8px 12px' }}>
-                                Log out
+                    <div className={styles.mobileMenuSection}>
+                        <h4 className={styles.mobileMenuLabel}>Explore</h4>
+                        <Link href="/" className={styles.mobileNavLink}>
+                            <span className={styles.mobileLinkIcon}><Home size={20} /></span> Home
+                        </Link>
+                        <Link href="/courses" className={styles.mobileNavLink}>
+                            <span className={styles.mobileLinkIcon}><BookOpen size={20} /></span> Courses
+                        </Link>
+                        <Link href="/schedule" className={styles.mobileNavLink}>
+                            <span className={styles.mobileLinkIcon}><Calendar size={20} /></span> Live Schedule
+                        </Link>
+                    </div>
+
+                    <div className={styles.mobileMenuSection}>
+                        <h4 className={styles.mobileMenuLabel}>Company</h4>
+                        <Link href="/about" className={styles.mobileNavLink}>
+                            <span className={styles.mobileLinkIcon}><Info size={20} /></span> About Us
+                        </Link>
+                        <Link href="/community" className={styles.mobileNavLink}>
+                            <span className={styles.mobileLinkIcon}><Users size={20} /></span> Community
+                        </Link>
+                        <Link href="/for-tutors" className={styles.mobileNavLink}>
+                            <span className={styles.mobileLinkIcon}><GraduationCap size={20} /></span> Teach with Us
+                        </Link>
+                        <Link href="/contact" className={styles.mobileNavLink}>
+                            <span className={styles.mobileLinkIcon}><MessageSquare size={20} /></span> Contact
+                        </Link>
+                    </div>
+
+                    <div className={styles.mobileMenuSection}>
+                        <h4 className={styles.mobileMenuLabel}>Preferences</h4>
+                        <div className={styles.mobileSettingsRow}>
+                            <div className={styles.segmentedWrapper} style={{ margin: 0 }}>
+                                <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
+                                <button className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('IDR')}>IDR</button>
+                                <button className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('MYR')}>MYR</button>
+                            </div>
+                            <button className={styles.langToggle} onClick={toggleLanguage} style={{ margin: 0 }}>
+                                {language.toUpperCase()}
                             </button>
-                        </>
-                    ) : (
-                        <Link href="/login" className={styles.mobileAuthBtn}>Get started</Link>
-                    )}
+                            <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme">
+                                {theme === 'dark' ? '☀️' : '🌙'}
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div className={styles.mobileMenuFooter}>
+                        {isLoggedIn ? (
+                            <>
+                                <Link href="/profile" className={styles.mobileNavLink}>
+                                    <span className={styles.mobileLinkIcon}><User size={20} /></span> Profile Settings
+                                </Link>
+                                <Link href="/dashboard" className={styles.mobileNavLink}>
+                                    <span className={styles.mobileLinkIcon}><BarChart3 size={20} /></span> Learning Dashboard
+                                </Link>
+                                <button className={styles.mobileLogoutBtn} onClick={async () => {
+                                    if (sessionType === 'admin') {
+                                        await signOut({ callbackUrl: '/' });
+                                    } else {
+                                        await fetch("/api/auth/logout", { method: "POST" });
+                                        setIsLoggedIn(false);
+                                        router.push("/");
+                                        router.refresh();
+                                    }
+                                }}>
+                                    <span className={styles.mobileLinkIcon}><LogOut size={20} /></span> Log out
+                                </button>
+                            </>
+                        ) : (
+                            <Link href="/login" className={styles.mobileAuthBtn}>Join GDI FutureWorks</Link>
+                        )}
+                    </div>
                 </nav>
             </div>
         </header>

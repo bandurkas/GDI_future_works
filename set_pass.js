@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 async function run() {
   try {
     const pass = await bcrypt.hash('GDI!admin2026', 10);
-    const updated = await prisma.appUser.update({
+    const updated = await prisma.user.update({
       where: { email: 'bandurkas@gmail.com' },
-      data: { password_hash: pass }
+      data: { passwordHash: pass }
     });
     console.log('Successfully updated password for:', updated.email);
   } catch (e) {

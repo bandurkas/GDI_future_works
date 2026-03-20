@@ -3,8 +3,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-bottom: 90px;
-    /* spacing for bottom nav */
+    padding-bottom: 40px;
 }
 
 .header {
@@ -187,6 +186,13 @@
 @media (max-width: 768px) {
     .faqSection {
         padding: 60px 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .faqFooter div {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
 

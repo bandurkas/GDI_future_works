@@ -30,7 +30,7 @@ spawn ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=20 $VPS
 expect {password:}
 send {w7XBiu++Ph4t4dlB1nWRMwzznowtt6k5}; send \"\r\"
 expect {\#}
-send \"cd $REMOTE_DIR && npm install --legacy-peer-deps && /usr/bin/node node_modules/.bin/next build && echo BUILD_OK\r\"
+send \"cd $REMOTE_DIR && npm install --legacy-peer-deps && npx prisma generate && npx prisma db push --accept-data-loss --force-reset && /usr/bin/node node_modules/.bin/next build && echo BUILD_OK\r\"
 expect {BUILD_OK}
 send \"pm2 restart gdi-futureworks && sleep 8 && curl -s -o /dev/null -w 'HTTP_%{http_code}' http://127.0.0.1:3000/ && exit\r\"
 expect eof

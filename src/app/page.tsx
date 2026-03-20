@@ -5,6 +5,7 @@ import CourseCardLazy from '@/components/CourseCardLazy';
 import PathCard from '@/components/PathCard';
 import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
+import { Sparkles, ArrowRight, Calendar } from 'lucide-react';
 import styles from './page.module.css';
 
 // CourseCard is lazily loaded via CourseCardLazy (client wrapper with dynamic import)
@@ -123,7 +124,7 @@ export default function HomePage() {
             <section className={styles.heroSection}>
                 <div className={styles.heroContainer}>
                     <div className={styles.trustBadge}>
-                        <span className={styles.heroIcon}>🌟</span>
+                        <span className={styles.heroIcon}><Sparkles size={16} /></span>
                         <span><Translate tKey="hero.badge" /></span>
                     </div>
 
@@ -182,7 +183,7 @@ export default function HomePage() {
                     </div>
                     <div className={styles.coursesFooter}>
                         <p>Not sure which course is right for you?</p>
-                        <Link href="/contact" className={styles.advisorLink}>Consult Advisor →</Link>
+                        <Link href="/contact" className={styles.advisorLink}>Consult Advisor <ArrowRight size={16} /></Link>
                     </div>
                 </div>
             </section>
@@ -256,7 +257,7 @@ export default function HomePage() {
                                         {c.seatsLeft} <Translate tKey="cohort.seats" />
                                     </span>
                                 </div>
-                                <p className={styles.cohortDate}>📅 {c.date}</p>
+                                <p className={styles.cohortDate}><Calendar size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} /> {c.date}</p>
                                 <p className={styles.cohortFormat}><Translate tKey="cohort.format" /></p>
                                 <Link href={`/courses/${c.slug}/schedule`} className={styles.cohortCta}>
                                     <Translate tKey="cohort.cta" />

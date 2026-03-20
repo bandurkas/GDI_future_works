@@ -89,14 +89,21 @@ export default function ContactPage() {
             {/* FAQ */}
             <section className={styles.faqSection}>
                 <div className="container-narrow">
-                    <p className={styles.faqBadge}>Frequently Asked Questions</p>
-                    <h2 className={styles.faqTitle}>Everything you need to know about GDI FutureWorks courses and enrollment.</h2>
+                    <p className={styles.faqBadge}>FAQ</p>
+                    <h2 className={styles.faqTitle}>Common Questions</h2>
                     
                     <FAQAccordion items={faqs} />
                     
                     <div className={styles.faqFooter}>
-                        <p>Still have questions? Browse our full FAQ page.</p>
-                        <Link href="/faq" className={styles.faqLink}>View all FAQs →</Link>
+                        <p>Still have questions?</p>
+                        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 16 }}>
+                            <a href="https://wa.me/628211704707" className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                                💬 Chat on WhatsApp
+                            </a>
+                            <Link href="/faq" className="btn btn-secondary">
+                                View Full FAQ →
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>

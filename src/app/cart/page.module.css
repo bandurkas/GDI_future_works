@@ -1,5 +1,5 @@
 .page {
-    padding: 120px 0 80px;
+    padding: 80px 0 60px;
     min-height: 80vh;
     background: var(--bg-primary);
 }
@@ -194,28 +194,24 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     .page {
-        padding-top: 100px;
+        padding-top: 80px;
     }
-    
     .header h1 {
-        font-size: 2.25rem;
+        font-size: 2rem;
+        text-align: center;
     }
-    
+    .header p {
+        text-align: center;
+        font-size: 1rem;
+    }
     .cartItem {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
+        padding: 16px;
     }
-    
-    .itemPrice {
-        margin-left: 0;
-    }
-    
-    .removeBtn {
-        position: absolute;
-        top: 16px;
-        right: 16px;
+    .itemIcon {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
     }
 }

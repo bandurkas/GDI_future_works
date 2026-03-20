@@ -7,15 +7,15 @@ const prisma = new PrismaClient();
 async function run() {
   try {
     const email = 'bandurkas@gmail.com';
-    const user = await prisma.appUser.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       console.log('User not found!');
       return;
     }
     const pass = await bcrypt.hash('GDI!admin2026', 10);
-    const updated = await prisma.appUser.update({
+    const updated = await prisma.user.update({
       where: { email },
-      data: { password_hash: pass }
+      data: { passwordHash: pass }
     });
     console.log('SUCCESS: Hash updated for', updated.email);
   } catch (e) {

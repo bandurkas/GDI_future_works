@@ -8,6 +8,25 @@ import styles from './CourseCard.module.css';
 import { useLanguage } from './LanguageContext';
 import { useCurrency } from './CurrencyContext';
 import { formatPrice } from '@/lib/currency';
+import { 
+    Video, 
+    MessageSquare, 
+    Monitor, 
+    GraduationCap, 
+    Rocket, 
+    Users, 
+    TrendingUp, 
+    Star, 
+    CheckCircle2, 
+    AlertTriangle,
+    ArrowRight,
+    X,
+    Lightbulb,
+    Zap,
+    Timer,
+    Dumbbell,
+    Sparkles
+} from 'lucide-react';
 
 interface Props {
     course: Course;
@@ -16,18 +35,26 @@ interface Props {
 
 const getFeatureIcon = (text: string) => {
     const t = text.toLowerCase();
-    if (t.includes('live') || t.includes('interactive')) return '🎥';
-    if (t.includes('question') || t.includes('q&a')) return '💬';
-    if (t.includes('exercise') || t.includes('practical') || t.includes('script')) return '💻';
-    if (t.includes('certificate')) return '🎓';
-    if (t.includes('portfolio') || t.includes('project')) return '🚀';
-    if (t.includes('community')) return '🤝';
-    if (t.includes('career') || t.includes('job')) return '📈';
-    return '✨';
+    const size = 16;
+    if (t.includes('live') || t.includes('interactive')) return <Video size={size} />;
+    if (t.includes('question') || t.includes('q&a')) return <MessageSquare size={size} />;
+    if (t.includes('exercise') || t.includes('practical') || t.includes('script')) return <Monitor size={size} />;
+    if (t.includes('certificate')) return <GraduationCap size={size} />;
+    if (t.includes('portfolio') || t.includes('project')) return <Rocket size={size} />;
+    if (t.includes('community')) return <Users size={size} />;
+    if (t.includes('career') || t.includes('job')) return <TrendingUp size={size} />;
+    return <Sparkles size={size} />;
 };
 
 const getValueIcon = (idx: number) => {
-    const icons = ['💡', '🔥', '⏱️', '💪', '🚀'];
+    const size = 18;
+    const icons = [
+        <Lightbulb size={size} key="l" />, 
+        <Zap size={size} key="z" />, 
+        <Timer size={size} key="t" />, 
+        <Dumbbell size={size} key="d" />, 
+        <Rocket size={size} key="r" />
+    ];
     return icons[idx % icons.length];
 };
 
@@ -114,7 +141,8 @@ export default function CourseCard({ course, featured }: Props) {
                             <span className={styles.priceOriginal}>{displayOriginal}</span>
                         </div>
                         <p className={styles.priceNote}>
-                            {isID ? '🎓 Satu kali bayar · Akses seumur hidup' : '🎓 One-time fee · Lifetime access'}
+                            <GraduationCap size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
+                            {isID ? 'Satu kali bayar · Akses seumur hidup' : 'One-time fee · Lifetime access'}
                         </p>
                     </div>
 
@@ -123,7 +151,7 @@ export default function CourseCard({ course, featured }: Props) {
                     {/* Career outcome row */}
                     {course.targetRoles && (
                         <div className={styles.outcomeRow}>
-                            <span className={styles.outcomeArrow}>→</span>
+                            <ArrowRight size={14} className={styles.outcomeArrow} />
                             <span className={styles.outcomeText}>{course.targetRoles[0]}</span>
                         </div>
                     )}
@@ -150,12 +178,12 @@ export default function CourseCard({ course, featured }: Props) {
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                                     <span className={styles.drawerBadge}>{course.category}</span>
                                     <button className={styles.closeBtn} onClick={closeOutcomes} aria-label="Close">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                        <X size={20} />
                                     </button>
                                 </div>
                                 <h4 className={styles.drawerTitle}>{course.title}</h4>
                                 <div className={styles.drawerTrust}>
-                                    <span style={{ color: '#F59E0B', marginRight: '6px' }}>★</span>
+                                    <Star size={14} fill="#F59E0B" color="#F59E0B" style={{ marginRight: '6px' }} />
                                     <span>Trusted by {course.studentsCount}+ students</span>
                                 </div>
                             </div>
@@ -175,9 +203,9 @@ export default function CourseCard({ course, featured }: Props) {
                                             <ul className={styles.drawerList}>
                                                 {session.items.map((item, i) => (
                                                     <li key={i} className={styles.drawerListItem}>
-                                                        <div className={styles.checkIcon}>✓</div>
-                                                        <span>{item}</span>
-                                                    </li>
+                                                         <div className={styles.checkIcon}><CheckCircle2 size={16} /></div>
+                                                         <span>{item}</span>
+                                                     </li>
                                                 ))}
                                             </ul>
                                         </div>
@@ -198,9 +226,9 @@ export default function CourseCard({ course, featured }: Props) {
                                             <ul className={styles.drawerList} style={{ gap: '12px' }}>
                                                 {course.syllabusDetails.careerOutcomes.roles.map((role, i) => (
                                                     <li key={i} className={styles.drawerListItem} style={{ alignItems: 'flex-start' }}>
-                                                        <span style={{ marginRight: '8px', fontSize: '1.25rem', lineHeight: 1 }}>📈</span>
+                                                        <TrendingUp size={20} style={{ marginRight: '8px', color: '#166534' }} />
                                                         <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#166534' }}>{role}</span>
-                                                    </li>
+                                                     </li>
                                                 ))}
                                             </ul>
                                         </div>
@@ -214,7 +242,7 @@ export default function CourseCard({ course, featured }: Props) {
                                         <ul className={styles.drawerList}>
                                             {specificOutcomes.map((outcome, idx) => (
                                                 <li key={idx} className={styles.drawerListItem}>
-                                                    <div className={styles.checkIcon}>✓</div>
+                                                    <div className={styles.checkIcon}><CheckCircle2 size={16} /></div>
                                                     <span>{outcome}</span>
                                                 </li>
                                             ))}
@@ -229,7 +257,7 @@ export default function CourseCard({ course, featured }: Props) {
                                             <div className={styles.infoList}>
                                                 {course.whatYouGet.slice(0, 6).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
-                                                        <span className={styles.infoCheck}>✓</span> {item}
+                                                        <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
                                                     </div>
                                                 ))}
                                             </div>
@@ -243,7 +271,7 @@ export default function CourseCard({ course, featured }: Props) {
                                             <div className={styles.infoList}>
                                                 {course.whoFor.slice(0, 4).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
-                                                        <span className={styles.infoCheck}>✓</span> {item}
+                                                        <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
                                                     </div>
                                                 ))}
                                             </div>
@@ -257,7 +285,7 @@ export default function CourseCard({ course, featured }: Props) {
                                             <div className={styles.infoList}>
                                                 {course.whyWorthIt.slice(0, 4).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
-                                                        <span className={styles.infoCheck}>✓</span> {item}
+                                                        <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
                                                     </div>
                                                 ))}
                                             </div>
@@ -294,7 +322,7 @@ export default function CourseCard({ course, featured }: Props) {
                                     }}
                                     aria-label="Seat availability info"
                                 >
-                                    ⚠
+                                    <AlertTriangle size={18} />
                                 </button>
                                 <div className={styles.drawerButtons}>
                                     {/* If course has syllabus details and we aren't showing them yet, let user toggle them. Otherwise link to contact. */}

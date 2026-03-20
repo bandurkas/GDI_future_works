@@ -2,6 +2,15 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
+import { 
+    MessageSquare, 
+    TrendingUp, 
+    Handshake, 
+    Target, 
+    Bell, 
+    Rocket,
+    ChevronRight
+} from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Community — GDI FutureWorks',
@@ -10,32 +19,32 @@ export const metadata: Metadata = {
 
 const perks = [
     {
-        icon: '💬',
+        icon: <MessageSquare size={24} />,
         title: 'Private Student Community',
         desc: 'Access our exclusive WhatsApp group with active peers, alumni, and instructors. Ask questions, share wins, and get unstuck — any time of day.',
     },
     {
-        icon: '💼',
+        icon: <TrendingUp size={24} />,
         title: 'Real Job Opportunities',
         desc: 'Get early access to curated job postings, freelance contracts, and referrals shared directly by our network. Your next role may already be waiting inside.',
     },
     {
-        icon: '🤝',
+        icon: <Handshake size={24} />,
         title: 'Professional Networking',
         desc: 'Build lasting connections with driven professionals from Indonesia, Malaysia, and across Southeast Asia who are walking the same path as you.',
     },
     {
-        icon: '🎯',
+        icon: <Target size={24} />,
         title: 'Mentorship & Career Guidance',
         desc: 'Get actionable advice from instructors and alumni on building your portfolio, preparing for interviews, and choosing your next career move.',
     },
     {
-        icon: '🔔',
+        icon: <Bell size={24} />,
         title: 'Early Access & Perks',
         desc: 'Be the first to know about new courses, cohort discounts, and special partnerships — exclusive offers available only to community members.',
     },
     {
-        icon: '🚀',
+        icon: <Rocket size={24} />,
         title: 'Accountability & Growth',
         desc: 'Share weekly goals, celebrate milestones, and stay motivated in a group of peers who are just as serious about their careers as you are.',
     },
@@ -145,7 +154,7 @@ export default function CommunityPage() {
                     <div className={styles.cta}>
                         <h2 className={styles.ctaTitle}>Community access is free for all enrolled students.</h2>
                         <p className={styles.ctaDesc}>Enroll in any course to get lifetime access to the full network — no extra fee, no expiry date.</p>
-                        <Link href="/#courses" className="btn btn-primary btn-lg">Choose a Course →</Link>
+                        <Link href="/#courses" className="btn btn-primary btn-lg">Choose a Course <ChevronRight size={20} /></Link>
                     </div>
                 </div>
             </section>

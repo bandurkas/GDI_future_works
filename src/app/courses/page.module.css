@@ -44,17 +44,18 @@
 }
 
 .indicatorActive {
-    background: rgba(17, 24, 39, 0.7);
+    background: var(--accent);
 }
 
 .sliderTitle {
     font-family: var(--font-display);
-    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-size: clamp(2.25rem, 8vw, 3rem);
     font-weight: 800;
-    line-height: 1.05;
+    line-height: 1.1;
     color: #111827;
     letter-spacing: -0.03em;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .sliderDesc {
@@ -140,6 +141,8 @@
     .sliderContent {
         max-width: 100%;
         margin-top: 16px;
+        align-items: center;
+        text-align: center;
     }
 
     .sliderImageWrap {

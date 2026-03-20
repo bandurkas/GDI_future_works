@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { CheckCircle2 } from 'lucide-react';
 import styles from './PathCard.module.css';
 
 interface PathCardProps {
@@ -31,7 +32,7 @@ const PathCard: React.FC<PathCardProps> = ({
           <ul className={styles.list}>
             {list.map((item, index) => (
               <li key={index} className={styles.listItem}>
-                <span className={styles.checkIcon}>✓</span>
+                <span className={styles.checkIcon}><CheckCircle2 size={16} /></span>
                 {item}
               </li>
             ))}

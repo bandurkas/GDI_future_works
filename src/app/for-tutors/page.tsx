@@ -3,6 +3,18 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { useTheme } from '../../components/ThemeProvider';
+import { 
+    GraduationCap, 
+    Lightbulb, 
+    Rocket,
+    User,
+    Megaphone,
+    CreditCard,
+    Layers,
+    Calendar,
+    Globe,
+    CheckCircle2
+} from 'lucide-react';
 
 export default function ForTutorsPage() {
     const { theme } = useTheme();
@@ -25,9 +37,9 @@ export default function ForTutorsPage() {
                 {/* HERO */}
                 <section className={styles.hero}>
                     <div className={styles.heroIcons}>
-                        <span className={styles.heroIcon}>🎓</span>
-                        <span className={styles.heroIcon}>💡</span>
-                        <span className={styles.heroIcon}>🚀</span>
+                        <span className={styles.heroIcon}><GraduationCap size={40} /></span>
+                        <span className={styles.heroIcon}><Lightbulb size={40} /></span>
+                        <span className={styles.heroIcon}><Rocket size={40} /></span>
                     </div>
                     <h1 className={styles.heroTitle}>Teach with us — The business-in-a-box for tutors</h1>
                     <p className={styles.heroSubtitle}>
@@ -73,32 +85,32 @@ export default function ForTutorsPage() {
 
                     <div className={styles.featureGrid}>
                         <div className={styles.featureCard}>
-                            <span className={styles.featureIcon}>👤</span>
+                            <span className={styles.featureIcon}><User size={32} /></span>
                             <h4 className={styles.featureTitle}>Dedicated Profile Page</h4>
                             <p className={styles.featureDesc}>A professional storefront where students can discover your industry expertise and enroll in your classes.</p>
                         </div>
                         <div className={styles.featureCard}>
-                            <span className={styles.featureIcon}>📣</span>
+                            <span className={styles.featureIcon}><Megaphone size={32} /></span>
                             <h4 className={styles.featureTitle}>Student Marketing</h4>
                             <p className={styles.featureDesc}>We promote your programs through our verified channels and ads to bring qualified learners directly to you.</p>
                         </div>
                         <div className={styles.featureCard}>
-                            <span className={styles.featureIcon}>💳</span>
+                            <span className={styles.featureIcon}><CreditCard size={32} /></span>
                             <h4 className={styles.featureTitle}>Payment & Enrollment</h4>
                             <p className={styles.featureDesc}>We manage registration and payments securely, handling the administrative burden so you don&apos;t have to.</p>
                         </div>
                         <div className={styles.featureCard}>
-                            <span className={styles.featureIcon}>🛤️</span>
+                            <span className={styles.featureIcon}><Layers size={32} /></span>
                             <h4 className={styles.featureTitle}>Course Infrastructure</h4>
                             <p className={styles.featureDesc}>Leverage our structured micro-tracks and learning pathways designed for clear, future-ready outcomes.</p>
                         </div>
                         <div className={styles.featureCard}>
-                            <span className={styles.featureIcon}>🗓️</span>
+                            <span className={styles.featureIcon}><Calendar size={32} /></span>
                             <h4 className={styles.featureTitle}>Class Management</h4>
                             <p className={styles.featureDesc}>Organized scheduling and course management tools for a seamless teaching experience across time zones.</p>
                         </div>
                         <div className={styles.featureCard}>
-                            <span className={styles.featureIcon}>🌎</span>
+                            <span className={styles.featureIcon}><Globe size={32} /></span>
                             <h4 className={styles.featureTitle}>Regional Reach</h4>
                             <p className={styles.featureDesc}>Gain immediate visibility among motivated learners across the high-growth markets of Malaysia and Indonesia.</p>
                         </div>
@@ -120,7 +132,7 @@ export default function ForTutorsPage() {
                             <ul className={styles.checkList}>
                                 {['Industry expertise in AI, Data, or Design', 'Clear communication in English', 'Passion for mentoring learners', 'Commitment to student success'].map((item, i) => (
                                     <li key={i} className={styles.checkItem}>
-                                        <span className={styles.checkIcon}>✓</span> {item}
+                                        <span className={styles.checkIcon}><CheckCircle2 size={16} /></span> {item}
                                     </li>
                                 ))}
                             </ul>

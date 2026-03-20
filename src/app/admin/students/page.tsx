@@ -28,8 +28,8 @@ export default async function StudentsAdminPage() {
     });
 
     return (
-        <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'var(--font-body)', color: '#1a1a1a' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
+        <div style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'var(--font-body)', color: '#1a1a1a' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px', flexWrap: 'wrap', gap: '20px' }}>
                 <div>
                     <h1 style={{ fontSize: '28px', fontWeight: 800, fontFamily: 'var(--font-display)', marginBottom: '8px', letterSpacing: '-1px' }}>
                         Student Directory
@@ -42,7 +42,7 @@ export default async function StudentsAdminPage() {
                         <input 
                             type="text" 
                             placeholder="Search students..." 
-                            style={{ padding: '10px 12px 10px 36px', borderRadius: '10px', border: '1px solid #eee', fontSize: '14px', width: '240px' }} 
+                            style={{ padding: '10px 12px 10px 36px', borderRadius: '10px', border: '1px solid #eee', fontSize: '14px', width: '200px' }} 
                         />
                     </div>
                     <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderRadius: '10px', border: '1px solid #eee', background: 'white', fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
@@ -51,7 +51,7 @@ export default async function StudentsAdminPage() {
                 </div>
             </header>
 
-            <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #eee', overflow: 'hidden' }}>
+            <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #eee', overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
                         <tr style={{ borderBottom: '1px solid #eee', background: '#fafafa' }}>

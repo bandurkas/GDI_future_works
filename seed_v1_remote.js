@@ -10,13 +10,13 @@ async function main() {
     const adminPassword = process.env.ADMIN_SEED_PASSWORD ?? crypto.randomBytes(32).toString('hex');
     const ownerPassword = await bcrypt.hash(adminPassword, 10);
 
-    const owner = await prisma.appUser.upsert({ // Changed appUser to user
+    const owner = await prisma.user.upsert({
         where: { email: 'admin@gdifuture.works' },
         update: {},
         create: {
             name: 'GDI Admin',
             email: 'admin@gdifuture.works',
-            password_hash: ownerPassword,
+            passwordHash: ownerPassword,
             role: 'Owner',
         },
     });
@@ -24,18 +24,18 @@ async function main() {
     console.log(`Created Owner: ${owner.email}`);
 
     // Super Admin Seed: Nane Guru (bandurkas@gmail.com)
-    const superAdmin = await prisma.appUser.upsert({
+    const superAdmin = await prisma.user.upsert({
         where: { email: 'bandurkas@gmail.com' },
-        update: { role: 'Owner', is_active: true },
+        update: { role: 'Owner', isActive: true },
         create: {
             name: 'Sergei Bandurka',
             email: 'bandurkas@gmail.com',
             role: 'Owner',
-            is_active: true
+            isActive: true
         }
     });
 
-    console.log(`Ensured Super Admin Role for: ${superAdmin.email}`);
+    console.log(`Ensured Owner Role for: ${superAdmin.email}`);
 
     // 2. Create foundational Courses based on V1.1 specs
     const dataAnalytics = await prisma.course.upsert({
