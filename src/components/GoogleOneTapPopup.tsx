@@ -36,8 +36,13 @@ export default function GoogleOneTapPopup() {
         onError: () => {
             console.error("Google One Tap Failed");
         },
-        // Wait until mounted to prevent hydration errors, and avoid popping up on auth pages
-        disabled: !isMounted || typeof window !== 'undefined' && (window.location.pathname === '/login' || window.location.pathname === '/signup'),
+        // Wait until mounted to prevent hydration errors, and avoid popping up on auth pages or localhost (to avoid GSI origin errors)
+        disabled: !isMounted || (typeof window !== 'undefined' && (
+            window.location.pathname === '/login' || 
+            window.location.pathname === '/signup' ||
+            window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1'
+        )),
     });
 
     return null; // This is a headless component that triggers the Google iframe
