@@ -1,6 +1,6 @@
 'use client';
 import { Course } from '@/data/courses';
-import { useLanguage } from './LanguageContext';
+import { useCurrency } from './CurrencyContext';
 
 interface Props { course: Course; variant?: 'card' | 'sidebar' }
 
@@ -9,16 +9,16 @@ interface Props { course: Course; variant?: 'card' | 'sidebar' }
  * Used in course detail page price cards (hero + sidebar).
  */
 export default function CoursePriceDisplay({ course, variant = 'card' }: Props) {
-    const { language } = useLanguage();
-    const isID = language === 'id';
+    const { currency } = useCurrency();
+    const isIDR = currency === 'IDR';
 
-    const price = isID
+    const price = isIDR
         ? `Rp ${course.priceIDR.toLocaleString('id-ID')}`
         : `RM ${course.priceMYR}`;
-    const original = isID
+    const original = isIDR
         ? `Rp ${course.originalPriceIDR.toLocaleString('id-ID')}`
         : `RM ${course.originalPriceMYR}`;
-    const discount = Math.round((1 - (isID ? course.priceIDR / course.originalPriceIDR : course.priceMYR / course.originalPriceMYR)) * 100);
+    const discount = Math.round((1 - (isIDR ? course.priceIDR / course.originalPriceIDR : course.priceMYR / course.originalPriceMYR)) * 100);
 
     return { price, original, discount };
 }

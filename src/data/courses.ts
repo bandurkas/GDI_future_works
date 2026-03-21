@@ -344,9 +344,12 @@ export const courses: Course[] = [
             bgGradient: 'linear-gradient(135deg, #f093fb, #f5576c)',
         },
         schedules: [
-            { id: 's1', date: 'Mar 15–16', dayOfWeek: 'Sat–Sun', month: 'Mar', day: 15, time: '10:00', timeEnd: '12:00', seatsLeft: 6 },
+            { id: 's1', date: 'Mar 15–16', dayOfWeek: 'Sat–Sun', month: 'Mar', day: 15, time: '10:00', timeEnd: '12:00', seatsLeft: 0 },
             { id: 's2', date: 'Mar 22–23', dayOfWeek: 'Sat–Sun', month: 'Mar', day: 22, time: '13:00', timeEnd: '15:00', seatsLeft: 9 },
             { id: 's3', date: 'Apr 5–6', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 5, time: '10:00', timeEnd: '12:00', seatsLeft: 15 },
+            { id: 's4', date: 'Apr 12–13', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 12, time: '10:00', timeEnd: '12:00', seatsLeft: 8 },
+            { id: 's5', date: 'Apr 19–20', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 19, time: '13:00', timeEnd: '15:00', seatsLeft: 12 },
+            { id: 's6', date: 'Apr 26–27', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 26, time: '10:00', timeEnd: '12:00', seatsLeft: 15 },
         ],
         tags: ['Midjourney', 'DALL-E', 'Branding', 'Social Media', 'Creative AI'],
         syllabusDetails: {

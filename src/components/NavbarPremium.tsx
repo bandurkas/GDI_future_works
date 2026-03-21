@@ -188,11 +188,50 @@ export default function NavbarPremium() {
                             <span className={styles.langLabel}>{language.toUpperCase()}</span>
                         </button>
                     </div>
+
+                    <div className={styles.mobileHeaderActions}>
+                        <Link href="/cart" className={styles.iconBtn} aria-label="View shopping cart" style={{ margin: '0 4px', width: '30px', height: '30px' }}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"></path>
+                            </svg>
+                            {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
+                        </Link>
+                        <div className={styles.segmentedWrapper} style={{ transform: 'scale(0.85)', transformOrigin: 'right center' }}>
+                            <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
+                            <button className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('IDR')}>IDR</button>
+                            <button className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('MYR')}>MYR</button>
+                        </div>
+                        <button className={styles.langToggle} onClick={toggleLanguage} style={{ padding: '0 8px', height: '28px', fontSize: '11px', gap: '4px' }}>
+                            {language.toUpperCase()}
+                        </button>
+                        <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme" style={{ height: '28px', width: '28px' }}>
+                            {theme === 'dark' ? '☀️' : '🌙'}
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div className={`${styles.menuOverlay} ${isMenuOpen ? styles.menuOpen : ''}`}>
                 <nav className={styles.mobileNav}>
+                    <div className={styles.mobileMenuSection}>
+                        <h4 className={styles.mobileMenuLabel}>Preferences</h4>
+                        <div className={styles.mobileSettingsRow}>
+                            <div className={styles.segmentedWrapper} style={{ margin: 0 }}>
+                                <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
+                                <button className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('IDR')}>IDR</button>
+                                <button className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('MYR')}>MYR</button>
+                            </div>
+                            <button className={styles.langToggle} onClick={toggleLanguage} style={{ margin: 0 }}>
+                                {language.toUpperCase()}
+                            </button>
+                            <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme">
+                                {theme === 'dark' ? '☀️' : '🌙'}
+                            </button>
+                        </div>
+                    </div>
+
                     <div className={styles.mobileMenuSection}>
                         <h4 className={styles.mobileMenuLabel}>Explore</h4>
                         <Link href="/" className={styles.mobileNavLink}>
@@ -220,23 +259,6 @@ export default function NavbarPremium() {
                         <Link href="/contact" className={styles.mobileNavLink}>
                             <span className={styles.mobileLinkIcon}><MessageSquare size={20} /></span> Contact
                         </Link>
-                    </div>
-
-                    <div className={styles.mobileMenuSection}>
-                        <h4 className={styles.mobileMenuLabel}>Preferences</h4>
-                        <div className={styles.mobileSettingsRow}>
-                            <div className={styles.segmentedWrapper} style={{ margin: 0 }}>
-                                <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
-                                <button className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('IDR')}>IDR</button>
-                                <button className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('MYR')}>MYR</button>
-                            </div>
-                            <button className={styles.langToggle} onClick={toggleLanguage} style={{ margin: 0 }}>
-                                {language.toUpperCase()}
-                            </button>
-                            <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme">
-                                {theme === 'dark' ? '☀️' : '🌙'}
-                            </button>
-                        </div>
                     </div>
                     
                     <div className={styles.mobileMenuFooter}>
