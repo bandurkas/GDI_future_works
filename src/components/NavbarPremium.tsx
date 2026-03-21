@@ -187,6 +187,10 @@ export default function NavbarPremium() {
                             )}
                             <span className={styles.langLabel}>{language.toUpperCase()}</span>
                         </button>
+
+                        <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme">
+                            {theme === 'dark' ? '☀️' : '🌙'}
+                        </button>
                     </div>
 
                     <div className={styles.mobileHeaderActions}>
