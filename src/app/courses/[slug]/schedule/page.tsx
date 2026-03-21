@@ -80,34 +80,44 @@ export default function SchedulePage({ params }: Props) {
                     {/* Date grid */}
                     <div className={styles.section}>
                         <h3 className={styles.sectionLabel}>📅 Available Dates</h3>
-                        <div className={styles.dateGrid}>
-                            {course.schedules && course.schedules.map((slot) => {
-                                const isFull = slot.seatsLeft === 0;
-                                const isUrgent = slot.seatsLeft > 0 && slot.seatsLeft <= 3;
-                                const dayNames = slot.dayOfWeek.split(/[–-]/);
-                                const dayName = dayNames.length > 0 ? dayNames[0] : slot.dayOfWeek;
-                                
-                                return (
-                                    <button
-                                        key={slot.id}
-                                        className={`${styles.dateCard} ${selectedId === slot.id ? styles.dateSelected : ''} ${isUrgent ? styles.dateUrgent : ''} ${isFull ? styles.dateFull : ''}`}
-                                        onClick={() => !isFull && setSelectedId(slot.id)}
-                                        aria-pressed={selectedId === slot.id}
-                                        disabled={isFull}
-                                        id={`date-${slot.id}`}
-                                    >
-                                        <span className={styles.dayName}>{dayName}</span>
-                                        <span className={styles.dayNum}>{slot.day}</span>
-                                        <span className={styles.dayMonth}>{slot.month}</span>
-                                        {isFull ? (
-                                            <span className={styles.fullBadge}>Fully Booked</span>
-                                        ) : slot.seatsLeft <= 5 ? (
-                                            <span className={styles.seatBadge}>{slot.seatsLeft} left</span>
-                                        ) : null}
-                                    </button>
-                                );
-                            })}
-                        </div>
+                        
+                        {(!course.schedules || course.schedules.length === 0) ? (
+                            <div style={{ padding: '24px', background: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center', marginTop: '16px' }}>
+                                <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>No upcoming schedules available.</h4>
+                                <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                    Please contact us via WhatsApp to arrange a session or inquire about future dates.
+                                </p>
+                            </div>
+                        ) : (
+                            <div className={styles.dateGrid}>
+                                {course.schedules.map((slot) => {
+                                    const isFull = slot.seatsLeft === 0;
+                                    const isUrgent = slot.seatsLeft > 0 && slot.seatsLeft <= 3;
+                                    const dayNames = slot.dayOfWeek.split(/[–-]/);
+                                    const dayName = dayNames.length > 0 ? dayNames[0] : slot.dayOfWeek;
+                                    
+                                    return (
+                                        <button
+                                            key={slot.id}
+                                            className={`${styles.dateCard} ${selectedId === slot.id ? styles.dateSelected : ''} ${isUrgent ? styles.dateUrgent : ''} ${isFull ? styles.dateFull : ''}`}
+                                            onClick={() => !isFull && setSelectedId(slot.id)}
+                                            aria-pressed={selectedId === slot.id}
+                                            disabled={isFull}
+                                            id={`date-${slot.id}`}
+                                        >
+                                            <span className={styles.dayName}>{dayName}</span>
+                                            <span className={styles.dayNum}>{slot.day}</span>
+                                            <span className={styles.dayMonth}>{slot.month}</span>
+                                            {isFull ? (
+                                                <span className={styles.fullBadge}>Fully Booked</span>
+                                            ) : slot.seatsLeft <= 5 ? (
+                                                <span className={styles.seatBadge}>{slot.seatsLeft} left</span>
+                                            ) : null}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
 
                     {/* Time slot — appears on selection */}
