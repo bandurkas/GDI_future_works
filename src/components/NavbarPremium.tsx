@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import styles from './NavbarPremium.module.css';
 import { useLanguage, Translate } from './LanguageContext';
 import { useCart } from './CartContext';
@@ -29,7 +29,8 @@ export default function NavbarPremium() {
 
     const pathname = usePathname();
     const router = useRouter();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { data: session, status } = useSession();
+    const isLoggedIn = status === 'authenticated';
     const [sessionType, setSessionType] = useState<string | null>(null);
 
     const { language, setLanguage } = useLanguage();
@@ -42,21 +43,14 @@ export default function NavbarPremium() {
 
     useEffect(() => {
         if (!isMounted) return;
-        const checkAuth = async () => {
-            try {
-                const res = await fetch("/api/auth/session-ping");
-                if (res.ok) {
-                    const data = await res.json();
-                    setIsLoggedIn(true);
-                    setSessionType(data.type);
-                } else {
-                    setIsLoggedIn(false);
-                    setSessionType(null);
-                }
-            } catch (error) {}
-        };
-        checkAuth();
-    }, [pathname, isMounted]);
+        // The checkAuth logic is now handled by useSession() hook automatically.
+        // We still keep the sessionType logic if specific admin/student checks are needed elsewhere
+        if (session?.user) {
+            setSessionType((session.user as any).role || 'student');
+        } else {
+            setSessionType(null);
+        }
+    }, [pathname, isMounted, session]);
 
     useEffect(() => {
         setIsMenuOpen(false);
@@ -117,7 +111,15 @@ export default function NavbarPremium() {
 
                 <div className={styles.rightSection}>
                     <div className={styles.desktopActions}>
-                        {!isLoggedIn && (
+                        {isLoggedIn ? (
+                             <button 
+                                onClick={() => signOut({ callbackUrl: '/' })} 
+                                className={styles.navActionBtn}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                            >
+                                <Translate tKey="nav.logout" defaultText="Log out" />
+                            </button>
+                        ) : (
                             <Link href="/login" className={styles.navActionBtn}>
                                 <Translate tKey="nav.login" defaultText="Log in" />
                             </Link>
@@ -169,6 +171,10 @@ export default function NavbarPremium() {
                                 <span>MYR</span>
                             </button>
                         </div>
+
+                        <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme" style={{ marginLeft: '4px' }}>
+                            {theme === 'dark' ? '☀️' : '🌙'}
+                        </button>
 
                         <button className={styles.langToggle} onClick={toggleLanguage} aria-label="Toggle language">
                             {language === 'en' ? (
@@ -274,17 +280,9 @@ export default function NavbarPremium() {
                                 <Link href="/dashboard" className={styles.mobileNavLink}>
                                     <span className={styles.mobileLinkIcon}><BarChart3 size={20} /></span> Learning Dashboard
                                 </Link>
-                                <button className={styles.mobileLogoutBtn} onClick={async () => {
-                                    if (sessionType === 'admin') {
-                                        await signOut({ callbackUrl: '/' });
-                                    } else {
-                                        await fetch("/api/auth/logout", { method: "POST" });
-                                        setIsLoggedIn(false);
-                                        router.push("/");
-                                        router.refresh();
-                                    }
-                                }}>
-                                    <span className={styles.mobileLinkIcon}><LogOut size={20} /></span> Log out
+                                <button className={styles.mobileLogoutBtn} onClick={() => signOut({ callbackUrl: '/' })}>
+                                    <span className={styles.mobileLinkIcon}><LogOut size={20} /></span> 
+                                    <Translate tKey="nav.logout" defaultText="Log out" />
                                 </button>
                             </>
                         ) : (

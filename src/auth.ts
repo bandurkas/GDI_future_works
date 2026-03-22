@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -7,11 +8,12 @@ console.log("Loading auth.ts -> NextAuth configuration");
 
 const prisma = new PrismaClient();
 
-
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
-        // GoogleProvider removed for debugging
+        Google({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
@@ -58,7 +60,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ],
     callbacks: {
         async signIn({ user, account, profile }) {
-            return true;
+            console.log("Sign-in callback called for carrier:", account?.provider);
+            if (account?.provider === "google") {
+                const email = user.email?.toLowerCase();
+                if (!email) {
+                    console.error("No email found in Google profile");
+                    return false;
+                }
+                
+                console.log("Upserting Google user:", email);
+                const dbUser = await prisma.user.upsert({
+                    where: { email },
+                    update: {
+                        name: user.name || "Student",
+                        avatarUrl: user.image,
+                    },
+                    create: {
+                        email,
+                        name: user.name || "Student",
+                        role: "STUDENT",
+                        isActive: true,
+                        avatarUrl: user.image,
+                    }
+                });
+
+                await prisma.student.upsert({
+                    where: { userId: dbUser.id },
+                    update: {},
+                    create: {
+                        userId: dbUser.id,
+                        status: "ACTIVE",
+                    }
+                });
+            }
             return true;
         },
         async jwt({ token, user }: any) {

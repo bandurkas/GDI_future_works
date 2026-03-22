@@ -9,6 +9,7 @@ import { formatPrice } from '@/lib/currency';
 import styles from './page.module.css';
 import CheckoutModal from '@/components/CheckoutModal';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 declare global {
     interface Window {
@@ -17,13 +18,15 @@ declare global {
 }
 
 export default function CartPage() {
-    const { items, removeItem, totalItems, clearCart } = useCart();
+    const { items, removeItem, totalItems, clearCart, customerInfo } = useCart();
     const { language } = useLanguage();
     const { currency } = useCurrency();
     const router = useRouter();
+    const { data: session } = useSession();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [snapLoaded, setSnapLoaded] = useState(false);
+    const [checkoutLoading, setCheckoutLoading] = useState(false);
 
     // Load Midtrans Snap Script
     useEffect(() => {
@@ -48,10 +51,19 @@ export default function CartPage() {
     const displayTotal = formatPrice(totalAmount, currency);
 
     const handleCheckoutClick = () => {
-        setIsModalOpen(true);
+        // If we already have customer info from the schedule page, skip the modal
+        if (customerInfo.email || customerInfo.phone) {
+            handleCheckoutSubmit({
+                ...customerInfo,
+                name: session?.user?.name || 'Student'
+            });
+        } else {
+            setIsModalOpen(true);
+        }
     };
 
     const handleCheckoutSubmit = async (customerData: { name: string; phone: string; email?: string }) => {
+        setCheckoutLoading(true);
         try {
             const response = await fetch('/api/tokenize', {
                 method: 'POST',
@@ -93,7 +105,9 @@ export default function CartPage() {
             }
         } catch (error: any) {
             console.error('Checkout error:', error);
-            throw error;
+            alert(error.message || 'Payment failed. Please try again.');
+        } finally {
+            setCheckoutLoading(false);
         }
     };
 
@@ -166,9 +180,15 @@ export default function CartPage() {
                                 onClick={handleCheckoutClick}
                                 className="btn btn-primary btn-xl btn-full"
                                 style={{ marginTop: '24px' }}
-                                disabled={!snapLoaded}
+                                disabled={!snapLoaded || checkoutLoading}
                             >
-                                {snapLoaded ? 'Secure Checkout →' : 'Loading Security...'}
+                                {checkoutLoading ? (
+                                    'Launching Secure Payment...'
+                                ) : snapLoaded ? (
+                                    'Pay Now →'
+                                ) : (
+                                    'Loading Security...'
+                                )}
                             </button>
                             
                             <p className={styles.guaranteeNote}>
@@ -178,7 +198,7 @@ export default function CartPage() {
                             </p>
                         </div>
                         
-                        <Link href="/courses" className={styles.continueLink}>
+                        <Link href="/courses" className="btn btn-secondary btn-lg btn-full" style={{ marginTop: '24px' }}>
                             ← Add another course
                         </Link>
                     </div>

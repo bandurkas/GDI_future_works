@@ -1,10 +1,11 @@
 'use client';
-import { useState, use } from 'react';
+import { useState, use, useEffect } from 'react';
 import { useCurrency } from '@/components/CurrencyContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getCourseBySlug } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 
 const STEPS = [
@@ -13,23 +14,40 @@ const STEPS = [
     { number: 3, label: 'Payment' },
 ];
 
-// Removed MOCK_DATES in favor of actual course schedules
-
 type Props = { params: Promise<{ slug: string }> };
 
 export default function SchedulePage({ params }: Props) {
     const { slug } = use(params);
     const router = useRouter();
+    const { data: session, status } = useSession();
     const course = getCourseBySlug(slug);
     const [selectedId, setSelectedId] = useState<string | null>(null);
-    const { addItem } = useCart();
-    const [added, setAdded] = useState(false);
-    const { currency } = useCurrency();
+    const { addItem, customerInfo, updateCustomerInfo } = useCart();
+    
+    const isAuthenticated = status === 'authenticated';
+    
+    // Contact State
+    const [email, setEmail] = useState(customerInfo.email || '');
+    const [phone, setPhone] = useState(customerInfo.phone || '');
+
+    // Prefill from session if empty
+    useEffect(() => {
+        if (session?.user) {
+            if (!email && session.user.email) setEmail(session.user.email);
+        }
+    }, [session, email]);
 
     const selected = course?.schedules?.find(d => d.id === selectedId);
-    const handleAddToCart = () => {
-        if (!selected || !course) return;
+    
+    const canContinue = selectedId && (isAuthenticated || email.trim().length > 0 || phone.trim().length > 0);
+
+    const handleNext = () => {
+        if (!canContinue || !selected || !course) return;
         
+        // Save customer info to context
+        updateCustomerInfo({ email, phone });
+        
+        // Add course to cart
         addItem({
             courseId: course.id,
             courseTitle: course.title,
@@ -41,9 +59,10 @@ export default function SchedulePage({ params }: Props) {
             priceMYR: course.priceMYR,
             icon: course.icon
         });
-        setAdded(true);
+        
+        // Immediate redirect to cart
+        router.push('/cart');
     };
-
 
     if (!course) return null;
 
@@ -132,13 +151,46 @@ export default function SchedulePage({ params }: Props) {
                                 </div>
                                 <div className={styles.timeCheck}>✓</div>
                             </div>
+                        </div>
+                    )}
 
-                            {/* Urgency note */}
-                            {selected.seatsLeft <= 5 && (
-                                <div className={styles.urgencyNote}>
-                                    🔴 Only {selected.seatsLeft} seats remaining for this date — secure yours now.
+                    {/* Contact Information — appears once date is selected, but hidden for logged-in users */}
+                    {selected && !isAuthenticated && (
+                        <div className={styles.contactSection}>
+                            <h3 className={styles.sectionLabel}>👤 Your Details</h3>
+                            <div className={styles.inputRow}>
+                                <div className={styles.inputGroup}>
+                                    <label className={styles.inputLabel}>Email Address</label>
+                                    <input 
+                                        className={styles.inputField} 
+                                        type="email" 
+                                        placeholder="example@mail.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
                                 </div>
+                                <div className={styles.inputGroup}>
+                                    <label className={styles.inputLabel}>Phone Number</label>
+                                    <input 
+                                        className={styles.inputField} 
+                                        type="tel" 
+                                        placeholder="+62..."
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            
+                            {/* Specific validation error requested by user */}
+                            {!email && !phone && (
+                                <p style={{ fontSize: '0.8125rem', color: 'var(--accent)', fontWeight: '600', marginTop: '4px' }}>
+                                    Please enter your email or phone number to continue.
+                                </p>
                             )}
+                            
+                            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                                * We need at least an email or phone number to send your joining link.
+                            </p>
                         </div>
                     )}
 
@@ -146,32 +198,18 @@ export default function SchedulePage({ params }: Props) {
                         💬 Need a different date? WhatsApp us — we open new sessions based on demand.
                     </div>
 
-                    {!added ? (
-                        <button
-                            onClick={handleAddToCart}
-                            disabled={!selectedId}
-                            className={`btn btn-primary btn-xl btn-full ${!selectedId ? styles.ctaDisabled : ''}`}
-                            id="schedule-add-to-cart-cta"
-                        >
-                            {selectedId ? (
-                                <>Add to Cart & Continue →</>
-                            ) : (
-                                <>Select a date to continue</>
-                            )}
-                        </button>
-                    ) : (
-                        <div className={styles.addedSuccess}>
-                            <div className={styles.addedIcon}>✓</div>
-                            <div className={styles.addedText}>
-                                <h3>Added to Cart!</h3>
-                                <p>{course.title} — {selected?.date}</p>
-                            </div>
-                            <div className={styles.addedActions}>
-                                <Link href="/cart" className="btn btn-primary btn-lg">Go to Cart</Link>
-                                <Link href="/" className="btn btn-secondary btn-lg">Browse More</Link>
-                            </div>
-                        </div>
-                    )}
+                    <button
+                        onClick={handleNext}
+                        disabled={!canContinue}
+                        className={`btn btn-primary btn-xl btn-full ${!canContinue ? styles.ctaDisabled : ''}`}
+                        id="schedule-next-cta"
+                    >
+                        {selectedId ? (
+                            <>Next →</>
+                        ) : (
+                            <>Select a date to continue</>
+                        )}
+                    </button>
 
                     <button onClick={() => router.back()} className={styles.back}>← Back to previous page</button>
                 </div>

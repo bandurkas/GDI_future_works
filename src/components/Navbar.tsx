@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import styles from './Navbar.module.css';
 import { useLanguage, Translate } from './LanguageContext';
 import { useCart } from './CartContext';
@@ -15,32 +15,17 @@ export default function Navbar() {
 
     const pathname = usePathname();
     const router = useRouter();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [sessionType, setSessionType] = useState<string | null>(null);
+    const { data: session, status } = useSession();
+    const isLoggedIn = status === 'authenticated';
 
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
-    // Initial auth check only once on mount and on pathname change
+    // The checkAuth logic is now handled by useSession() hook automatically.
+    // This effect is kept empty to preserve the mount/pathname lifecycle if needed later.
     useEffect(() => {
         if (!isMounted) return;
-        const checkAuth = async () => {
-            try {
-                const res = await fetch("/api/auth/session-ping");
-                if (res.ok) {
-                    const data = await res.json();
-                    setIsLoggedIn(true);
-                    setSessionType(data.type);
-                } else {
-                    setIsLoggedIn(false);
-                    setSessionType(null);
-                }
-            } catch (error) {
-                console.error("Auth check failed:", error);
-            }
-        };
-        checkAuth();
     }, [pathname, isMounted]);
 
     useEffect(() => {
@@ -102,7 +87,15 @@ export default function Navbar() {
                 {/* Right Side: Actions & Logo */}
                 <div className={styles.rightSection}>
                     <div className={styles.actions}>
-                        {!isLoggedIn && (
+                        {isLoggedIn ? (
+                            <button 
+                                onClick={() => signOut({ callbackUrl: '/' })} 
+                                className={styles.navChatBtn}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                            >
+                                <Translate tKey="nav.logout" defaultText="Log out" />
+                            </button>
+                        ) : (
                             <Link href="/login" className={styles.navChatBtn}>
                                 <Translate tKey="nav.login" defaultText="Log in" />
                             </Link>
@@ -164,17 +157,8 @@ export default function Navbar() {
                     {isLoggedIn ? (
                         <>
                             <Link href="/dashboard" className={styles.mobileNavLink}>Dashboard</Link>
-                            <button className={styles.mobileNavLink} onClick={async () => {
-                                if (sessionType === 'admin') {
-                                    await signOut({ callbackUrl: '/' });
-                                } else {
-                                    await fetch("/api/auth/logout", { method: "POST" });
-                                    setIsLoggedIn(false);
-                                    router.push("/");
-                                    router.refresh();
-                                }
-                            }} style={{ background: 'none', border: 'none', textAlign: 'left', padding: 0 }}>
-                                Log out
+                            <button className={styles.mobileNavLink} onClick={() => signOut({ callbackUrl: '/' })} style={{ background: 'none', border: 'none', textAlign: 'left', padding: 0 }}>
+                                <Translate tKey="nav.logout" defaultText="Log out" />
                             </button>
                         </>
                     ) : (

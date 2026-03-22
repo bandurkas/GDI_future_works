@@ -19,6 +19,7 @@ const translations: Record<Language, Record<string, string>> = {
         'nav.about': 'About',
         'nav.community': 'Community',
         'nav.contact': 'Contact',
+        'nav.logout': 'Log out',
 
         // BUTTONS
         'btn.enroll': 'Enroll Now',
@@ -182,6 +183,7 @@ const translations: Record<Language, Record<string, string>> = {
         'nav.about': 'Tentang Kami',
         'nav.community': 'Komunitas',
         'nav.contact': 'Kontak',
+        'nav.logout': 'Keluar',
 
         // BUTTONS
         'btn.enroll': 'Daftar Sekarang',

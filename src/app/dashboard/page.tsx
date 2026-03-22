@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { redirect } from "next/navigation";
 import LearningHubOnboarding from "./LearningHubOnboarding";
+import { auth } from "@/auth";
 
 // Define the expected shape of our JWT payload
 interface SessionPayload {
@@ -11,8 +12,8 @@ interface SessionPayload {
   role: string;
 }
 
-// Utility to get the current user session
-async function getSession(): Promise<SessionPayload | null> {
+// Utility to get the current legacy user session
+async function getLegacySession(): Promise<SessionPayload | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get("gdi_session")?.value;
 
@@ -30,13 +31,15 @@ async function getSession(): Promise<SessionPayload | null> {
 }
 
 export default async function DashboardPage() {
-  const session = await getSession();
+  const nextAuthSession = await auth();
+  const legacySession = await getLegacySession();
   
-  if (!session) {
+  if (!nextAuthSession && !legacySession) {
     redirect("/login");
   }
 
-  const firstName = session.name.split(' ')[0];
+  const name = nextAuthSession?.user?.name || legacySession?.name || "Student";
+  const firstName = name.split(' ')[0];
 
   return <LearningHubOnboarding firstName={firstName} />;
 }

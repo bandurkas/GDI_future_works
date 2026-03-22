@@ -50,6 +50,12 @@ export async function middleware(req: NextRequest) {
   const gdiSession = req.cookies.get('gdi_session')?.value;
 
   if (isStudentRoute) {
+    // If NextAuth token exists, we are authenticated
+    if (token) {
+        return NextResponse.next();
+    }
+
+    // Fallback to legacy gdi_session check
     if (!gdiSession) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
@@ -65,16 +71,22 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // Redirect authenticated students away from login/signup pages
-  if (isAuthRoute && gdiSession) {
-    try {
-      await jwtVerify(gdiSession, getJwtSecret());
-      return NextResponse.redirect(new URL('/dashboard', req.url));
-    } catch (err) {
-      // Invalid token, allow them to view login page
-      const response = NextResponse.next();
-      response.cookies.delete('gdi_session');
-      return response;
+  // Redirect authenticated users away from login/signup pages
+  if (isAuthRoute) {
+    if (token) {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+    
+    if (gdiSession) {
+        try {
+          await jwtVerify(gdiSession, getJwtSecret());
+          return NextResponse.redirect(new URL('/dashboard', req.url));
+        } catch (err) {
+          // Invalid token, allow them to view login page
+          const response = NextResponse.next();
+          response.cookies.delete('gdi_session');
+          return response;
+        }
     }
   }
 
