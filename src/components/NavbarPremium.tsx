@@ -169,6 +169,30 @@ export default function NavbarPremium() {
                     </div>
 
                     <div className={styles.mobileHeaderActions}>
+                        <div className={styles.segmentedWrapper}>
+                            <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
+                            <button 
+                                className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`}
+                                onClick={() => setCurrency('IDR')}
+                            >
+                                <span>IDR</span>
+                            </button>
+                            <button 
+                                className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`}
+                                onClick={() => setCurrency('MYR')}
+                            >
+                                <span>MYR</span>
+                            </button>
+                        </div>
+
+                        <button className={styles.langToggle} onClick={toggleLanguage} aria-label="Toggle language">
+                            <span className={styles.langLabel}>{language.toUpperCase()}</span>
+                        </button>
+
+                        <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme">
+                            {theme === 'dark' ? '☀️' : '🌙'}
+                        </button>
+
                         <Link href="/cart" className={styles.iconBtn} aria-label="View shopping cart">
                             <IconCart />
                             {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
@@ -179,22 +203,7 @@ export default function NavbarPremium() {
 
             <div className={`${styles.menuOverlay} ${isMenuOpen ? styles.menuOpen : ''}`}>
                 <nav className={styles.mobileNav}>
-                    <div className={styles.mobileMenuSection}>
-                        <h4 className={styles.mobileMenuLabel}>Preferences</h4>
-                        <div className={styles.mobileSettingsRow}>
-                            <div className={styles.segmentedWrapper}>
-                                <div className={`${styles.segmentHighlight} ${currency === 'MYR' ? styles.segmentMYR : ''}`} />
-                                <button className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('IDR')}>IDR</button>
-                                <button className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('MYR')}>MYR</button>
-                            </div>
-                            <button className={styles.langToggle} onClick={toggleLanguage}>
-                                {language.toUpperCase()}
-                            </button>
-                            <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme">
-                                {theme === 'dark' ? '☀️' : '🌙'}
-                            </button>
-                        </div>
-                    </div>
+
 
                     <div className={styles.mobileMenuSection}>
                         <h4 className={styles.mobileMenuLabel}>Explore</h4>
