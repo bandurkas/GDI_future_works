@@ -134,8 +134,9 @@
 .desktopActions {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-4);
     flex-wrap: nowrap;
+    height: 100%;
 }
 
 .mobileHeaderActions {
@@ -308,8 +309,8 @@
 }
 
 .themeToggle {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 100px;
     border: 1px solid var(--border-light);
     background: var(--bg-secondary);
@@ -318,6 +319,14 @@
     justify-content: center;
     cursor: pointer;
     font-size: 1.1rem;
+    padding: 0;
+    outline: none;
+    transition: all var(--transition-base);
+}
+
+.themeToggle:hover {
+    background: var(--border-light);
+    transform: translateY(-1px);
 }
 
 .mobileMenuFooter {
@@ -368,8 +377,8 @@
     border-radius: 100px;
     padding: 2px;
     position: relative;
-    height: 28px;
-    width: 90px;
+    height: 38px;
+    width: 120px;
     margin: 0;
     overflow: hidden;
     backdrop-filter: blur(8px);
@@ -461,9 +470,9 @@
     align-items: center;
     gap: 8px;
     padding: 0 12px;
-    height: 32px;
-    background: rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    height: 38px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
     border-radius: 100px;
     color: var(--text-primary);
     cursor: pointer;
@@ -504,6 +513,20 @@
         display: flex !important;
         align-items: center;
         gap: 6px;
+    }
+
+    .mobileHeaderActions .segmentedWrapper {
+        height: 28px;
+        width: 94px;
+    }
+
+    .mobileHeaderActions .langToggle {
+        height: 32px;
+    }
+
+    .mobileHeaderActions .themeToggle {
+        width: 36px;
+        height: 36px;
     }
     
     .hamburger {
