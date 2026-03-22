@@ -2,14 +2,15 @@ import GoogleSignInButton from "@/components/GoogleSignInButton";
 import Link from "next/link";
 import styles from "./Auth.module.css";
 import Image from "next/image";
+import ThemeLogo from "@/components/ThemeLogo";
 
 export default function SignupPage() {
     return (
         <div className={styles.authContainer}>
             <div className={styles.authWrapper}>
                 
-                <Link href="/" className={styles.logoText}>
-                    GDI <span>FutureWorks</span>
+                <Link href="/" className={styles.logoLink}>
+                    <ThemeLogo className={styles.logoImg} />
                 </Link>
 
                 <div className={styles.card}>

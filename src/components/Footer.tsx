@@ -1,5 +1,7 @@
+"use client";
 import Link from 'next/link';
 import styles from './Footer.module.css';
+import ThemeLogo from './ThemeLogo';
 
 export default function Footer() {
     return (
@@ -8,8 +10,7 @@ export default function Footer() {
                 <div className={styles.top}>
                     <div className={styles.brand}>
                         <Link href="/" className={styles.logo}>
-                            <img src="/logo.svg" alt="GDI FutureWorks" className={styles.logoImg} />
-                            <span className={styles.logoText}>FutureWorks</span>
+                            <ThemeLogo className={styles.logoImg} alt="GDI FutureWorks" />
                         </Link>
                         <p className={styles.tagline}>Learn IT skills that get you hired. Live courses led by industry professionals.</p>
                         <div className={styles.regionalBadges}>

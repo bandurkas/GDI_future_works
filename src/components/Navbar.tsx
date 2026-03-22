@@ -136,7 +136,7 @@ export default function Navbar() {
                     </div>
 
                     <Link href="/" className={styles.logo}>
-                        <img src="/logo-new.png" alt="GDI FutureWorks Logo" className={styles.logoImage} />
+                        <img src="/logo-final.svg" alt="GDI FutureWorks Logo" className={styles.logoImage} />
                     </Link>
                 </div>
             </div>

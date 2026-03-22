@@ -16,6 +16,7 @@ import {
   Target,
   CreditCard
 } from "lucide-react";
+import ThemeLogo from "@/components/ThemeLogo";
 
 export default function AdminSidebar({ role, userName }: { role: string; userName: string }) {
   const pathname = usePathname();
@@ -69,8 +70,10 @@ export default function AdminSidebar({ role, userName }: { role: string; userNam
       letterSpacing: '-0.02em'
     }}>
       <div style={{ marginBottom: '32px', padding: '0 8px' }}>
-        <div style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--accent)', letterSpacing: '-0.5px' }}>GDI Admin</div>
-        <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>Marketplace OS v2.0</div>
+        <Link href="/" style={{ display: 'block', textDecoration: 'none' }}>
+          <ThemeLogo forceDark={true} style={{ height: '48px', width: 'auto', display: 'block' }} />
+        </Link>
+        <div style={{ fontSize: '11px', color: '#666', marginTop: '8px', fontWeight: 500, letterSpacing: '0.5px' }}>MARKETPLACE OS v2.0</div>
       </div>
 
       <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '24px', overflowY: 'auto' }}>

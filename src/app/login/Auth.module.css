@@ -17,18 +17,21 @@
     align-items: center;
 }
 
-.logoText {
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--dark);
+.logoLink {
+    display: block;
     margin-bottom: 40px;
     text-decoration: none;
-    letter-spacing: -0.5px;
+    transition: transform 0.2s ease;
 }
 
-.logoText span {
-    color: var(--brand);
+.logoLink:hover {
+    transform: scale(1.02);
+}
+
+.logoImg {
+    height: 72px;
+    width: auto;
+    display: block;
 }
 
 .card {

@@ -40,6 +40,17 @@ const translations: Record<Language, Record<string, string>> = {
         'progress.step2': 'Your Details',
         'progress.step3': 'Payment',
         'courses.available': 'courses available',
+        'cart.empty': 'Your cart is empty',
+        'cart.emptySub': 'Unlock your potential with expert-led training. Your future starts with a single course.',
+        'cart.browse': 'Browse Courses',
+        'cart.review': 'Review Your Cart',
+        'cart.reviewSub': 'Ready to start your journey? You have',
+        'cart.subtotal': 'Subtotal',
+        'cart.platformFee': 'Platform Fee',
+        'cart.total': 'Total Amount',
+        'cart.secure': 'Secure Checkout • 256-bit Encryption',
+        'cart.addMore': 'Add another course',
+        'cart.back': 'Back to Courses',
 
         // GREAT ENGLISH CARD
         'ge.special': 'Special Partnership',
@@ -204,6 +215,17 @@ const translations: Record<Language, Record<string, string>> = {
         'progress.step2': 'Data Diri',
         'progress.step3': 'Pembayaran',
         'courses.available': 'kursus tersedia',
+        'cart.empty': 'Keranjang Anda kosong',
+        'cart.emptySub': 'Buka potensi Anda dengan pelatihan ahli. Masa depan Anda dimulai dari satu kursus.',
+        'cart.browse': 'Lihat Kursus',
+        'cart.review': 'Tinjau Keranjang Anda',
+        'cart.reviewSub': 'Siap memulai perjalanan? Anda memiliki',
+        'cart.subtotal': 'Subtotal',
+        'cart.platformFee': 'Biaya Platform',
+        'cart.total': 'Total Pembayaran',
+        'cart.secure': 'Pembayaran Aman • Enkripsi 256-bit',
+        'cart.addMore': 'Tambah kursus lainnya',
+        'cart.back': 'Kembali ke Kursus',
 
         // GREAT ENGLISH CARD
         'ge.special': 'Kemitraan Khusus',
@@ -355,11 +377,40 @@ export const LanguageProvider = ({ children, initialLanguage = 'en' }: { childre
     const [language, setLanguageState] = useState<Language>(initialLanguage);
 
     useEffect(() => {
-        // Sync with localStorage if different (client-side preference)
+        // Priority 1: localStorage (user preference)
         const saved = localStorage.getItem('gdi_lang') as Language;
-        if (saved && (saved === 'en' || saved === 'id') && saved !== initialLanguage) {
-            setLanguageState(saved);
+        if (saved && (saved === 'en' || saved === 'id')) {
+            if (saved !== initialLanguage) setLanguageState(saved);
+            return;
         }
+
+        // Priority 2: Geolocation detection (Indonesia vs Others)
+        const detectLocation = async () => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
+            try {
+                const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+                clearTimeout(timeoutId);
+                
+                if (!res.ok) throw new Error('Network response not ok');
+                
+                const data = await res.json();
+                if (data.country_code === 'ID') {
+                    setLanguage('id');
+                } else {
+                    setLanguage('en');
+                }
+            } catch (err) {
+                // Silence common fetch errors (blocked, network down, etc)
+                // We keep the initial default/server-detected language
+                if (process.env.NODE_ENV === 'development') {
+                    console.warn('Silent geo-detection skip:', err instanceof Error ? err.message : 'Unknown error');
+                }
+            }
+        };
+
+        detectLocation();
     }, [initialLanguage]);
 
     const setLanguage = (lang: Language) => {

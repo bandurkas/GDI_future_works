@@ -8,6 +8,7 @@ import { useLanguage, Translate } from './LanguageContext';
 import { useCart } from './CartContext';
 import { useTheme } from './ThemeProvider';
 import { useCurrency } from './CurrencyContext';
+import ThemeLogo from './ThemeLogo';
 import { 
     Home, 
     BookOpen, 
@@ -98,7 +99,7 @@ export default function NavbarPremium() {
                     </button>
 
                     <Link href="/" className={styles.logo} aria-label="GDI FutureWorks Home">
-                        <img src="/logo.svg" alt="GDI FutureWorks Logo" className={styles.logoImage} />
+                        <ThemeLogo className={styles.logoImage} />
                     </Link>
 
                     <nav className={styles.nav} aria-label="Main navigation">
@@ -193,10 +194,6 @@ export default function NavbarPremium() {
                             )}
                             <span className={styles.langLabel}>{language.toUpperCase()}</span>
                         </button>
-
-                        <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme">
-                            {theme === 'dark' ? '☀️' : '🌙'}
-                        </button>
                     </div>
 
                     <div className={styles.mobileHeaderActions}>
@@ -213,12 +210,6 @@ export default function NavbarPremium() {
                             <button className={`${styles.segmentBtn} ${currency === 'IDR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('IDR')}>IDR</button>
                             <button className={`${styles.segmentBtn} ${currency === 'MYR' ? styles.segmentBtnActive : ''}`} onClick={() => setCurrency('MYR')}>MYR</button>
                         </div>
-                        <button className={styles.langToggle} onClick={toggleLanguage} style={{ padding: '0 8px', height: '28px', fontSize: '11px', gap: '4px' }}>
-                            {language.toUpperCase()}
-                        </button>
-                        <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle theme" style={{ height: '28px', width: '28px' }}>
-                            {theme === 'dark' ? '☀️' : '🌙'}
-                        </button>
                     </div>
                 </div>
             </div>

@@ -18,11 +18,40 @@ export function CurrencyProvider({ children, initialCurrency = 'IDR' }: { childr
     const router = useRouter();
 
     useEffect(() => {
-        // Sync with localStorage if different (client-side preference)
+        // Priority 1: localStorage (user preference)
         const saved = localStorage.getItem('GDI_CURRENCY') as Currency;
-        if (saved && (saved === 'IDR' || saved === 'MYR') && saved !== initialCurrency) {
-            setCurrencyState(saved);
+        if (saved && (saved === 'IDR' || saved === 'MYR')) {
+            if (saved !== initialCurrency) setCurrencyState(saved);
+            return;
         }
+
+        // Priority 2: Geolocation detection (Indonesia vs Others)
+        const detectCurrency = async () => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
+            try {
+                const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!res.ok) throw new Error('Network response not ok');
+                
+                const data = await res.json();
+                if (data.country_code === 'ID') {
+                    setCurrency('IDR');
+                } else {
+                    setCurrency('MYR');
+                }
+            } catch (err) {
+                // Silence common fetch errors (blocked, network down, etc)
+                // We keep the initial default/server-detected currency
+                if (process.env.NODE_ENV === 'development') {
+                    console.warn('Silent currency geo-detection skip:', err instanceof Error ? err.message : 'Unknown error');
+                }
+            }
+        };
+
+        detectCurrency();
     }, [initialCurrency]);
 
     const setCurrency = (c: Currency) => {
