@@ -86,6 +86,7 @@ export default function AboutPage() {
             </section>
 
             {/* MEET THE FOUNDERS */}
+            {/* 
             <section className={styles.foundersSection}>
                 <div className="container">
                     <div className={styles.sectionHead}>
@@ -119,6 +120,7 @@ export default function AboutPage() {
                     </p>
                 </div>
             </section>
+            */}
 
             {/* PILLARS */}
             <section className={`section ${styles.pillarsSection}`}>
