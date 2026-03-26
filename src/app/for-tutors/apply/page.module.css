@@ -64,9 +64,7 @@
 /* ── Progress Steps ── */
 .progressWrapper {
     display: flex;
-    justify-content: space-between;
     margin-bottom: 40px;
-    padding: 0 4px;
 }
 
 .progressStep {
@@ -74,9 +72,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
 }
 
+/* Row containing: half-line | dot | half-line */
 .progressTop {
     display: flex;
     align-items: center;
@@ -84,10 +82,25 @@
     margin-bottom: 8px;
 }
 
+/* Half-line segments flanking each dot */
+.progressLineHalf {
+    flex: 1;
+    height: 2px;
+    background: var(--border-strong);
+    transition: background 0.3s;
+}
+
+/* Hide the outermost half-lines so the bar starts/ends at the first/last dot */
+.progressStep:first-child .progressLineBefore,
+.progressStep:last-child .progressLineAfter {
+    visibility: hidden;
+}
+
 .progressDot {
     width: 32px;
     height: 32px;
     min-width: 32px;
+    flex-shrink: 0;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -101,14 +114,6 @@
     z-index: 1;
 }
 
-.progressLine {
-    height: 2px;
-    background: var(--border-strong);
-    flex-grow: 1;
-    margin: 0 -16px; /* Overlap half the dots for a continuous line */
-    transition: background 0.3s;
-}
-
 .progressLabel {
     font-size: 10px;
     font-weight: 600;
@@ -116,9 +121,10 @@
     text-transform: uppercase;
     letter-spacing: 0.02em;
     text-align: center;
-    max-width: 80px;
     line-height: 1.2;
     transition: color 0.3s;
+    padding: 0 2px;
+    width: 100%;
 }
 
 /* Active & Done States */
@@ -131,6 +137,12 @@
 
 .stepActive .progressLabel {
     color: var(--accent);
+    font-weight: 700;
+}
+
+/* Active step: the line coming in from the left (before) is completed */
+.stepActive .progressLineBefore {
+    background: var(--accent);
 }
 
 .stepDone .progressDot {
@@ -139,21 +151,9 @@
     color: white;
 }
 
-.stepDone .progressLine {
+/* Done step: both half-lines are completed */
+.stepDone .progressLineHalf {
     background: var(--accent);
-}
-
-/* Specific alignments for first/last items to keep the line bounded */
-.progressStep:last-child {
-    flex: 0 0 auto;
-    width: 32px;
-}
-.progressStep:last-child .progressLabel {
-    max-width: 64px;
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 /* ── Form Card ── */
@@ -666,8 +666,7 @@
         flex-direction: row; /* Keep row but maybe smaller buttons */
     }
     .progressLabel {
-        width: auto;
-        font-size: 8px;
+        font-size: 7.5px;
         letter-spacing: 0;
     }
     .progressDot {
@@ -678,9 +677,6 @@
     }
     .progressTop {
         margin-bottom: 4px;
-    }
-    .progressStep:last-child .progressLabel {
-        top: 32px;
     }
 }
 

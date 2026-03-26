@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { useLanguage } from '@/components/LanguageContext';
 
 const EXPERTISE_OPTIONS = [
     'Graphic Design with AI',
@@ -13,12 +14,6 @@ const EXPERTISE_OPTIONS = [
 ];
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const SLOTS = [
-    { key: 'morning',   label: 'Morning',   time: '06:00–10:00' },
-    { key: 'midday',    label: 'Midday',    time: '10:00–14:00' },
-    { key: 'afternoon', label: 'Afternoon', time: '14:00–18:00' },
-    { key: 'evening',   label: 'Evening',   time: '18:00–22:00' },
-];
 
 const TIMEZONES = [
     { value: 'Asia/Jakarta',      label: 'WIB — Jakarta (UTC+7)' },
@@ -27,15 +22,6 @@ const TIMEZONES = [
     { value: 'Asia/Kuala_Lumpur', label: 'MYT — Kuala Lumpur (UTC+8)' },
     { value: 'Asia/Singapore',    label: 'SGT — Singapore (UTC+8)' },
     { value: 'UTC',               label: 'UTC' },
-];
-
-// Step order: Profile → Availability → Work → Teaching Plan → Agreement
-const STEPS = [
-    { label: 'Your Profile',  title: 'Tell us about yourself',  badge: 'Step 1 of 5' },
-    { label: 'Availability',  title: 'When can you teach?',     badge: 'Step 2 of 5' },
-    { label: 'Your Work',     title: 'Share your credentials',  badge: 'Step 3 of 5' },
-    { label: 'Teaching Plan', title: 'Outline your curriculum', badge: 'Step 4 of 5' },
-    { label: 'Agreement',     title: 'Terms & Conditions',      badge: 'Step 5 of 5' },
 ];
 
 interface FormData {
@@ -69,11 +55,28 @@ const INITIAL: FormData = {
 };
 
 export default function TutorApplyPage() {
+    const { t } = useLanguage();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState<FormData>(INITIAL);
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+
+    // Derived from translations so they react to language toggle
+    const STEPS = [
+        { labelKey: 'apply.step1.label', titleKey: 'apply.step1.title' },
+        { labelKey: 'apply.step2.label', titleKey: 'apply.step2.title' },
+        { labelKey: 'apply.step3.label', titleKey: 'apply.step3.title' },
+        { labelKey: 'apply.step4.label', titleKey: 'apply.step4.title' },
+        { labelKey: 'apply.step5.label', titleKey: 'apply.step5.title' },
+    ];
+
+    const SLOTS = [
+        { key: 'morning',   labelKey: 'apply.slot.morning',   time: '06:00–10:00' },
+        { key: 'midday',    labelKey: 'apply.slot.midday',    time: '10:00–14:00' },
+        { key: 'afternoon', labelKey: 'apply.slot.afternoon', time: '14:00–18:00' },
+        { key: 'evening',   labelKey: 'apply.slot.evening',   time: '18:00–22:00' },
+    ];
 
     // ── Field helpers ──────────────────────────────────────────
     const set = (field: keyof FormData, value: any) =>
@@ -121,8 +124,6 @@ export default function TutorApplyPage() {
     };
 
     // ── Validation per step ────────────────────────────────────
-    // Step 1 = Profile, Step 2 = Availability, Step 3 = Work,
-    // Step 4 = Teaching Plan, Step 5 = Agreement
     const validate = (s: number): string => {
         if (s === 1) {
             if (formData.name.trim().length < 2)       return 'Full name must be at least 2 characters.';
@@ -212,22 +213,20 @@ export default function TutorApplyPage() {
             <div className={styles.successPage}>
                 <div className={styles.successCard}>
                     <div className={styles.successIconWrap}>🚀</div>
-                    <h1 className={styles.successTitle}>Application Received!</h1>
-                    <p className={styles.successText}>
-                        Thank you for applying to join the GDI FutureWorks tutor network.
-                        Our team will review your profile, video, and curriculum outline.
-                    </p>
+                    <h1 className={styles.successTitle}>{t('apply.success.title')}</h1>
+                    <p className={styles.successText}>{t('apply.success.text')}</p>
                     <div className={styles.successMeta}>
                         <span className={styles.successMetaDot} />
-                        We typically respond within 3–5 business days
+                        {t('apply.success.meta')}
                     </div>
-                    <Link href="/" className={styles.btnPrimary}>Return to Homepage</Link>
+                    <Link href="/" className={styles.btnPrimary}>{t('apply.success.home')}</Link>
                 </div>
             </div>
         );
     }
 
     const currentStep = STEPS[step - 1];
+    const stepBadge = `${t('apply.step.badge')} ${step} ${t('apply.step.of')} ${STEPS.length}`;
 
     return (
         <div className={styles.page}>
@@ -235,36 +234,38 @@ export default function TutorApplyPage() {
 
                 {/* Header */}
                 <div className={styles.header}>
-                    <div className={styles.eyebrow}>🎓 Tutor Application</div>
-                    <h1 className={styles.title}>Become a <span>GDI</span> Tutor</h1>
-                    <p className={styles.subtitle}>
-                        Apply to join our curated network of expert educators and start earning by teaching the skills you know.
-                    </p>
+                    <div className={styles.eyebrow}>🎓 {t('apply.eyebrow')}</div>
+                    <h1 className={styles.title}>
+                        {t('apply.title.pre')}<span>{t('apply.title.brand')}</span>{t('apply.title.post')}
+                    </h1>
+                    <p className={styles.subtitle}>{t('apply.subtitle')}</p>
                 </div>
 
-                {/* Progress Steps */}
+                {/* ── Progress Steps — pixel-perfect: each dot centered above its label ── */}
                 <div className={styles.progressWrapper}>
                     {STEPS.map((s, i) => (
                         <div
                             key={i}
                             className={`${styles.progressStep} ${i + 1 < step ? styles.stepDone : ''} ${i + 1 === step ? styles.stepActive : ''}`}
                         >
+                            {/* Half-line before dot | dot | half-line after dot */}
                             <div className={styles.progressTop}>
+                                <div className={`${styles.progressLineHalf} ${styles.progressLineBefore}`} />
                                 <div className={styles.progressDot}>
                                     {i + 1 < step ? '✓' : i + 1}
                                 </div>
-                                {i < STEPS.length - 1 && <div className={styles.progressLine} />}
+                                <div className={`${styles.progressLineHalf} ${styles.progressLineAfter}`} />
                             </div>
-                            <div className={styles.progressLabel}>{s.label}</div>
+                            <div className={styles.progressLabel}>{t(s.labelKey)}</div>
                         </div>
                     ))}
                 </div>
 
-                {/* Form Card — plain div, no <form>, no accidental submit */}
+                {/* Form Card */}
                 <div className={styles.formCard}>
                     <div className={styles.stepHeader}>
-                        <div className={styles.stepBadge}>{currentStep.badge}</div>
-                        <div className={styles.stepTitle}>{currentStep.title}</div>
+                        <div className={styles.stepBadge}>{stepBadge}</div>
+                        <div className={styles.stepTitle}>{t(currentStep.titleKey)}</div>
                     </div>
 
                     <div>
@@ -273,7 +274,7 @@ export default function TutorApplyPage() {
                         {step === 1 && (
                             <div className={styles.stepContent}>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Full Name</label>
+                                    <label className={styles.label}>{t('apply.f.name')}</label>
                                     <input
                                         type="text" value={formData.name}
                                         onChange={e => set('name', e.target.value)}
@@ -282,7 +283,7 @@ export default function TutorApplyPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Professional Email</label>
+                                    <label className={styles.label}>{t('apply.f.email')}</label>
                                     <input
                                         type="email" value={formData.email}
                                         onChange={e => set('email', e.target.value)}
@@ -291,21 +292,21 @@ export default function TutorApplyPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Expertise Area</label>
+                                    <label className={styles.label}>{t('apply.f.expertise')}</label>
                                     <select
                                         value={formData.expertise}
                                         onChange={e => set('expertise', e.target.value)}
                                         className={styles.select}
                                     >
-                                        <option value="">Select your teaching area…</option>
+                                        <option value="">{t('apply.f.expertise.ph')}</option>
                                         {EXPERTISE_OPTIONS.map(opt => (
                                             <option key={opt} value={opt}>{opt}</option>
                                         ))}
                                     </select>
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Professional Bio</label>
-                                    <p className={styles.hint}>Tell us about your industry background and teaching experience.</p>
+                                    <label className={styles.label}>{t('apply.f.bio')}</label>
+                                    <p className={styles.hint}>{t('apply.f.bio.hint')}</p>
                                     <textarea
                                         value={formData.bio}
                                         onChange={e => set('bio', e.target.value)}
@@ -314,7 +315,7 @@ export default function TutorApplyPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>LinkedIn Profile URL</label>
+                                    <label className={styles.label}>{t('apply.f.linkedin')}</label>
                                     <input
                                         type="url" value={formData.linkedin}
                                         onChange={e => set('linkedin', e.target.value)}
@@ -329,11 +330,11 @@ export default function TutorApplyPage() {
                         {step === 2 && (
                             <div className={styles.stepContent}>
                                 <div className={styles.infoBox}>
-                                    <strong>Tap cells to mark your availability.</strong> Click a day header to select all slots for that day, or a row label to select that time across all days.
+                                    {t('apply.avail.info')}
                                 </div>
 
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Your Timezone</label>
+                                    <label className={styles.label}>{t('apply.f.tz')}</label>
                                     <select
                                         value={formData.timezone}
                                         onChange={e => set('timezone', e.target.value)}
@@ -372,9 +373,9 @@ export default function TutorApplyPage() {
                                                     <button type="button"
                                                         className={`${styles.gridTimeLabel}${rowAllSelected ? ` ${styles.gridTimeLabelActive}` : ''}`}
                                                         onClick={() => toggleSlotRow(slot.key)}
-                                                        title={`Toggle ${slot.label} across all days`}
+                                                        title={`Toggle ${t(slot.labelKey)} across all days`}
                                                     >
-                                                        <span className={styles.gridSlotName}>{slot.label}</span>
+                                                        <span className={styles.gridSlotName}>{t(slot.labelKey)}</span>
                                                         <span className={styles.gridSlotTime}>{slot.time}</span>
                                                     </button>
                                                     {DAYS.map(day => {
@@ -384,7 +385,7 @@ export default function TutorApplyPage() {
                                                             <button key={key} type="button"
                                                                 className={`${styles.gridCell}${isActive ? ` ${styles.gridCellActive}` : ''}`}
                                                                 onClick={() => toggleSlot(day, slot.key)}
-                                                                aria-label={`${day} ${slot.label} — ${isActive ? 'selected' : 'not selected'}`}
+                                                                aria-label={`${day} ${t(slot.labelKey)} — ${isActive ? 'selected' : 'not selected'}`}
                                                                 aria-pressed={isActive}
                                                                 style={{ minWidth: '40px', minHeight: '40px' }}
                                                             >
@@ -403,8 +404,12 @@ export default function TutorApplyPage() {
 
                                     <div className={styles.gridSummary}>
                                         {formData.availability.length === 0
-                                            ? <span className={styles.gridSummaryEmpty}>No slots selected yet — tap cells above</span>
-                                            : <span className={styles.gridSummaryCount}>{formData.availability.length} slot{formData.availability.length !== 1 ? 's' : ''} selected</span>
+                                            ? <span className={styles.gridSummaryEmpty}>{t('apply.avail.none')}</span>
+                                            : <span className={styles.gridSummaryCount}>
+                                                {formData.availability.length}{' '}
+                                                {formData.availability.length !== 1 ? t('apply.avail.slotsP') : t('apply.avail.slots')}{' '}
+                                                {t('apply.avail.selected')}
+                                              </span>
                                         }
                                     </div>
                                 </div>
@@ -415,11 +420,11 @@ export default function TutorApplyPage() {
                         {step === 3 && (
                             <div className={styles.stepContent}>
                                 <div className={styles.infoBox}>
-                                    <strong>Why do we ask for this?</strong> Our community selects tutors based on real credibility. A short video and portfolio help students choose the right teacher for them.
+                                    {t('apply.work.info')}
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Introduction Video (3–5 mins)</label>
-                                    <p className={styles.hint}>Record yourself teaching a short concept. Host it on Loom, YouTube, or Vimeo and paste the link below.</p>
+                                    <label className={styles.label}>{t('apply.f.video')}</label>
+                                    <p className={styles.hint}>{t('apply.f.video.hint')}</p>
                                     <input
                                         type="url" value={formData.videoLink}
                                         onChange={e => set('videoLink', e.target.value)}
@@ -429,10 +434,10 @@ export default function TutorApplyPage() {
                                 </div>
                                 <div className={styles.formGroup}>
                                     <label className={styles.label}>
-                                        Portfolio / Work Examples{' '}
-                                        <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>— optional</span>
+                                        {t('apply.f.portfolio')}{' '}
+                                        <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>{t('apply.f.portfolio.opt')}</span>
                                     </label>
-                                    <p className={styles.hint}>Link to your GitHub, Behance, portfolio site, or previous course materials.</p>
+                                    <p className={styles.hint}>{t('apply.f.portfolio.hint')}</p>
                                     <input
                                         type="url" value={formData.portfolioLink}
                                         onChange={e => set('portfolioLink', e.target.value)}
@@ -447,11 +452,11 @@ export default function TutorApplyPage() {
                         {step === 4 && (
                             <div className={styles.stepContent}>
                                 <div className={styles.infoBox}>
-                                    <strong>This is the most important step.</strong> A clear, structured curriculum is the #1 thing students look for when choosing a tutor.
+                                    {t('apply.plan.info')}
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Proposed Curriculum Outline</label>
-                                    <p className={styles.hint}>Summarize your modules, key learning outcomes, and tools/software used.</p>
+                                    <label className={styles.label}>{t('apply.f.curriculum')}</label>
+                                    <p className={styles.hint}>{t('apply.f.curriculum.hint')}</p>
                                     <textarea
                                         value={formData.curriculum}
                                         onChange={e => set('curriculum', e.target.value)}
@@ -460,8 +465,8 @@ export default function TutorApplyPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Sample Lesson Plan (2 Lessons)</label>
-                                    <p className={styles.hint}>Walk us through two consecutive lessons as you would deliver them live.</p>
+                                    <label className={styles.label}>{t('apply.f.lesson')}</label>
+                                    <p className={styles.hint}>{t('apply.f.lesson.hint')}</p>
                                     <textarea
                                         value={formData.lessonPlan}
                                         onChange={e => set('lessonPlan', e.target.value)}
@@ -476,25 +481,25 @@ export default function TutorApplyPage() {
                         {step === 5 && (
                             <div className={styles.stepContent}>
                                 <div className={styles.infoBox}>
-                                    <strong>Almost there!</strong> Please read and agree to our tutor terms before submitting your application.
+                                    {t('apply.agree.info')}
                                 </div>
                                 <div className={styles.termsBox}>
-                                    <p><strong>Tutor Code of Conduct</strong></p>
+                                    <p><strong>{t('apply.terms.title')}</strong></p>
                                     <ul>
-                                        <li>You will deliver sessions on time and as scheduled with students.</li>
-                                        <li>You will not share students' personal data with any third party.</li>
-                                        <li>All curriculum content you submit must be your original work or properly licensed.</li>
-                                        <li>You agree to GDI FutureWorks' platform fee structure (as communicated in your onboarding).</li>
-                                        <li>GDI FutureWorks reserves the right to remove tutors who violate community standards.</li>
-                                        <li>You confirm that all information in this application is accurate and truthful.</li>
+                                        <li>{t('apply.terms.1')}</li>
+                                        <li>{t('apply.terms.2')}</li>
+                                        <li>{t('apply.terms.3')}</li>
+                                        <li>{t('apply.terms.4')}</li>
+                                        <li>{t('apply.terms.5')}</li>
+                                        <li>{t('apply.terms.6')}</li>
                                     </ul>
                                     <p style={{ marginTop: '12px' }}>
-                                        By submitting, you also agree to our{' '}
+                                        {t('apply.terms.footer')}{' '}
                                         <a href="#" onClick={e => e.preventDefault()} title="Coming soon"
-                                           style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'default' }}>Terms of Service</a>
-                                        {' '}and{' '}
+                                           style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'default' }}>{t('apply.terms.tos')}</a>
+                                        {' '}{t('apply.terms.and')}{' '}
                                         <a href="#" onClick={e => e.preventDefault()} title="Coming soon"
-                                           style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'default' }}>Privacy Policy</a>.
+                                           style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'default' }}>{t('apply.terms.pp')}</a>.
                                     </p>
                                 </div>
                                 <label className={styles.agreementRow}>
@@ -504,9 +509,7 @@ export default function TutorApplyPage() {
                                         onChange={e => set('agreed', e.target.checked)}
                                         className={styles.agreementCheckbox}
                                     />
-                                    <span className={styles.agreementLabel}>
-                                        I have read and agree to the Tutor Code of Conduct, Terms of Service, and Privacy Policy.
-                                    </span>
+                                    <span className={styles.agreementLabel}>{t('apply.agree.label')}</span>
                                 </label>
                             </div>
                         )}
@@ -522,7 +525,7 @@ export default function TutorApplyPage() {
                         <div className={styles.footer}>
                             {step > 1 ? (
                                 <button type="button" onClick={goBack} className={styles.btnSecondary}>
-                                    ← Back
+                                    {t('apply.btn.back')}
                                 </button>
                             ) : (
                                 <span />
@@ -532,7 +535,7 @@ export default function TutorApplyPage() {
 
                             {step < 5 ? (
                                 <button type="button" onClick={goNext} className={styles.btnPrimary}>
-                                    Continue →
+                                    {t('apply.btn.continue')}
                                 </button>
                             ) : (
                                 <button
@@ -541,7 +544,11 @@ export default function TutorApplyPage() {
                                     disabled={isSubmitting || !formData.agreed}
                                     className={styles.btnPrimary}
                                 >
-                                    {isSubmitting ? 'Submitting…' : !formData.agreed ? 'Agree to terms to continue' : 'Submit Application →'}
+                                    {isSubmitting
+                                        ? t('apply.btn.submitting')
+                                        : !formData.agreed
+                                            ? t('apply.btn.agree.first')
+                                            : t('apply.btn.submit')}
                                 </button>
                             )}
                         </div>
