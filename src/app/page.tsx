@@ -198,7 +198,8 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* ── INSTRUCTOR AUTHORITY ── */}
+            {/* ── INSTRUCTOR AUTHORITY (HIDDEN) ── */}
+            {/* 
             <section className={styles.instructorAuthSection}>
                 <div className="container">
                     <div className={styles.sectionHeader}>
@@ -226,8 +227,10 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
+            */}
 
-            {/* ── TESTIMONIALS ── */}
+            {/* ── TESTIMONIALS (HIDDEN) ── */}
+            {/* 
             <section className={styles.testimonialsSection}>
                 <div className="container">
                     <div className={styles.sectionHeader}>
@@ -263,6 +266,7 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
+            */}
 
             {/* ── SMART PARTNERSHIP ── */}
             <section className={styles.greatEnglishSection}>
