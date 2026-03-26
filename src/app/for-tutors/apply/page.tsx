@@ -138,7 +138,7 @@ export default function TutorApplyPage() {
         }
         if (s === 3) {
             if (!formData.videoLink.trim())             return 'Please provide a link to your introduction video.';
-            if (!isValidUrl(formData.videoLink.trim())) return 'Video URL must start with https:// (e.g. https://loom.com/share/...).';
+            if (!isValidUrl(formData.videoLink.trim())) return 'Video URL must start with https:// (e.g. https://youtube.com/watch?v=... or https://loom.com/share/...).';
             if (formData.portfolioLink.trim() && !isValidUrl(formData.portfolioLink.trim()))
                                                         return 'Portfolio URL must start with https://.';
         }
@@ -429,7 +429,7 @@ export default function TutorApplyPage() {
                                         type="url" value={formData.videoLink}
                                         onChange={e => set('videoLink', e.target.value)}
                                         className={styles.input}
-                                        placeholder="https://loom.com/share/abc123"
+                                        placeholder="https://youtube.com/watch?v=... or https://loom.com/share/..."
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
