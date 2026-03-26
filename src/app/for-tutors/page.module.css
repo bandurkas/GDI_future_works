@@ -1,294 +1,1433 @@
+/* ═══════════════════════════════════════════════════
+   FOR TUTORS PAGE — full redesign
+   Uses design tokens from globals.css
+═══════════════════════════════════════════════════ */
+
+/* ── KEYFRAMES ────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: var(--shadow-accent); }
+  50%       { box-shadow: 0 0 0 8px var(--accent-glow), var(--shadow-accent-lg); }
+}
+@keyframes revealSection {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .page {
-    min-height: 100vh;
-    padding-top: var(--nav-height);
-    background: var(--bg);
-    color: var(--text-primary);
-    font-family: var(--font-body);
-    transition: background-color var(--transition-base);
+  min-height: 100vh;
+  padding-top: var(--nav-height);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  /* prevent any child from ever causing horizontal scroll */
+  overflow-x: hidden;
 }
 
-.container {
-    max-width: 1000px; /* Notion-style narrower reading width */
-    margin: 0 auto;
-    padding: 0 var(--space-6);
-}
-
-/* Hero Section */
+/* ── HERO ─────────────────────────────────────────── */
 .hero {
-    padding: 80px 0 60px;
-    text-align: center;
+  padding: 100px 0 88px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.heroIcons {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-bottom: 24px;
-    opacity: 0.8;
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, var(--accent-light) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.heroIcon {
-    font-size: 2.5rem;
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--border-strong) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.45;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+}
+
+.heroEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--accent-strong);
+  margin-bottom: 32px;
+  /* stagger 1 */
+  animation: fadeUp 0.6s ease both;
+  animation-delay: 0.05s;
 }
 
 .heroTitle {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    margin-bottom: 24px;
-    color: var(--text-primary);
+  font-size: clamp(2.75rem, 5.5vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  /* stagger 2 */
+  animation: fadeUp 0.7s ease both;
+  animation-delay: 0.15s;
+}
+
+.heroAccent {
+  color: var(--accent);
+  display: block;
 }
 
 .heroSubtitle {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    max-width: 700px;
-    margin: 0 auto 40px;
-    line-height: 1.6;
+  font-size: 1.1875rem;
+  color: var(--text-secondary);
+  max-width: 540px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+  /* stagger 3 */
+  animation: fadeUp 0.7s ease both;
+  animation-delay: 0.28s;
 }
 
-/* Common Components */
-.ctaBtn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--accent, #D42B2B);
-    color: #FFFFFF;
-    padding: 14px 32px;
-    border-radius: var(--radius-md);
-    font-size: 1.125rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all var(--transition-base);
-    border: none;
-    cursor: pointer;
-    box-shadow: var(--shadow-accent);
+.heroBullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 44px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  gap: 10px 28px;
+  max-width: 100%;
+  /* stagger 4 */
+  animation: fadeUp 0.7s ease both;
+  animation-delay: 0.4s;
 }
 
-.ctaBtn:hover {
-    background: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-accent-lg);
+.heroBulletItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
 }
 
-/* Strategic Overview / Comparison */
-.section {
-    padding: 80px 0;
+.heroBulletIcon {
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
-.sectionHeader {
-    text-align: center;
-    margin-bottom: 60px;
+.heroCtas {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+  /* stagger 5 */
+  animation: fadeUp 0.7s ease both;
+  animation-delay: 0.52s;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  padding: 15px 32px;
+  min-height: 52px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-accent);
+  animation: ctaPulse 3s ease-in-out 1.2s infinite;
+}
+
+.ctaPrimary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-accent-lg);
+  animation: none;
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  padding: 15px 28px;
+  min-height: 52px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1.5px solid var(--border-strong);
+  transition: all var(--transition-base);
+}
+
+.ctaSecondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── HERO TRUST BAR ───────────────────────────────── */
+.heroTrustBar {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  margin-top: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  box-shadow: 0 1px 4px var(--border-light), 0 8px 32px var(--border-light);
+  /* stagger 6 */
+  animation: fadeUp 0.8s ease both;
+  animation-delay: 0.68s;
+}
+
+.heroTrustBarInner {
+  display: flex;
+  align-items: stretch;
+}
+
+/* First stat gets primary/hero treatment — KPI hierarchy rule */
+.heroTrustBarInner:first-child .heroTrustStat {
+  background: var(--accent-light);
+}
+
+.heroTrustBarInner:first-child .heroTrustValue {
+  font-size: 1.875rem;
+  color: var(--accent);
+}
+
+.heroTrustStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 22px 36px;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.heroTrustValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.heroTrustLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 5px;
+  white-space: nowrap; /* desktop only — overridden at mobile */
+}
+
+.heroTrustSub {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap; /* desktop only — hidden at mobile */
+}
+
+.heroTrustDivider {
+  width: 1px;
+  background: var(--border);
+  flex-shrink: 0;
+  align-self: stretch;
+  margin: 16px 0;
+}
+
+/* ── SCROLL REVEAL (applied to all non-hero sections) ─ */
+.earningsSection,
+.calculatorSection,
+.whySection,
+.topicsSection,
+.howSection {
+  animation: revealSection 0.7s ease both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 30%;
+}
+
+/* Fallback: if animation-timeline not supported, show immediately */
+@supports not (animation-timeline: view()) {
+  .earningsSection,
+  .calculatorSection,
+  .whySection,
+  .topicsSection,
+  .howSection {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── EARNINGS ─────────────────────────────────────── */
+.earningsSection {
+  padding: var(--space-24) 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.sectionLabel {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
 }
 
 .sectionTitle {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
-}
-
-.comparisonGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-top: 40px;
-}
-
-.problemCard, .solutionCard {
-    padding: 40px;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-light);
-    transition: all var(--transition-base);
-}
-
-.problemCard {
-    background: var(--bg-secondary);
-}
-
-.solutionCard {
-    background: var(--success-light);
-    border-color: var(--success);
-}
-
-.solutionDesc {
-    font-size: 0.9375rem; 
-    line-height: 1.6; 
-    color: var(--success);
-}
-
-.cardTitle {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 16px;
-}
-
-/* Feature Grid */
-.featureGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
-.featureCard {
-    padding: 32px;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-light);
-    transition: all var(--transition-base);
-    background: var(--bg-card);
-}
-
-.featureCard:hover {
-    border-color: var(--accent);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-4px);
-}
-
-.featureIcon {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    display: block;
-}
-
-.featureTitle {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.featureDesc {
-    font-size: 0.9375rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
-
-/* Process Section */
-.processList {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.processStep {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 16px 24px;
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-light);
-    transition: all var(--transition-base);
-}
-
-.processStep:hover {
-    border-color: var(--accent-strong);
-    background: var(--bg-card);
-}
-
-.stepNumber {
-    width: 32px;
-    height: 32px;
-    background: var(--text-primary);
-    color: var(--bg);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.875rem;
-    flex-shrink: 0;
-}
-
-.stepText {
-    font-weight: 600;
-    color: var(--text-primary);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  font-family: var(--font-display);
 }
 
 .sectionSubtitle {
-    color: var(--text-secondary);
+  font-size: 1.0625rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 560px;
 }
 
-.requirementsSection {
-    background: var(--bg-secondary);
-    border-radius: var(--radius-2xl);
-    padding: 80px 40px;
-    margin-top: 40px;
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 52px;
 }
 
-.requirementsSubtitle {
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
+.sectionHeader .sectionSubtitle {
+  margin: 0 auto;
 }
 
-.requirementsGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+.earningsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
-.listTitle {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: var(--text-primary);
+.earningsCard {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  /* stagger via nth-child */
+  animation: fadeUp 0.6s ease both;
 }
 
-.checkList {
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.earningsCard:nth-child(1) { animation-delay: 0.1s; }
+.earningsCard:nth-child(2) { animation-delay: 0.22s; }
+.earningsCard:nth-child(3) { animation-delay: 0.34s; }
+
+.earningsCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
 }
 
-.checkItem {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    color: var(--text-primary);
+.earningsCardFeatured {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-accent);
 }
 
-.checkIcon {
-    color: var(--success);
-    font-weight: bold;
+.earningsCardFeatured:hover {
+  box-shadow: var(--shadow-accent-lg);
+  border-color: var(--accent);
 }
 
-.requirementsList {
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.tierBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  width: fit-content;
+}
+
+.tierBadgeFeatured {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.tierName {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.tierDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tierDetail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.tierDetailIcon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.tierIncome {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+  margin-top: auto;
+}
+
+.tierIncomeLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.tierIncomeAmount {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--accent);
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.earningsCardFeatured .tierIncomeAmount {
+  font-size: 2.25rem;
+}
+
+/* ── CALCULATOR ───────────────────────────────────── */
+.calculatorSection {
+  padding: var(--space-24) 0;
+  background: var(--bg);
+}
+
+.calculatorCard {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 52px 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.calcInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.calcField {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calcLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calcLabelValue {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-display);
+}
+
+.calcSlider {
+  width: 100%;
+  height: 6px;
+  border-radius: 99px;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) var(--slider-fill, 20%),
+    var(--border-strong) var(--slider-fill, 20%),
+    var(--border-strong) 100%
+  );
+}
+
+.calcSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--accent);
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast);
+}
+
+.calcSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--accent);
+  cursor: pointer;
+}
+
+.calcSlider:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--accent-light);
+}
+
+.calcSelect {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C6470' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.calcSelect:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.calcOutputs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calcOutputTitle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+
+.calcOutputRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  transition: background var(--transition-fast);
+}
+
+.calcOutputRowHighlight {
+  background: var(--accent-light);
+  border-color: var(--accent-strong);
+  padding: 22px 24px;
+  border-radius: var(--radius-xl, 16px);
+}
+
+.calcOutputLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.calcOutputRowHighlight .calcOutputLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.calcOutputAmount {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  transition: all 0.2s ease;
+}
+
+.calcOutputAmountHighlight {
+  font-size: 2rem;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+
+.calcDisclaimer {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+/* ── WHY TEACH ────────────────────────────────────── */
+.whySection {
+  padding: var(--space-24) 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.benefitCard {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl, 16px);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all var(--transition-base);
+}
+
+.benefitCard:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.benefitIconWrap {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--accent-light);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.benefitTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.benefitDesc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ── HOW-IT-WORKS SPEED BADGE ─────────────────────── */
+.howFastBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--accent-strong);
+}
+
+/* ── TOPICS ───────────────────────────────────────── */
+.topicsSection {
+  padding: var(--space-24) 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border-light);
+}
+
+.topicsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.topicCard {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl, 16px);
+  padding: 24px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: default;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.topicCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 20% 20%,
+    var(--accent-light) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.topicCard:hover {
+  border-color: var(--accent-strong);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--accent-light), 0 2px 8px var(--border);
+}
+
+.topicCard:hover::before {
+  opacity: 1;
+}
+
+.topicCardIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--accent-light);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.topicCard:hover .topicCardIcon {
+  background: var(--accent);
+  color: #fff;
+}
+
+.topicCardLabel {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.topicCardSub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ── TOPICS FOOTNOTE ──────────────────────────────── */
+.topicsFootnote {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.topicsFootnote strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── HOW IT WORKS ─────────────────────────────────── */
+.howSection {
+  padding: var(--space-24) 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+}
+
+.stepsRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.stepWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 16px;
+  position: relative;
+}
+
+.stepConnectorLine {
+  flex: 1;
+  height: 2px;
+  background: var(--border-strong);
+  margin-top: 22px;
+  flex-shrink: 0;
+}
+
+.stepNum {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-accent);
+}
+
+.stepTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.stepDesc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ── FINAL CTA ────────────────────────────────────── */
+.ctaSection {
+  padding: var(--space-24) 0;
+  background: var(--dark, #141414);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle radial glow so the dark section feels alive in both themes */
+.ctaSection::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(212, 43, 43, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ctaSectionTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
+  font-family: var(--font-display);
+}
+
+.ctaSectionSub {
+  font-size: 1.0625rem;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.ctaWhiteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: var(--accent);
+  padding: 16px 40px;
+  min-height: 56px;
+  border-radius: var(--radius-md);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+.ctaWhiteBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ── FINAL CTA ENHANCEMENTS ───────────────────────── */
+.ctaSocialProofBadge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
+}
+
+.ctaReassurances {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.ctaReassuranceItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.ctaReassuranceItem svg {
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+/* ── DIVIDERS ─────────────────────────────────────── */
+.dividerLine {
+  border: none;
+  height: 1px;
+  background: var(--border-light);
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════ */
+
+/* ── 1100px: topics 4-col ─── */
+@media (max-width: 1100px) {
+  .topicsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ── 960px: tablet ─── */
+@media (max-width: 960px) {
+  .benefitsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .earningsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .earningsGrid > :last-child {
+    grid-column: auto; /* no orphan full-width card on tablet */
+  }
+
+  .earningsCardFeatured {
+    grid-column: 1 / -1; /* featured spans full width at tablet */
+  }
+
+  .calculatorCard {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 40px 36px;
+  }
+
+  .topicsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── 768px: mobile ─── */
+@media (max-width: 768px) {
+  /* ── Global horizontal breathing room ── */
+  /* Override the global 16px container padding to 20px on mobile */
+  .hero :global(.container),
+  .earningsSection :global(.container),
+  .calculatorSection :global(.container),
+  .whySection :global(.container),
+  .topicsSection :global(.container),
+  .howSection :global(.container),
+  .ctaSection :global(.container) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* ── Section vertical rhythm ── */
+  .earningsSection,
+  .calculatorSection,
+  .whySection,
+  .topicsSection,
+  .howSection,
+  .ctaSection {
+    padding: 64px 0;
+  }
+
+  .sectionHeader {
+    margin-bottom: 32px;
+  }
+
+  .sectionTitle {
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
+    margin-bottom: 10px;
+  }
+
+  .sectionSubtitle {
     font-size: 0.9375rem;
-    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 56px 0 48px;
+  }
+
+  .heroEyebrow {
+    font-size: 0.625rem;
+    padding: 6px 14px;
+    margin-bottom: 24px;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.125rem, 7.5vw, 2.875rem);
+    margin-bottom: 16px;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+    margin-bottom: 28px;
+    line-height: 1.65;
+  }
+
+  /* Bullets: single column on mobile — icon stays with text */
+  .heroBullets {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 36px;
+    width: 100%;
+    max-width: 280px;
+    text-align: left;
+  }
+
+  .heroBulletItem {
+    font-size: 0.9rem;
+    white-space: normal;
+    align-items: center;
+  }
+
+  /* CTAs: full-width stack */
+  .heroCtas {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    width: 100%;
+    justify-content: center;
+    min-height: 52px;
+    border-radius: 12px;
+  }
+
+  /* Trust bar: compact, equal-width stats */
+  .heroTrustBar {
+    width: 100%;
+    border-radius: 16px;
+    margin-top: 28px;
+  }
+
+  .heroTrustBarInner {
+    flex: 1;
+    min-width: 0; /* prevent overflow */
+  }
+
+  .heroTrustStat {
+    padding: 14px 12px;
+    gap: 1px;
+    width: 100%;
+  }
+
+  .heroTrustValue {
+    font-size: 1.0625rem;
+    white-space: nowrap;
+  }
+
+  .heroTrustBarInner:first-child .heroTrustValue {
+    font-size: 1.25rem;
+  }
+
+  .heroTrustLabel {
+    font-size: 0.6875rem;
+    margin-top: 3px;
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  .heroTrustSub {
+    display: none; /* hide sub-labels at mobile — cleans up the bar */
+  }
+
+  /* ── Earnings ── */
+  .earningsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Featured card first on mobile */
+  .earningsCardFeatured {
+    order: -1;
+    grid-column: auto;
+  }
+
+  .earningsCard {
+    padding: 28px 24px;
+    gap: 16px;
+    border-radius: 16px;
+  }
+
+  .tierIncomeAmount {
+    font-size: 1.625rem;
+  }
+
+  .earningsCardFeatured .tierIncomeAmount {
+    font-size: 1.875rem;
+  }
+
+  /* ── Calculator ── */
+  .calculatorCard {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 28px 24px;
+    border-radius: 16px;
+  }
+
+  .calcInputs {
+    gap: 24px;
+  }
+
+  /* Bigger touch target on select */
+  .calcSelect {
+    padding: 13px 14px;
+    padding-right: 36px;
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  .calcSlider::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+
+  .calcSlider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+  }
+
+  .calcOutputRow {
+    padding: 14px 16px;
+  }
+
+  .calcOutputRowHighlight {
+    padding: 18px 20px;
+  }
+
+  .calcOutputAmount {
+    font-size: 1.25rem;
+  }
+
+  .calcOutputAmountHighlight {
+    font-size: 1.625rem;
+  }
+
+  /* ── Why Teach (benefits) ── */
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .benefitCard {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 16px;
+    border-radius: 14px;
+  }
+
+  .benefitIconWrap {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 10px;
+  }
+
+  .benefitTitle {
+    font-size: 0.9375rem;
+  }
+
+  .benefitDesc {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  /* ── Topics ── */
+  .topicsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .topicCard {
+    padding: 18px 14px 16px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
+  .topicCardSub {
+    display: none;
+  }
+
+  /* ── How It Works ── */
+  .stepsRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .stepConnectorLine {
+    width: 2px;
+    height: 28px;
+    margin: 0;
+    flex: none;
+  }
+
+  .stepWrap {
+    width: 100%;
+    max-width: 360px;
+    padding: 0 8px;
+  }
+
+  /* ── Final CTA ── */
+  .ctaSectionTitle {
+    font-size: clamp(1.625rem, 6vw, 2.25rem);
+    margin-bottom: 12px;
+  }
+
+  .ctaSectionSub {
+    font-size: 0.9375rem;
+    padding: 0 8px;
+  }
+
+  .ctaReassurances {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ctaSocialProofBadge {
+    font-size: 0.75rem;
+    padding: 5px 14px;
+  }
+
+  .ctaWhiteBtn {
+    width: 100%;
+    max-width: 340px;
+    justify-content: center;
+    min-height: 54px;
+  }
 }
 
-.requirementsList li strong {
-    color: var(--text-primary);
-}
+/* ── 390px: iPhone 14/15 and most Android flagships ─── */
+@media (max-width: 390px) {
+  /* ── Section padding tighter ── */
+  .earningsSection,
+  .calculatorSection,
+  .whySection,
+  .topicsSection,
+  .howSection,
+  .ctaSection {
+    padding: 52px 0;
+  }
 
-/* Responsive */
-@media (max-width: 850px) {
-    .comparisonGrid {
-        grid-template-columns: 1fr;
-    }
-    .featureGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
+  .sectionHeader {
+    margin-bottom: 24px;
+  }
 
-@media (max-width: 640px) {
-    .featureGrid, .comparisonGrid, .requirementsGrid {
-        grid-template-columns: 1fr;
-    }
-    .heroTitle {
-        font-size: 2.25rem;
-    }
-    .requirementsSection {
-        padding: 40px 20px;
-    }
+  /* ── Hero ── */
+  .hero {
+    padding: 48px 0 40px;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.875rem, 9vw, 2.5rem);
+    letter-spacing: -0.03em;
+  }
+
+  /* Trust bar: vertical stack at very narrow widths */
+  .heroTrustBar {
+    flex-direction: column;
+    border-radius: 14px;
+  }
+
+  .heroTrustBarInner {
+    flex-direction: column;
+  }
+
+  .heroTrustDivider {
+    width: auto;
+    height: 1px;
+    margin: 0 16px;
+    align-self: auto;
+  }
+
+  .heroTrustStat {
+    flex-direction: row;
+    padding: 12px 20px;
+    gap: 10px;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .heroTrustBarInner:first-child .heroTrustStat {
+    border-radius: 0; /* first item inside now stacks vertically */
+  }
+
+  .heroTrustValue,
+  .heroTrustBarInner:first-child .heroTrustValue {
+    font-size: 1rem;
+    font-weight: 800;
+    min-width: 52px;
+    color: var(--accent);
+  }
+
+  .heroTrustLabel {
+    font-size: 0.8125rem;
+    margin-top: 0;
+    white-space: normal;
+  }
+
+  /* ── Earnings ── */
+  .earningsCard {
+    padding: 24px 20px;
+    gap: 14px;
+  }
+
+  /* ── Calculator ── */
+  .calculatorCard {
+    padding: 22px 18px;
+    gap: 24px;
+  }
+
+  .calcOutputAmountHighlight {
+    font-size: 1.5rem;
+  }
+
+  /* ── Benefits: keep horizontal layout ── */
+  .benefitCard {
+    padding: 18px 16px;
+    gap: 14px;
+  }
+
+  /* ── Topics: tighter ── */
+  .topicsGrid {
+    gap: 8px;
+  }
+
+  .topicCard {
+    padding: 14px 12px;
+    gap: 7px;
+  }
+
+  .topicCardIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .topicCardLabel {
+    font-size: 0.8125rem;
+    line-height: 1.2;
+  }
+
+  /* ── Final CTA ── */
+  .ctaSection {
+    padding: 52px 0;
+  }
+
+  .ctaWhiteBtn {
+    max-width: 100%;
+    font-size: 0.9375rem;
+  }
 }
