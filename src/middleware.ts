@@ -30,7 +30,11 @@ const ADMIN_ROLES = ALL_ADMIN_ROLES;
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  // NextAuth v5 changed the cookie name from 'next-auth.session-token' to 'authjs.session-token'
+  // On HTTPS (production) it is prefixed with '__Secure-'
+  const secureCookies = process.env.NEXTAUTH_URL?.startsWith('https://') ?? process.env.NODE_ENV === 'production';
+  const cookieName = secureCookies ? '__Secure-authjs.session-token' : 'authjs.session-token';
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, cookieName });
 
   // ── Forward pathname to server components via header (used in admin/layout.tsx) ──
   const requestHeaders = new Headers(req.headers);

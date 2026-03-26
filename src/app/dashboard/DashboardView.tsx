@@ -1,0 +1,196 @@
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { useCurrency } from '@/components/CurrencyContext';
+import styles from './Dashboard.module.css';
+
+export type PopularCourse = {
+  slug: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+  iconBg: string;
+  priceMYR: number;
+  priceIDR: number;
+  nextSession: string;
+  seatsLeft: number;
+};
+
+export type Spot = {
+  courseSlug: string;
+  courseTitle: string;
+  date: string;
+  dayOfWeek: string;
+  day: number;
+  month: string;
+  time: string;
+  timeEnd: string;
+  seatsLeft: number;
+};
+
+export type PurchaseRecord = {
+  id: string;
+  courseTitle: string;
+  sessionDate: string | null;
+  paymentStatus: string | null;
+  amount: number | null;
+  currency: string | null;
+};
+
+interface Props {
+  firstName: string;
+  avatarUrl: string | null;
+  isAdmin: boolean;
+  popularCourses: PopularCourse[];
+  spots: Spot[];
+  purchases: PurchaseRecord[];
+}
+
+function seatsClass(n: number) {
+  if (n <= 3) return styles.spotSeatsLow;
+  if (n <= 8) return styles.spotSeatsMed;
+  return styles.spotSeatsOk;
+}
+
+function statusClass(s: string | null) {
+  if (s === 'PAID') return styles.statusPaid;
+  if (s === 'PENDING') return styles.statusPending;
+  if (s === 'FAILED') return styles.statusFailed;
+  return styles.statusDefault;
+}
+
+export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCourses, spots, purchases }: Props) {
+  const { currency } = useCurrency();
+  const initials = firstName.slice(0, 2).toUpperCase();
+
+  return (
+    <div className={styles.wrap}>
+      {/* Greeting */}
+      <div className={styles.greeting}>
+        <div className={styles.greetLeft}>
+          <div className={styles.avatar}>
+            {avatarUrl
+              ? <Image src={avatarUrl} alt={firstName} width={52} height={52} className={styles.avatarImg} />
+              : initials}
+          </div>
+          <div>
+            <h1 className={styles.greetName}>Welcome back, {firstName}</h1>
+            <p className={styles.greetSub}>Here&apos;s what&apos;s happening with your learning</p>
+          </div>
+        </div>
+        {isAdmin && (
+          <Link href="/admin" className={styles.adminBtn}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Admin Panel
+          </Link>
+        )}
+      </div>
+
+      {/* Popular Courses */}
+      <div className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2 className={styles.sectionTitle}>Popular Courses</h2>
+          <span className={styles.sectionCount} style={{ background: '#ebebeb', color: '#555' }}>{popularCourses.length}</span>
+        </div>
+        <div className={styles.courseGrid}>
+          {popularCourses.map(c => {
+            const price = currency === 'IDR'
+              ? `IDR ${c.priceIDR.toLocaleString('id-ID')}`
+              : `MYR ${c.priceMYR}`;
+            return (
+              <div key={c.slug} className={styles.courseCard}>
+                <div className={styles.courseIconWrap} style={{ background: c.iconBg }}>
+                  {c.icon}
+                </div>
+                <div className={styles.courseBody}>
+                  <h3 className={styles.courseTitle}>{c.title}</h3>
+                  <p className={styles.courseSub}>{c.subtitle}</p>
+                  <div className={styles.courseMeta}>
+                    <span className={styles.coursePrice}>{price}</span>
+                    {c.seatsLeft > 0
+                      ? <span className={styles.courseSeats}>{c.seatsLeft} seats left</span>
+                      : <span className={styles.courseSeats} style={{ background: '#fee2e2', color: '#991b1b' }}>Full</span>}
+                  </div>
+                  <Link href={`/courses/${c.slug}`} className={styles.courseLink}>
+                    View Course →
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Next Available Spots */}
+      <div className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2 className={styles.sectionTitle}>Next Available Spots</h2>
+          <span className={styles.sectionCount} style={{ background: '#dbeafe', color: '#1e40af' }}>{spots.length}</span>
+        </div>
+        {spots.length === 0
+          ? <div className={styles.empty}>No upcoming sessions available</div>
+          : (
+            <div className={styles.spotList}>
+              {spots.map((s, i) => (
+                <div key={`${s.courseSlug}-${i}`} className={styles.spotRow}>
+                  <div className={styles.spotDate}>
+                    <span className={styles.spotDay}>{s.day}</span>
+                    <span className={styles.spotMonth}>{s.month}</span>
+                  </div>
+                  <div className={styles.spotInfo}>
+                    <div className={styles.spotCourse}>{s.courseTitle}</div>
+                    <div className={styles.spotTime}>{s.dayOfWeek} · {s.time}–{s.timeEnd}</div>
+                  </div>
+                  <div className={styles.spotRight}>
+                    <span className={`${styles.spotSeats} ${seatsClass(s.seatsLeft)}`}>
+                      {s.seatsLeft} left
+                    </span>
+                    <Link href={`/courses/${s.courseSlug}`} className={styles.spotBtn}>
+                      Book
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+      </div>
+
+      {/* Purchase History */}
+      <div className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2 className={styles.sectionTitle}>My Courses</h2>
+          <span className={styles.sectionCount} style={{ background: '#d1fae5', color: '#065f46' }}>{purchases.length}</span>
+        </div>
+        {purchases.length === 0
+          ? <div className={styles.empty}>You haven&apos;t enrolled in any courses yet</div>
+          : (
+            <div className={styles.historyList}>
+              {purchases.map(p => (
+                <div key={p.id} className={styles.historyRow}>
+                  <div className={styles.historyIcon}>📚</div>
+                  <div className={styles.historyInfo}>
+                    <div className={styles.historyTitle}>{p.courseTitle}</div>
+                    <div className={styles.historyDate}>{p.sessionDate ?? '—'}</div>
+                  </div>
+                  {p.paymentStatus && (
+                    <span className={`${styles.historyStatus} ${statusClass(p.paymentStatus)}`}>
+                      {p.paymentStatus}
+                    </span>
+                  )}
+                  {p.amount != null && p.currency && (
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#555', flexShrink: 0 }}>
+                      {p.currency} {p.amount.toLocaleString()}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+      </div>
+    </div>
+  );
+}

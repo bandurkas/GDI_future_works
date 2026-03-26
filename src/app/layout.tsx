@@ -5,9 +5,9 @@ import PublicLayoutWrapper from '@/components/PublicLayoutWrapper';
 import ThemeProvider from '@/components/ThemeProvider';
 import { LanguageProvider } from '@/components/LanguageContext';
 import { CartProvider } from '@/components/CartContext';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import GoogleAuthProvider from '@/components/GoogleAuthProvider';
-import GoogleOneTapPopup from '@/components/GoogleOneTapPopup';
+import LazyOneTap from '@/components/LazyOneTap';
 import { CurrencyProvider } from '@/components/CurrencyContext';
 import { auth } from '@/auth';
 
@@ -57,17 +57,24 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   const cookieStore = await cookies();
-  
-  // Language detection
-  const langCookie = cookieStore.get('GDI_LANG')?.value;
-  const initialLang = (langCookie === 'id' || langCookie === 'en') ? langCookie : 'en';
+  const headerStore = await headers();
 
-  // Currency detection
+  // Language detection — priority: cookie > Accept-Language header > default 'en'
+  const langCookie = cookieStore.get('GDI_LANG')?.value;
+  let initialLang: 'en' | 'id';
+  if (langCookie === 'id' || langCookie === 'en') {
+    initialLang = langCookie;
+  } else {
+    const acceptLang = headerStore.get('accept-language') ?? '';
+    initialLang = acceptLang.toLowerCase().includes('id') ? 'id' : 'en';
+  }
+
+  // Currency detection — priority: cookie > language > default 'MYR'
   const currCookie = cookieStore.get('GDI_CURRENCY')?.value;
-  let initialCurr: 'IDR' | 'MYR' = (currCookie === 'IDR' || currCookie === 'MYR') ? currCookie : 'IDR';
-  
-  // Default currency logic based on language if currency cookie is missing
-  if (!currCookie) {
+  let initialCurr: 'IDR' | 'MYR';
+  if (currCookie === 'IDR' || currCookie === 'MYR') {
+    initialCurr = currCookie;
+  } else {
     initialCurr = initialLang === 'id' ? 'IDR' : 'MYR';
   }
 
@@ -95,7 +102,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <GoogleAuthProvider session={session}>
-          <GoogleOneTapPopup />
+          <LazyOneTap />
           <CurrencyProvider initialCurrency={initialCurr}>
             <ThemeProvider>
               <LanguageProvider initialLanguage={initialLang}>

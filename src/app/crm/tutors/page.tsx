@@ -1,13 +1,11 @@
 import { prisma } from '@/lib/prisma';
 import AppActions from './AppActions';
+import { fmt } from '@/lib/utils';
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function minutesToTime(m: number) {
   return `${Math.floor(m / 60).toString().padStart(2, '0')}:${(m % 60).toString().padStart(2, '0')}`;
-}
-function fmt(d: Date) {
-  return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
 export default async function CrmTutorsPage() {

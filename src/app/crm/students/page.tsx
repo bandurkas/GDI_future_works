@@ -1,8 +1,5 @@
 import { prisma } from '@/lib/prisma';
-
-function fmt(d: Date) {
-  return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-}
+import { fmt } from '@/lib/utils';
 
 export default async function CrmStudentsPage() {
   const students = await prisma.student.findMany({
