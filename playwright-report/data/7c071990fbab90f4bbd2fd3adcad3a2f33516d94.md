@@ -1,0 +1,321 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "GDI FutureWorks" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: GDI FutureWorks
+      - navigation "Main navigation" [ref=e7]:
+        - link "Courses" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "About" [ref=e9] [cursor=pointer]:
+          - /url: /about
+        - link "Community" [ref=e10] [cursor=pointer]:
+          - /url: /community
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: /contact
+      - generic [ref=e12]:
+        - link "Chat with us on WhatsApp" [ref=e13] [cursor=pointer]:
+          - /url: https://wa.me/6282258720974
+          - img [ref=e14]
+          - generic [ref=e16]: Chat us
+        - link "Get started" [ref=e18] [cursor=pointer]:
+          - /url: /login
+        - link "View shopping cart" [ref=e19] [cursor=pointer]:
+          - /url: /cart
+          - img [ref=e20]
+        - button "Toggle dark mode" [ref=e24] [cursor=pointer]:
+          - img [ref=e25]
+        - button "Toggle language" [ref=e27] [cursor=pointer]: EN
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e31]:
+        - navigation "Breadcrumb" [ref=e32]:
+          - link "Courses" [ref=e33] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e34]: ›
+          - generic [ref=e35]: Data Analytics
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]:
+              - generic [ref=e39]: 📊
+              - generic [ref=e40]: Data Analytics
+              - generic [ref=e41]: 🔴 Only 3 seats left
+            - heading "Basic Data Analyst" [level=1] [ref=e42]
+            - paragraph [ref=e43]: From Raw Data to Business Insights
+            - paragraph [ref=e44]: Learn how analysts turn raw data into clear business insights. In this live session, you’ll work with real datasets using Python and Pandas, clean messy data, and create visual dashboards used in real companies.
+            - generic [ref=e45]:
+              - generic [ref=e46]:
+                - generic [ref=e47]: 📅
+                - generic [ref=e48]:
+                  - generic [ref=e49]: Next session
+                  - generic [ref=e50]: Mar 12–13
+              - generic [ref=e51]:
+                - generic [ref=e52]: ⏱
+                - generic [ref=e53]:
+                  - generic [ref=e54]: Duration
+                  - generic [ref=e55]: 2 days × 2 hours
+              - generic [ref=e56]:
+                - generic [ref=e57]: 👥
+                - generic [ref=e58]:
+                  - generic [ref=e59]: Format
+                  - generic [ref=e60]: Live · max 15 students
+            - generic [ref=e61]:
+              - generic [ref=e62]: ⭐⭐⭐⭐⭐
+              - strong [ref=e63]: "4.9"
+              - generic [ref=e64]: (1,247 students)
+          - generic [ref=e65]:
+            - generic [ref=e66]:
+              - generic [ref=e67]: RM 93
+              - generic [ref=e68]:
+                - generic [ref=e69]: RM 380
+                - generic [ref=e70]: 76% off
+            - list [ref=e71]:
+              - listitem [ref=e72]:
+                - generic [ref=e73]: ✓
+                - text: Live interactive training
+              - listitem [ref=e74]:
+                - generic [ref=e75]: ✓
+                - text: Real-time Q&A
+              - listitem [ref=e76]:
+                - generic [ref=e77]: ✓
+                - text: Portfolio project
+              - listitem [ref=e78]:
+                - generic [ref=e79]: ✓
+                - text: Certificate of completion
+              - listitem [ref=e80]:
+                - generic [ref=e81]: ✓
+                - text: Community access
+            - link "Choose Date & Time →" [ref=e82] [cursor=pointer]:
+              - /url: /courses/data-analytics/schedule
+            - paragraph [ref=e83]: 🔒 Secure checkout · Confirmed in <2 min via WhatsApp
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - heading "Meet Your Instructor" [level=2] [ref=e89]
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: AR
+                - generic [ref=e93]:
+                  - heading "Arman Rahman" [level=3] [ref=e94]
+                  - paragraph [ref=e95]: Senior Data Analyst
+                  - paragraph [ref=e96]: 🏢 Global Technology Company
+              - generic [ref=e97]:
+                - generic [ref=e98]: ⭐ Verified Industry Expert
+                - generic [ref=e99]: 🔬 Currently at Global Technology Company
+                - generic [ref=e100]: 📊 5+ Years Experience
+                - generic [ref=e101]: 👥 500+ Students Taught
+              - paragraph [ref=e102]: ✦ 8+ years in enterprise analytics & data engineering
+              - generic [ref=e103]:
+                - generic [ref=e104]:
+                  - generic [ref=e105]: ✓
+                  - generic [ref=e106]: Clients include Google, Microsoft, and Mars
+                - generic [ref=e107]:
+                  - generic [ref=e108]: ✓
+                  - generic [ref=e109]: Built analytics systems used by Fortune 500 companies
+                - generic [ref=e110]:
+                  - generic [ref=e111]: ✓
+                  - generic [ref=e112]: Certified Data Professional (CDP)
+                - generic [ref=e113]:
+                  - generic [ref=e114]: ✓
+                  - generic [ref=e115]: Regional data conference speaker
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - generic [ref=e118]: LEARNING PATH
+              - heading "Unlock the Full Data Analytics Career Path" [level=3] [ref=e119]
+              - paragraph [ref=e120]:
+                - text: Bundle this course with two advanced modules and get
+                - strong [ref=e121]: 25% off
+                - text: the total price. Master the skills that employers are actively hiring for.
+            - button "Claim Bundle Offer" [ref=e122] [cursor=pointer]
+          - generic [ref=e123]:
+            - heading "What You'll Learn" [level=2] [ref=e124]
+            - paragraph [ref=e125]: "After this course, you will be able to:"
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e128]: ✓
+                - generic [ref=e129]: Analyze real datasets using Python & Pandas
+              - generic [ref=e130]:
+                - generic [ref=e131]: ✓
+                - generic [ref=e132]: Clean and structure messy, unorganized data
+              - generic [ref=e133]:
+                - generic [ref=e134]: ✓
+                - generic [ref=e135]: Build interactive dashboards with Plotly & Matplotlib
+          - generic [ref=e136]:
+            - generic [ref=e137]:
+              - generic [ref=e138]: 1,247+
+              - generic [ref=e139]: students have completed this course
+            - generic [ref=e140]:
+              - generic [ref=e141]: “
+              - paragraph [ref=e142]: After the course I built my first dashboard and landed a data analyst role within 3 weeks.
+              - generic [ref=e143]: — Arif S. — Junior Analyst
+          - generic [ref=e144]:
+            - heading "What You Get" [level=2] [ref=e145]
+            - generic [ref=e146]:
+              - generic [ref=e147]:
+                - generic [ref=e148]: ✓
+                - generic [ref=e149]: Live interactive session with expert guidance
+              - generic [ref=e150]:
+                - generic [ref=e151]: ✓
+                - generic [ref=e152]: Ability to ask questions in real time
+              - generic [ref=e153]:
+                - generic [ref=e154]: ✓
+                - generic [ref=e155]: Step-by-step practical exercises
+              - generic [ref=e156]:
+                - generic [ref=e157]: ✓
+                - generic [ref=e158]: Certificate of completion
+              - generic [ref=e159]:
+                - generic [ref=e160]: ✓
+                - generic [ref=e161]: Portfolio-ready project
+              - generic [ref=e162]:
+                - generic [ref=e163]: ✓
+                - generic [ref=e164]: Access to student community
+          - generic [ref=e165]:
+            - heading "Learning Format" [level=2] [ref=e166]
+            - generic [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e169]: 💻
+                - heading "Live Online" [level=4] [ref=e170]
+                - paragraph [ref=e171]: Join via video — interactive, not pre-recorded.
+              - generic [ref=e172]:
+                - generic [ref=e173]: 🙋
+                - heading "Ask Anything" [level=4] [ref=e174]
+                - paragraph [ref=e175]: Q&A throughout the entire session.
+              - generic [ref=e176]:
+                - generic [ref=e177]: 👥
+                - heading "Max 15 Students" [level=4] [ref=e178]
+                - paragraph [ref=e179]: Small group for real attention.
+              - generic [ref=e180]:
+                - generic [ref=e181]: ⏱
+                - heading "2 days × 2 hours" [level=4] [ref=e182]
+                - paragraph [ref=e183]: Compact, focused, and effective.
+          - generic [ref=e184]:
+            - heading "Why It's Worth It" [level=2] [ref=e185]
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]: ✓
+                - generic [ref=e189]: Learn practical skills used in real jobs
+              - generic [ref=e190]:
+                - generic [ref=e191]: ✓
+                - generic [ref=e192]: Build a project you can show employers
+              - generic [ref=e193]:
+                - generic [ref=e194]: ✓
+                - generic [ref=e195]: Save months of self-learning and confusion
+              - generic [ref=e196]:
+                - generic [ref=e197]: ✓
+                - generic [ref=e198]: Gain confidence working with real data
+          - generic [ref=e199]:
+            - heading "Who This Course Is For" [level=2] [ref=e200]
+            - generic [ref=e201]:
+              - generic [ref=e202]:
+                - generic [ref=e203]: 👤
+                - generic [ref=e204]: Beginners entering data analytics
+              - generic [ref=e205]:
+                - generic [ref=e206]: 👤
+                - generic [ref=e207]: Professionals switching careers
+              - generic [ref=e208]:
+                - generic [ref=e209]: 👤
+                - generic [ref=e210]: Students & recent graduates
+              - generic [ref=e211]:
+                - generic [ref=e212]: 👤
+                - generic [ref=e213]: Anyone working with data in business
+        - complementary [ref=e214]:
+          - generic [ref=e215]:
+            - generic [ref=e216]:
+              - generic [ref=e217]: RM 93
+              - generic [ref=e218]:
+                - generic [ref=e219]: RM 380
+                - generic [ref=e220]: 76% off
+            - list [ref=e221]:
+              - listitem [ref=e222]:
+                - generic [ref=e223]: ✓
+                - text: Live interactive training
+              - listitem [ref=e224]:
+                - generic [ref=e225]: ✓
+                - text: Real-time Q&A
+              - listitem [ref=e226]:
+                - generic [ref=e227]: ✓
+                - text: Portfolio project
+              - listitem [ref=e228]:
+                - generic [ref=e229]: ✓
+                - text: Certificate
+              - listitem [ref=e230]:
+                - generic [ref=e231]: ✓
+                - text: Community access
+            - link "Choose Date & Time →" [ref=e232] [cursor=pointer]:
+              - /url: /courses/data-analytics/schedule
+            - paragraph [ref=e233]: 🔒 Secure · Confirmed via WhatsApp
+      - generic [ref=e235]:
+        - generic [ref=e236]:
+          - generic [ref=e237]:
+            - text: RM 93
+            - generic [ref=e238]: RM 380
+          - generic [ref=e239]:
+            - text: "📅 Next: Mar 12–13"
+            - generic [ref=e240]: · 3 seats left
+        - link "Choose Date & Time" [ref=e241] [cursor=pointer]:
+          - /url: /courses/data-analytics/schedule
+          - text: Choose Date & Time
+          - img [ref=e242]
+  - contentinfo [ref=e244]:
+    - generic [ref=e245]:
+      - generic [ref=e246]:
+        - generic [ref=e247]:
+          - link "GDI FutureWorks FutureWorks" [ref=e248] [cursor=pointer]:
+            - /url: /
+            - img "GDI FutureWorks" [ref=e249]
+            - generic [ref=e250]: FutureWorks
+          - paragraph [ref=e251]: Learn IT skills that get you hired. Live courses led by industry professionals.
+          - generic [ref=e252]:
+            - generic [ref=e253]: Taught by Active Tech Leads & Industry Experts 🇮🇩 🇲🇾
+            - generic [ref=e254]: Special Partnership with iTTi (Great English)
+          - generic [ref=e255]:
+            - link "WhatsApp" [ref=e256] [cursor=pointer]:
+              - /url: https://wa.me/6282258720974
+              - img [ref=e257]
+            - link "Instagram" [ref=e259] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e260]
+            - link "LinkedIn" [ref=e262] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e263]
+        - generic [ref=e265]:
+          - generic [ref=e266]:
+            - heading "Courses" [level=4] [ref=e267]
+            - link "Data Analytics" [ref=e268] [cursor=pointer]:
+              - /url: /courses/data-analytics
+            - link "Python Programming" [ref=e269] [cursor=pointer]:
+              - /url: /courses/python-programming
+            - link "Graphic Design & AI" [ref=e270] [cursor=pointer]:
+              - /url: /courses/graphic-design-ai
+            - link "LLM & AI Engineering" [ref=e271] [cursor=pointer]:
+              - /url: /courses/llm-ai-engineering
+          - generic [ref=e272]:
+            - heading "Company" [level=4] [ref=e273]
+            - link "About Us" [ref=e274] [cursor=pointer]:
+              - /url: /about
+            - link "Community" [ref=e275] [cursor=pointer]:
+              - /url: /community
+            - link "FAQ" [ref=e276] [cursor=pointer]:
+              - /url: /faq
+            - link "Contact" [ref=e277] [cursor=pointer]:
+              - /url: /contact
+          - generic [ref=e278]:
+            - heading "Support" [level=4] [ref=e279]
+            - link "Chat on WhatsApp" [ref=e280] [cursor=pointer]:
+              - /url: https://wa.me/6282258720974
+            - link "hello@gdieduhub.com" [ref=e281] [cursor=pointer]:
+              - /url: mailto:hello@gdieduhub.com
+            - link "Jakarta, Indonesia" [ref=e282] [cursor=pointer]:
+              - /url: "#"
+      - generic [ref=e283]:
+        - paragraph [ref=e284]: © 2025 GDI FutureWorks · Global Digital Informasi. All rights reserved.
+        - generic [ref=e285]:
+          - link "Privacy" [ref=e286] [cursor=pointer]:
+            - /url: "#"
+          - link "Terms" [ref=e287] [cursor=pointer]:
+            - /url: "#"
+```

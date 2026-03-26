@@ -1,0 +1,459 @@
+.page {
+    padding-top: var(--nav-height);
+    min-height: 100vh;
+    background: var(--bg-secondary);
+    padding-bottom: var(--space-20);
+}
+
+.inner {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-6) var(--space-16);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.flowBackBtn {
+    background: transparent;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+    padding: 0;
+    margin-bottom: auto;
+}
+
+.flowBackBtn:hover {
+    color: var(--text-primary);
+}
+
+/* Progress */
+.progress {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 18px var(--space-6);
+    gap: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.progressStep {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: var(--space-3);
+}
+
+.progressStep:last-child {
+    flex: 0;
+}
+
+.stepBubble {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all var(--transition-base);
+    flex-shrink: 0;
+}
+
+.stepActive {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: white !important;
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.stepLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.stepLabelActive {
+    color: var(--accent);
+}
+
+.stepLine {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    margin: 0 var(--space-3);
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+}
+
+.subtitle {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin-top: var(--space-2);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.sectionLabel {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Date grid */
+.dateGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--space-2);
+}
+
+.dateCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 12px 6px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.dateCard:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+
+.dateCard:active {
+    transform: scale(0.96);
+}
+
+.dateSelected {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    box-shadow: var(--shadow-accent);
+    transform: scale(1.04);
+}
+
+.dateSelected .dayName,
+.dateSelected .dayNum,
+.dateSelected .dayMonth {
+    color: white !important;
+}
+
+.dateUrgent {
+    border-color: rgba(232, 0, 29, 0.25);
+}
+
+.dayName {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.dayNum {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.dayMonth {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.seatBadge {
+    font-size: 0.5625rem;
+    color: var(--accent);
+    font-weight: 700;
+    background: var(--accent-light);
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    margin-top: 2px;
+}
+
+.dateSelected .seatBadge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Time */
+.timeSection {
+    animation: fadeInUp 0.3s var(--ease-out);
+}
+
+.timeSlot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius-lg);
+    background: var(--accent-light);
+}
+
+.timeIcon {
+    font-size: 1.375rem;
+    flex-shrink: 0;
+}
+
+.timeVal {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.timeMeta {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.timeCheck {
+    margin-left: auto;
+    width: 26px;
+    height: 26px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.reassurance {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.ctaDisabled {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.back {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.back:hover {
+    color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+    .dateGrid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+
+    .inner {
+        padding: var(--space-10) var(--space-4);
+    }
+}
+
+
+@media (max-width: 600px) {
+    .progress {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+        align-items: flex-start;
+    }
+
+    .progressStep {
+        flex-direction: row;
+        width: 100%;
+        gap: 16px;
+        align-items: center;
+    }
+
+    .stepLine {
+        display: none;
+    }
+
+    .stepLabel {
+        font-size: 0.9rem;
+        max-width: none;
+        text-align: left;
+    }
+}
+
+
+.addedSuccess {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 32px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+    margin-top: 24px;
+    animation: slideUp 0.3s ease-out;
+}
+
+.dark .addedSuccess {
+    background: rgba(20, 83, 45, 0.2);
+    border-color: rgba(34, 197, 94, 0.2);
+}
+
+.addedIcon {
+    width: 48px;
+    height: 48px;
+    background: #22c55e;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.addedText h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.25rem;
+    color: #166534;
+}
+
+.dark .addedText h3 {
+    color: #4ade80;
+}
+
+.addedText p {
+    margin: 0;
+    color: #374151;
+}
+
+.dark .addedText p {
+    color: #9ca3af;
+}
+
+.addedActions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.addedActions a {
+    flex: 1;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ctaDisabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background: #94a3b8 !important;
+}
+
+/* Contact Form */
+.contactSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background: var(--bg-card);
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    animation: fadeInUp 0.4s var(--ease-out);
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.inputLabel {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.inputField {
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all var(--transition-base);
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.inputRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+@media (max-width: 480px) {
+    .inputRow {
+        grid-template-columns: 1fr;
+    }
+}

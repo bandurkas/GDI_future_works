@@ -1,0 +1,377 @@
+.page {
+    background: #FAFAFB;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #FAFAFB;
+    padding-top: max(16px, env(safe-area-inset-top));
+}
+
+.cancelBtn {
+    color: #6B7280;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    flex: 1;
+}
+
+.headerTitle {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #111827;
+    flex: 1;
+    text-align: center;
+}
+
+.headerSpacer {
+    flex: 1;
+}
+
+.main {
+    flex: 1;
+    padding: 0 20px;
+}
+
+/* ── STEP INDICATOR ─────────────────────────────────────────────── */
+.progressRow {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 16px 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Each step takes equal share; contains bubble+label stacked + the connector line */
+.progressStep {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.progressStep:last-child {
+    flex: 0 0 auto;
+}
+
+/* Bubble + label stacked, centered */
+.stepInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.stepBubble {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #F3F4F6;
+    border: 2px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #9CA3AF;
+    flex-shrink: 0;
+}
+
+.active {
+    background: #E8001D !important;
+    border-color: #E8001D !important;
+    color: white !important;
+    box-shadow: 0 0 0 3px rgba(232, 0, 29, 0.15);
+}
+
+.done {
+    background: #10B981 !important;
+    border-color: #10B981 !important;
+    color: white !important;
+}
+
+.stepLabel {
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: #9CA3AF;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.activeLbl {
+    color: #E8001D !important;
+}
+
+/* Connector line stretches between steps */
+.line {
+    flex: 1;
+    height: 2px;
+    background: #E5E7EB;
+    margin: 0 4px;
+    margin-bottom: 16px;
+    /* align with center of bubble (half of label area) */
+}
+
+.lineDone {
+    background: #10B981;
+}
+
+/* ── PROCESSING BOX ─────────────────────────────────────────────── */
+.content {
+    padding: 8px 0;
+}
+
+.processingBox {
+    background: var(--bg-card);
+    border: 1px solid #E5E7EB;
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.spinnerWrap {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #F3F4F6;
+    border-top-color: #E8001D;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.processingTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.processingSubtitle {
+    font-size: 0.8125rem;
+    color: #6B7280;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.coursePreview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 12px 16px;
+    width: 100%;
+    margin-top: 8px;
+    text-align: left;
+}
+
+.courseIcon {
+    font-size: 1.75rem;
+}
+
+.courseName {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.coursePrice {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #E8001D;
+    margin: 2px 0 0;
+}
+
+/* ── FOOTER — sticky so button is always visible without scrolling ── */
+.footer {
+    position: sticky;
+    bottom: 0;
+    padding: 12px 20px env(safe-area-inset-bottom, 20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: rgba(250, 250, 251, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(229, 231, 235, 0.8);
+    z-index: 10;
+}
+
+.payBtn {
+    width: 100%;
+    max-width: 400px;
+    background: #E8001D;
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 100px;
+    padding: 18px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.payBtn:active {
+    transform: scale(0.97);
+}
+
+.payBtnLoading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.secure {
+    font-size: 0.75rem;
+    color: #9CA3AF;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .page {
+        max-width: 480px;
+        margin: 0 auto;
+        border-left: 1px solid #E5E7EB;
+        border-right: 1px solid #E5E7EB;
+        background: var(--bg-card);
+    }
+}
+
+/* Fix #3 — in-page error banner, replaces alert() */
+.errorBanner {
+    margin: 12px 0;
+    padding: 12px 16px;
+    background: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+    color: #DC2626;
+    font-size: 0.875rem;
+    text-align: left;
+    line-height: 1.5;
+}
+
+/* Shown when user closes the Midtrans popup */
+.closedPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+    background: var(--bg-card, #fff);
+    border-radius: 20px;
+    border: 1px solid var(--border, rgba(0, 0, 0, .08));
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .08);
+    gap: 16px;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+.closedIcon {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.closedTitle {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary, #1D2023);
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.closedDesc {
+    font-size: 0.9375rem;
+    color: var(--text-secondary, #5C6470);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.closedWa {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #16a34a;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1.5px solid #16a34a;
+    transition: background 0.15s ease;
+}
+
+.closedWa:hover {
+    background: #f0fdf4;
+}
+.itemSummary {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.miniItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border-color);
+    font-weight: 800;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.currencyNote {
+    margin-top: 12px;
+    font-size: 0.8125rem;
+    color: #6B7280;
+    font-style: italic;
+    text-align: right;
+}
+
+.currencyNote strong {
+    color: #111827;
+}
+

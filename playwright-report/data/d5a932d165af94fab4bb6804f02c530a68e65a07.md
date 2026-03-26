@@ -1,0 +1,247 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "GDI FutureWorks" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: GDI FutureWorks
+      - navigation "Main navigation" [ref=e7]:
+        - link "Courses" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "About" [ref=e9] [cursor=pointer]:
+          - /url: /about
+        - link "Community" [ref=e10] [cursor=pointer]:
+          - /url: /community
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: /contact
+      - generic [ref=e12]:
+        - link "Chat with us on WhatsApp" [ref=e13] [cursor=pointer]:
+          - /url: https://wa.me/6282258720974
+          - img [ref=e14]
+          - generic [ref=e16]: Chat us
+        - link "Get started" [ref=e18] [cursor=pointer]:
+          - /url: /login
+        - link "View shopping cart" [ref=e19] [cursor=pointer]:
+          - /url: /cart
+          - img [ref=e20]
+        - button "Toggle dark mode" [ref=e24] [cursor=pointer]:
+          - img [ref=e25]
+        - button "Toggle language" [ref=e27] [cursor=pointer]: EN
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]: 🌟
+          - generic [ref=e34]: Trusted by 500+ Professionals in Southeast Asia
+        - heading "Choose your path into tech. For The Modern World" [level=1] [ref=e35]:
+          - text: Choose your path into tech.
+          - generic [ref=e36]: For The Modern World
+        - paragraph [ref=e37]: Real skills. Live training. Industry experts. Fast-track your career with practical courses designed for the modern workplace.
+        - generic [ref=e38]:
+          - link "Enroll Now (3 mins)" [ref=e39] [cursor=pointer]:
+            - /url: "#courses"
+          - link "Explore Courses" [ref=e40] [cursor=pointer]:
+            - /url: "#cohort"
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - generic [ref=e43]: 500+
+            - generic [ref=e44]: Career Switchers Enrolled
+            - generic [ref=e45]: 100% Money-Back Guarantee
+          - generic [ref=e47]:
+            - generic [ref=e48]: 4h
+            - generic [ref=e49]: Total Course Length
+          - generic [ref=e51]:
+            - generic [ref=e52]: "12"
+            - generic [ref=e53]: Max Seats Per Cohort
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - paragraph [ref=e57]: Choose your course to see schedules & secure your spot
+          - heading "Skills for the Future of Work" [level=2] [ref=e58]
+        - generic [ref=e66]:
+          - paragraph [ref=e67]: Not sure which course is right for you?
+          - link "Consult Advisor →" [ref=e68] [cursor=pointer]:
+            - /url: /contact
+      - generic [ref=e71]:
+        - generic [ref=e72]: SMART PARTNERSHIP
+        - heading "International TEFL Training Institute (iTTi)" [level=2] [ref=e73]
+        - paragraph [ref=e74]: Partnered with iTTI, a globally recognized teacher training institute dedicated to developing English proficiency and professional educators worldwide.
+        - generic [ref=e75]:
+          - heading "Choose Your Path" [level=3] [ref=e76]
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - heading "Learn English" [level=4] [ref=e79]
+              - paragraph [ref=e80]: "Build strong English communication skills for:"
+              - list [ref=e81]:
+                - listitem [ref=e82]: Academic Success
+                - listitem [ref=e83]: IELTS Preparation
+                - listitem [ref=e84]: Career Advancement
+                - listitem [ref=e85]: Global Opportunities
+              - link "Start Learning →" [ref=e86] [cursor=pointer]:
+                - /url: https://wa.me/6282258720974
+            - generic [ref=e87]:
+              - heading "Teach English" [level=4] [ref=e88]
+              - paragraph [ref=e89]: Passionate about Education? Earn an internationally recognized certification and learn the skills to teach English anywhere in the world.
+              - paragraph [ref=e90]: Become part of the next gen global educators.
+              - link "Get Certified →" [ref=e91] [cursor=pointer]:
+                - /url: https://wa.me/6282258720974
+          - generic [ref=e93]: Pre-enrolment starts now.
+      - generic [ref=e95]:
+        - generic [ref=e96]:
+          - paragraph [ref=e97]: Small groups mean real mentorship. 12 seats max per cohort.
+          - heading "Next Cohort Starting Soon" [level=2] [ref=e98]
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - generic [ref=e102]: Basic Data Analyst
+              - generic [ref=e103]: 3 seats left
+            - paragraph [ref=e104]: 📅 Mar 12–13
+            - paragraph [ref=e105]: Live Online · Small Group
+            - link "Reserve Your Spot →" [ref=e106] [cursor=pointer]:
+              - /url: /courses/data-analytics/schedule
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: Python for Professionals
+              - generic [ref=e110]: 5 seats left
+            - paragraph [ref=e111]: 📅 Mar 14–15
+            - paragraph [ref=e112]: Live Online · Small Group
+            - link "Reserve Your Spot →" [ref=e113] [cursor=pointer]:
+              - /url: /courses/python-programming/schedule
+          - generic [ref=e114]:
+            - generic [ref=e115]:
+              - generic [ref=e116]: Graphic Design with AI
+              - generic [ref=e117]: 6 seats left
+            - paragraph [ref=e118]: 📅 Mar 15–16
+            - paragraph [ref=e119]: Live Online · Small Group
+            - link "Reserve Your Spot →" [ref=e120] [cursor=pointer]:
+              - /url: /courses/graphic-design-ai/schedule
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: LLM & AI Engineering
+              - generic [ref=e124]: 4 seats left
+            - paragraph [ref=e125]: 📅 Mar 18–19
+            - paragraph [ref=e126]: Live Online · Small Group
+            - link "Reserve Your Spot →" [ref=e127] [cursor=pointer]:
+              - /url: /courses/llm-ai-engineering/schedule
+      - generic [ref=e129]:
+        - heading "Why Professionals Choose Us" [level=2] [ref=e130]
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - img [ref=e135]
+              - heading "Corporate-Tested Tracks" [level=3] [ref=e138]
+            - paragraph [ref=e139]: Learn exactly what enterprise companies demand, bypassing outdated academic theory.
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - img [ref=e143]
+              - heading "Immediate Practical Use" [level=3] [ref=e145]
+            - paragraph [ref=e146]: Apply what you learn today to your job tomorrow. No waiting for graduation.
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - img [ref=e150]
+              - heading "Small Cohorts" [level=3] [ref=e155]
+            - paragraph [ref=e156]: Get personalized attention and dedicated feedback from instructors who know your name.
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - img [ref=e160]
+              - heading "Structured Learning" [level=3] [ref=e162]
+            - paragraph [ref=e163]: Step-by-step guidance so you never feel lost or overwhelmed.
+          - generic [ref=e164]:
+            - generic [ref=e165]:
+              - img [ref=e167]
+              - heading "Real-World Application" [level=3] [ref=e172]
+            - paragraph [ref=e173]: Build a portfolio of actual projects, not just multiple-choice quizzes.
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - img [ref=e177]
+              - heading "Community Support" [level=3] [ref=e179]
+            - paragraph [ref=e180]: Join a network of driven professionals across Malaysia and Indonesia.
+      - generic [ref=e182]:
+        - heading "Start Your Journey Today" [level=2] [ref=e183]
+        - paragraph [ref=e184]: No long forms. Instant access. Enroll in just 3 minutes.
+        - generic [ref=e185]:
+          - generic [ref=e186]:
+            - generic [ref=e187]: "1"
+            - heading "Choose" [level=3] [ref=e188]
+            - paragraph [ref=e189]: Select the path that matches your career goals or let our advisors guide you.
+          - generic [ref=e190]:
+            - generic [ref=e191]: "2"
+            - heading "Commit" [level=3] [ref=e192]
+            - paragraph [ref=e193]: Lock in your spot before the cohort fills up. A fast, secure checkout stands between you and your next career leap.
+          - generic [ref=e194]:
+            - generic [ref=e195]: "3"
+            - heading "Commence" [level=3] [ref=e196]
+            - paragraph [ref=e197]: Get instant access to your student dashboard and community immediately.
+      - generic [ref=e199]:
+        - heading "The future will not slow down. But you can move ahead of it." [level=2] [ref=e200]:
+          - text: The future will not slow down.
+          - text: But you can move ahead of it.
+        - paragraph [ref=e201]: Join hundreds of professionals across Southeast Asia who are transforming their careers today.
+        - generic [ref=e202]:
+          - link "Enrol in 3 Minutes →" [ref=e203] [cursor=pointer]:
+            - /url: "#courses"
+            - generic [ref=e204]: Enrol in 3 Minutes →
+          - link "💬 Consult Advisor" [ref=e205] [cursor=pointer]:
+            - /url: https://wa.me/6282258720974
+        - paragraph [ref=e206]: 100% Satisfaction Guaranteed
+  - contentinfo [ref=e207]:
+    - generic [ref=e208]:
+      - generic [ref=e209]:
+        - generic [ref=e210]:
+          - link "GDI FutureWorks FutureWorks" [ref=e211] [cursor=pointer]:
+            - /url: /
+            - img "GDI FutureWorks" [ref=e212]
+            - generic [ref=e213]: FutureWorks
+          - paragraph [ref=e214]: Learn IT skills that get you hired. Live courses led by industry professionals.
+          - generic [ref=e215]:
+            - generic [ref=e216]: Taught by Active Tech Leads & Industry Experts 🇮🇩 🇲🇾
+            - generic [ref=e217]: Special Partnership with iTTi (Great English)
+          - generic [ref=e218]:
+            - link "WhatsApp" [ref=e219] [cursor=pointer]:
+              - /url: https://wa.me/6282258720974
+              - img [ref=e220]
+            - link "Instagram" [ref=e222] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e223]
+            - link "LinkedIn" [ref=e225] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e226]
+        - generic [ref=e228]:
+          - generic [ref=e229]:
+            - heading "Courses" [level=4] [ref=e230]
+            - link "Data Analytics" [ref=e231] [cursor=pointer]:
+              - /url: /courses/data-analytics
+            - link "Python Programming" [ref=e232] [cursor=pointer]:
+              - /url: /courses/python-programming
+            - link "Graphic Design & AI" [ref=e233] [cursor=pointer]:
+              - /url: /courses/graphic-design-ai
+            - link "LLM & AI Engineering" [ref=e234] [cursor=pointer]:
+              - /url: /courses/llm-ai-engineering
+          - generic [ref=e235]:
+            - heading "Company" [level=4] [ref=e236]
+            - link "About Us" [ref=e237] [cursor=pointer]:
+              - /url: /about
+            - link "Community" [ref=e238] [cursor=pointer]:
+              - /url: /community
+            - link "FAQ" [ref=e239] [cursor=pointer]:
+              - /url: /faq
+            - link "Contact" [ref=e240] [cursor=pointer]:
+              - /url: /contact
+          - generic [ref=e241]:
+            - heading "Support" [level=4] [ref=e242]
+            - link "Chat on WhatsApp" [ref=e243] [cursor=pointer]:
+              - /url: https://wa.me/6282258720974
+            - link "hello@gdieduhub.com" [ref=e244] [cursor=pointer]:
+              - /url: mailto:hello@gdieduhub.com
+            - link "Jakarta, Indonesia" [ref=e245] [cursor=pointer]:
+              - /url: "#"
+      - generic [ref=e246]:
+        - paragraph [ref=e247]: © 2025 GDI FutureWorks · Global Digital Informasi. All rights reserved.
+        - generic [ref=e248]:
+          - link "Privacy" [ref=e249] [cursor=pointer]:
+            - /url: "#"
+          - link "Terms" [ref=e250] [cursor=pointer]:
+            - /url: "#"
+```

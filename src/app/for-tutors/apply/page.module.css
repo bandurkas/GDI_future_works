@@ -1,0 +1,695 @@
+/* ============================================================
+   TUTOR APPLY — GDI FutureWorks Brand-Consistent Design
+   Colors: --accent (#D42B2B), --font-body (DM Sans), --font-display (Bebas)
+   ============================================================ */
+
+.page {
+    min-height: 100vh;
+    padding-top: calc(var(--nav-height, 72px) + 48px);
+    padding-bottom: 120px;
+    background: var(--bg);
+    font-family: var(--font-body);
+    transition: background-color var(--transition-base);
+}
+
+.container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ── Header ── */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent, #D42B2B);
+    background: rgba(212, 43, 43, 0.08);
+    border: 1px solid rgba(212, 43, 43, 0.18);
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+}
+
+.title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text-primary, #0D0D0D);
+    margin-bottom: 12px;
+}
+
+.title span {
+    color: var(--accent, #D42B2B);
+}
+
+.subtitle {
+    color: var(--text-secondary, #6B7280);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── Progress Steps ── */
+.progressWrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding: 0 4px;
+}
+
+.progressStep {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.progressTop {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.progressDot {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    border: 2px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.progressLine {
+    height: 2px;
+    background: var(--border-strong);
+    flex-grow: 1;
+    margin: 0 -16px; /* Overlap half the dots for a continuous line */
+    transition: background 0.3s;
+}
+
+.progressLabel {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-align: center;
+    max-width: 80px;
+    line-height: 1.2;
+    transition: color 0.3s;
+}
+
+/* Active & Done States */
+.stepActive .progressDot {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(212, 43, 43, 0.15);
+}
+
+.stepActive .progressLabel {
+    color: var(--accent);
+}
+
+.stepDone .progressDot {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: white;
+}
+
+.stepDone .progressLine {
+    background: var(--accent);
+}
+
+/* Specific alignments for first/last items to keep the line bounded */
+.progressStep:last-child {
+    flex: 0 0 auto;
+    width: 32px;
+}
+.progressStep:last-child .progressLabel {
+    max-width: 64px;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ── Form Card ── */
+.formCard {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.stepHeader {
+    padding: 28px 36px 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 0;
+}
+
+.stepBadge {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent, #D42B2B);
+    margin-bottom: 4px;
+}
+
+.stepTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary, #0D0D0D);
+    letter-spacing: -0.02em;
+}
+
+.stepContent {
+    padding: 28px 36px;
+}
+
+/* ── Form Elements ── */
+.formGroup {
+    margin-bottom: 22px;
+}
+
+.label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-primary, #0D0D0D);
+    letter-spacing: 0.01em;
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #6B7280);
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.input,
+.textarea,
+.select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    font-size: 1rem; /* 16px to prevent iOS zoom */
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background: var(--bg-card-elevated);
+    transition: all var(--transition-base);
+    box-sizing: border-box;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+    color: #BBBFC7;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.textarea {
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+/* ── Info Box ── */
+.infoBox {
+    background: rgba(212, 43, 43, 0.05);
+    border: 1px solid rgba(212, 43, 43, 0.15);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    font-size: 0.8125rem;
+    color: var(--text-secondary, #6B7280);
+    line-height: 1.6;
+}
+
+.infoBox strong {
+    color: var(--accent, #D42B2B);
+    font-weight: 700;
+}
+
+/* ── Inline Error Banner ── */
+.errorBanner {
+    margin: 0 36px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(212, 43, 43, 0.07);
+    border: 1px solid rgba(212, 43, 43, 0.3);
+    color: var(--accent, #D42B2B);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+    .errorBanner {
+        margin: 0 20px 0;
+    }
+}
+
+/* ── Footer / Buttons ── */
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 36px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-secondary);
+    gap: 12px;
+}
+
+.btnPrimary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    border-radius: 8px;
+    background: var(--accent, #D42B2B);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-family: var(--font-body);
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: all 0.2s var(--ease-out, ease-out);
+    text-decoration: none;
+}
+
+.btnPrimary:hover {
+    background: var(--accent-hover, #A81E1E);
+    box-shadow: var(--shadow-accent, 0 6px 24px rgba(212, 43, 43, 0.28));
+    transform: translateY(-1px);
+}
+
+.btnPrimary:active {
+    transform: translateY(0);
+}
+
+.btnPrimary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btnSecondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    border: 1px solid var(--border-strong);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-decoration: none;
+}
+
+.btnSecondary:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.stepCounter {
+    font-size: 12px;
+    color: var(--text-secondary, #6B7280);
+    font-weight: 600;
+}
+
+/* ── Success State ── */
+.successPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    background: var(--bg);
+    font-family: var(--font-body);
+}
+
+.successCard {
+    max-width: 560px;
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    padding: 64px 48px;
+    text-align: center;
+}
+
+.successIconWrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(212, 43, 43, 0.08);
+    border: 2px solid rgba(212, 43, 43, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 28px;
+}
+
+.successTitle {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary, #0D0D0D);
+    margin-bottom: 12px;
+}
+
+.successText {
+    color: var(--text-secondary, #6B7280);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
+
+.successMeta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary, #6B7280);
+    background: var(--bg-secondary);
+    border-radius: 100px;
+    padding: 8px 16px;
+    margin-bottom: 28px;
+}
+
+.successMetaDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success, #10B981);
+}
+/* ── Availability Grid ──────────────────────────────────────────────────── */
+.gridWrap {
+    margin-top: 4px;
+}
+
+.gridTable {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+}
+
+.gridHeaderRow,
+.gridRow {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+    gap: 4px;
+    min-width: 520px;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+/* .gridCorner: empty top-left corner */
+
+.gridDayHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.gridDayHeader:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.gridDayHeaderActive {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.gridTimeLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 10px;
+    height: 52px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+    user-select: none;
+}
+
+.gridTimeLabel:hover {
+    border-color: var(--accent);
+}
+
+.gridTimeLabelActive {
+    background: rgba(212, 43, 43, 0.06);
+    border-color: var(--accent);
+}
+
+.gridSlotName {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.gridSlotTime {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.gridCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: #fff;
+    user-select: none;
+}
+
+.gridCell:hover {
+    border-color: var(--accent);
+    background: rgba(212, 43, 43, 0.06);
+}
+
+.gridCellActive {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(212, 43, 43, 0.25);
+}
+
+.gridCellActive:hover {
+    background: var(--accent-hover, #A81E1E);
+    border-color: var(--accent-hover, #A81E1E);
+}
+
+.gridSummary {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.gridSummaryEmpty {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.gridSummaryCount {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(212, 43, 43, 0.07);
+    border: 1px solid rgba(212, 43, 43, 0.2);
+    padding: 5px 14px;
+    border-radius: 100px;
+}
+
+/* ── Terms Box ── */
+.termsBox {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 20px 16px;
+    margin-bottom: 24px;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+.termsBox p {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+}
+
+.termsBox ul {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.termsBox li {
+    color: var(--text-secondary);
+}
+
+/* ── Agreement Checkbox ── */
+.agreementRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    padding: 16px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 10px;
+    background: var(--bg-card);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.agreementRow:hover {
+    border-color: var(--accent);
+    background: rgba(212, 43, 43, 0.03);
+}
+
+.agreementCheckbox {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+.agreementLabel {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+    .page {
+        padding-top: calc(var(--nav-height, 72px) + 24px);
+        padding-bottom: 60px;
+    }
+    .container {
+        padding: 0 16px;
+    }
+    .formCard {
+        border-radius: 12px;
+    }
+    .stepHeader {
+        padding: 24px 20px 16px;
+    }
+    .stepContent {
+        padding: 24px 20px;
+    }
+    .footer {
+        padding: 20px;
+        flex-direction: row; /* Keep row but maybe smaller buttons */
+    }
+    .progressLabel {
+        width: auto;
+        font-size: 8px;
+        letter-spacing: 0;
+    }
+    .progressDot {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        font-size: 10px;
+    }
+    .progressTop {
+        margin-bottom: 4px;
+    }
+    .progressStep:last-child .progressLabel {
+        top: 32px;
+    }
+}
+
+.loadingSpinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}

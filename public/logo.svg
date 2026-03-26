@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Red circle background -->
+  <circle cx="100" cy="100" r="100" fill="#E8001D"/>
+
+  <!-- Globe grid lines (white) -->
+  <ellipse cx="100" cy="72" rx="36" ry="36" stroke="white" stroke-width="2" fill="none" opacity="0.85"/>
+  <ellipse cx="100" cy="72" rx="18" ry="36" stroke="white" stroke-width="1.5" fill="none" opacity="0.7"/>
+  <line x1="64" y1="72" x2="136" y2="72" stroke="white" stroke-width="1.5" opacity="0.7"/>
+  <line x1="68" y1="57" x2="132" y2="57" stroke="white" stroke-width="1" opacity="0.5"/>
+  <line x1="68" y1="87" x2="132" y2="87" stroke="white" stroke-width="1" opacity="0.5"/>
+
+  <!-- Orbit ring -->
+  <ellipse cx="100" cy="72" rx="44" ry="14" stroke="white" stroke-width="2" fill="none" transform="rotate(-25 100 72)" opacity="0.9"/>
+
+  <!-- Orbit dot -->
+  <circle cx="136" cy="56" r="4" fill="white"/>
+
+  <!-- G letterform (bold, white) -->
+  <text x="100" y="88" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="44" font-weight="900" fill="white" opacity="0.95">G</text>
+
+  <!-- GDI text -->
+  <text x="100" y="138" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="26" font-weight="900" fill="white" letter-spacing="3">GDI</text>
+
+  <!-- futureWorks text -->
+  <text x="100" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="white" opacity="0.92" letter-spacing="1">futureWorks</text>
+</svg>

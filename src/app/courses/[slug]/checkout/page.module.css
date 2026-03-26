@@ -1,0 +1,303 @@
+.page {
+    padding-top: var(--nav-height);
+    min-height: 100vh;
+    background: var(--bg-secondary);
+    padding-bottom: var(--space-20);
+}
+
+.inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-16) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+/* Progress */
+.progress {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 18px var(--space-6);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.progressStep {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: var(--space-3);
+}
+
+.progressStep:last-child {
+    flex: 0;
+}
+
+.stepBubble {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.active {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: white !important;
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.done {
+    background: var(--success) !important;
+    border-color: var(--success) !important;
+    color: white !important;
+}
+
+.stepLabel {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.activeLbl {
+    color: var(--accent) !important;
+}
+
+.line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    margin: 0 var(--space-2);
+}
+
+.lineDone {
+    background: var(--success);
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+}
+
+.subtitle {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin-top: var(--space-2);
+}
+
+.grid {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-8);
+}
+
+@media (min-width: 768px) {
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        align-items: start;
+    }
+}
+
+.formCard {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+@media (max-width: 768px) {
+
+    .formCard,
+    .summaryCard {
+        padding: var(--space-5);
+    }
+
+    .inner {
+        padding: var(--space-8) var(--space-4);
+    }
+
+    .progress {
+        padding: var(--space-4) var(--space-4);
+    }
+}
+
+.formTitle {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--border);
+}
+
+.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.validationHint {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}
+
+.back {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.back:hover {
+    color: var(--text-primary);
+}
+
+.summaryCard {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-4));
+}
+
+.summaryTitle {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+}
+
+.summaryCourse {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.summaryIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 1.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.summaryName {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.summaryMeta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    line-height: 1.45;
+}
+
+.summaryDivider {
+    height: 1px;
+    background: var(--border);
+}
+
+.priceLine {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.priceTotal {
+    font-weight: 700;
+    color: var(--text-primary);
+    padding-top: var(--space-2);
+}
+
+.totalAmt {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .summaryCard {
+        position: static;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .progress {
+        padding: 16px 8px;
+        align-items: flex-start;
+    }
+
+    .progressStep {
+        flex-direction: column;
+        gap: 8px;
+        position: relative;
+    }
+
+    .stepBubble {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+        border-width: 2px;
+        background: var(--bg-card);
+        z-index: 2;
+    }
+
+    .stepLabel {
+        font-size: 0.65rem;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.2;
+        letter-spacing: 0;
+    }
+
+    .line {
+        position: absolute;
+        top: 14px;
+        left: calc(50% + 14px);
+        width: calc(100% - 28px);
+        margin: 0;
+        z-index: 1;
+    }
+
+    .active {
+        box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+}

@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Admin-specific CSS variables */
+@layer base {
+  :root {
+    --admin-sidebar-width: 240px;
+    --admin-accent: #e43a3d;
+    --admin-accent-hover: #c72f32;
+  }
+}

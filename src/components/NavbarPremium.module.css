@@ -1,0 +1,772 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--nav-height);
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--glass-inner-shadow);
+    transition: all var(--transition-base);
+}
+
+.header.scrolled {
+    background: var(--bg-overlay);
+    border-bottom-color: var(--border);
+    box-shadow: var(--shadow-sm);
+    height: calc(var(--nav-height) - 8px);
+}
+
+.container {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+}
+
+/* Layout Sections */
+.leftSection {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-shrink: 0;
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-right: var(--space-4);
+}
+
+.logoImage {
+    height: 44px !important;
+    width: auto;
+    object-fit: contain;
+    transition: height var(--transition-base);
+}
+
+/* Dark PNG logo is already designed for dark backgrounds — no blend needed */
+
+.header.scrolled .logoImage {
+    height: 38px !important;
+}
+
+/* Desktop nav */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.navLink {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.navLink:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
+/* Actions Group */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.preferenceToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 54px;
+    gap: 6px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.navActionBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 84px;
+    gap: 8px;
+    padding: 10px 18px; /* Slightly more padding for elegance */
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all var(--transition-base);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.desktopActions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: nowrap;
+}
+
+/* Vertical divider separating CTA buttons from utility controls */
+.controlsDivider {
+    width: 1px;
+    height: 18px;
+    background: var(--border);
+    flex-shrink: 0;
+    margin: 0 var(--space-1);
+}
+
+/* Chip toggle — currency & language */
+.chipBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    outline: none;
+    flex-shrink: 0;
+}
+
+.chipBtn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.chipBtn:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border-color: var(--border);
+}
+
+.mobileHeaderActions {
+    display: none;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Compact flag chip — shown in mobile top bar */
+.mobileChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 9px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.mobileChip:active {
+    background: var(--bg-secondary);
+    transform: scale(0.95);
+}
+
+/* ── MOBILE TOGGLE CHIP (IDR·MYR / EN·ID) ─────────────────────────────────── */
+.mobileToggleChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.mobileToggleChip:active {
+    transform: scale(0.95);
+}
+
+.mobileToggleActive {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+}
+
+.mobileToggleSep {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+.mobileToggleInactive {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+}
+
+/* Icon-only button for mobile top bar (theme + cart) */
+.mobileIconBtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.mobileIconBtn:active {
+    background: var(--bg-secondary);
+    transform: scale(0.95);
+}
+
+/* ── MENU BACKDROP ─────────────────────────────────────────────────────────── */
+.menuBackdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1040;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ── CLOSE BUTTON ──────────────────────────────────────────────────────────── */
+.menuCloseBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.menuCloseBtn:hover {
+    background: var(--border-light);
+}
+
+/* ── PREFERENCE ROWS ───────────────────────────────────────────────────────── */
+.prefRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    margin-bottom: 6px;
+}
+
+.prefRowLeft {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-shrink: 0;
+}
+
+.prefRowIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.prefRowLabel {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+/* Segmented pill control inside preference rows */
+.prefSegmented {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.prefSegBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 11px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.prefSegBtnActive {
+    background: var(--text-primary);
+    color: var(--bg);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+}
+
+.navActionBtn:hover {
+    background: var(--border-light);
+    transform: translateY(-1px);
+}
+
+.iconBtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    outline: none;
+    flex-shrink: 0;
+}
+
+.iconBtn:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border-color: var(--border);
+}
+
+.iconBtn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.cartBadge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-card);
+}
+
+/* Hamburger */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    gap: 5px;
+    z-index: 1100;
+    margin-left: calc(-1 * var(--space-2));
+    transition: all var(--transition-base);
+}
+
+.hamburger:active {
+    background: var(--bg-secondary);
+}
+
+.hamburger span {
+    width: 22px;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburgerActive span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburgerActive span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburgerActive span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Menu Overlay */
+.menuOverlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(360px, 100vw);
+    height: 100dvh;
+    background: var(--bg);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    padding: 72px 24px 40px;
+    transform: translateX(100%);
+    transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+[data-theme='dark'] .menuOverlay {
+    background: var(--bg-card-elevated);
+}
+
+.menuOpen {
+    transform: translateX(0);
+}
+
+.mobileNav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 40px;
+}
+
+.mobileMenuSection {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mobileMenuLabel {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    padding-left: 12px;
+}
+
+.mobileNavLink {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.mobileNavLink:active {
+    background: var(--bg-secondary);
+    transform: scale(0.98);
+}
+
+.mobileLinkIcon {
+    font-size: 1.25rem;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.mobileSettingsRow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 4px 0;
+}
+
+.themeToggle {
+    /* Kept for compatibility — uses .iconBtn styles */
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.themeToggle:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border-color: var(--border);
+}
+
+.mobileMenuFooter {
+    margin-top: auto;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mobileAuthBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: white !important;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: var(--shadow-accent);
+}
+
+.mobileLogoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* Segmented Control (Currency) - Premium Glass */
+.segmentedWrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 100px;
+    padding: 2px;
+    position: relative;
+    height: 30px;
+    width: 90px;
+    margin: 0;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .segmentedWrapper {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.segmentBtn {
+    flex: 1;
+    height: 100%;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    outline: none;
+    position: relative;
+    text-transform: uppercase;
+    padding: 0 4px;
+}
+
+.segmentBtnActive {
+    color: var(--bg) !important;
+}
+
+.flagIcon {
+    border-radius: 1px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.flagIconCombined {
+    border-radius: 1px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.langLabel {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: inherit;
+}
+
+.segmentHighlight {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(50% - 2px);
+    height: calc(100% - 4px);
+    background: var(--text-primary);
+    border-radius: 100px;
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.segmentMYR {
+    transform: translateX(100%);
+}
+
+/* Lang toggle — now uses .chipBtn class, kept for any legacy references */
+.langToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.langToggle:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border-color: var(--border);
+}
+
+.langIcon {
+    opacity: 0.8;
+}
+
+.langLabel {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+@media (max-width: 1024px) {
+    .nav, .desktopActions {
+        display: none !important;
+    }
+
+    .mobileHeaderActions {
+        display: flex !important;
+    }
+
+    .hamburger {
+        display: flex !important;
+    }
+
+    .menuOverlay {
+        width: min(360px, 100vw);
+        padding: 72px 24px 40px;
+    }
+
+    .container {
+        padding: 0 var(--space-4);
+    }
+}
+
+/* Very small screens — keep chips readable */
+@media (max-width: 400px) {
+    .mobileChip {
+        padding: 0 8px;
+        font-size: 0.65rem;
+    }
+    .mobileChip span {
+        display: none; /* icon-only on tiny screens */
+    }
+}
