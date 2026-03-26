@@ -1,60 +1,39 @@
+'use client';
+
 import { Wallet, Clock, Users, TrendingUp, Shield, Megaphone } from 'lucide-react';
 import styles from '../page.module.css';
+import { useLanguage } from '@/components/LanguageContext';
 
-const BENEFITS = [
-  {
-    icon: Wallet,
-    title: 'Earn Flexible Income',
-    desc: 'Set your own hourly rate. Earn on your schedule — part-time or full-time, you decide.',
-  },
-  {
-    icon: Clock,
-    title: 'Teach on Your Terms',
-    desc: 'Pick your time slots and availability. No fixed contracts, no minimum commitments.',
-  },
-  {
-    icon: Users,
-    title: 'We Bring the Students',
-    desc: 'We handle all marketing and student acquisition. You focus entirely on delivering great lessons.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Grow Your Reputation',
-    desc: 'Build a verified tutor profile, collect student reviews, and grow your online teaching career.',
-  },
-  {
-    icon: Shield,
-    title: 'Secure Payments',
-    desc: 'Get paid reliably. We manage enrollment, billing, and payouts — zero admin work for you.',
-  },
-  {
-    icon: Megaphone,
-    title: 'Regional Reach',
-    desc: 'Access a growing community of learners across Malaysia, Indonesia, and Singapore.',
-  },
+const BENEFIT_KEYS = [
+  { icon: Wallet,    titleKey: 'tutor.why.b1.title', descKey: 'tutor.why.b1.desc' },
+  { icon: Clock,     titleKey: 'tutor.why.b2.title', descKey: 'tutor.why.b2.desc' },
+  { icon: Users,     titleKey: 'tutor.why.b3.title', descKey: 'tutor.why.b3.desc' },
+  { icon: TrendingUp,titleKey: 'tutor.why.b4.title', descKey: 'tutor.why.b4.desc' },
+  { icon: Shield,    titleKey: 'tutor.why.b5.title', descKey: 'tutor.why.b5.desc' },
+  { icon: Megaphone, titleKey: 'tutor.why.b6.title', descKey: 'tutor.why.b6.desc' },
 ];
 
 export default function WhyTeachSection() {
+  const { t } = useLanguage();
+
   return (
     <section className={styles.whySection}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>Why GDI FutureWorks</span>
-          <h2 className={styles.sectionTitle}>Why Tutors Choose Us</h2>
-          <p className={styles.sectionSubtitle}>
-            Everything you need to teach professionally — without the admin overhead.
-          </p>
+          <span className={styles.sectionLabel}>{t('tutor.why.label')}</span>
+          <h2 className={styles.sectionTitle}>{t('tutor.why.title')}</h2>
+          <p className={styles.sectionSubtitle}>{t('tutor.why.subtitle')}</p>
         </div>
 
         <div className={styles.benefitsGrid}>
-          {BENEFITS.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className={styles.benefitCard}>
+          {BENEFIT_KEYS.map(({ icon: Icon, titleKey, descKey }) => (
+            <div key={titleKey} className={styles.benefitCard}>
               <div className={styles.benefitIconWrap}>
                 <Icon size={22} />
               </div>
               <div>
-                <div className={styles.benefitTitle}>{title}</div>
-                <div className={styles.benefitDesc}>{desc}</div>
+                <div className={styles.benefitTitle}>{t(titleKey)}</div>
+                <div className={styles.benefitDesc}>{t(descKey)}</div>
               </div>
             </div>
           ))}

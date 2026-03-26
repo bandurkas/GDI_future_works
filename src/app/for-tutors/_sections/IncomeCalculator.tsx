@@ -1,15 +1,25 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import styles from '../page.module.css';
+import { useLanguage } from '@/components/LanguageContext';
+import { useCurrency } from '@/components/CurrencyContext';
 
 const formatIDR = (n: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
 
-const RATE_MIN = 50_000;
-const RATE_MAX = 500_000;
-const RATE_STEP = 10_000;
-const RATE_DEFAULT = 150_000;
+const formatMYR = (n: number) =>
+  new Intl.NumberFormat('ms-MY', { style: 'currency', currency: 'MYR', maximumFractionDigits: 0 }).format(n);
+
+const RATE_IDR_MIN = 50_000;
+const RATE_IDR_MAX = 500_000;
+const RATE_IDR_STEP = 10_000;
+const RATE_IDR_DEFAULT = 150_000;
+
+const RATE_MYR_MIN = 15;
+const RATE_MYR_MAX = 150;
+const RATE_MYR_STEP = 5;
+const RATE_MYR_DEFAULT = 45;
 
 const SESSIONS_MIN = 1;
 const SESSIONS_MAX = 20;
@@ -20,19 +30,38 @@ function pct(val: number, min: number, max: number) {
 }
 
 export default function IncomeCalculator() {
-  const [rate, setRate] = useState(RATE_DEFAULT);
+  const { t } = useLanguage();
+  const { currency } = useCurrency();
+
+  const isMYR = currency === 'MYR';
+  const rateMin = isMYR ? RATE_MYR_MIN : RATE_IDR_MIN;
+  const rateMax = isMYR ? RATE_MYR_MAX : RATE_IDR_MAX;
+  const rateStep = isMYR ? RATE_MYR_STEP : RATE_IDR_STEP;
+  const rateDefault = isMYR ? RATE_MYR_DEFAULT : RATE_IDR_DEFAULT;
+  const formatCurrency = isMYR ? formatMYR : formatIDR;
+  const rateMinLabel = isMYR ? 'RM 15' : 'Rp 50K';
+  const rateMaxLabel = isMYR ? 'RM 150' : 'Rp 500K';
+
+  const [rate, setRate] = useState(rateDefault);
   const [hours, setHours] = useState(2);
   const [sessions, setSessions] = useState(SESSIONS_DEFAULT);
 
-  const weekly = rate * hours * sessions;
+  // Reset rate to default when currency switches
+  useEffect(() => {
+    setRate(isMYR ? RATE_MYR_DEFAULT : RATE_IDR_DEFAULT);
+  }, [isMYR]);
+
+  const effectiveRate = rate;
+
+  const weekly = effectiveRate * hours * sessions;
   const monthly = weekly * 4;
   const yearly = monthly * 12;
 
   const onRate = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const v = Number(e.target.value);
     setRate(v);
-    e.target.style.setProperty('--slider-fill', pct(v, RATE_MIN, RATE_MAX));
-  }, []);
+    e.target.style.setProperty('--slider-fill', pct(v, rateMin, rateMax));
+  }, [rateMin, rateMax]);
 
   const onSessions = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const v = Number(e.target.value);
@@ -44,11 +73,9 @@ export default function IncomeCalculator() {
     <section id="calculator" className={styles.calculatorSection}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>Income Calculator</span>
-          <h2 className={styles.sectionTitle}>Calculate Your Tutor Income</h2>
-          <p className={styles.sectionSubtitle}>
-            Adjust the sliders to see your estimated earnings based on your preferred schedule.
-          </p>
+          <span className={styles.sectionLabel}>{t('tutor.calc.label')}</span>
+          <h2 className={styles.sectionTitle}>{t('tutor.calc.title')}</h2>
+          <p className={styles.sectionSubtitle}>{t('tutor.calc.subtitle')}</p>
         </div>
 
         <div className={styles.calculatorCard}>
@@ -57,29 +84,29 @@ export default function IncomeCalculator() {
             {/* Hourly Rate */}
             <div className={styles.calcField}>
               <label className={styles.calcLabel}>
-                Hourly Rate (IDR)
-                <span className={styles.calcLabelValue}>{formatIDR(rate)}</span>
+                {isMYR ? t('tutor.calc.rate.myr') : t('tutor.calc.rate.idr')}
+                <span className={styles.calcLabelValue}>{formatCurrency(effectiveRate)}</span>
               </label>
               <input
                 type="range"
                 className={styles.calcSlider}
-                min={RATE_MIN}
-                max={RATE_MAX}
-                step={RATE_STEP}
-                value={rate}
+                min={rateMin}
+                max={rateMax}
+                step={rateStep}
+                value={effectiveRate}
                 onChange={onRate}
-                style={{ '--slider-fill': pct(rate, RATE_MIN, RATE_MAX) } as React.CSSProperties}
+                style={{ '--slider-fill': pct(effectiveRate, rateMin, rateMax) } as React.CSSProperties}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                <span>Rp 50K</span>
-                <span>Rp 500K</span>
+                <span>{rateMinLabel}</span>
+                <span>{rateMaxLabel}</span>
               </div>
             </div>
 
             {/* Hours Per Lesson */}
             <div className={styles.calcField}>
               <label className={styles.calcLabel}>
-                Hours Per Lesson
+                {t('tutor.calc.hourslesson')}
                 <span className={styles.calcLabelValue}>{hours} hr{hours > 1 ? 's' : ''}</span>
               </label>
               <select
@@ -96,7 +123,7 @@ export default function IncomeCalculator() {
             {/* Lessons Per Week */}
             <div className={styles.calcField}>
               <label className={styles.calcLabel}>
-                Lessons Per Week
+                {t('tutor.calc.lessonsweek')}
                 <span className={styles.calcLabelValue}>{sessions} lesson{sessions > 1 ? 's' : ''}</span>
               </label>
               <input
@@ -118,28 +145,26 @@ export default function IncomeCalculator() {
 
           {/* ── Outputs ── */}
           <div className={styles.calcOutputs}>
-            <div className={styles.calcOutputTitle}>Your Estimated Income</div>
+            <div className={styles.calcOutputTitle}>{t('tutor.calc.output.title')}</div>
 
             <div className={styles.calcOutputRow}>
-              <span className={styles.calcOutputLabel}>Weekly</span>
-              <span className={styles.calcOutputAmount}>{formatIDR(weekly)}</span>
+              <span className={styles.calcOutputLabel}>{t('tutor.calc.weekly')}</span>
+              <span className={styles.calcOutputAmount}>{formatCurrency(weekly)}</span>
             </div>
 
             <div className={`${styles.calcOutputRow} ${styles.calcOutputRowHighlight}`}>
-              <span className={styles.calcOutputLabel}>Monthly</span>
+              <span className={styles.calcOutputLabel}>{t('tutor.calc.monthly')}</span>
               <span className={`${styles.calcOutputAmount} ${styles.calcOutputAmountHighlight}`}>
-                {formatIDR(monthly)}
+                {formatCurrency(monthly)}
               </span>
             </div>
 
             <div className={styles.calcOutputRow}>
-              <span className={styles.calcOutputLabel}>Yearly</span>
-              <span className={styles.calcOutputAmount}>{formatIDR(yearly)}</span>
+              <span className={styles.calcOutputLabel}>{t('tutor.calc.yearly')}</span>
+              <span className={styles.calcOutputAmount}>{formatCurrency(yearly)}</span>
             </div>
 
-            <p className={styles.calcDisclaimer}>
-              * Estimates based on your input. Actual earnings depend on student demand, session completion, and platform activity.
-            </p>
+            <p className={styles.calcDisclaimer}>{t('tutor.calc.disclaimer')}</p>
           </div>
         </div>
       </div>

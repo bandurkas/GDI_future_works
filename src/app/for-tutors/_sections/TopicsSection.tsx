@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Palette,
   Sparkles,
@@ -12,48 +14,47 @@ import {
   BrainCircuit,
 } from 'lucide-react';
 import styles from '../page.module.css';
+import { useLanguage } from '@/components/LanguageContext';
 
-const TOPICS = [
-  { icon: Palette,        label: 'Design',            sub: 'Graphic & visual' },
-  { icon: Sparkles,       label: 'AI Tools',          sub: 'Prompting & automation' },
-  { icon: Layers,         label: 'Canva',             sub: 'Templates & content' },
-  { icon: Code2,          label: 'Programming',       sub: 'Web & app dev' },
-  { icon: Megaphone,      label: 'Digital Marketing', sub: 'SEO, ads & growth' },
-  { icon: Languages,      label: 'English',           sub: 'Business & communication' },
-  { icon: LayoutTemplate, label: 'UI / UX',           sub: 'Figma & prototyping' },
-  { icon: Briefcase,      label: 'Business',          sub: 'Strategy & ops' },
-  { icon: Table2,         label: 'Excel',             sub: 'Data & spreadsheets' },
-  { icon: BarChart2,      label: 'Data Analysis',     sub: 'Insights & reporting' },
-  { icon: BrainCircuit,   label: 'Soft Skills',       sub: 'Leadership & comms' },
+const TOPIC_KEYS = [
+  { icon: Palette,        labelKey: 'tutor.topic.design.label',    subKey: 'tutor.topic.design.sub' },
+  { icon: Sparkles,       labelKey: 'tutor.topic.ai.label',        subKey: 'tutor.topic.ai.sub' },
+  { icon: Layers,         labelKey: 'tutor.topic.canva.label',     subKey: 'tutor.topic.canva.sub' },
+  { icon: Code2,          labelKey: 'tutor.topic.code.label',      subKey: 'tutor.topic.code.sub' },
+  { icon: Megaphone,      labelKey: 'tutor.topic.marketing.label', subKey: 'tutor.topic.marketing.sub' },
+  { icon: Languages,      labelKey: 'tutor.topic.english.label',   subKey: 'tutor.topic.english.sub' },
+  { icon: LayoutTemplate, labelKey: 'tutor.topic.uiux.label',      subKey: 'tutor.topic.uiux.sub' },
+  { icon: Briefcase,      labelKey: 'tutor.topic.business.label',  subKey: 'tutor.topic.business.sub' },
+  { icon: Table2,         labelKey: 'tutor.topic.excel.label',     subKey: 'tutor.topic.excel.sub' },
+  { icon: BarChart2,      labelKey: 'tutor.topic.data.label',      subKey: 'tutor.topic.data.sub' },
+  { icon: BrainCircuit,   labelKey: 'tutor.topic.soft.label',      subKey: 'tutor.topic.soft.sub' },
 ];
 
 export default function TopicsSection() {
+  const { t } = useLanguage();
+
   return (
     <section className={styles.topicsSection}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>Topics</span>
-          <h2 className={styles.sectionTitle}>Teach What You Know</h2>
-          <p className={styles.sectionSubtitle}>
-            We welcome tutors from a wide range of practical, career-focused disciplines.
-          </p>
+          <span className={styles.sectionLabel}>{t('tutor.topics.label')}</span>
+          <h2 className={styles.sectionTitle}>{t('tutor.topics.title')}</h2>
+          <p className={styles.sectionSubtitle}>{t('tutor.topics.subtitle')}</p>
         </div>
 
         <div className={styles.topicsGrid}>
-          {TOPICS.map(({ icon: Icon, label, sub }) => (
-            <div key={label} className={styles.topicCard}>
+          {TOPIC_KEYS.map(({ icon: Icon, labelKey, subKey }) => (
+            <div key={labelKey} className={styles.topicCard}>
               <div className={styles.topicCardIcon}>
                 <Icon size={20} />
               </div>
-              <div className={styles.topicCardLabel}>{label}</div>
-              <div className={styles.topicCardSub}>{sub}</div>
+              <div className={styles.topicCardLabel}>{t(labelKey)}</div>
+              <div className={styles.topicCardSub}>{t(subKey)}</div>
             </div>
           ))}
         </div>
 
-        <p className={styles.topicsFootnote}>
-          Don&apos;t see your topic? <strong>Apply anyway</strong> — we&apos;re expanding our categories every month.
-        </p>
+        <p className={styles.topicsFootnote}>{t('tutor.topics.footnote')}</p>
       </div>
     </section>
   );

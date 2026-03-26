@@ -1,83 +1,107 @@
+'use client';
+
 import { Clock, BookOpen, TrendingUp } from 'lucide-react';
 import styles from '../page.module.css';
+import { useLanguage } from '@/components/LanguageContext';
+import { useCurrency } from '@/components/CurrencyContext';
 
-const TIERS = [
+const TIERS_IDR = [
   {
-    badge: 'Starter',
-    name: 'Starter Tutor',
+    badgeKey: 'tutor.earn.tier1.badge',
+    nameKey:  'tutor.earn.tier1.name',
     featured: false,
-    details: [
-      { icon: BookOpen, text: '2 lessons per week' },
-      { icon: Clock, text: '2 hours per lesson' },
-      { icon: TrendingUp, text: 'Rp 150,000 / hour' },
-    ],
+    lessons: 2, hours: 2, rateLabel: 'Rp 150,000 / jam',
     income: 'Rp 2,400,000',
-    period: 'per month',
   },
   {
-    badge: 'Most Popular',
-    name: 'Active Tutor',
+    badgeKey: 'tutor.earn.tier2.badge',
+    nameKey:  'tutor.earn.tier2.name',
     featured: true,
-    details: [
-      { icon: BookOpen, text: '4 lessons per week' },
-      { icon: Clock, text: '2 hours per lesson' },
-      { icon: TrendingUp, text: 'Rp 150,000 / hour' },
-    ],
+    lessons: 4, hours: 2, rateLabel: 'Rp 150,000 / jam',
     income: 'Rp 4,800,000',
-    period: 'per month',
   },
   {
-    badge: 'Pro',
-    name: 'Pro Tutor',
+    badgeKey: 'tutor.earn.tier3.badge',
+    nameKey:  'tutor.earn.tier3.name',
     featured: false,
-    details: [
-      { icon: BookOpen, text: '10 lessons per week' },
-      { icon: Clock, text: '2 hours per lesson' },
-      { icon: TrendingUp, text: 'Rp 150,000+ / hour' },
-    ],
+    lessons: 10, hours: 2, rateLabel: 'Rp 150,000+ / jam',
     income: 'Rp 12,000,000+',
-    period: 'per month',
+  },
+];
+
+const TIERS_MYR = [
+  {
+    badgeKey: 'tutor.earn.tier1.badge',
+    nameKey:  'tutor.earn.tier1.name',
+    featured: false,
+    lessons: 2, hours: 2, rateLabel: 'RM 45 / hr',
+    income: 'RM 700',
+  },
+  {
+    badgeKey: 'tutor.earn.tier2.badge',
+    nameKey:  'tutor.earn.tier2.name',
+    featured: true,
+    lessons: 4, hours: 2, rateLabel: 'RM 45 / hr',
+    income: 'RM 1,400',
+  },
+  {
+    badgeKey: 'tutor.earn.tier3.badge',
+    nameKey:  'tutor.earn.tier3.name',
+    featured: false,
+    lessons: 10, hours: 2, rateLabel: 'RM 45+ / hr',
+    income: 'RM 3,500+',
   },
 ];
 
 export default function EarningsSection() {
+  const { t } = useLanguage();
+  const { currency } = useCurrency();
+
+  const TIERS = currency === 'MYR' ? TIERS_MYR : TIERS_IDR;
+  const permonth = t('tutor.earn.permonth');
+  const monthlyLabel = t('tutor.earn.monthly');
+
   return (
     <section className={styles.earningsSection}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>Earning Potential</span>
-          <h2 className={styles.sectionTitle}>How Much Can You Earn?</h2>
-          <p className={styles.sectionSubtitle}>
-            Real income estimates based on tutor activity levels. You control how much you work.
-          </p>
+          <span className={styles.sectionLabel}>{t('tutor.earn.label')}</span>
+          <h2 className={styles.sectionTitle}>{t('tutor.earn.title')}</h2>
+          <p className={styles.sectionSubtitle}>{t('tutor.earn.subtitle')}</p>
         </div>
 
         <div className={styles.earningsGrid}>
           {TIERS.map((tier) => (
             <div
-              key={tier.name}
+              key={tier.nameKey}
               className={`${styles.earningsCard} ${tier.featured ? styles.earningsCardFeatured : ''}`}
             >
               <span className={`${styles.tierBadge} ${tier.featured ? styles.tierBadgeFeatured : ''}`}>
-                {tier.badge}
+                {t(tier.badgeKey)}
               </span>
 
-              <div className={styles.tierName}>{tier.name}</div>
+              <div className={styles.tierName}>{t(tier.nameKey)}</div>
 
               <div className={styles.tierDetails}>
-                {tier.details.map(({ icon: Icon, text }) => (
-                  <div key={text} className={styles.tierDetail}>
-                    <Icon size={14} className={styles.tierDetailIcon} />
-                    {text}
-                  </div>
-                ))}
+                <div className={styles.tierDetail}>
+                  <BookOpen size={14} className={styles.tierDetailIcon} />
+                  {tier.lessons} {currency === 'MYR' ? 'lessons/week' : 'pelajaran/minggu'}
+                </div>
+                <div className={styles.tierDetail}>
+                  <Clock size={14} className={styles.tierDetailIcon} />
+                  {tier.hours} {currency === 'MYR' ? 'hrs/lesson' : 'jam/sesi'}
+                </div>
+                <div className={styles.tierDetail}>
+                  <TrendingUp size={14} className={styles.tierDetailIcon} />
+                  {tier.rateLabel}
+                </div>
               </div>
 
               <div className={styles.tierIncome}>
-                <div className={styles.tierIncomeLabel}>Monthly Income</div>
+                <div className={styles.tierIncomeLabel}>{monthlyLabel}</div>
                 <div className={styles.tierIncomeAmount}>{tier.income}</div>
                 <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  {tier.period}
+                  {permonth}
                 </div>
               </div>
             </div>

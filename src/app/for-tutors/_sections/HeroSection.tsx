@@ -1,37 +1,46 @@
+'use client';
+
 import Link from 'next/link';
 import { CheckCircle2, ArrowRight, Calculator } from 'lucide-react';
 import styles from '../page.module.css';
-
-const BULLETS = [
-  'Set your own hourly rate',
-  'Fully flexible schedule',
-  'Teach 100% online',
-  'We handle marketing & payments',
-];
-
-const TRUST_STATS = [
-  { value: '1,200+', label: 'Tutors earning', sub: 'across SEA' },
-  { value: '48 hrs', label: 'Avg. approval', sub: 'from application' },
-  { value: 'Zero', label: 'Upfront fees', sub: 'ever' },
-];
+import { useLanguage } from '@/components/LanguageContext';
+import { useCurrency } from '@/components/CurrencyContext';
 
 export default function HeroSection() {
+  const { t } = useLanguage();
+  const { currency } = useCurrency();
+
+  const accentAmount = currency === 'MYR' ? 'RM 1,400' : 'Rp 4,800,000';
+  const accentLabel = `${accentAmount}/${t('tutor.hero.month')}`;
+
+  const BULLETS = [
+    t('tutor.hero.bullet1'),
+    t('tutor.hero.bullet2'),
+    t('tutor.hero.bullet3'),
+    t('tutor.hero.bullet4'),
+  ];
+
+  const TRUST_STATS = [
+    { value: '1,200+', label: t('tutor.trust.stat1.label'), sub: t('tutor.trust.stat1.sub') },
+    { value: '48 hrs', label: t('tutor.trust.stat2.label'), sub: t('tutor.trust.stat2.sub') },
+    { value: t('tutor.trust.stat3.value'), label: t('tutor.trust.stat3.label'), sub: t('tutor.trust.stat3.sub') },
+  ];
+
   return (
     <section className={styles.hero}>
       <div className="container">
         <span className={styles.heroEyebrow}>
           <CheckCircle2 size={12} />
-          Now accepting tutors across SEA
+          {t('tutor.hero.eyebrow')}
         </span>
 
         <h1 className={styles.heroTitle}>
-          Turn Your Expertise Into<br />
-          <span className={styles.heroAccent}>Rp 4,800,000/Month</span>
+          {t('tutor.hero.title1')}<br />
+          <span className={styles.heroAccent}>{accentLabel}</span>
         </h1>
 
         <p className={styles.heroSubtitle}>
-          Teach what you know online. Set your own schedule and rate — we bring the students,
-          handle payments, and take care of everything else.
+          {t('tutor.hero.subtitle')}
         </p>
 
         <ul className={styles.heroBullets}>
@@ -45,11 +54,11 @@ export default function HeroSection() {
 
         <div className={styles.heroCtas}>
           <Link href="/for-tutors/apply" className={styles.ctaPrimary}>
-            Apply to Teach <ArrowRight size={16} />
+            {t('tutor.hero.cta1')} <ArrowRight size={16} />
           </Link>
           <a href="#calculator" className={styles.ctaSecondary}>
             <Calculator size={16} />
-            Calculate Your Income
+            {t('tutor.hero.cta2')}
           </a>
         </div>
 
