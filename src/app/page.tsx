@@ -100,10 +100,10 @@ const testimonials = [
 ];
 
 const cohorts = [
-    { course: 'Basic Data Analyst', date: 'Mar 12–13', seatsLeft: 3, slug: 'data-analytics', color: '#667eea' },
-    { course: 'Python for Professionals', date: 'Mar 14–15', seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
-    { course: 'Graphic Design with AI', date: 'Mar 15–16', seatsLeft: 6, slug: 'graphic-design-ai', color: '#f093fb' },
-    { course: 'LLM & AI Engineering', date: 'Mar 18–19', seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
+    { course: 'Basic Data Analyst', date: 'Apr 5–6', seatsLeft: 3, slug: 'data-analytics', color: '#667eea' },
+    { course: 'Python for Professionals', date: 'Apr 7–8', seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
+    { course: 'Graphic Design with AI', date: 'Apr 12–13', seatsLeft: 6, slug: 'graphic-design-ai', color: '#f093fb' },
+    { course: 'LLM & AI Engineering', date: 'Apr 14–15', seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
 ];
 
 const trustBadges = [
@@ -159,8 +159,8 @@ export default function HomePage() {
                         </div>
                         <div className={styles.heroStatDivider} />
                         <div className={styles.heroStat}>
-                            <span className={styles.heroStatNum}>4h</span>
-                            <span className={styles.heroStatLabel}>Total Course Length</span>
+                            <span className={styles.heroStatNum}>4 Wks</span>
+                            <span className={styles.heroStatLabel}>Program Duration</span>
                         </div>
                         <div className={styles.heroStatDivider} />
                         <div className={styles.heroStat}>
@@ -170,6 +170,16 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
+
+            {/* ── PROOF BAR ── */}
+            <div className={styles.proofBar}>
+                <div className={styles.proofBarInner}>
+                    <span className={styles.proofBarLabel}>Our instructors are from</span>
+                    {proofCompanies.map((c) => (
+                        <span key={c} className={styles.proofLogo}>{c}</span>
+                    ))}
+                </div>
+            </div>
 
             {/* ── COURSES ── */}
             <section className={styles.coursesSection} id="courses">
@@ -184,6 +194,72 @@ export default function HomePage() {
                     <div className={styles.coursesFooter}>
                         <p>Not sure which course is right for you?</p>
                         <Link href="/contact" className={styles.advisorLink}>Consult Advisor <ArrowRight size={16} /></Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── INSTRUCTOR AUTHORITY ── */}
+            <section className={styles.instructorAuthSection}>
+                <div className="container">
+                    <div className={styles.sectionHeader}>
+                        <p className={styles.sectionLabel}>World-Class Faculty</p>
+                        <h2 className={styles.sectionH2}>Learn from Industry Insiders</h2>
+                    </div>
+                    <div className={styles.instructorCards}>
+                        {instructors.map((inst) => (
+                            <div key={inst.name} className={styles.instructorCard}>
+                                <div className={styles.instAvatar} style={{ background: inst.gradient }}>{inst.initials}</div>
+                                <div className={styles.instInfo}>
+                                    <span className={styles.instActiveBadge}>Active Instructor</span>
+                                    <p className={styles.instName}>{inst.name}</p>
+                                    <p className={styles.instRole}>{inst.role}</p>
+                                    <p className={styles.instCompany}>{inst.company}</p>
+                                    <p className={styles.instCourse}>Teaching: {inst.course}</p>
+                                    <div className={styles.instTools}>
+                                        {inst.tools.map((tool) => (
+                                            <span key={tool} className={styles.instToolTag}>{tool}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── TESTIMONIALS ── */}
+            <section className={styles.testimonialsSection}>
+                <div className="container">
+                    <div className={styles.sectionHeader}>
+                        <p className={styles.sectionLabel}>Student Outcomes</p>
+                        <h2 className={styles.sectionH2}>Real Results from Real Students</h2>
+                    </div>
+                    <div className={`${styles.testimonials} ${styles.geGrid}`}>
+                        {testimonials.map((t) => (
+                            <div key={t.name} className={styles.testimonialCard}>
+                                <div className={styles.tStars}>★★★★★</div>
+                                <p className={styles.tQuote}>&ldquo;{t.quote}&rdquo;</p>
+                                <div className={styles.tBeforeAfter}>
+                                    <div>
+                                        <span className={styles.tLabel}>Before</span>
+                                        <p className={styles.tState}>{t.before}</p>
+                                    </div>
+                                    <div className={styles.tArrow}>→</div>
+                                    <div>
+                                        <span className={styles.tLabel}>After</span>
+                                        <p className={styles.tState}>{t.after}</p>
+                                    </div>
+                                </div>
+                                <span className={styles.tOutcomeMetric}>{t.outcome}</span>
+                                <div className={styles.tMeta}>
+                                    <div className={styles.tAvatar} style={{ background: t.gradient }}>{t.initials}</div>
+                                    <div>
+                                        <p className={styles.tName}>{t.flag} {t.name}</p>
+                                        <p className={styles.tCourse}>{t.course}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>

@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import Navbar from './NavbarPremium';
 import Footer from './Footer';
 import ScrollReveal from './ScrollReveal';
+import WhatsAppButton from './WhatsAppButton';
 
 export default function PublicLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -19,6 +20,7 @@ export default function PublicLayoutWrapper({ children }: { children: React.Reac
       <main>{children}</main>
       <Footer />
       <ScrollReveal />
+      <WhatsAppButton />
     </>
   );
 }

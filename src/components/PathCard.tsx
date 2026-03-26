@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { CheckCircle2 } from 'lucide-react';
 import styles from './PathCard.module.css';
 
@@ -41,12 +40,14 @@ const PathCard: React.FC<PathCardProps> = ({
       </div>
 
       <div className={styles.ctaWrapper}>
-        <Link 
-          href={ctaHref} 
+        <a
+          href={ctaHref}
+          target="_blank"
+          rel="noopener noreferrer"
           className={variant === 'primary' ? styles.btnPrimary : styles.btnSecondary}
         >
           {ctaText}
-        </Link>
+        </a>
       </div>
     </div>
   );
