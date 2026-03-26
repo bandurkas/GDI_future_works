@@ -57,3 +57,5 @@ dist/
 *.zip
 *.log
 gdi_deploy*
+.claude/
+skills-lock.json
