@@ -101,13 +101,18 @@ export default function Navbar() {
                 <div className={styles.rightSection}>
                     <div className={styles.actions}>
                         {isLoggedIn ? (
-                            <button
-                                onClick={() => signOut({ callbackUrl: '/' })}
-                                className={styles.navChatBtn}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                            >
-                                <Translate tKey="nav.logout" defaultText="Log out" />
-                            </button>
+                            <>
+                                <Link href="/dashboard" className={styles.navChatBtn}>
+                                    Dashboard
+                                </Link>
+                                <button
+                                    onClick={() => signOut({ callbackUrl: '/' })}
+                                    className={styles.navChatBtn}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                                >
+                                    <Translate tKey="nav.logout" defaultText="Log out" />
+                                </button>
+                            </>
                         ) : (
                             <Link href="/login" className={styles.navChatBtn}>
                                 <Translate tKey="nav.login" defaultText="Log in" />
