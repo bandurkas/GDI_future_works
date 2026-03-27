@@ -10,6 +10,7 @@ import GoogleAuthProvider from '@/components/GoogleAuthProvider';
 import LazyOneTap from '@/components/LazyOneTap';
 import { CurrencyProvider } from '@/components/CurrencyContext';
 import { auth } from '@/auth';
+import { jwtVerify } from 'jose';
 
 // Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
 
@@ -57,6 +58,22 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   const cookieStore = await cookies();
+
+  // If no NextAuth session, check legacy gdi_session so SessionProvider is pre-populated
+  // and the navbar never shows "Log in" for an already-authenticated user.
+  let effectiveSession = session;
+  if (!effectiveSession) {
+    const gdiToken = cookieStore.get('gdi_session')?.value;
+    if (gdiToken) {
+      try {
+        const { payload } = await jwtVerify(gdiToken, new TextEncoder().encode(process.env.JWT_SECRET ?? ''));
+        effectiveSession = {
+          user: { name: (payload.name as string) || 'User', email: payload.email as string },
+          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        } as any;
+      } catch { /* invalid token — stay logged out */ }
+    }
+  }
   const headerStore = await headers();
 
   // Language detection — priority: cookie > Accept-Language header > default 'en'
@@ -101,7 +118,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="dns-prefetch" href="https://app.midtrans.com" />
       </head>
       <body>
-        <GoogleAuthProvider session={session}>
+        <GoogleAuthProvider session={effectiveSession}>
           <LazyOneTap />
           <CurrencyProvider initialCurrency={initialCurr}>
             <ThemeProvider>

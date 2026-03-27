@@ -132,13 +132,18 @@ export default function NavbarPremium() {
                 <div className={styles.rightSection}>
                     <div className={styles.desktopActions}>
                         {isLoggedIn ? (
-                             <button
-                                onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); signOut({ callbackUrl: '/' }); setLegacyLoggedIn(false); }}
-                                className={styles.navActionBtn}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                            >
-                                <Translate tKey="nav.logout" defaultText="Log out" />
-                            </button>
+                            <>
+                                <Link href="/dashboard" className={styles.navActionBtn}>
+                                    Dashboard
+                                </Link>
+                                <button
+                                    onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); signOut({ callbackUrl: '/' }); setLegacyLoggedIn(false); }}
+                                    className={styles.navActionBtn}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                                >
+                                    <Translate tKey="nav.logout" defaultText="Log out" />
+                                </button>
+                            </>
                         ) : (
                             <Link href="/login" className={styles.navActionBtn}>
                                 <Translate tKey="nav.login" defaultText="Log in" />
