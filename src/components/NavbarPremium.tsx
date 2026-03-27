@@ -189,34 +189,12 @@ export default function NavbarPremium() {
 
                     {/* Mobile top-bar utility controls */}
                     <div className={styles.mobileHeaderActions}>
-                        {/* Currency toggle */}
-                        <button
-                            className={styles.mobileToggleChip}
-                            onClick={() => setCurrency(currency === 'IDR' ? 'MYR' : 'IDR')}
-                            aria-label={`Currency: ${currency}`}
-                        >
-                            <span className={styles.mobileToggleActive}>{currency}</span>
-                            <span className={styles.mobileToggleSep}>·</span>
-                            <span className={styles.mobileToggleInactive}>{currency === 'IDR' ? 'MYR' : 'IDR'}</span>
-                        </button>
-
-                        {/* Language toggle */}
-                        <button
-                            className={styles.mobileToggleChip}
-                            onClick={toggleLanguage}
-                            aria-label={`Language: ${language.toUpperCase()}`}
-                        >
-                            <span className={styles.mobileToggleActive}>{language.toUpperCase()}</span>
-                            <span className={styles.mobileToggleSep}>·</span>
-                            <span className={styles.mobileToggleInactive}>{language === 'en' ? 'ID' : 'EN'}</span>
-                        </button>
-
-                        {/* Theme toggle */}
+                        {/* Theme toggle — kept for high-frequency use */}
                         <button className={styles.mobileIconBtn} onClick={toggleTheme} aria-label="Toggle theme">
                             {theme === 'dark' ? <IconSun /> : <IconMoon />}
                         </button>
-
-                        {/* Cart */}
+                        
+                        {/* Cart — kept for high-frequency use */}
                         <Link href="/cart" className={styles.mobileIconBtn} aria-label="View shopping cart">
                             <IconCart />
                             {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
