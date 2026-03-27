@@ -6,6 +6,39 @@ import AppActions from './AppActions';
 
 const DAYS_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
+const TIME_COLORS: Record<string, { dot: string; bg: string; label: string }> = {
+  morning:   { dot: '#f59e0b', bg: 'rgba(245,158,11,0.15)',  label: 'Morning'   },
+  afternoon: { dot: '#3b82f6', bg: 'rgba(59,130,246,0.15)',  label: 'Afternoon' },
+  evening:   { dot: '#8b5cf6', bg: 'rgba(139,92,246,0.15)',  label: 'Evening'   },
+  night:     { dot: '#6366f1', bg: 'rgba(99,102,241,0.15)',  label: 'Night'     },
+  free:      { dot: '#10b981', bg: 'rgba(16,185,129,0.15)',  label: 'Free'      },
+};
+
+function parseAvailability(raw: string | null): Record<number, string[]> {
+  if (!raw) return {};
+  const result: Record<number, string[]> = {};
+  let items: string[] = [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) items = parsed.map(String);
+    else items = [String(parsed)];
+  } catch {
+    // plain text fallback — split by comma or newline
+    items = raw.split(/[,\n]+/).map(s => s.trim()).filter(Boolean);
+  }
+  const dayMap: Record<string, number> = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+  for (const item of items) {
+    const lower = item.toLowerCase().replace(/\s/g, '-');
+    const dayKey = Object.keys(dayMap).find(k => lower.startsWith(k));
+    if (dayKey === undefined) continue;
+    const dayIdx = dayMap[dayKey];
+    const timeKey = Object.keys(TIME_COLORS).find(t => lower.includes(t)) || 'free';
+    if (!result[dayIdx]) result[dayIdx] = [];
+    if (!result[dayIdx].includes(timeKey)) result[dayIdx].push(timeKey);
+  }
+  return result;
+}
+
 function minutesToTime(m: number) {
   return `${Math.floor(m / 60).toString().padStart(2, '0')}:${(m % 60).toString().padStart(2, '0')}`;
 }
@@ -267,9 +300,9 @@ function AppCard({ a }: { a: Application }) {
       {/* Expanded body */}
       {expanded && (
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '16px 16px 0' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '14px' }}>
-            {a.bio && <DarkField label="Bio / Background" value={a.bio} multiline span2 />}
-            {a.availability && <DarkField label="Availability" value={a.availability} multiline />}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '14px' }}>
+            {a.bio && <DarkField label="Bio / Background" value={a.bio} multiline />}
+            {a.availability && <AvailabilityGrid raw={a.availability} />}
           </div>
 
           {(a.linkedin || a.videoLink || a.portfolioLink) && (
@@ -413,6 +446,80 @@ function TutorCard({ t }: { t: Tutor }) {
             </div>
           )}
         </div>
+      )}
+    </div>
+  );
+}
+
+function AvailabilityGrid({ raw }: { raw: string }) {
+  const byDay = parseAvailability(raw);
+  const hasParsed = Object.keys(byDay).length > 0;
+
+  // Legend: which time types are present
+  const usedTimes = Array.from(new Set(Object.values(byDay).flat()));
+
+  return (
+    <div>
+      <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
+        Availability
+      </div>
+
+      {hasParsed ? (
+        <>
+          {/* 7-column day grid */}
+          <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '10px' }}>
+            {DAYS_SHORT.map((day, i) => {
+              const times = byDay[i] || [];
+              const isEmpty = times.length === 0;
+              return (
+                <div key={day} style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
+                  padding: '7px 6px',
+                  borderRadius: '8px', minWidth: '40px',
+                  background: isEmpty ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.05)',
+                  border: isEmpty ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(255,255,255,0.1)',
+                }}>
+                  <span style={{ fontSize: '9px', fontWeight: 700, color: isEmpty ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.6)', letterSpacing: '0.04em' }}>
+                    {day}
+                  </span>
+                  {isEmpty ? (
+                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.12)', lineHeight: 1 }}>—</span>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', alignItems: 'center' }}>
+                      {times.map(t => (
+                        <div key={t} style={{
+                          width: '8px', height: '8px', borderRadius: '50%',
+                          background: TIME_COLORS[t]?.dot || '#10b981',
+                          boxShadow: `0 0 4px ${TIME_COLORS[t]?.dot || '#10b981'}60`,
+                        }} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Legend */}
+          {usedTimes.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              {usedTimes.map(t => (
+                <span key={t} style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '5px',
+                  fontSize: '10px', fontWeight: 500, color: TIME_COLORS[t]?.dot || '#10b981',
+                  background: TIME_COLORS[t]?.bg || 'rgba(16,185,129,0.15)',
+                  padding: '3px 8px', borderRadius: '20px',
+                }}>
+                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: TIME_COLORS[t]?.dot || '#10b981', display: 'inline-block', flexShrink: 0 }} />
+                  {TIME_COLORS[t]?.label || t}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        // Fallback: plain text
+        <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{raw}</div>
       )}
     </div>
   );
