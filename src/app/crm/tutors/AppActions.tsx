@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import a from './AppActions.module.css';
 
 export default function AppActions({ id, status }: { id: string; status: string }) {
   const router = useRouter();
@@ -22,19 +23,19 @@ export default function AppActions({ id, status }: { id: string; status: string 
     setSaving(false);
   }
 
-  async function setStatus(s: string) {
+  async function setStatus(st: string) {
     setSaving(true);
     const res = await fetch(`/api/admin/tutor-applications/${id}/status`, {
-      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: s }),
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: st }),
     });
-    if (res.ok) { setCurrent(s); router.refresh(); showToast(`Status set to ${s}`); }
+    if (res.ok) { setCurrent(st); router.refresh(); showToast(`Status set to ${st}`); }
     else showToast('Failed to update status');
     setSaving(false);
   }
 
   return (
-    <div style={{ paddingTop: '14px', paddingBottom: '16px', borderTop: '1px solid rgba(255,255,255,0.06)', marginTop: '4px' }}>
-      <div style={{ display: 'flex', gap: '7px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className={a.actionsWrap}>
+      <div className={a.btnRow}>
         {current !== 'APPROVED' && (
           <ActionBtn
             label="Approve"
@@ -62,19 +63,10 @@ export default function AppActions({ id, status }: { id: string; status: string 
             onClick={() => setStatus('PENDING')}
           />
         )}
-        {saving && <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginLeft: '4px' }}>Saving…</span>}
+        {saving && <span className={a.savingText}>Saving…</span>}
       </div>
 
-      {toast && (
-        <div className="crm-toast" style={{
-          marginTop: '10px', padding: '8px 14px', borderRadius: '8px',
-          background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-          fontSize: '12px', color: 'rgba(255,255,255,0.6)',
-          display: 'inline-block',
-        }}>
-          {toast}
-        </div>
-      )}
+      {toast && <div className={a.toast}>{toast}</div>}
     </div>
   );
 }
@@ -87,15 +79,8 @@ function ActionBtn({ label, bg, color, border, hoverBg, disabled, onClick }: {
     <button
       onClick={onClick}
       disabled={disabled}
-      className="crm-action-btn"
-      style={{
-        padding: '6px 14px', borderRadius: '7px', fontSize: '11px', fontWeight: 600,
-        background: bg, color, border: `1px solid ${border}`,
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
-        transition: 'opacity 0.15s, background 0.15s',
-        fontFamily: "'DM Sans', sans-serif",
-      }}
+      className={a.btn}
+      style={{ background: bg, color, border: `1px solid ${border}` }}
       onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLButtonElement).style.background = hoverBg; }}
       onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = bg; }}
     >

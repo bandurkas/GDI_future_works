@@ -1,0 +1,633 @@
+/* ══════════════════════════════════════════════
+   Tutors CRM View
+   ══════════════════════════════════════════════ */
+
+.wrap {
+  max-width: 960px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Header ───────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.heading {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  font-family: 'Syne', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.subHeading {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Live badge */
+.liveBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  display: block;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.liveText {
+  font-size: 10px;
+  font-weight: 700;
+  color: #10b981;
+  letter-spacing: 0.08em;
+}
+
+/* ── Search ───────────────────────────────────── */
+.searchWrap {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: rgba(255,255,255,0.2);
+  line-height: 0;
+}
+
+.searchInput {
+  padding: 7px 12px 7px 30px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  font-size: 12px;
+  width: 200px;
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.searchInput::placeholder {
+  color: rgba(255,255,255,0.22);
+}
+
+.searchInput:focus {
+  border-color: #e43a3d;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(228,58,61,0.12);
+}
+
+/* Add button */
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: #e43a3d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.15s;
+}
+
+.addBtn:hover {
+  opacity: 0.85;
+}
+
+/* ── Filter Tabs ──────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  color: rgba(255,255,255,0.35);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.tab:hover {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.7);
+}
+
+.tabActive {
+  border-color: transparent;
+  background: #e43a3d;
+  color: white;
+}
+
+.tabActive:hover {
+  background: #cf2d30;
+  border-color: transparent;
+}
+
+.tabCount {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.3);
+}
+
+.tabCountActive {
+  background: rgba(255,255,255,0.22);
+  color: white;
+}
+
+/* ── Section header (Active Tutors) ───────────── */
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.sectionBar {
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sectionCount {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* ── App / Tutor Card ─────────────────────────── */
+.card {
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.card:hover {
+  border-color: rgba(255,255,255,0.13);
+  background: #171717;
+}
+
+/* Card header row */
+.cardHead {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.cardAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Syne', sans-serif;
+}
+
+.cardNameWrap {
+  min-width: 0;
+  flex: 1;
+}
+
+.cardName {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.cardSubRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.cardEmail {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+}
+
+.cardTimezone {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+}
+
+.expertiseTag {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.06);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+/* Card right */
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.cardDate {
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+  font-family: 'DM Mono', monospace;
+}
+
+.statusBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.verifiedBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(59,130,246,0.12);
+  color: #60a5fa;
+}
+
+.activeBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: rgba(16,185,129,0.12);
+  color: #10b981;
+}
+
+/* Expand button */
+.expandBtn {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.4);
+  padding: 5px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.expandBtn:hover {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+}
+
+.chevron {
+  transition: transform 0.2s;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* 7-day grid */
+.dayGrid {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.dayCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.dayLabel {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.dayDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Expanded body */
+.expandBody {
+  border-top: 1px solid rgba(255,255,255,0.055);
+  padding: 16px 16px 0;
+}
+
+.expandBodyPadded {
+  border-top: 1px solid rgba(255,255,255,0.055);
+  padding: 16px;
+}
+
+.fieldBlock {
+  margin-bottom: 14px;
+}
+
+.fieldLabel {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.fieldValue {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* Link chips */
+.linkChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.linkChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #e43a3d;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(228,58,61,0.08);
+  border: 1px solid rgba(228,58,61,0.15);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.12s;
+}
+
+.linkChip:hover {
+  background: rgba(228,58,61,0.15);
+}
+
+/* Weekly schedule */
+.scheduleWrap {
+  margin-bottom: 14px;
+}
+
+.scheduleTitle {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.scheduleDays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.scheduleDay {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-width: 100px;
+}
+
+.scheduleDayName {
+  font-size: 10px;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+
+.scheduleSlot {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  font-family: 'DM Mono', monospace;
+}
+
+/* Profile grid */
+.profileGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.profileLinks {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+/* Availability grid */
+.availWrap {
+  margin-bottom: 0;
+}
+
+.availTitle {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.availGrid {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.availDay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 6px;
+  border-radius: 8px;
+  min-width: 40px;
+}
+
+.availDayEmpty {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.availDayFilled {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.availDayLabel {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.availDash {
+  font-size: 11px;
+  color: rgba(255,255,255,0.12);
+  line-height: 1;
+}
+
+.availDots {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+}
+
+.availDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.availLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.availLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.availLegendDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.availFallback {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* AppActions wrapper */
+.appActionsWrap {
+  padding-bottom: 16px;
+}
+
+/* ── Empty State ──────────────────────────────── */
+.emptyState {
+  background: rgba(255,255,255,0.02);
+  border: 1px dashed rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.emptyTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 4px;
+}
+
+.emptySub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+}
