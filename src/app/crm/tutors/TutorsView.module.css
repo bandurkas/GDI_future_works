@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════
-   Tutors CRM View
+   Tutors CRM View — uses --crm-* tokens
    ══════════════════════════════════════════════ */
 
 .wrap {
@@ -21,7 +21,7 @@
   margin: 0;
   font-size: 22px;
   font-weight: 800;
-  color: white;
+  color: var(--crm-heading);
   font-family: 'Syne', sans-serif;
   letter-spacing: -0.02em;
 }
@@ -29,7 +29,7 @@
 .subHeading {
   margin: 5px 0 0;
   font-size: 12px;
-  color: rgba(255,255,255,0.3);
+  color: var(--crm-text-dim);
 }
 
 .headerRight {
@@ -82,28 +82,28 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: rgba(255,255,255,0.2);
+  color: var(--crm-text-dim);
   line-height: 0;
 }
 
 .searchInput {
   padding: 7px 12px 7px 30px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--crm-input-border);
   border-radius: 8px;
   font-size: 12px;
   width: 200px;
-  background: rgba(255,255,255,0.05);
-  color: white;
+  background: var(--crm-input-bg);
+  color: var(--crm-text);
   font-family: 'DM Sans', sans-serif;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .searchInput::placeholder {
-  color: rgba(255,255,255,0.22);
+  color: var(--crm-text-dim);
 }
 
 .searchInput:focus {
-  border-color: #e43a3d;
+  border-color: var(--crm-accent);
   outline: none;
   box-shadow: 0 0 0 3px rgba(228,58,61,0.12);
 }
@@ -115,7 +115,7 @@
   gap: 6px;
   padding: 7px 14px;
   border-radius: 8px;
-  background: #e43a3d;
+  background: var(--crm-accent);
   color: white;
   border: none;
   cursor: pointer;
@@ -146,21 +146,21 @@
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 0.05em;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--crm-border);
   background: transparent;
-  color: rgba(255,255,255,0.35);
+  color: var(--crm-text-muted);
   transition: background 0.15s, color 0.15s, border-color 0.15s;
   font-family: 'DM Sans', sans-serif;
 }
 
 .tab:hover {
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.7);
+  background: var(--crm-nav-hover);
+  color: var(--crm-text);
 }
 
 .tabActive {
   border-color: transparent;
-  background: #e43a3d;
+  background: var(--crm-accent);
   color: white;
 }
 
@@ -174,8 +174,8 @@
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 10px;
-  background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.3);
+  background: var(--crm-tag-bg);
+  color: var(--crm-text-muted);
 }
 
 .tabCountActive {
@@ -183,7 +183,7 @@
   color: white;
 }
 
-/* ── Section header (Active Tutors) ───────────── */
+/* ── Section header ───────────────────────────── */
 .sectionHead {
   display: flex;
   align-items: center;
@@ -203,7 +203,7 @@
   margin: 0;
   font-size: 10px;
   font-weight: 700;
-  color: rgba(255,255,255,0.35);
+  color: var(--crm-text-muted);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -217,16 +217,17 @@
 
 /* ── App / Tutor Card ─────────────────────────── */
 .card {
-  background: #141414;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--crm-card);
+  border: 1px solid var(--crm-border);
   border-radius: 14px;
   overflow: hidden;
-  transition: border-color 0.18s, background 0.18s;
+  box-shadow: var(--crm-shadow);
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
 }
 
 .card:hover {
-  border-color: rgba(255,255,255,0.13);
-  background: #171717;
+  border-color: var(--crm-border-hover);
+  background: var(--crm-card-hover);
 }
 
 /* Card header row */
@@ -267,7 +268,7 @@
 .cardName {
   font-size: 14px;
   font-weight: 600;
-  color: white;
+  color: var(--crm-text);
   margin-bottom: 2px;
 }
 
@@ -280,19 +281,19 @@
 
 .cardEmail {
   font-size: 11px;
-  color: rgba(255,255,255,0.3);
+  color: var(--crm-text-muted);
 }
 
 .cardTimezone {
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: var(--crm-text-dim);
 }
 
 .expertiseTag {
   font-size: 10px;
   font-weight: 600;
-  color: rgba(255,255,255,0.4);
-  background: rgba(255,255,255,0.06);
+  color: var(--crm-tag-text);
+  background: var(--crm-tag-bg);
   padding: 2px 7px;
   border-radius: 4px;
 }
@@ -307,7 +308,7 @@
 
 .cardDate {
   font-size: 10px;
-  color: rgba(255,255,255,0.2);
+  color: var(--crm-text-dim);
   font-family: 'DM Mono', monospace;
 }
 
@@ -338,10 +339,10 @@
 
 /* Expand button */
 .expandBtn {
-  background: rgba(255,255,255,0.05);
+  background: var(--crm-expand-bg);
   border: none;
   cursor: pointer;
-  color: rgba(255,255,255,0.4);
+  color: var(--crm-text-muted);
   padding: 5px;
   border-radius: 6px;
   display: flex;
@@ -350,8 +351,8 @@
 }
 
 .expandBtn:hover {
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.7);
+  background: var(--crm-expand-hover);
+  color: var(--crm-text);
 }
 
 .chevron {
@@ -390,12 +391,12 @@
 
 /* Expanded body */
 .expandBody {
-  border-top: 1px solid rgba(255,255,255,0.055);
+  border-top: 1px solid var(--crm-section-sep);
   padding: 16px 16px 0;
 }
 
 .expandBodyPadded {
-  border-top: 1px solid rgba(255,255,255,0.055);
+  border-top: 1px solid var(--crm-section-sep);
   padding: 16px;
 }
 
@@ -406,7 +407,7 @@
 .fieldLabel {
   font-size: 9px;
   font-weight: 700;
-  color: rgba(255,255,255,0.2);
+  color: var(--crm-text-dim);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 4px;
@@ -414,7 +415,7 @@
 
 .fieldValue {
   font-size: 12px;
-  color: rgba(255,255,255,0.55);
+  color: var(--crm-text-muted);
   line-height: 1.6;
   word-break: break-word;
   white-space: pre-wrap;
@@ -433,18 +434,18 @@
   align-items: center;
   gap: 5px;
   font-size: 11px;
-  color: #e43a3d;
+  color: var(--crm-accent);
   padding: 5px 10px;
   border-radius: 6px;
-  background: rgba(228,58,61,0.08);
-  border: 1px solid rgba(228,58,61,0.15);
+  background: var(--crm-accent-dim);
+  border: 1px solid rgba(228,58,61,0.18);
   text-decoration: none;
   font-weight: 500;
   transition: background 0.12s;
 }
 
 .linkChip:hover {
-  background: rgba(228,58,61,0.15);
+  background: rgba(228,58,61,0.18);
 }
 
 /* Weekly schedule */
@@ -455,7 +456,7 @@
 .scheduleTitle {
   font-size: 9px;
   font-weight: 700;
-  color: rgba(255,255,255,0.2);
+  color: var(--crm-text-dim);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 10px;
@@ -468,8 +469,8 @@
 }
 
 .scheduleDay {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--crm-cart-bg);
+  border: 1px solid var(--crm-cart-border);
   border-radius: 8px;
   padding: 8px 10px;
   min-width: 100px;
@@ -485,7 +486,7 @@
 
 .scheduleSlot {
   font-size: 11px;
-  color: rgba(255,255,255,0.5);
+  color: var(--crm-text-muted);
   font-family: 'DM Mono', monospace;
 }
 
@@ -511,7 +512,7 @@
 .availTitle {
   font-size: 9px;
   font-weight: 700;
-  color: rgba(255,255,255,0.2);
+  color: var(--crm-text-dim);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 10px;
@@ -535,13 +536,13 @@
 }
 
 .availDayEmpty {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.05);
+  background: var(--crm-empty-bg);
+  border: 1px solid var(--crm-section-sep);
 }
 
 .availDayFilled {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--crm-cart-bg);
+  border: 1px solid var(--crm-cart-border);
 }
 
 .availDayLabel {
@@ -552,7 +553,7 @@
 
 .availDash {
   font-size: 11px;
-  color: rgba(255,255,255,0.12);
+  color: var(--crm-text-faint);
   line-height: 1;
 }
 
@@ -595,7 +596,7 @@
 
 .availFallback {
   font-size: 12px;
-  color: rgba(255,255,255,0.45);
+  color: var(--crm-text-muted);
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
@@ -608,8 +609,8 @@
 
 /* ── Empty State ──────────────────────────────── */
 .emptyState {
-  background: rgba(255,255,255,0.02);
-  border: 1px dashed rgba(255,255,255,0.08);
+  background: var(--crm-empty-bg);
+  border: 1px dashed var(--crm-empty-border);
   border-radius: 12px;
   padding: 40px;
   text-align: center;
@@ -623,11 +624,11 @@
 .emptyTitle {
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255,255,255,0.4);
+  color: var(--crm-text-muted);
   margin-bottom: 4px;
 }
 
 .emptySub {
   font-size: 12px;
-  color: rgba(255,255,255,0.2);
+  color: var(--crm-text-dim);
 }
