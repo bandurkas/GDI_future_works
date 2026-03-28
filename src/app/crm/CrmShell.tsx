@@ -13,7 +13,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   const isStudents = pathname.startsWith('/crm/students');
   const isTutors = pathname.startsWith('/crm/tutors');
   const [collapsed, setCollapsed] = useState(false);
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>('light');
 
   // Load saved theme preference
   useEffect(() => {
