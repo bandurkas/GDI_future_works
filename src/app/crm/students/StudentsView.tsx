@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { fmt } from '@/lib/utils';
 import s from './StudentsView.module.css';
 
@@ -16,27 +17,42 @@ const STATUS_STYLE: Record<string, { bg: string; text: string; border: string }>
   ACTIVE:    { bg: 'rgba(16,185,129,0.12)',  text: '#10b981',  border: '#10b981' },
   COMPLETED: { bg: 'rgba(59,130,246,0.12)',  text: '#60a5fa',  border: '#3b82f6' },
   DROPPED:   { bg: 'rgba(239,68,68,0.12)',   text: '#f87171',  border: '#ef4444' },
+  ARCHIVED:  { bg: 'rgba(107,114,128,0.1)',  text: '#9ca3af',  border: 'rgba(107,114,128,0.5)' },
 };
 
-export default function StudentsView({ leads, paid }: { leads: Student[]; paid: Student[] }) {
-  const [search, setSearch] = useState('');
-  const [tab, setTab] = useState<'all' | 'leads' | 'paid'>('all');
+export default function StudentsView({ students }: { students: Student[] }) {
+  const [search, setSearch]           = useState('');
+  const [tab, setTab]                 = useState<'all' | 'leads' | 'paid'>('all');
+  const [showAddModal, setShowAddModal] = useState(false);
 
-  const all = useMemo(() => [...leads, ...paid], [leads, paid]);
+  const active = useMemo(() => students.filter(st => st.status !== 'ARCHIVED'), [students]);
+  const archived = useMemo(() => students.filter(st => st.status === 'ARCHIVED'), [students]);
+  const leads  = useMemo(() => active.filter(st => !st.payments.some(p => p.status === 'PAID')), [active]);
+  const paid   = useMemo(() => active.filter(st =>  st.payments.some(p => p.status === 'PAID')), [active]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
-    const base = tab === 'leads' ? leads : tab === 'paid' ? paid : all;
+    const base = tab === 'leads' ? leads : tab === 'paid' ? paid : active;
     if (!q) return base;
     return base.filter(st =>
       st.user.name?.toLowerCase().includes(q) ||
       st.user.email.toLowerCase().includes(q) ||
       (st.country || '').toLowerCase().includes(q)
     );
-  }, [search, tab, leads, paid, all]);
+  }, [search, tab, active, leads, paid]);
 
   const fLeads = filtered.filter(st => !st.payments.some(p => p.status === 'PAID'));
   const fPaid  = filtered.filter(st =>  st.payments.some(p => p.status === 'PAID'));
+
+  const fArchived = useMemo(() => {
+    const q = search.toLowerCase().trim();
+    if (!q) return archived;
+    return archived.filter(st =>
+      st.user.name?.toLowerCase().includes(q) ||
+      st.user.email.toLowerCase().includes(q) ||
+      (st.country || '').toLowerCase().includes(q)
+    );
+  }, [archived, search]);
 
   return (
     <div className={s.wrap}>
@@ -44,29 +60,38 @@ export default function StudentsView({ leads, paid }: { leads: Student[]; paid: 
       <div className={s.header}>
         <div>
           <h1 className={s.heading}>STUDENTS</h1>
-          <p className={s.subHeading}>{leads.length} follow up · {paid.length} paid · {all.length} total</p>
+          <p className={s.subHeading}>{leads.length} follow up · {paid.length} paid · {active.length} total</p>
         </div>
 
-        <div className={s.searchWrap}>
-          <span className={s.searchIcon}>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div className={s.searchWrap}>
+            <span className={s.searchIcon}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </span>
+            <input
+              className={s.searchInput}
+              type="text"
+              placeholder="Search name, email, country…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+          </div>
+
+          <button className={s.addBtn} onClick={() => setShowAddModal(true)}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
             </svg>
-          </span>
-          <input
-            className={s.searchInput}
-            type="text"
-            placeholder="Search name, email, country…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
+            Add Student
+          </button>
         </div>
       </div>
 
       {/* Filter tabs */}
       <div className={s.tabs}>
         {([
-          ['all',   'ALL',        all.length],
+          ['all',   'ALL',        active.length],
           ['leads', 'FOLLOW UP',  leads.length],
           ['paid',  'PAID',       paid.length],
         ] as const).map(([key, label, count]) => (
@@ -97,10 +122,102 @@ export default function StudentsView({ leads, paid }: { leads: Student[]; paid: 
             : fPaid.map(st => <StudentCard key={st.id} st={st} />)}
         </SectionBlock>
       )}
+
+      {/* Archived section — always shown at bottom if any exist */}
+      {fArchived.length > 0 && (
+        <SectionBlock title="ARCHIVED STUDENTS" count={fArchived.length} accent="rgba(107,114,128,0.7)">
+          {fArchived.map(st => <StudentCard key={st.id} st={st} />)}
+        </SectionBlock>
+      )}
+
+      {/* Add Student Modal */}
+      {showAddModal && <AddStudentModal onClose={() => setShowAddModal(false)} />}
     </div>
   );
 }
 
+/* ── Add Student Modal ─────────────────────────── */
+function AddStudentModal({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
+  const [name, setName]     = useState('');
+  const [email, setEmail]   = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError]   = useState<string | null>(null);
+
+  async function handleCreate(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSaving(true);
+    const res = await fetch('/api/crm/students', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email }),
+    });
+    if (res.ok) {
+      router.refresh();
+      onClose();
+    } else {
+      const data = await res.json();
+      setError(data.error || 'Failed to create student');
+    }
+    setSaving(false);
+  }
+
+  return (
+    <div className={s.modalOverlay} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className={s.modalBox}>
+        <div className={s.modalHeader}>
+          <h2 className={s.modalTitle}>Add Student</h2>
+          <button className={s.modalClose} onClick={onClose}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleCreate}>
+          <div className={s.modalBody}>
+            <div className={s.modalField}>
+              <label className={s.modalLabel}>Name *</label>
+              <input
+                className={s.modalInput}
+                type="text"
+                placeholder="Full name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+                autoFocus
+              />
+            </div>
+            <div className={s.modalField}>
+              <label className={s.modalLabel}>Email *</label>
+              <input
+                className={s.modalInput}
+                type="email"
+                placeholder="email@example.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            {error && <div className={s.modalError}>{error}</div>}
+          </div>
+
+          <div className={s.modalFooter}>
+            <button type="button" className={s.modalCancelBtn} onClick={onClose} disabled={saving}>
+              Cancel
+            </button>
+            <button type="submit" className={s.modalCreateBtn} disabled={saving || !name.trim() || !email.trim()}>
+              {saving ? 'Creating…' : 'Create Student'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+/* ── Section ───────────────────────────────────── */
 function SectionBlock({ title, count, accent, children }: {
   title: string; count: number; accent: string; children: React.ReactNode;
 }) {
@@ -116,6 +233,7 @@ function SectionBlock({ title, count, accent, children }: {
   );
 }
 
+/* ── Empty card ────────────────────────────────── */
 function EmptyCard({ icon, title, sub }: { icon: string; title: string; sub: string }) {
   return (
     <div className={s.emptyState}>
@@ -126,14 +244,17 @@ function EmptyCard({ icon, title, sub }: { icon: string; title: string; sub: str
   );
 }
 
+/* ── Student Card ──────────────────────────────── */
 function StudentCard({ st }: { st: Student }) {
-  const name = st.user.name || '—';
+  const router = useRouter();
+  const name     = st.user.name || '—';
   const initials = (st.user.name || st.user.email || '?').slice(0, 2).toUpperCase();
-  const paidPayment = st.payments.find(p => p.status === 'PAID');
-  const latestPayment = st.payments[0];
+  const paidPayment    = st.payments.find(p => p.status === 'PAID');
+  const latestPayment  = st.payments[0];
   const displayPayment = paidPayment || latestPayment;
 
   const sc = STATUS_STYLE[st.status] || { bg: 'rgba(255,255,255,0.07)', text: 'rgba(255,255,255,0.5)', border: 'rgba(255,255,255,0.2)' };
+  const isArchived = st.status === 'ARCHIVED';
 
   const allCartDetails: { courseTitle: string; dateLabel: string; timeLabel: string; priceIDR: number }[] = [];
   for (const p of st.payments) {
@@ -141,11 +262,46 @@ function StudentCard({ st }: { st: Student }) {
     if (meta?.cartDetails?.length) allCartDetails.push(...meta.cartDetails);
   }
 
+  const [menuOpen, setMenuOpen]       = useState(false);
+  const [saving, setSaving]           = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu on outside click
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handler(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [menuOpen]);
+
+  async function setStatus(status: string) {
+    setSaving(true);
+    setMenuOpen(false);
+    const res = await fetch(`/api/admin/students/${st.id}/status`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }),
+    });
+    if (res.ok) router.refresh();
+    setSaving(false);
+  }
+
+  async function handleDelete() {
+    setSaving(true);
+    const res = await fetch(`/api/admin/students/${st.id}`, { method: 'DELETE' });
+    if (res.ok) router.refresh();
+    setSaving(false);
+    setConfirmDelete(false);
+  }
+
   return (
     <div className={s.card} style={{ borderLeft: `3px solid ${sc.border}` }}>
       <div className={s.cardTop}>
         <div className={s.cardLeft}>
-          <div className={s.cardAvatar} style={{ background: sc.bg, color: sc.text }}>{initials}</div>
+          <div className={s.cardAvatar} style={{ background: sc.bg, color: sc.text, opacity: isArchived ? 0.7 : 1 }}>{initials}</div>
           <div className={s.cardNameWrap}>
             <div className={s.cardName}>{name}</div>
             <div className={s.chips}>
@@ -164,9 +320,7 @@ function StudentCard({ st }: { st: Student }) {
                   {st.user.phone}
                 </a>
               )}
-              {st.country && (
-                <span className={s.chipCountry}><span>🌍</span>{st.country}</span>
-              )}
+              {st.country && <span className={s.chipCountry}><span>🌍</span>{st.country}</span>}
             </div>
           </div>
         </div>
@@ -184,6 +338,51 @@ function StudentCard({ st }: { st: Student }) {
               </span>
             </div>
           )}
+
+          {/* "⋯" menu */}
+          <div className={s.menuWrap} ref={menuRef}>
+            <button
+              className={s.menuBtn}
+              onClick={() => setMenuOpen(v => !v)}
+              disabled={saving}
+              title="Actions"
+            >
+              ···
+            </button>
+            {menuOpen && (
+              <div className={s.dropdown}>
+                {!isArchived && (
+                  <>
+                    {st.status !== 'ACTIVE' && (
+                      <button className={s.dropdownItem} onClick={() => setStatus('ACTIVE')}>
+                        ✓ Set Active
+                      </button>
+                    )}
+                    {st.status !== 'LEAD' && (
+                      <button className={s.dropdownItem} onClick={() => setStatus('LEAD')}>
+                        ○ Set Lead
+                      </button>
+                    )}
+                    <button className={s.dropdownItem} onClick={() => setStatus('ARCHIVED')}>
+                      ↓ Archive
+                    </button>
+                    <div className={s.dropdownDivider} />
+                  </>
+                )}
+                {isArchived && (
+                  <>
+                    <button className={s.dropdownItem} onClick={() => setStatus('LEAD')}>
+                      ↑ Unarchive
+                    </button>
+                    <div className={s.dropdownDivider} />
+                  </>
+                )}
+                <button className={`${s.dropdownItem} ${s.dropdownItemDanger}`} onClick={() => { setMenuOpen(false); setConfirmDelete(true); }}>
+                  ✕ Delete
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -210,6 +409,21 @@ function StudentCard({ st }: { st: Student }) {
 
       {allCartDetails.length === 0 && !displayPayment && (
         <div className={s.cardNoData}>No course selection yet</div>
+      )}
+
+      {/* Inline delete confirmation */}
+      {confirmDelete && (
+        <div className={s.confirmBox}>
+          <div className={s.confirmInner}>
+            <p className={s.confirmText}>Delete {name}? This also removes all payment records.</p>
+            <div className={s.confirmBtns}>
+              <button className={s.confirmCancel} onClick={() => setConfirmDelete(false)} disabled={saving}>Cancel</button>
+              <button className={s.confirmDelete} onClick={handleDelete} disabled={saving}>
+                {saving ? 'Deleting…' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

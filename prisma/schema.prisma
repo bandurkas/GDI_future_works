@@ -345,12 +345,14 @@ enum StudentStatus {
   ACTIVE
   COMPLETED
   DROPPED
+  ARCHIVED
 }
 
 enum TutorStatus {
   PENDING
   APPROVED
   REJECTED
+  ARCHIVED
 }
 
 enum ProgramCategory {
@@ -424,4 +426,5 @@ enum ApplicationStatus {
   PENDING
   APPROVED
   REJECTED
+  ARCHIVED
 }

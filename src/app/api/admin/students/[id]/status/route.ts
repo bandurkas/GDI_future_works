@@ -4,7 +4,7 @@ import { auth } from '@/auth';
 import { requireAdminOrCrm, STUDENT_MANAGER_ROLES } from '@/lib/auth-guards';
 import { logAudit, getClientIp } from '@/lib/audit';
 
-const VALID_STATUSES = ['LEAD', 'ACTIVE', 'COMPLETED', 'DROPPED'];
+const VALID_STATUSES = ['LEAD', 'ACTIVE', 'COMPLETED', 'DROPPED', 'ARCHIVED'];
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();

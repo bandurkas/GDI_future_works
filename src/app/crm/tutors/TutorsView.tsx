@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { fmt } from '@/lib/utils';
 import AppActions from './AppActions';
 import s from './TutorsView.module.css';
@@ -65,7 +66,7 @@ type Application = {
 
 type Tab = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';
 
-export default function TutorsView({ applications, tutors }: { applications: Application[]; tutors: Tutor[] }) {
+export default function TutorsView({ applications, tutors, archivedTutors }: { applications: Application[]; tutors: Tutor[]; archivedTutors: Tutor[] }) {
   const [tab, setTab] = useState<Tab>('ALL');
   const [search, setSearch] = useState('');
 
@@ -182,6 +183,22 @@ export default function TutorsView({ applications, tutors }: { applications: App
           </div>
         </div>
       )}
+
+      {/* Archived tutors */}
+      {archivedTutors.length > 0 && (
+        <div style={{ marginTop: showTutors && filteredTutors.length > 0 ? '36px' : '8px' }}>
+          <div className={s.sectionHead}>
+            <div className={s.sectionBar} style={{ background: 'rgba(107,114,128,0.7)' }} />
+            <h2 className={s.sectionTitle}>ARCHIVED TUTORS</h2>
+            <span className={s.sectionCount} style={{ color: 'rgba(107,114,128,0.9)', background: 'rgba(107,114,128,0.1)' }}>
+              {archivedTutors.length}
+            </span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {archivedTutors.map(t => <TutorCard key={t.id} t={t} isArchived />)}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -252,7 +269,7 @@ function AppCard({ a }: { a: Application }) {
   );
 }
 
-function TutorCard({ t }: { t: Tutor }) {
+function TutorCard({ t, isArchived = false }: { t: Tutor; isArchived?: boolean }) {
   const [expanded, setExpanded] = useState(false);
   const initials = (t.user.name || t.user.email || '?').slice(0, 2).toUpperCase();
 
@@ -263,11 +280,15 @@ function TutorCard({ t }: { t: Tutor }) {
   }
   const hasDay = (d: number) => !!byDay[d]?.length;
 
+  const borderColor = isArchived ? 'rgba(107,114,128,0.5)' : '#10b981';
+  const avatarBg    = isArchived ? 'rgba(107,114,128,0.1)' : 'rgba(16,185,129,0.12)';
+  const avatarColor = isArchived ? '#9ca3af' : '#10b981';
+
   return (
-    <div className={s.card} style={{ borderLeft: '3px solid #10b981' }}>
+    <div className={s.card} style={{ borderLeft: `3px solid ${borderColor}` }}>
       <div className={s.cardHead}>
         <div className={s.cardLeft}>
-          <div className={s.cardAvatar} style={{ background: 'rgba(16,185,129,0.12)', color: '#10b981' }}>{initials}</div>
+          <div className={s.cardAvatar} style={{ background: avatarBg, color: avatarColor }}>{initials}</div>
           <div className={s.cardNameWrap}>
             <div className={s.cardName}>{t.user.name || '—'}</div>
             <div className={s.cardSubRow}>
@@ -290,8 +311,10 @@ function TutorCard({ t }: { t: Tutor }) {
             ))}
           </div>
 
-          {t.isVerified && <span className={s.verifiedBadge}>VERIFIED</span>}
-          <span className={s.activeBadge}>ACTIVE</span>
+          {t.isVerified && !isArchived && <span className={s.verifiedBadge}>VERIFIED</span>}
+          {isArchived
+            ? <span className={s.statusBadge} style={{ background: 'rgba(107,114,128,0.1)', color: '#9ca3af' }}>ARCHIVED</span>
+            : <span className={s.activeBadge}>ACTIVE</span>}
           <button className={s.expandBtn} onClick={() => setExpanded(v => !v)}>
             <svg
               className={expanded ? `${s.chevron} ${s.chevronOpen}` : s.chevron}
@@ -341,9 +364,101 @@ function TutorCard({ t }: { t: Tutor }) {
               {t.profile?.introVideoUrl && <LinkChip label="Intro Video" href={t.profile.introVideoUrl} />}
             </div>
           )}
+
+          <TutorCardActions id={t.id} isArchived={isArchived} />
         </div>
       )}
     </div>
+  );
+}
+
+function TutorCardActions({ id, isArchived }: { id: string; isArchived: boolean }) {
+  const router = useRouter();
+  const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+
+  function showToast(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2800);
+  }
+
+  async function archive() {
+    setSaving(true);
+    const res = await fetch(`/api/admin/tutors/${id}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'ARCHIVED' }),
+    });
+    if (res.ok) { router.refresh(); }
+    else { const e = await res.json(); showToast(e.error || 'Failed to archive'); }
+    setSaving(false);
+  }
+
+  async function unarchive() {
+    setSaving(true);
+    const res = await fetch(`/api/admin/tutors/${id}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'APPROVED' }),
+    });
+    if (res.ok) { router.refresh(); }
+    else { const e = await res.json(); showToast(e.error || 'Failed to unarchive'); }
+    setSaving(false);
+  }
+
+  async function handleDelete() {
+    setSaving(true);
+    const res = await fetch(`/api/admin/tutors/${id}`, { method: 'DELETE' });
+    if (res.ok) { router.refresh(); }
+    else { const e = await res.json(); showToast(e.error || 'Failed to delete'); setSaving(false); }
+    setConfirmDelete(false);
+  }
+
+  if (confirmDelete) {
+    return (
+      <div style={{ paddingTop: '14px', borderTop: '1px solid var(--crm-section-sep)', marginTop: '4px' }}>
+        <div style={{ background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: '8px', padding: '12px 14px' }}>
+          <p style={{ margin: '0 0 10px', fontSize: '12px', color: '#f87171', fontWeight: 500 }}>
+            Delete this tutor? This cannot be undone.
+          </p>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button onClick={() => setConfirmDelete(false)} disabled={saving}
+              style={{ padding: '5px 14px', borderRadius: '6px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', background: 'var(--crm-tag-bg)', color: 'var(--crm-text-muted)', border: '1px solid var(--crm-border)', fontFamily: "'DM Sans', sans-serif" }}>
+              Cancel
+            </button>
+            <button onClick={handleDelete} disabled={saving}
+              style={{ padding: '5px 14px', borderRadius: '6px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)', fontFamily: "'DM Sans', sans-serif" }}>
+              {saving ? 'Deleting…' : 'Delete'}
+            </button>
+          </div>
+        </div>
+        {toast && <div style={{ marginTop: '10px', padding: '8px 14px', borderRadius: '8px', background: 'var(--crm-tag-bg)', border: '1px solid var(--crm-border)', fontSize: '12px', color: 'var(--crm-text-muted)', display: 'inline-block' }}>{toast}</div>}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ paddingTop: '14px', borderTop: '1px solid var(--crm-section-sep)', marginTop: '4px', paddingBottom: '2px' }}>
+      <div style={{ display: 'flex', gap: '7px', flexWrap: 'wrap', alignItems: 'center' }}>
+        {isArchived ? (
+          <TutorActionBtn label="Unarchive" bg="rgba(245,158,11,0.1)" color="#f59e0b" border="rgba(245,158,11,0.2)" hoverBg="rgba(245,158,11,0.2)" disabled={saving} onClick={unarchive} />
+        ) : (
+          <TutorActionBtn label="Archive" bg="var(--crm-tag-bg)" color="var(--crm-text-muted)" border="var(--crm-border)" hoverBg="var(--crm-expand-hover)" disabled={saving} onClick={archive} />
+        )}
+        <TutorActionBtn label="Delete" bg="rgba(239,68,68,0.07)" color="#f87171" border="rgba(239,68,68,0.15)" hoverBg="rgba(239,68,68,0.18)" disabled={saving} onClick={() => setConfirmDelete(true)} />
+        {saving && <span style={{ fontSize: '11px', color: 'var(--crm-text-dim)', marginLeft: '4px' }}>Saving…</span>}
+      </div>
+      {toast && <div style={{ marginTop: '10px', padding: '8px 14px', borderRadius: '8px', background: 'var(--crm-tag-bg)', border: '1px solid var(--crm-border)', fontSize: '12px', color: 'var(--crm-text-muted)', display: 'inline-block' }}>{toast}</div>}
+    </div>
+  );
+}
+
+function TutorActionBtn({ label, bg, color, border, hoverBg, disabled, onClick }: {
+  label: string; bg: string; color: string; border: string; hoverBg: string; disabled: boolean; onClick: () => void;
+}) {
+  return (
+    <button onClick={onClick} disabled={disabled}
+      style={{ padding: '6px 14px', borderRadius: '7px', fontSize: '11px', fontWeight: 600, cursor: disabled ? 'not-allowed' : 'pointer', background: bg, color, border: `1px solid ${border}`, opacity: disabled ? 0.5 : 1, transition: 'background 0.15s', fontFamily: "'DM Sans', sans-serif" }}
+      onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLButtonElement).style.background = hoverBg; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = bg; }}
+    >{label}</button>
   );
 }
 

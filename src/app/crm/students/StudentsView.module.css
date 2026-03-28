@@ -367,6 +367,307 @@
   font-style: italic;
 }
 
+/* ── Add Student button ───────────────────────── */
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: var(--crm-accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.15s;
+}
+
+.addBtn:hover { opacity: 0.85; }
+
+/* ── Card "⋯" menu ─────────────────────────────── */
+.menuWrap {
+  position: relative;
+}
+
+.menuBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--crm-text-dim);
+  padding: 4px 6px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  transition: background 0.12s, color 0.12s;
+}
+
+.menuBtn:hover {
+  background: var(--crm-expand-bg);
+  color: var(--crm-text);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 50;
+  background: var(--crm-surface);
+  border: 1px solid var(--crm-border-hover);
+  border-radius: 10px;
+  padding: 4px;
+  min-width: 150px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--crm-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.dropdownItem:hover {
+  background: var(--crm-nav-hover);
+  color: var(--crm-text);
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: var(--crm-border);
+  margin: 4px 0;
+}
+
+.dropdownItemDanger {
+  color: #f87171;
+}
+
+.dropdownItemDanger:hover {
+  background: rgba(239,68,68,0.1);
+  color: #f87171;
+}
+
+/* ── Inline confirm ────────────────────────────── */
+.confirmBox {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--crm-section-sep);
+}
+
+.confirmInner {
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.18);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.confirmText {
+  font-size: 12px;
+  color: #f87171;
+  font-weight: 500;
+  margin: 0;
+}
+
+.confirmBtns {
+  display: flex;
+  gap: 6px;
+}
+
+.confirmCancel {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--crm-tag-bg);
+  color: var(--crm-text-muted);
+  border: 1px solid var(--crm-border);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.12s;
+}
+
+.confirmCancel:hover { background: var(--crm-expand-hover); }
+.confirmCancel:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.confirmDelete {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.25);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.12s;
+}
+
+.confirmDelete:hover { background: rgba(239,68,68,0.25); }
+.confirmDelete:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Add Student Modal ─────────────────────────── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modalBox {
+  background: var(--crm-surface);
+  border: 1px solid var(--crm-border-hover);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--crm-border);
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--crm-heading);
+  font-family: 'Syne', sans-serif;
+}
+
+.modalClose {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--crm-text-dim);
+  padding: 4px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  transition: color 0.12s;
+  line-height: 0;
+}
+
+.modalClose:hover { color: var(--crm-text); }
+
+.modalBody {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modalField {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.modalLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--crm-text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.modalInput {
+  padding: 8px 12px;
+  border: 1px solid var(--crm-input-border);
+  border-radius: 8px;
+  font-size: 13px;
+  background: var(--crm-input-bg);
+  color: var(--crm-text);
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.modalInput::placeholder { color: var(--crm-text-dim); }
+
+.modalInput:focus {
+  border-color: var(--crm-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(228,58,61,0.12);
+}
+
+.modalError {
+  font-size: 11px;
+  color: #f87171;
+  font-weight: 500;
+  padding: 6px 10px;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.15);
+  border-radius: 6px;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 20px 18px;
+  border-top: 1px solid var(--crm-border);
+}
+
+.modalCancelBtn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--crm-tag-bg);
+  color: var(--crm-text-muted);
+  border: 1px solid var(--crm-border);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.12s;
+}
+
+.modalCancelBtn:hover { background: var(--crm-expand-hover); }
+.modalCancelBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.modalCreateBtn {
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--crm-accent);
+  color: white;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.15s;
+}
+
+.modalCreateBtn:hover { opacity: 0.85; }
+.modalCreateBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
 /* ── Empty State ──────────────────────────────── */
 .emptyState {
   background: var(--crm-empty-bg);

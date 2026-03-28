@@ -13,8 +13,5 @@ export default async function CrmStudentsPage() {
     orderBy: { createdAt: 'desc' },
   });
 
-  const leads = students.filter(s => !s.payments.some(p => p.status === 'PAID'));
-  const paid  = students.filter(s =>  s.payments.some(p => p.status === 'PAID'));
-
-  return <StudentsView leads={leads} paid={paid} />;
+  return <StudentsView students={students} />;
 }

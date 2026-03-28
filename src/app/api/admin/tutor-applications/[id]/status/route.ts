@@ -5,7 +5,7 @@ import { requireAdminOrCrm, TUTOR_MANAGER_ROLES } from '@/lib/auth-guards';
 import { logAudit, getClientIp } from '@/lib/audit';
 import { sendEmail } from '@/lib/email';
 
-const VALID_STATUSES = ['PENDING', 'APPROVED', 'REJECTED'];
+const VALID_STATUSES = ['PENDING', 'APPROVED', 'REJECTED', 'ARCHIVED'];
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -26,8 +26,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const app = await prisma.tutorApplication.update({ where: { id }, data: { status } });
 
   const action =
-    status === 'APPROVED' ? 'tutor.application.approved' :
-    status === 'REJECTED' ? 'tutor.application.rejected' :
+    status === 'APPROVED'  ? 'tutor.application.approved' :
+    status === 'REJECTED'  ? 'tutor.application.rejected' :
+    status === 'ARCHIVED'  ? 'tutor.application.archived' :
     'tutor.application.reset';
 
   await logAudit({

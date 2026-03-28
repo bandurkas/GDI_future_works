@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No IDs provided' }, { status: 400 });
   }
 
-  const VALID_STATUSES = ['LEAD', 'ACTIVE', 'COMPLETED', 'DROPPED'];
+  const VALID_STATUSES = ['LEAD', 'ACTIVE', 'COMPLETED', 'DROPPED', 'ARCHIVED'];
   if (!VALID_STATUSES.includes(status)) {
     return NextResponse.json({ error: 'Invalid status' }, { status: 400 });
   }
