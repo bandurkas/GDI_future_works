@@ -79,25 +79,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return true;
         },
-        async jwt({ token, user, trigger, session }: any) {
-            // Initial sign in
+        async jwt({ token, user }: any) {
+            // On sign in: persist role + id into the JWT
             if (user) {
                 token.role = user.role;
                 token.id = user.id;
-            } 
-            
-            // Refresh role from DB on every JWT check to ensure session stays in sync with role changes
-            if (token.email) {
-                const dbUser = await prisma.user.findUnique({
-                    where: { email: token.email },
-                    select: { role: true, id: true }
-                });
-                if (dbUser) {
-                    token.role = dbUser.role;
-                    token.id = dbUser.id;
-                }
             }
-
             return token;
         },
         async session({ session, token }: any) {

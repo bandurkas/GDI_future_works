@@ -34,7 +34,7 @@ export async function middleware(req: NextRequest) {
   // On HTTPS (production) it is prefixed with '__Secure-'
   const secureCookies = process.env.NEXTAUTH_URL?.startsWith('https://') ?? process.env.NODE_ENV === 'production';
   const cookieName = secureCookies ? '__Secure-authjs.session-token' : 'authjs.session-token';
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, cookieName });
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, cookieName, salt: cookieName });
 
   // ── Forward pathname to server components via header (used in admin/layout.tsx) ──
   const requestHeaders = new Headers(req.headers);
@@ -147,5 +147,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/crm/:path*', '/dashboard/:path*', '/profile/:path*', '/login', '/signup'],
+  matcher: ['/admin/:path*', '/crm/:path*', '/login', '/signup'],
 };
