@@ -158,7 +158,45 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40px;
+  font-size: 36px;
+  background: var(--bg-secondary);
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(0,0,0,0.03) 0%, transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(0,0,0,0.02) 0%, transparent 50%);
+  position: relative;
+  overflow: hidden;
+  filter: grayscale(0.15);
+}
+
+.courseIconWrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 12px,
+    rgba(0,0,0,0.012) 12px,
+    rgba(0,0,0,0.012) 13px
+  );
+  pointer-events: none;
+}
+
+[data-theme="dark"] .courseIconWrap {
+  background: var(--bg-secondary);
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%);
+}
+
+[data-theme="dark"] .courseIconWrap::after {
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 12px,
+    rgba(255,255,255,0.018) 12px,
+    rgba(255,255,255,0.018) 13px
+  );
 }
 
 .courseBody {

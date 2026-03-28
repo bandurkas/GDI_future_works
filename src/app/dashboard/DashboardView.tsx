@@ -103,7 +103,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
               : `MYR ${c.priceMYR}`;
             return (
               <div key={c.slug} className={styles.courseCard}>
-                <div className={styles.courseIconWrap} style={{ background: c.iconBg }}>
+                <div className={styles.courseIconWrap}>
                   {c.icon}
                 </div>
                 <div className={styles.courseBody}>
