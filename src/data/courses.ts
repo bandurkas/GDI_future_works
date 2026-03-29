@@ -67,6 +67,18 @@ export interface Course {
     testimonialQuote: string;
     testimonialAuthor: string;
     syllabusDetails?: SyllabusDetails;
+    // Indonesian translations
+    titleID?: string;
+    subtitleID?: string;
+    descriptionID?: string;
+    outcomesID?: string[];
+    whoForID?: string[];
+    whatYouGetID?: string[];
+    whyWorthItID?: string[];
+    targetRolesID?: string[];
+    durationID?: string;
+    testimonialQuoteID?: string;
+    syllabusDetailsID?: SyllabusDetails;
 }
 
 export const courses: Course[] = [
@@ -76,18 +88,18 @@ export const courses: Course[] = [
         category: 'Data Analytics',
         title: 'Basic Data Analyst',
         subtitle: 'From Raw Data to Business Insights',
-        description: 'Learn how analysts turn raw data into clear business insights. In this live session, you’ll work with real datasets using Python and Pandas, clean messy data, and create visual dashboards used in real companies.',
-        icon: '📊',
+        description: 'Learn how analysts turn raw data into clear business insights. In this live session, you\u2019ll work with real datasets using Python and Pandas, clean messy data, and create visual dashboards used in real companies.',
+        icon: '\ud83d\udcca',
         iconBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         imageIcon: '/assets/icons/data.png',
         duration: '4 hours',
-        format: '2 days × 2 hours',
+        format: '2 days \xd7 2 hours',
         price: 49,
         originalPrice: 99,
         currency: 'USD',
         rating: 4.9,
         studentsCount: 1247,
-        nextSession: 'Mar 12–13',
+        nextSession: 'Mar 12\u201313',
         seatsLeft: 3,
         targetRoles: ['Data Analyst', 'BI Analyst', 'Reporting Analyst'],
         priceMYR: 93,
@@ -95,7 +107,7 @@ export const courses: Course[] = [
         priceIDR: 400000,
         originalPriceIDR: 1500000,
         testimonialQuote: 'After the course I built my first dashboard and landed a data analyst role within 3 weeks.',
-        testimonialAuthor: 'Arif S. — Junior Analyst',
+        testimonialAuthor: 'Arif S. \u2014 Junior Analyst',
         outcomes: [
             'Analyze real datasets using Python & Pandas',
             'Clean and structure messy, unorganized data',
@@ -121,6 +133,38 @@ export const courses: Course[] = [
             'Save months of self-learning and confusion',
             'Gain confidence working with real data',
         ],
+        // Indonesian
+        titleID: 'Analis Data Dasar',
+        subtitleID: 'Dari Data Mentah ke Wawasan Bisnis',
+        descriptionID: 'Pelajari bagaimana analis mengubah data mentah menjadi wawasan bisnis yang jelas. Dalam sesi langsung ini, kamu akan bekerja dengan dataset nyata menggunakan Python dan Pandas, membersihkan data berantakan, dan membuat dashboard visual yang digunakan di perusahaan nyata.',
+        outcomesID: [
+            'Menganalisis dataset nyata dengan Python & Pandas',
+            'Membersihkan dan menyusun data yang berantakan',
+            'Membangun dashboard interaktif dengan Plotly & Matplotlib',
+        ],
+        whoForID: [
+            'Pemula yang memasuki analitik data',
+            'Profesional yang beralih karier',
+            'Pelajar & lulusan baru',
+            'Siapa pun yang bekerja dengan data dalam bisnis',
+        ],
+        whatYouGetID: [
+            'Sesi langsung interaktif dengan bimbingan ahli',
+            'Kemampuan bertanya secara real-time',
+            'Latihan praktis langkah demi langkah',
+            'Sertifikat penyelesaian',
+            'Proyek siap portofolio',
+            'Akses ke komunitas pelajar',
+        ],
+        whyWorthItID: [
+            'Pelajari keterampilan praktis yang digunakan di pekerjaan nyata',
+            'Bangun proyek yang bisa kamu tunjukkan ke perusahaan',
+            'Hemat berbulan-bulan belajar sendiri',
+            'Dapatkan kepercayaan diri bekerja dengan data nyata',
+        ],
+        targetRolesID: ['Analis Data', 'Analis BI', 'Analis Pelaporan'],
+        durationID: '4 jam',
+        testimonialQuoteID: 'Setelah kursus ini saya membangun dashboard pertama saya dan mendapat posisi analis data dalam 3 minggu.',
         instructor: {
             name: 'Arman Rahman',
             role: 'Senior Data Analyst',
@@ -137,10 +181,10 @@ export const courses: Course[] = [
             bgGradient: 'linear-gradient(135deg, #667eea, #764ba2)',
         },
         schedules: [
-            { id: 's1', date: 'Mar 12–13', dayOfWeek: 'Wed–Thu', month: 'Mar', day: 12, time: '19:00', timeEnd: '21:00', seatsLeft: 3 },
-            { id: 's2', date: 'Mar 19–20', dayOfWeek: 'Wed–Thu', month: 'Mar', day: 19, time: '19:00', timeEnd: '21:00', seatsLeft: 8 },
-            { id: 's3', date: 'Mar 26–27', dayOfWeek: 'Wed–Thu', month: 'Mar', day: 26, time: '14:00', timeEnd: '16:00', seatsLeft: 12 },
-            { id: 's4', date: 'Apr 2–3', dayOfWeek: 'Wed–Thu', month: 'Apr', day: 2, time: '19:00', timeEnd: '21:00', seatsLeft: 15 },
+            { id: 's1', date: 'Mar 12\u201313', dayOfWeek: 'Wed\u2013Thu', month: 'Mar', day: 12, time: '19:00', timeEnd: '21:00', seatsLeft: 3 },
+            { id: 's2', date: 'Mar 19\u201320', dayOfWeek: 'Wed\u2013Thu', month: 'Mar', day: 19, time: '19:00', timeEnd: '21:00', seatsLeft: 8 },
+            { id: 's3', date: 'Mar 26\u201327', dayOfWeek: 'Wed\u2013Thu', month: 'Mar', day: 26, time: '14:00', timeEnd: '16:00', seatsLeft: 12 },
+            { id: 's4', date: 'Apr 2\u20133', dayOfWeek: 'Wed\u2013Thu', month: 'Apr', day: 2, time: '19:00', timeEnd: '21:00', seatsLeft: 15 },
         ],
         tags: ['Python', 'Pandas', 'Data', 'Analytics', 'Visualization'],
         syllabusDetails: {
@@ -148,28 +192,55 @@ export const courses: Course[] = [
                 {
                     title: 'Session 1 (2 Hours): Data Cleaning & Preparation',
                     items: [
-                        'Identify and fix common data issues (missing values, duplicates, inconsistent formats).',
-                        'Use spreadsheet tools (Excel/Google Sheets) to structure data for analysis.',
-                        'Create pivot tables to summarize trends in minutes.'
+                        'Load real-world CSV datasets into Python.',
+                        'Identify and fix missing values, duplicates, and inconsistencies.',
+                        'Reshape and filter data with Pandas.',
                     ]
                 },
                 {
-                    title: 'Session 2 (2 Hours): Visualization & Dashboarding',
+                    title: 'Session 2 (2 Hours): Visualization & Insights',
                     items: [
-                        'Build your first interactive dashboard (using tools like Tableau, Power BI, or Google Data Studio).',
-                        'Choose the right charts to tell a compelling data story.',
-                        'Present insights that influence business decisions.'
+                        'Create bar charts, line graphs, and heatmaps with Matplotlib & Plotly.',
+                        'Build a multi-chart dashboard to tell a data story.',
+                        'Export your visuals for use in reports or presentations.',
                     ]
                 }
             ],
-            project: 'By the end of the course, you’ll have built a job-ready dashboard from a real-world dataset (e.g., sales performance, customer churn, or marketing ROI). You can add this to your portfolio immediately.',
+            project: 'Build a complete data dashboard from a raw CSV file\u2014cleaning the data, running analysis, and presenting visual insights that could be used in a real business report.',
             careerOutcomes: {
                 roles: [
-                    'Junior Data Analyst at startups, SMEs, or corporations.',
-                    'Roles that require data-driven decision making.'
+                    'Data Analyst, BI Analyst, or Reporting Specialist.',
+                    'Entry-level roles at tech, finance, or e-commerce companies.'
                 ]
             }
-        }
+        },
+        syllabusDetailsID: {
+            sessions: [
+                {
+                    title: 'Sesi 1 (2 Jam): Pembersihan & Persiapan Data',
+                    items: [
+                        'Memuat dataset CSV dunia nyata ke Python.',
+                        'Mengidentifikasi dan memperbaiki nilai yang hilang, duplikat, dan inkonsistensi.',
+                        'Membentuk ulang dan memfilter data dengan Pandas.',
+                    ]
+                },
+                {
+                    title: 'Sesi 2 (2 Jam): Visualisasi & Wawasan',
+                    items: [
+                        'Membuat grafik batang, grafik garis, dan heatmap dengan Matplotlib & Plotly.',
+                        'Membangun dashboard multi-grafik untuk menceritakan kisah data.',
+                        'Mengekspor visual untuk digunakan dalam laporan atau presentasi.',
+                    ]
+                }
+            ],
+            project: 'Bangun dashboard data lengkap dari file CSV mentah\u2014membersihkan data, menjalankan analisis, dan menyajikan wawasan visual yang bisa digunakan dalam laporan bisnis nyata.',
+            careerOutcomes: {
+                roles: [
+                    'Analis Data, Analis BI, atau Spesialis Pelaporan.',
+                    'Peran entry-level di perusahaan teknologi, keuangan, atau e-commerce.'
+                ]
+            }
+        },
     },
     {
         id: 'python-programming',
@@ -177,18 +248,18 @@ export const courses: Course[] = [
         category: 'Python Programming',
         title: 'Python for Professionals',
         subtitle: 'Automate Tasks & Build Smart Tools',
-        description: 'Stop doing repetitive work by hand. In 4 hours, you’ll learn Python basics and immediately apply them to automate real-world tasks—from renaming hundreds of files to pulling data from websites.',
-        icon: '🐍',
+        description: 'Stop doing repetitive work by hand. In 4 hours, you\u2019ll learn Python basics and immediately apply them to automate real-world tasks\u2014from renaming hundreds of files to pulling data from websites.',
+        icon: '\ud83d\udc0d',
         iconBg: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
         imageIcon: '/assets/icons/python.png',
         duration: '4 hours',
-        format: '2 days × 2 hours',
+        format: '2 days \xd7 2 hours',
         price: 49,
         originalPrice: 99,
         currency: 'USD',
         rating: 4.8,
         studentsCount: 983,
-        nextSession: 'Mar 14–15',
+        nextSession: 'Mar 14\u201315',
         seatsLeft: 5,
         targetRoles: ['Python Developer', 'Automation Engineer', 'Data Engineer'],
         priceMYR: 93,
@@ -196,7 +267,7 @@ export const courses: Course[] = [
         priceIDR: 400000,
         originalPriceIDR: 1500000,
         testimonialQuote: 'Python finally clicked for me. I automated half my monthly report process after just 2 sessions.',
-        testimonialAuthor: 'Mei R. — Business Analyst',
+        testimonialAuthor: 'Mei R. \u2014 Business Analyst',
         outcomes: [
             'Write clean, readable Python from scratch',
             'Automate repetitive business tasks and workflows',
@@ -220,11 +291,46 @@ export const courses: Course[] = [
         ],
         whyWorthIt: [
             'Most in-demand programming language globally in 2025',
-            'Start building real tools from day one — no fluff',
+            'Start building real tools from day one \u2014 no fluff',
             'No prior coding experience whatsoever required',
             'Instructor has automated workflows at enterprise scale',
             'Skills that apply in any industry, any company',
         ],
+        // Indonesian
+        titleID: 'Python untuk Profesional',
+        subtitleID: 'Otomatiskan Tugas & Bangun Alat Cerdas',
+        descriptionID: 'Berhenti mengerjakan pekerjaan berulang secara manual. Dalam 4 jam, kamu akan mempelajari dasar-dasar Python dan langsung menerapkannya untuk mengotomatiskan tugas dunia nyata\u2014dari mengganti nama ratusan file hingga mengambil data dari website.',
+        outcomesID: [
+            'Menulis Python yang bersih dan mudah dibaca dari nol',
+            'Mengotomatiskan tugas bisnis dan alur kerja yang berulang',
+            'Memproses dan menganalisis file data (CSV, Excel, JSON)',
+            'Membangun skrip dan alat berguna untuk pekerjaan harian',
+            'Terhubung ke API dan mengambil data langsung secara otomatis',
+        ],
+        whoForID: [
+            'Analis bisnis, pemasar, atau profesional operasi yang berurusan dengan tugas data berulang.',
+            'Siapa pun yang ingin menambahkan coding ke toolkit mereka tanpa menjadi developer penuh waktu.',
+            'Peralih karier yang menargetkan peran terkait Python.',
+        ],
+        whatYouGetID: [
+            'Pelatihan langsung interaktif (total 4 jam)',
+            'Tanya jawab real-time dengan instruktur',
+            'Sertifikat penyelesaian',
+            'Proyek otomatisasi portofolio',
+            'Akses komunitas pelajar privat',
+            'Rekaman sesi untuk diputar ulang',
+            'Bimbingan karier & notifikasi peluang kerja',
+        ],
+        whyWorthItID: [
+            'Bahasa pemrograman paling diminati secara global di 2025',
+            'Mulai membangun alat nyata sejak hari pertama \u2014 tanpa basa-basi',
+            'Tidak diperlukan pengalaman coding sebelumnya',
+            'Instruktur telah mengotomatiskan alur kerja di skala enterprise',
+            'Keterampilan yang berlaku di industri dan perusahaan apa pun',
+        ],
+        targetRolesID: ['Developer Python', 'Engineer Otomatisasi', 'Engineer Data'],
+        durationID: '4 jam',
+        testimonialQuoteID: 'Python akhirnya mudah dipahami. Saya mengotomatiskan setengah proses laporan bulanan saya hanya dalam 2 sesi.',
         instructor: {
             name: 'Dian Pratiwi',
             role: 'Senior Software Engineer',
@@ -241,9 +347,9 @@ export const courses: Course[] = [
             bgGradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
         },
         schedules: [
-            { id: 's1', date: 'Mar 14–15', dayOfWeek: 'Fri–Sat', month: 'Mar', day: 14, time: '10:00', timeEnd: '12:00', seatsLeft: 5 },
-            { id: 's2', date: 'Mar 21–22', dayOfWeek: 'Fri–Sat', month: 'Mar', day: 21, time: '19:00', timeEnd: '21:00', seatsLeft: 10 },
-            { id: 's3', date: 'Apr 4–5', dayOfWeek: 'Fri–Sat', month: 'Apr', day: 4, time: '14:00', timeEnd: '16:00', seatsLeft: 14 },
+            { id: 's1', date: 'Mar 14\u201315', dayOfWeek: 'Fri\u2013Sat', month: 'Mar', day: 14, time: '10:00', timeEnd: '12:00', seatsLeft: 5 },
+            { id: 's2', date: 'Mar 21\u201322', dayOfWeek: 'Fri\u2013Sat', month: 'Mar', day: 21, time: '19:00', timeEnd: '21:00', seatsLeft: 10 },
+            { id: 's3', date: 'Apr 4\u20135', dayOfWeek: 'Fri\u2013Sat', month: 'Apr', day: 4, time: '14:00', timeEnd: '16:00', seatsLeft: 14 },
         ],
         tags: ['Python', 'Automation', 'Scripting', 'APIs', 'Productivity'],
         syllabusDetails: {
@@ -265,33 +371,60 @@ export const courses: Course[] = [
                     ]
                 }
             ],
-            project: 'Create a custom automation tool that solves a problem you face at work—like consolidating weekly sales reports or extracting key figures from emails.',
+            project: 'Create a custom automation tool that solves a problem you face at work\u2014like consolidating weekly sales reports or extracting key figures from emails.',
             careerOutcomes: {
                 roles: [
                     'Python Automation Specialist, Data Analyst, or Junior Developer.',
                     '40%+ salary increases reported by past students.'
                 ]
             }
-        }
+        },
+        syllabusDetailsID: {
+            sessions: [
+                {
+                    title: 'Sesi 1 (2 Jam): Dasar-Dasar Python',
+                    items: [
+                        'Tulis skrip Python pertamamu (tidak perlu pengalaman coding).',
+                        'Bekerja dengan variabel, perulangan, dan fungsi.',
+                        'Membaca dan menulis file secara otomatis.'
+                    ]
+                },
+                {
+                    title: 'Sesi 2 (2 Jam): Otomatisasi dalam Aksi',
+                    items: [
+                        'Mengotomatiskan pembuatan laporan Excel/CSV.',
+                        'Menggunakan library seperti os dan pandas untuk memanipulasi data.',
+                        'Mengambil data web sederhana (misalnya harga kompetitor, berita terkini).'
+                    ]
+                }
+            ],
+            project: 'Buat alat otomatisasi kustom yang memecahkan masalah yang kamu hadapi di tempat kerja\u2014seperti menggabungkan laporan penjualan mingguan atau mengekstrak angka penting dari email.',
+            careerOutcomes: {
+                roles: [
+                    'Spesialis Otomatisasi Python, Analis Data, atau Junior Developer.',
+                    'Kenaikan gaji 40%+ dilaporkan oleh siswa terdahulu.'
+                ]
+            }
+        },
     },
     {
         id: 'graphic-design-ai',
         slug: 'graphic-design-ai',
         category: 'Graphic Design & AI',
         title: 'Graphic Design with AI',
-        subtitle: 'Create Stunning Visuals — Faster',
-        description: 'Leverage AI tools to produce high-quality designs in a fraction of the time. You’ll learn how to prompt AI generators (like Midjourney, DALL·E) and refine outputs into professional-grade assets for social media, branding, and client work.',
-        icon: '🎨',
+        subtitle: 'Create Stunning Visuals \u2014 Faster',
+        description: 'Leverage AI tools to produce high-quality designs in a fraction of the time. You\u2019ll learn how to prompt AI generators (like Midjourney, DALL\u00b7E) and refine outputs into professional-grade assets for social media, branding, and client work.',
+        icon: '\ud83c\udfa8',
         iconBg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
         imageIcon: '/assets/icons/design.png',
         duration: '4 hours',
-        format: '2 days × 2 hours',
+        format: '2 days \xd7 2 hours',
         price: 49,
         originalPrice: 99,
         currency: 'USD',
         rating: 4.9,
         studentsCount: 754,
-        nextSession: 'Mar 15–16',
+        nextSession: 'Mar 15\u201316',
         seatsLeft: 6,
         targetRoles: ['AI Designer', 'Creative Director', 'Brand Designer'],
         priceMYR: 93,
@@ -299,7 +432,7 @@ export const courses: Course[] = [
         priceIDR: 400000,
         originalPriceIDR: 1500000,
         testimonialQuote: 'By day 2 I was making assets I used in real client projects. Nothing comes close to this format.',
-        testimonialAuthor: 'Budi S. — Freelance Designer',
+        testimonialAuthor: 'Budi S. \u2014 Freelance Designer',
         outcomes: [
             'Master Midjourney, DALL-E, and Adobe Firefly',
             'Apply professional design theory to AI-generated outputs',
@@ -328,6 +461,41 @@ export const courses: Course[] = [
             'Build a real portfolio by the end of day 2',
             'Fastest-growing creative skill set in SEA jobs market',
         ],
+        // Indonesian
+        titleID: 'Desain Grafis dengan AI',
+        subtitleID: 'Buat Visual Memukau \u2014 Lebih Cepat',
+        descriptionID: 'Manfaatkan alat AI untuk menghasilkan desain berkualitas tinggi dalam waktu lebih singkat. Kamu akan belajar cara memberi prompt pada generator AI (seperti Midjourney, DALL\u00b7E) dan menyempurnakan hasilnya menjadi aset profesional untuk media sosial, branding, dan proyek klien.',
+        outcomesID: [
+            'Kuasai Midjourney, DALL-E, dan Adobe Firefly',
+            'Terapkan teori desain profesional pada output yang dihasilkan AI',
+            'Buat aset identitas merek dan konten media sosial',
+            'Bangun portofolio desain berkualitas tinggi yang beragam',
+            'Desain untuk web, sosial, dan pemasaran dalam menit bukan jam',
+        ],
+        whoForID: [
+            'Desainer freelance yang ingin melipatgandakan output mereka.',
+            'Pemilik bisnis kecil yang membutuhkan keterampilan desain in-house.',
+            'Pemasar dan pembuat konten yang ingin visual menarik dengan cepat.',
+        ],
+        whatYouGetID: [
+            'Pelatihan langsung interaktif (total 4 jam)',
+            'Tanya jawab real-time dengan instruktur',
+            'Sertifikat penyelesaian',
+            'Koleksi desain siap portofolio',
+            'Akses komunitas pelajar privat',
+            'Perpustakaan prompt alat AI (200+ prompt yang telah diuji)',
+            'Bimbingan karier & notifikasi peluang kerja',
+        ],
+        whyWorthItID: [
+            'Alat AI telah mengubah secara fundamental apa yang bisa diciptakan satu orang',
+            'Desain + AI = output berlipat, kecepatan, dan nilai pasar',
+            'Instruktur telah bekerja dengan Google, Unilever, dan Samsung',
+            'Bangun portofolio nyata pada akhir hari ke-2',
+            'Keterampilan kreatif yang paling cepat berkembang di pasar kerja SEA',
+        ],
+        targetRolesID: ['Desainer AI', 'Direktur Kreatif', 'Desainer Merek'],
+        durationID: '4 jam',
+        testimonialQuoteID: 'Pada hari ke-2 saya sudah membuat aset yang digunakan di proyek klien nyata. Tidak ada yang menandingi format ini.',
         instructor: {
             name: 'Siti Nurhaliza',
             role: 'Creative Director & AI Design Lead',
@@ -344,12 +512,12 @@ export const courses: Course[] = [
             bgGradient: 'linear-gradient(135deg, #f093fb, #f5576c)',
         },
         schedules: [
-            { id: 's1', date: 'Mar 15–16', dayOfWeek: 'Sat–Sun', month: 'Mar', day: 15, time: '10:00', timeEnd: '12:00', seatsLeft: 0 },
-            { id: 's2', date: 'Mar 22–23', dayOfWeek: 'Sat–Sun', month: 'Mar', day: 22, time: '13:00', timeEnd: '15:00', seatsLeft: 9 },
-            { id: 's3', date: 'Apr 5–6', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 5, time: '10:00', timeEnd: '12:00', seatsLeft: 15 },
-            { id: 's4', date: 'Apr 12–13', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 12, time: '10:00', timeEnd: '12:00', seatsLeft: 8 },
-            { id: 's5', date: 'Apr 19–20', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 19, time: '13:00', timeEnd: '15:00', seatsLeft: 12 },
-            { id: 's6', date: 'Apr 26–27', dayOfWeek: 'Sat–Sun', month: 'Apr', day: 26, time: '10:00', timeEnd: '12:00', seatsLeft: 15 },
+            { id: 's1', date: 'Mar 15\u201316', dayOfWeek: 'Sat\u2013Sun', month: 'Mar', day: 15, time: '10:00', timeEnd: '12:00', seatsLeft: 0 },
+            { id: 's2', date: 'Mar 22\u201323', dayOfWeek: 'Sat\u2013Sun', month: 'Mar', day: 22, time: '13:00', timeEnd: '15:00', seatsLeft: 9 },
+            { id: 's3', date: 'Apr 5\u20136', dayOfWeek: 'Sat\u2013Sun', month: 'Apr', day: 5, time: '10:00', timeEnd: '12:00', seatsLeft: 15 },
+            { id: 's4', date: 'Apr 12\u201313', dayOfWeek: 'Sat\u2013Sun', month: 'Apr', day: 12, time: '10:00', timeEnd: '12:00', seatsLeft: 8 },
+            { id: 's5', date: 'Apr 19\u201320', dayOfWeek: 'Sat\u2013Sun', month: 'Apr', day: 19, time: '13:00', timeEnd: '15:00', seatsLeft: 12 },
+            { id: 's6', date: 'Apr 26\u201327', dayOfWeek: 'Sat\u2013Sun', month: 'Apr', day: 26, time: '10:00', timeEnd: '12:00', seatsLeft: 15 },
         ],
         tags: ['Midjourney', 'DALL-E', 'Branding', 'Social Media', 'Creative AI'],
         syllabusDetails: {
@@ -371,14 +539,41 @@ export const courses: Course[] = [
                     ]
                 }
             ],
-            project: 'Produce a complete brand identity package for a fictional or real business: logo, social media templates, and a promotional flyer—all co-created with AI.',
+            project: 'Produce a complete brand identity package for a fictional or real business: logo, social media templates, and a promotional flyer\u2014all co-created with AI.',
             careerOutcomes: {
                 roles: [
                     'AI-Augmented Designer, Social Media Manager, or Creative Lead.',
-                    'Charge 2–3× your previous rates by delivering faster.'
+                    'Charge 2\u20133\xd7 your previous rates by delivering faster.'
                 ]
             }
-        }
+        },
+        syllabusDetailsID: {
+            sessions: [
+                {
+                    title: 'Sesi 1 (2 Jam): Penguasaan Prompt AI',
+                    items: [
+                        'Membuat prompt efektif untuk menghasilkan logo, ilustrasi, dan grafik media sosial.',
+                        'Memahami prinsip desain (komposisi, warna, tipografi) untuk memandu AI.',
+                        'Menjelajahi alat AI terbaik untuk berbagai kebutuhan desain.'
+                    ]
+                },
+                {
+                    title: 'Sesi 2 (2 Jam): Dari AI ke Produk Akhir',
+                    items: [
+                        'Mengedit dan menyempurnakan gambar yang dihasilkan AI menggunakan Canva atau Photoshop.',
+                        'Menggabungkan aset AI menjadi kit branding yang kohesif.',
+                        'Membuat mockup untuk presentasi klien.'
+                    ]
+                }
+            ],
+            project: 'Hasilkan paket identitas merek lengkap untuk bisnis fiktif atau nyata: logo, template media sosial, dan flyer promosi\u2014semua dibuat bersama AI.',
+            careerOutcomes: {
+                roles: [
+                    'Desainer Bertenaga AI, Manajer Media Sosial, atau Creative Lead.',
+                    'Kenakan tarif 2\u20133\xd7 lebih tinggi dari sebelumnya dengan menyelesaikan lebih cepat.'
+                ]
+            }
+        },
     },
     {
         id: 'llm-ai-engineering',
@@ -386,18 +581,18 @@ export const courses: Course[] = [
         category: 'LLM & AI Engineering',
         title: 'LLM & AI Engineering',
         subtitle: 'Build Intelligent AI-Powered Products',
-        description: 'Go beyond ChatGPT—learn how to integrate large language models (LLMs) into applications. In 4 hours, you’ll understand how LLMs work, master prompt engineering, and build a simple AI-powered tool.',
-        icon: '🤖',
+        description: 'Go beyond ChatGPT\u2014learn how to integrate large language models (LLMs) into applications. In 4 hours, you\u2019ll understand how LLMs work, master prompt engineering, and build a simple AI-powered tool.',
+        icon: '\ud83e\udd16',
         iconBg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
         imageIcon: '/assets/icons/llm.png',
         duration: '4 hours',
-        format: '2 days × 2 hours',
+        format: '2 days \xd7 2 hours',
         price: 79,
         originalPrice: 149,
         currency: 'USD',
         rating: 5.0,
         studentsCount: 412,
-        nextSession: 'Mar 18–19',
+        nextSession: 'Mar 18\u201319',
         seatsLeft: 4,
         targetRoles: ['AI Engineer', 'LLM Developer', 'ML Engineer'],
         priceMYR: 93,
@@ -405,7 +600,7 @@ export const courses: Course[] = [
         priceIDR: 400000,
         originalPriceIDR: 1500000,
         testimonialQuote: 'Shipped my first AI feature to production 2 weeks after the course. The instructor makes it approachable.',
-        testimonialAuthor: 'Rizal H. — Full-Stack Developer',
+        testimonialAuthor: 'Rizal H. \u2014 Full-Stack Developer',
         outcomes: [
             'Understand how LLMs actually work under the hood',
             'Build custom AI chatbots and intelligent assistants',
@@ -431,9 +626,44 @@ export const courses: Course[] = [
             'AI engineering is the single most in-demand skill in 2026',
             'Build a real, deployed AI app you can demo to employers',
             'Learn from a practitioner who ships AI to 1M+ users',
-            'Companies are paying 40–60% premiums for AI skills now',
-            'Position yourself ahead of the AI skill wave — today',
+            'Companies are paying 40\u201360% premiums for AI skills now',
+            'Position yourself ahead of the AI skill wave \u2014 today',
         ],
+        // Indonesian
+        titleID: 'Rekayasa LLM & AI',
+        subtitleID: 'Bangun Produk Cerdas Bertenaga AI',
+        descriptionID: 'Lampaui ChatGPT\u2014pelajari cara mengintegrasikan model bahasa besar (LLM) ke dalam aplikasi. Dalam 4 jam, kamu akan memahami cara kerja LLM, menguasai rekayasa prompt, dan membangun alat bertenaga AI sederhana.',
+        outcomesID: [
+            'Memahami cara kerja LLM sesungguhnya',
+            'Membangun chatbot AI kustom dan asisten cerdas',
+            'Mengintegrasikan API OpenAI ke dalam aplikasi web nyata',
+            'Menguasai rekayasa prompt untuk output yang andal dan konsisten',
+            'Men-deploy fitur bertenaga AI ke lingkungan produksi',
+        ],
+        whoForID: [
+            'Developer, manajer produk, atau wirausaha yang ingin menambahkan fitur AI ke produk.',
+            'Profesional melek teknologi yang ingin memfuture-proof karier mereka.',
+            'Siapa pun yang penasaran tentang membangun dengan AI, bukan hanya menggunakannya.',
+        ],
+        whatYouGetID: [
+            'Sesi rekayasa AI langsung interaktif (4 jam)',
+            'Tanya jawab real-time dengan instruktur',
+            'Sertifikat penyelesaian',
+            'Proyek portofolio aplikasi AI yang berfungsi',
+            'Akses komunitas rekayasa AI privat',
+            'Rekaman sesi untuk diputar ulang',
+            'Bimbingan karier di bidang rekayasa AI',
+        ],
+        whyWorthItID: [
+            'Rekayasa AI adalah keterampilan paling diminati di tahun 2026',
+            'Bangun aplikasi AI nyata yang di-deploy dan bisa didemokan ke perusahaan',
+            'Belajar dari praktisi yang mengirimkan AI ke 1 juta+ pengguna',
+            'Perusahaan membayar premium 40\u201360% untuk keahlian AI sekarang',
+            'Posisikan dirimu di depan gelombang keterampilan AI \u2014 mulai hari ini',
+        ],
+        targetRolesID: ['Engineer AI', 'Developer LLM', 'Engineer ML'],
+        durationID: '4 jam',
+        testimonialQuoteID: 'Meluncurkan fitur AI pertama saya ke produksi 2 minggu setelah kursus. Instrukturnya membuat semuanya mudah dipahami.',
         instructor: {
             name: 'Rizky Firmansyah',
             role: 'AI Engineering Lead',
@@ -450,9 +680,9 @@ export const courses: Course[] = [
             bgGradient: 'linear-gradient(135deg, #4facfe, #00f2fe)',
         },
         schedules: [
-            { id: 's1', date: 'Mar 18–19', dayOfWeek: 'Tue–Wed', month: 'Mar', day: 18, time: '19:00', timeEnd: '21:00', seatsLeft: 4 },
-            { id: 's2', date: 'Mar 25–26', dayOfWeek: 'Tue–Wed', month: 'Mar', day: 25, time: '19:00', timeEnd: '21:00', seatsLeft: 8 },
-            { id: 's3', date: 'Apr 1–2', dayOfWeek: 'Tue–Wed', month: 'Apr', day: 1, time: '14:00', timeEnd: '16:00', seatsLeft: 12 },
+            { id: 's1', date: 'Mar 18\u201319', dayOfWeek: 'Tue\u2013Wed', month: 'Mar', day: 18, time: '19:00', timeEnd: '21:00', seatsLeft: 4 },
+            { id: 's2', date: 'Mar 25\u201326', dayOfWeek: 'Tue\u2013Wed', month: 'Mar', day: 25, time: '19:00', timeEnd: '21:00', seatsLeft: 8 },
+            { id: 's3', date: 'Apr 1\u20132', dayOfWeek: 'Tue\u2013Wed', month: 'Apr', day: 1, time: '14:00', timeEnd: '16:00', seatsLeft: 12 },
         ],
         tags: ['OpenAI', 'LLM', 'ChatGPT', 'AI Engineering', 'APIs'],
         syllabusDetails: {
@@ -474,14 +704,41 @@ export const courses: Course[] = [
                     ]
                 }
             ],
-            project: 'Create a functional AI prototype—for example, a customer support bot, a personalized email writer, or a data extractor from text.',
+            project: 'Create a functional AI prototype\u2014for example, a customer support bot, a personalized email writer, or a data extractor from text.',
             careerOutcomes: {
                 roles: [
                     'AI Engineer, Prompt Engineer, or AI Product Manager.',
                     'High-demand roles across tech and enterprise.'
                 ]
             }
-        }
+        },
+        syllabusDetailsID: {
+            sessions: [
+                {
+                    title: 'Sesi 1 (2 Jam): Fondasi LLM',
+                    items: [
+                        'Cara kerja GPT dan model serupa (disederhanakan).',
+                        'Rekayasa prompt tingkat lanjut: role-playing, chain-of-thought, dan manajemen konteks.',
+                        'Etika dan keterbatasan AI.'
+                    ]
+                },
+                {
+                    title: 'Sesi 2 (2 Jam): Membangun dengan AI',
+                    items: [
+                        'Mengakses LLM melalui API (OpenAI, Hugging Face).',
+                        'Membangun chatbot sederhana atau generator konten.',
+                        'Men-deploy aplikasi AI (opsi no-code atau low-code).'
+                    ]
+                }
+            ],
+            project: 'Buat prototipe AI yang berfungsi\u2014misalnya bot dukungan pelanggan, penulis email personal, atau ekstraktor data dari teks.',
+            careerOutcomes: {
+                roles: [
+                    'Engineer AI, Prompt Engineer, atau Manajer Produk AI.',
+                    'Peran permintaan tinggi di seluruh teknologi dan enterprise.'
+                ]
+            }
+        },
     },
     {
         id: "intermediate-data-analytics",
@@ -490,16 +747,16 @@ export const courses: Course[] = [
         title: "Intermediate Data Analyst",
         subtitle: "Advanced SQL & Predictive Modeling",
         description: "Take your analysis skills to the next level. Learn advanced SQL, complex data modeling, and predictive analytics. Master automated reporting and tell deeper stories with data.",
-        icon: "📈",
+        icon: "\ud83d\udcc8",
         iconBg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         duration: "4 hours",
-        format: "2 days × 2 hours",
+        format: "2 days \xd7 2 hours",
         price: 69,
         originalPrice: 129,
         currency: "USD",
         rating: 4.9,
         studentsCount: 856,
-        nextSession: "Mar 15–16",
+        nextSession: "Mar 15\u201316",
         seatsLeft: 5,
         targetRoles: ["Senior Data Analyst", "Data Scientist", "Business Intelligence Lead"],
         priceMYR: 189,
@@ -507,7 +764,7 @@ export const courses: Course[] = [
         priceIDR: 800000,
         originalPriceIDR: 1800000,
         testimonialQuote: "The advanced SQL modules alone were worth the price. I optimized our monthly reporting by 80%.",
-        testimonialAuthor: "Siti K. — BI Developer",
+        testimonialAuthor: "Siti K. \u2014 BI Developer",
         outcomes: [
             "Master complex SQL queries and window functions",
             "Build predictive models for business forecasting",
@@ -530,6 +787,35 @@ export const courses: Course[] = [
             "Learn to automate 50% of your current manual work",
             "Build a portfolio piece that handles 1M+ rows",
         ],
+        // Indonesian
+        titleID: "Analis Data Menengah",
+        subtitleID: "SQL Tingkat Lanjut & Pemodelan Prediktif",
+        descriptionID: "Tingkatkan kemampuan analisis ke level berikutnya. Pelajari SQL tingkat lanjut, pemodelan data kompleks, dan analitik prediktif. Kuasai pelaporan otomatis dan ceritakan kisah lebih mendalam dengan data.",
+        outcomesID: [
+            "Menguasai kueri SQL kompleks dan fungsi window",
+            "Membangun model prediktif untuk peramalan bisnis",
+            "Merancang arsitektur data yang skalabel untuk tim kecil",
+        ],
+        whoForID: [
+            "Analis dasar yang siap naik level",
+            "Manajer bisnis yang meningkatkan literasi data",
+            "Tech lead yang mengawasi tim data",
+        ],
+        whatYouGetID: [
+            "Sesi langsung menengah yang mendalam",
+            "Cheat sheet dan template SQL tingkat lanjut",
+            "Dataset kompleks untuk latihan",
+            "Sertifikat kompetensi",
+            "Akses langsung ke mentor analitik senior",
+        ],
+        whyWorthItID: [
+            "Kuasai keterampilan yang membedakan analis senior",
+            "Pelajari cara mengotomatiskan 50% pekerjaan manual saat ini",
+            "Bangun proyek portofolio yang menangani 1 juta+ baris",
+        ],
+        targetRolesID: ["Analis Data Senior", "Data Scientist", "Pimpinan Business Intelligence"],
+        durationID: "4 jam",
+        testimonialQuoteID: "Modul SQL tingkat lanjut saja sudah sepadan dengan harganya. Saya mengoptimalkan pelaporan bulanan kami sebesar 80%.",
         instructor: {
             name: "Arman Rahman",
             role: "Senior Data Analyst",
@@ -546,7 +832,7 @@ export const courses: Course[] = [
             bgGradient: "linear-gradient(135deg, #667eea, #764ba2)",
         },
         schedules: [
-            { id: "s1", date: "Mar 15–16", dayOfWeek: "Sat–Sun", month: "Mar", day: 15, time: "14:00", timeEnd: "16:00", seatsLeft: 5 },
+            { id: "s1", date: "Mar 15\u201316", dayOfWeek: "Sat\u2013Sun", month: "Mar", day: 15, time: "14:00", timeEnd: "16:00", seatsLeft: 5 },
         ],
         tags: ["SQL", "Modeling", "Analytics", "Intermediate"],
     },
@@ -557,16 +843,16 @@ export const courses: Course[] = [
         title: "Advanced Data Analyst",
         subtitle: "Enterprise Analytics & Big Data",
         description: "Become a lead analyst. Master machine learning for business, big data architectures, and strategic decision support. Build a full-scale enterprise analytics solution.",
-        icon: "💎",
+        icon: "\ud83d\udc8e",
         iconBg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         duration: "8 hours",
-        format: "4 days × 2 hours",
+        format: "4 days \xd7 2 hours",
         price: 299,
         originalPrice: 499,
         currency: "USD",
         rating: 5.0,
         studentsCount: 312,
-        nextSession: "Apr 2–5",
+        nextSession: "Apr 2\u20135",
         seatsLeft: 3,
         targetRoles: ["Lead Data Analyst", "Head of Data", "Analytics Consultant"],
         priceMYR: 1499,
@@ -574,7 +860,7 @@ export const courses: Course[] = [
         priceIDR: 5000000,
         originalPriceIDR: 9000000,
         testimonialQuote: "This course gave me the confidence to lead our entire data department transformation.",
-        testimonialAuthor: "Kevin J. — Head of Analytics",
+        testimonialAuthor: "Kevin J. \u2014 Head of Analytics",
         outcomes: [
             "Deploy machine learning models to production",
             "Architect big data pipelines for enterprise scale",
@@ -597,6 +883,35 @@ export const courses: Course[] = [
             "Learn to manage entire data team workflows",
             "Build a project using actual big data technologies",
         ],
+        // Indonesian
+        titleID: "Analis Data Lanjutan",
+        subtitleID: "Analitik Enterprise & Big Data",
+        descriptionID: "Jadilah analis pemimpin. Kuasai machine learning untuk bisnis, arsitektur big data, dan dukungan keputusan strategis. Bangun solusi analitik enterprise skala penuh.",
+        outcomesID: [
+            "Men-deploy model machine learning ke produksi",
+            "Merancang pipeline big data untuk skala enterprise",
+            "Memimpin tinjauan bisnis berbasis data yang strategis",
+        ],
+        whoForID: [
+            "Analis menengah yang bergerak menuju peran kepemimpinan",
+            "Wirausaha yang membangun produk berbasis data",
+            "Konsultan yang spesialisasi dalam transformasi digital",
+        ],
+        whatYouGetID: [
+            "Sesi langsung lanjutan intensif (8 jam)",
+            "Template proyek kelas enterprise",
+            "Sesi strategi 1-on-1 dengan instruktur",
+            "Sertifikat keunggulan elite",
+            "Akses jaringan referral pekerjaan prioritas",
+        ],
+        whyWorthItID: [
+            "Peroleh gaji tertinggi di bidang data",
+            "Pelajari cara mengelola seluruh alur kerja tim data",
+            "Bangun proyek menggunakan teknologi big data sesungguhnya",
+        ],
+        targetRolesID: ["Analis Data Utama", "Kepala Data", "Konsultan Analitik"],
+        durationID: "8 jam",
+        testimonialQuoteID: "Kursus ini memberi saya kepercayaan diri untuk memimpin transformasi seluruh departemen data kami.",
         instructor: {
             name: "Arman Rahman",
             role: "Senior Data Analyst",
@@ -613,7 +928,7 @@ export const courses: Course[] = [
             bgGradient: "linear-gradient(135deg, #667eea, #764ba2)",
         },
         schedules: [
-            { id: "s1", date: "Apr 2–5", dayOfWeek: "Thu–Sun", month: "Apr", day: 2, time: "19:00", timeEnd: "21:00", seatsLeft: 3 },
+            { id: "s1", date: "Apr 2\u20135", dayOfWeek: "Thu\u2013Sun", month: "Apr", day: 2, time: "19:00", timeEnd: "21:00", seatsLeft: 3 },
         ],
         tags: ["Big Data", "Machine Learning", "Leadership", "Advanced"],
     },

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Translate } from '@/components/LanguageContext';
 import CourseCardLazy from '@/components/CourseCardLazy';
 import PathCard from '@/components/PathCard';
@@ -125,10 +126,14 @@ export default function HomePage() {
                 <div className={styles.heroLayout}>
                     {/* Left Illustration */}
                     <div className={`${styles.heroIllustration} ${styles.heroIllustrationLeft} ${styles.hideMobile}`}>
-                        <img 
-                            src="/assets/notion_hero_left.png" 
+                        <Image 
+                            src="/assets/notion_hero_left.webp" 
                             alt="Collaborating Talent" 
                             className={styles.heroImage}
+                            width={500}
+                            height={500}
+                            priority
+                            sizes="(max-width: 1200px) 280px, 380px"
                         />
                     </div>
 
@@ -158,15 +163,19 @@ export default function HomePage() {
 
                         {/* Mobile-only centered illustration */}
                         <div className={styles.heroIllustrationMobile}>
-                            <img
-                                src="/assets/notion_hero_left.png"
+                            <Image
+                                src="/assets/notion_hero_left.webp"
                                 alt="Collaborating Talent"
                                 className={styles.heroImage}
+                                width={360}
+                                height={360}
+                                priority
+                                sizes="(max-width: 768px) 280px, 360px"
                             />
                         </div>
 
                         <div className={styles.trustedByRow}>
-                            <p className={styles.trustedByLabel}>Our instructors work at leading tech companies</p>
+                            <p className={styles.trustedByLabel}><Translate tKey="hero.trustedBy" /></p>
                             <div className={styles.logoGridMini}>
                                 {proofCompanies.map((c) => (
                                     <span key={c} className={styles.miniLogoText}>{c}</span>
@@ -177,10 +186,14 @@ export default function HomePage() {
 
                     {/* Right Illustration */}
                     <div className={`${styles.heroIllustration} ${styles.heroIllustrationRight} ${styles.hideMobile}`}>
-                        <img 
-                            src="/assets/notion_hero_right.png" 
+                        <Image 
+                            src="/assets/notion_hero_right.webp" 
                             alt="Innovating Talent" 
                             className={styles.heroImage}
+                            width={500}
+                            height={500}
+                            priority
+                            sizes="(max-width: 1200px) 280px, 380px"
                         />
                     </div>
                 </div>

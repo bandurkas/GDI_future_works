@@ -10,6 +10,7 @@ import GoogleAuthProvider from '@/components/GoogleAuthProvider';
 import LazyOneTap from '@/components/LazyOneTap';
 import { CurrencyProvider } from '@/components/CurrencyContext';
 import { auth } from '@/auth';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { jwtVerify } from 'jose';
 
 // Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
@@ -18,18 +19,20 @@ import { jwtVerify } from 'jose';
 // Next.js downloads fonts at build time, serves from same origin, adds <link rel="preload">
 const jakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['400', '600', '800'],
   style: ['normal'],
   display: 'swap',
   variable: '--font-display',
+  preload: true,
 });
 
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['400', '700'],
   style: ['normal'],
   display: 'swap',
   variable: '--font-body',
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -102,18 +105,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${jakartaSans.variable} ${poppins.variable}`}
     >
       <head>
-        {/* Google Analytics 4 */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ7BSBB2SF"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-HJ7BSBB2SF');
-            `,
-          }}
-        />
+
         <link rel="preconnect" href="https://app.midtrans.com" />
         <link rel="dns-prefetch" href="https://app.midtrans.com" />
       </head>
@@ -131,6 +123,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </CurrencyProvider>
         </GoogleAuthProvider>
       </body>
+          <GoogleAnalytics gaId="G-HJ7BSBB2SF" />
     </html>
   );
 }

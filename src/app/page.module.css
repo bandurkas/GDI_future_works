@@ -447,7 +447,7 @@
     }
 
     .heroContainer {
-        padding: 24px 0 0;
+        padding: 24px 24px 0;
         background: transparent !important;
         backdrop-filter: none !important;
         border-radius: 0;
@@ -455,7 +455,7 @@
     }
 
     .heroTitle {
-        font-size: clamp(2rem, 9vw, 3rem) !important;
+        font-size: clamp(1.75rem, 7.5vw, 2.8rem) !important;
         letter-spacing: -0.04em;
         margin-bottom: 16px;
     }
@@ -503,7 +503,7 @@
     }
 
     .heroTitle {
-        font-size: clamp(1.75rem, 10vw, 2.5rem) !important;
+        font-size: clamp(1.5rem, 8vw, 2.2rem) !important;
     }
 }
 

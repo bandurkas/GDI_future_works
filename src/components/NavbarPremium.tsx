@@ -97,7 +97,28 @@ export default function NavbarPremium() {
     };
 
     if (!isMounted) {
-        return <header className={styles.header}><div className={styles.container}></div></header>;
+        // Render static skeleton with logo visible — prevents layout shift & empty nav flash
+        return (
+            <header className={styles.header}>
+                <div className={styles.container}>
+                    <div className={styles.leftSection}>
+                        <button className={styles.hamburger} aria-label="Toggle menu">
+                            <span></span><span></span><span></span>
+                        </button>
+                        <Link href="/" className={styles.logo} aria-label="GDI FutureWorks Home">
+                            <ThemeLogo className={styles.logoImage} />
+                        </Link>
+                        <nav className={styles.nav} aria-label="Main navigation">
+                            <Link href="/about" className={styles.navLink}>About</Link>
+                            <Link href="/for-tutors" className={styles.navLink}>For Tutors</Link>
+                            <Link href="/community" className={styles.navLink}>Community</Link>
+                            <Link href="/contact" className={styles.navLink}>Contact</Link>
+                        </nav>
+                    </div>
+                    <div className={styles.rightSection} style={{ visibility: 'hidden' }} aria-hidden="true" />
+                </div>
+            </header>
+        );
     }
 
     return (

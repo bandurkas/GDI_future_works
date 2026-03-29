@@ -6,13 +6,8 @@ import { useRouter } from 'next/navigation';
 import { getCourseBySlug } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
+import { useLanguage } from '@/components/LanguageContext';
 import styles from './page.module.css';
-
-const STEPS = [
-    { number: 1, label: 'Select Time' },
-    { number: 2, label: 'Your Details' },
-    { number: 3, label: 'Payment' },
-];
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -20,10 +15,12 @@ export default function SchedulePage({ params }: Props) {
     const { slug } = use(params);
     const router = useRouter();
     const { data: session, status } = useSession();
+    const { t, language } = useLanguage();
     const course = getCourseBySlug(slug);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { addItem, customerInfo, updateCustomerInfo } = useCart();
     
+    const isID = language === 'id';
     const isAuthenticated = status === 'authenticated';
     
     // Contact State
@@ -36,6 +33,12 @@ export default function SchedulePage({ params }: Props) {
             if (!email && session.user.email) setEmail(session.user.email);
         }
     }, [session, email]);
+
+    const STEPS = [
+        { number: 1, label: t('schedule.step1') },
+        { number: 2, label: t('schedule.step2') },
+        { number: 3, label: t('schedule.step3') },
+    ];
 
     const selected = course?.schedules?.find(d => d.id === selectedId);
     
@@ -64,6 +67,10 @@ export default function SchedulePage({ params }: Props) {
         router.push('/cart');
     };
 
+    // Localized course title
+    const courseTitle = isID ? (course?.titleID || course?.title) : course?.title;
+    const courseFormat = course?.format;
+
     if (!course) return null;
 
     return (
@@ -73,7 +80,7 @@ export default function SchedulePage({ params }: Props) {
                     {/* Top flow control */}
                     <button onClick={() => router.back()} className={styles.flowBackBtn} aria-label="Go back">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                        <span>Back</span>
+                        <span>{t('schedule.back')}</span>
                     </button>
 
                     {/* Progress indicator */}
@@ -90,21 +97,21 @@ export default function SchedulePage({ params }: Props) {
                     </div>
 
                     <div>
-                        <h1 className={styles.title}>Choose a time that works for you.</h1>
+                        <h1 className={styles.title}>{t('schedule.title')}</h1>
                         <p className={styles.subtitle}>
-                            Session for <strong>{course.title}</strong> · {course.format}
+                            {t('schedule.sessionFor')} <strong>{courseTitle}</strong> · {courseFormat}
                         </p>
                     </div>
 
                     {/* Date grid */}
                     <div className={styles.section}>
-                        <h3 className={styles.sectionLabel}>📅 Available Dates</h3>
+                        <h3 className={styles.sectionLabel}>{t('schedule.availableDates')}</h3>
                         
                         {(!course.schedules || course.schedules.length === 0) ? (
                             <div style={{ padding: '24px', background: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center', marginTop: '16px' }}>
-                                <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>No upcoming schedules available.</h4>
+                                <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{t('schedule.noSchedule')}</h4>
                                 <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                                    Please contact us via WhatsApp to arrange a session or inquire about future dates.
+                                    {t('schedule.noScheduleDesc')}
                                 </p>
                             </div>
                         ) : (
@@ -128,9 +135,9 @@ export default function SchedulePage({ params }: Props) {
                                             <span className={styles.dayNum}>{slot.day}</span>
                                             <span className={styles.dayMonth}>{slot.month}</span>
                                             {isFull ? (
-                                                <span className={styles.fullBadge}>Fully Booked</span>
+                                                <span className={styles.fullBadge}>{t('schedule.fullyBooked')}</span>
                                             ) : slot.seatsLeft <= 5 ? (
-                                                <span className={styles.seatBadge}>{slot.seatsLeft} left</span>
+                                                <span className={styles.seatBadge}>{slot.seatsLeft} {t('schedule.seatsLeft')}</span>
                                             ) : null}
                                         </button>
                                     );
@@ -139,63 +146,62 @@ export default function SchedulePage({ params }: Props) {
                         )}
                     </div>
 
-                    {/* Time slot — appears on selection */}
+                    {/* Time slot */}
                     {selected && (
                         <div className={`${styles.section} ${styles.timeSection}`}>
-                            <h3 className={styles.sectionLabel}>🕒 Session Time</h3>
+                            <h3 className={styles.sectionLabel}>{t('schedule.sessionTime')}</h3>
                             <div className={styles.timeSlot}>
                                 <span className={styles.timeIcon}>🕒</span>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                                     <span className={styles.timeVal}>{selected.time}–{selected.timeEnd || '12:00'} (GMT+8)</span>
-                                    <span className={styles.timeMeta}>Live online · 2 hours</span>
+                                    <span className={styles.timeMeta}>{t('schedule.liveOnline')}</span>
                                 </div>
                                 <div className={styles.timeCheck}>✓</div>
                             </div>
                         </div>
                     )}
 
-                    {/* Contact Information — appears once date is selected, but hidden for logged-in users */}
+                    {/* Contact Information */}
                     {selected && !isAuthenticated && (
                         <div className={styles.contactSection}>
-                            <h3 className={styles.sectionLabel}>👤 Your Details</h3>
+                            <h3 className={styles.sectionLabel}>{t('schedule.yourDetails')}</h3>
                             <div className={styles.inputRow}>
                                 <div className={styles.inputGroup}>
-                                    <label className={styles.inputLabel}>Email Address</label>
+                                    <label className={styles.inputLabel}>{t('schedule.emailLabel')}</label>
                                     <input 
                                         className={styles.inputField} 
                                         type="email" 
-                                        placeholder="example@mail.com"
+                                        placeholder={t('schedule.emailPlaceholder')}
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
-                                    <label className={styles.inputLabel}>Phone Number</label>
+                                    <label className={styles.inputLabel}>{t('schedule.phoneLabel')}</label>
                                     <input 
                                         className={styles.inputField} 
                                         type="tel" 
-                                        placeholder="+62..."
+                                        placeholder={t('schedule.phonePlaceholder')}
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
                                     />
                                 </div>
                             </div>
                             
-                            {/* Specific validation error requested by user */}
                             {!email && !phone && (
                                 <p style={{ fontSize: '0.8125rem', color: 'var(--accent)', fontWeight: '600', marginTop: '4px' }}>
-                                    Please enter your email or phone number to continue.
+                                    {t('schedule.validationMsg')}
                                 </p>
                             )}
                             
                             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                                * We need at least an email or phone number to send your joining link.
+                                {t('schedule.contactNote')}
                             </p>
                         </div>
                     )}
 
                     <div className={styles.bottomNote}>
-                        💬 Need a different date? WhatsApp us — we open new sessions based on demand.
+                        {t('schedule.bottomNote')}
                     </div>
 
                     <button
@@ -205,13 +211,13 @@ export default function SchedulePage({ params }: Props) {
                         id="schedule-next-cta"
                     >
                         {selectedId ? (
-                            <>Next →</>
+                            <>{t('schedule.next')}</>
                         ) : (
-                            <>Select a date to continue</>
+                            <>{t('schedule.selectDate')}</>
                         )}
                     </button>
 
-                    <button onClick={() => router.back()} className={styles.back}>← Back to previous page</button>
+                    <button onClick={() => router.back()} className={styles.back}>{t('schedule.backFull')}</button>
                 </div>
             </div>
         </div>

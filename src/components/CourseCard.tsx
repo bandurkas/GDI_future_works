@@ -36,13 +36,13 @@ interface Props {
 const getFeatureIcon = (text: string) => {
     const t = (text || '').toLowerCase();
     const size = 16;
-    if (t.includes('live') || t.includes('interactive')) return <Video size={size} />;
-    if (t.includes('question') || t.includes('q&a')) return <MessageSquare size={size} />;
-    if (t.includes('exercise') || t.includes('practical') || t.includes('script')) return <Monitor size={size} />;
-    if (t.includes('certificate')) return <GraduationCap size={size} />;
-    if (t.includes('portfolio') || t.includes('project')) return <Rocket size={size} />;
-    if (t.includes('community')) return <Users size={size} />;
-    if (t.includes('career') || t.includes('job')) return <TrendingUp size={size} />;
+    if (t.includes('live') || t.includes('interactive') || t.includes('langsung')) return <Video size={size} />;
+    if (t.includes('question') || t.includes('q&a') || t.includes('tanya')) return <MessageSquare size={size} />;
+    if (t.includes('exercise') || t.includes('practical') || t.includes('script') || t.includes('latihan')) return <Monitor size={size} />;
+    if (t.includes('certificate') || t.includes('sertifikat')) return <GraduationCap size={size} />;
+    if (t.includes('portfolio') || t.includes('project') || t.includes('proyek')) return <Rocket size={size} />;
+    if (t.includes('community') || t.includes('komunitas')) return <Users size={size} />;
+    if (t.includes('career') || t.includes('job') || t.includes('karier') || t.includes('kerja')) return <TrendingUp size={size} />;
     return <Sparkles size={size} />;
 };
 
@@ -64,12 +64,25 @@ export default function CourseCard({ course, featured }: Props) {
     const [showSeatInfo, setShowSeatInfo] = useState(false);
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
-    const { language } = useLanguage();
+    const { language, t } = useLanguage();
     const { currency } = useCurrency();
 
     const isID = language === 'id';
+
+    // Localized course content
+    const title = isID ? (course.titleID || course.title) : course.title;
+    const subtitle = isID ? (course.subtitleID || course.subtitle) : course.subtitle;
+    const description = isID ? (course.descriptionID || course.description) : course.description;
+    const outcomes = isID ? (course.outcomesID || course.outcomes) : course.outcomes;
+    const whoFor = isID ? (course.whoForID || course.whoFor) : course.whoFor;
+    const whatYouGet = isID ? (course.whatYouGetID || course.whatYouGet) : course.whatYouGet;
+    const whyWorthIt = isID ? (course.whyWorthItID || course.whyWorthIt) : course.whyWorthIt;
+    const targetRoles = isID ? (course.targetRolesID || course.targetRoles) : course.targetRoles;
+    const duration = isID ? (course.durationID || course.duration) : course.duration;
+    const testimonialQuote = isID ? (course.testimonialQuoteID || course.testimonialQuote) : course.testimonialQuote;
+    const syllabusDetails = isID ? (course.syllabusDetailsID || course.syllabusDetails) : course.syllabusDetails;
     
-    // Use localized prices from the course object (which matches DB after seeding)
+    // Use localized prices from the course object
     const currentPrice = currency === 'IDR' ? course.priceIDR : course.priceMYR;
     const originalPrice = currency === 'IDR' ? course.originalPriceIDR : course.originalPriceMYR;
 
@@ -113,7 +126,7 @@ export default function CourseCard({ course, featured }: Props) {
     };
 
     // Use a subset of ultra-specific outcomes for the drawer
-    const specificOutcomes = course.outcomes.slice(0, 3);
+    const specificOutcomes = outcomes.slice(0, 3);
 
     return (
         <div className={styles.wrapper}>
@@ -122,11 +135,9 @@ export default function CourseCard({ course, featured }: Props) {
                 id={`course-card-${course.slug}`}
                 onClick={openOutcomes}
             >
-
-
                 <div className={styles.cardContent}>
-                    <h3 className={styles.title}>{course.title}</h3>
-                    <p className={styles.description}>{course.subtitle || course.outcomes[0]}</p>
+                    <h3 className={styles.title}>{title}</h3>
+                    <p className={styles.description}>{subtitle || outcomes[0]}</p>
 
                     <div className={styles.tagsContainer}>
                         {course.tags?.slice(0, 3).map((tag, idx) => (
@@ -149,15 +160,15 @@ export default function CourseCard({ course, featured }: Props) {
                     <div className={styles.metaDivider} />
 
                     {/* Career outcome row */}
-                    {course.targetRoles && (
+                    {targetRoles && (
                         <div className={styles.outcomeRow}>
                             <ArrowRight size={14} className={styles.outcomeArrow} />
-                            <span className={styles.outcomeText}>{course.targetRoles[0]}</span>
+                            <span className={styles.outcomeText}>{targetRoles[0]}</span>
                         </div>
                     )}
 
                     <p className={styles.metadata}>
-                        {course.duration} • Certificate included
+                        {duration} • {t('card.certificate')}
                     </p>
                 </div>
             </div>
@@ -181,23 +192,23 @@ export default function CourseCard({ course, featured }: Props) {
                                         <X size={20} />
                                     </button>
                                 </div>
-                                <h4 className={styles.drawerTitle}>{course.title}</h4>
+                                <h4 className={styles.drawerTitle}>{title}</h4>
                                 <div className={styles.drawerTrust}>
                                     <Star size={14} fill="#F59E0B" color="#F59E0B" style={{ marginRight: '6px' }} />
-                                    <span>Trusted by {course.studentsCount}+ students</span>
+                                    <span>{t('card.trustedBy')} {course.studentsCount}+ {t('card.students')}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div className={styles.drawerBody}>
                             <div className={styles.drawerSection}>
-                                <h5 className={styles.drawerQuestion}>About Course</h5>
-                                <p className={styles.drawerDesc}>{course.description}</p>
+                                <h5 className={styles.drawerQuestion}>{t('card.aboutCourse')}</h5>
+                                <p className={styles.drawerDesc}>{description}</p>
                             </div>
 
-                            {course.syllabusDetails && showSyllabusDetails ? (
+                            {syllabusDetails && showSyllabusDetails ? (
                                 <>
-                                    {course.syllabusDetails.sessions.map((session, idx) => (
+                                    {syllabusDetails.sessions.map((session, idx) => (
                                         <div key={idx} className={styles.drawerSection}>
                                             <h5 className={styles.drawerQuestion}>{session.title}</h5>
                                             <ul className={styles.drawerList}>
@@ -212,19 +223,19 @@ export default function CourseCard({ course, featured }: Props) {
                                     ))}
 
                                     <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>Your Project</h5>
+                                        <h5 className={styles.drawerQuestion}>{t('card.yourProject')}</h5>
                                         <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
                                             <p className={styles.drawerDesc} style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.5 }}>
-                                                {course.syllabusDetails.project}
+                                                {syllabusDetails.project}
                                             </p>
                                         </div>
                                     </div>
 
                                     <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>Career Outcomes</h5>
+                                        <h5 className={styles.drawerQuestion}>{t('card.careerOutcomes')}</h5>
                                         <div style={{ background: '#F0FDF4', padding: '16px', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
                                             <ul className={styles.drawerList} style={{ gap: '12px' }}>
-                                                {course.syllabusDetails.careerOutcomes.roles.map((role, i) => (
+                                                {syllabusDetails.careerOutcomes.roles.map((role, i) => (
                                                     <li key={i} className={styles.drawerListItem} style={{ alignItems: 'flex-start' }}>
                                                         <TrendingUp size={20} style={{ marginRight: '8px', color: '#166534' }} />
                                                         <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#166534' }}>{role}</span>
@@ -237,8 +248,8 @@ export default function CourseCard({ course, featured }: Props) {
                             ) : (
                                 <>
                                     <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>What you&apos;ll learn</h5>
-                                        <div className={styles.drawerMicrotext}>Practical skills you&apos;ll gain</div>
+                                        <h5 className={styles.drawerQuestion}>{t('card.whatLearn')}</h5>
+                                        <div className={styles.drawerMicrotext}>{t('card.practicalSkills')}</div>
                                         <ul className={styles.drawerList}>
                                             {specificOutcomes.map((outcome, idx) => (
                                                 <li key={idx} className={styles.drawerListItem}>
@@ -250,12 +261,11 @@ export default function CourseCard({ course, featured }: Props) {
                                     </div>
 
                                     <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>What you&apos;ll get</h5>
+                                        <h5 className={styles.drawerQuestion}>{t('card.whatGet')}</h5>
                                         <div className={styles.infoGraphicCard}>
-                                            {/* Fix #20 — images only load after drawer opens */}
-                                            <Image src="/assets/info_what.png" alt="What you get" width={400} height={200} className={styles.infoImage} loading="lazy" />
+                                            <Image src="/assets/info_what.webp" alt="What you get" width={400} height={200} className={styles.infoImage} loading="lazy" />
                                             <div className={styles.infoList}>
-                                                {course.whatYouGet.slice(0, 6).map((item, idx) => (
+                                                {whatYouGet.slice(0, 6).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
                                                         <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
                                                     </div>
@@ -265,11 +275,11 @@ export default function CourseCard({ course, featured }: Props) {
                                     </div>
 
                                     <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>Who this course is for</h5>
+                                        <h5 className={styles.drawerQuestion}>{t('card.whoFor')}</h5>
                                         <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_who.png" alt="Who is it for" width={400} height={200} className={styles.infoImage} loading="lazy" />
+                                            <Image src="/assets/info_who.webp" alt="Who is it for" width={400} height={200} className={styles.infoImage} loading="lazy" />
                                             <div className={styles.infoList}>
-                                                {course.whoFor.slice(0, 4).map((item, idx) => (
+                                                {whoFor.slice(0, 4).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
                                                         <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
                                                     </div>
@@ -279,11 +289,11 @@ export default function CourseCard({ course, featured }: Props) {
                                     </div>
 
                                     <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>Why this course is worth it</h5>
+                                        <h5 className={styles.drawerQuestion}>{t('card.whyWorth')}</h5>
                                         <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_why.png" alt="Why worth it" width={400} height={200} className={styles.infoImage} loading="lazy" />
+                                            <Image src="/assets/info_why.webp" alt="Why worth it" width={400} height={200} className={styles.infoImage} loading="lazy" />
                                             <div className={styles.infoList}>
-                                                {course.whyWorthIt.slice(0, 4).map((item, idx) => (
+                                                {whyWorthIt.slice(0, 4).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
                                                         <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
                                                     </div>
@@ -299,14 +309,14 @@ export default function CourseCard({ course, featured }: Props) {
                                     {course.instructor.initials}
                                 </div>
                                 <div>
-                                    <div className={styles.instructorName}>Led by {course.instructor.name}</div>
+                                    <div className={styles.instructorName}>{t('card.ledBy')} {course.instructor.name}</div>
                                     <div className={styles.instructorCompany}>{course.instructor.company}</div>
                                 </div>
                             </div>
 
-                            {course.testimonialQuote && (
+                            {testimonialQuote && (
                                 <div className={styles.testimonialBlock}>
-                                    <p className={styles.testimonialQuote}>&ldquo;{course.testimonialQuote}&rdquo;</p>
+                                    <p className={styles.testimonialQuote}>&ldquo;{testimonialQuote}&rdquo;</p>
                                     <p className={styles.testimonialAuthor}>— {course.testimonialAuthor}</p>
                                 </div>
                             )}
@@ -325,7 +335,6 @@ export default function CourseCard({ course, featured }: Props) {
                                     <AlertTriangle size={18} />
                                 </button>
                                 <div className={styles.drawerButtons}>
-                                    {/* If course has syllabus details and we aren't showing them yet, let user toggle them. Otherwise link to contact. */}
                                     {course.syllabusDetails && !showSyllabusDetails ? (
                                         <button
                                             className={`btn ${styles.downloadBtn}`}
@@ -333,14 +342,13 @@ export default function CourseCard({ course, featured }: Props) {
                                                 e.preventDefault();
                                                 e.stopPropagation();
                                                 setShowSyllabusDetails(true);
-                                                // Scroll drawer to top so they see the first session
                                                 const drawerBody = e.currentTarget.closest(`.${styles.drawerContent}`)?.querySelector(`.${styles.drawerBody}`);
                                                 if (drawerBody) {
                                                     drawerBody.scrollTop = 0;
                                                 }
                                             }}
                                         >
-                                            Get Details
+                                            {t('card.getDetails')}
                                         </button>
                                     ) : (
                                         <a
@@ -349,19 +357,19 @@ export default function CourseCard({ course, featured }: Props) {
                                             rel="noopener noreferrer"
                                             className={`btn ${styles.downloadBtn}`}
                                         >
-                                            {showSyllabusDetails ? 'Ask Question' : 'Ask Question'}
+                                            {t('card.askQuestion')}
                                         </a>
                                     )}
                                     <Link href={`/courses/${course.slug}/schedule`} className={`btn btn-primary ${styles.scheduleBtn}`}>
-                                        Schedule
+                                        {t('card.schedule')}
                                     </Link>
                                 </div>
                             </div>
 
                             {showSeatInfo && (
                                 <div className={styles.urgencyTooltip}>
-                                    <strong>Limited Seats Available</strong>
-                                    <p>Select your dates in the full schedule. The final step is payment to secure your spot!</p>
+                                    <strong>{t('card.seatsLimited')}</strong>
+                                    <p>{t('card.seatsDesc')}</p>
                                 </div>
                             )}
                         </div>
