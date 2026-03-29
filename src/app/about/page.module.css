@@ -132,10 +132,37 @@
 }
 
 .ctaBox {
-    background: linear-gradient(135deg, var(--accent), #C4001A);
+    background: linear-gradient(145deg, #0f1117 0%, #1a1d27 100%);
     border-radius: var(--radius-2xl);
     padding: var(--space-16);
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.04) inset;
+}
+
+.ctaBox::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.ctaBox::after {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(220, 20, 40, 0.13) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .ctaTitle {
@@ -144,6 +171,8 @@
     font-weight: 800;
     color: white;
     margin-bottom: var(--space-8);
+    position: relative;
+    z-index: 1;
 }
 
 .ctaBtns {
@@ -151,6 +180,33 @@
     gap: var(--space-3);
     justify-content: center;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.ctaBtnGhost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 40px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.ctaBtnGhost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: white;
+    transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
