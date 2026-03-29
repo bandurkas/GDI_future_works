@@ -122,56 +122,72 @@ export default function HomePage() {
 
             {/* ── HERO ── */}
             <section className={styles.heroSection}>
-                <div className={styles.heroContainer}>
-                    <div className={styles.trustBadge}>
-                        <span className={styles.heroIcon}><Sparkles size={16} /></span>
-                        <span><Translate tKey="hero.badge" /></span>
+                <div className={styles.heroLayout}>
+                    {/* Left Illustration */}
+                    <div className={`${styles.heroIllustration} ${styles.heroIllustrationLeft} ${styles.hideMobile}`}>
+                        <img 
+                            src="/assets/notion_hero_left.png" 
+                            alt="Collaborating Talent" 
+                            className={styles.heroImage}
+                        />
                     </div>
 
-                    <h1 className={styles.heroTitle}>
-                        <Translate tKey="hero.title1" /><br />
-                        <span className={styles.highlight}><Translate tKey="hero.title2" /></span>
-                    </h1>
+                    <div className={styles.heroContainer}>
+                        <div className={styles.trustBadge}>
+                            <span className={styles.heroIcon}><Sparkles size={14} /></span>
+                            <span><Translate tKey="hero.badge" /></span>
+                        </div>
 
+                        <h1 className={styles.heroTitle}>
+                            <Translate tKey="hero.title1" /><br />
+                            <span className={styles.heroTitleAccent}><Translate tKey="hero.title2" /></span>
+                        </h1>
 
-                    <p className={styles.heroSubhead}>
-                        <Translate tKey="hero.subhead" />
-                    </p>
+                        <p className={styles.heroSubhead}>
+                            <Translate tKey="hero.subhead" />
+                        </p>
 
+                        <div className={styles.ctaGroup}>
+                            <a href="#courses" className={styles.btnPrimaryRed}>
+                                <Translate tKey="hero.cta1" />
+                            </a>
+                            <a href="#courses" className={styles.btnOutline}>
+                                <Translate tKey="hero.cta2" />
+                            </a>
+                        </div>
 
-                    <div className={styles.ctaGroup}>
-                        <a href="#courses" className={`${styles.btnPrimary} ${styles.btnLarge}`}>
-                            <Translate tKey="hero.cta1" />
-                        </a>
-                        <a
-                            href="#cohort"
-                            className={styles.btnSecondary}
-                        >
-                            <Translate tKey="hero.cta2" />
-                        </a>
+                        {/* Mobile-only centered illustration */}
+                        <div className={styles.heroIllustrationMobile}>
+                            <img
+                                src="/assets/notion_hero_left.png"
+                                alt="Collaborating Talent"
+                                className={styles.heroImage}
+                            />
+                        </div>
+
+                        <div className={styles.trustedByRow}>
+                            <p className={styles.trustedByLabel}>Our instructors work at leading tech companies</p>
+                            <div className={styles.logoGridMini}>
+                                {proofCompanies.map((c) => (
+                                    <span key={c} className={styles.miniLogoText}>{c}</span>
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className={styles.heroStats}>
-                        <div className={styles.heroStat}>
-                            <span className={styles.heroStatNum}>500+</span>
-                            <span className={styles.heroStatLabel}>Career Switchers Enrolled</span>
-                            <div className={styles.heroStatSub}>100% Money-Back Guarantee</div>
-                        </div>
-                        <div className={styles.heroStatDivider} />
-                        <div className={styles.heroStat}>
-                            <span className={styles.heroStatNum}>4 Wks</span>
-                            <span className={styles.heroStatLabel}>Program Duration</span>
-                        </div>
-                        <div className={styles.heroStatDivider} />
-                        <div className={styles.heroStat}>
-                            <span className={styles.heroStatNum}>12</span>
-                            <span className={styles.heroStatLabel}>Max Seats Per Cohort</span>
-                        </div>
+                    {/* Right Illustration */}
+                    <div className={`${styles.heroIllustration} ${styles.heroIllustrationRight} ${styles.hideMobile}`}>
+                        <img 
+                            src="/assets/notion_hero_right.png" 
+                            alt="Innovating Talent" 
+                            className={styles.heroImage}
+                        />
                     </div>
                 </div>
             </section>
 
             {/* ── PROOF BAR ── */}
+            {/* 
             <div className={styles.proofBar}>
                 <div className={styles.proofBarInner}>
                     <span className={styles.proofBarLabel}>Our instructors are from</span>
