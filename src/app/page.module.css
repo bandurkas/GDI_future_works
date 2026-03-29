@@ -374,7 +374,7 @@
 }
 
 .heroIllustrationRight {
-    margin-left: -100px;
+    margin-left: -60px;
 }
 
 @keyframes float {
@@ -395,7 +395,7 @@
         max-width: 280px;
     }
     .heroIllustrationLeft { margin-right: -20px; }
-    .heroIllustrationRight { margin-left: -60px; }
+    .heroIllustrationRight { margin-left: -20px; }
 }
 
 @media (max-width: 1024px) {
