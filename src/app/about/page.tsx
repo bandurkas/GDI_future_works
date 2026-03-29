@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
+import { Translate } from '@/components/LanguageContext';
 import { 
     Briefcase, 
     Layout, 
@@ -16,17 +17,17 @@ export const metadata: Metadata = {
 };
 
 const pillars = [
-    { icon: <Briefcase size={24} />, title: 'Industry Practitioners Only', desc: 'Every instructor is an active tech professional — not a career academic. They bring the tools, workflows, and insider knowledge you need on day one.' },
-    { icon: <Layout size={24} />, title: 'Portfolio-Ready Projects', desc: 'Every course ends with a real project you can show employers immediately. No theoretical assignments. Just work that proves you can do the job.' },
-    { icon: <Zap size={24} />, title: 'Fully Live & Interactive', desc: 'Ask questions in real time. Get feedback on your work. Learn at the pace of your curiosity — not a pre-recorded video.' },
-    { icon: <Users size={24} />, title: 'Lifetime Community Access', desc: 'Join a private network of driven professionals. Share job leads, get career advice, and stay connected to the people who can open doors.' },
+    { icon: <Briefcase size={24} />, titleKey: 'about.p1.title', descKey: 'about.p1.desc' },
+    { icon: <Layout size={24} />, titleKey: 'about.p2.title', descKey: 'about.p2.desc' },
+    { icon: <Zap size={24} />, titleKey: 'about.p3.title', descKey: 'about.p3.desc' },
+    { icon: <Users size={24} />, titleKey: 'about.p4.title', descKey: 'about.p4.desc' },
 ];
 
 const stats = [
-    ['500+', 'Professionals trained'],
-    ['⭐ 4.9/5', 'Student satisfaction'],
-    ['4', 'Expert-led courses'],
-    ['2', 'Countries served'],
+    ['500+', 'about.stat1.lbl'],
+    ['\u2b50 4.9/5', 'about.stat2.lbl'],
+    ['4', 'about.stat3.lbl'],
+    ['2', 'about.stat4.lbl'],
 ];
 
 export default function AboutPage() {
@@ -35,17 +36,20 @@ export default function AboutPage() {
 
             {/* HERO */}
             <section className={styles.hero}>
-                <div className="container">
+                <div className=container>
                     <div className={styles.heroLayout}>
                         <div className={styles.heroContent}>
-                            <p className="section-label">About GDI FutureWorks</p>
-                            <h1 className="text-h1">Built by industry leaders.<br />Designed for real careers.</h1>
-                            <p className="text-body-lg" style={{ maxWidth: 560 }}>
-                                GDI FutureWorks was founded by professionals who saw the same problem everywhere: talented people being left behind because education couldn&apos;t keep up with the speed of tech. We built the platform we wish had existed when we were starting out.
+                            <p className=section-label><Translate tKey=about.label /></p>
+                            <h1 className=text-h1>
+                                <Translate tKey=about.h1.1 /><br />
+                                <Translate tKey=about.h1.2 />
+                            </h1>
+                            <p className=text-body-lg style={{ maxWidth: 560 }}>
+                                <Translate tKey=about.intro />
                             </p>
                         </div>
                         <div className={styles.heroVisual}>
-                            <Image src="/assets/info_about.png" alt="About GDI FutureWorks" width={500} height={500} />
+                            <Image src=/assets/info_about.png alt=About GDI FutureWorks width={500} height={500} />
                         </div>
                     </div>
                 </div>
@@ -53,12 +57,12 @@ export default function AboutPage() {
 
             {/* STATS */}
             <section className={styles.statsBar}>
-                <div className="container">
+                <div className=container>
                     <div className={styles.statsGrid}>
-                        {stats.map(([num, lbl]) => (
-                            <div key={lbl} className={styles.stat}>
+                        {stats.map(([num, lblKey]) => (
+                            <div key={lblKey} className={styles.stat}>
                                 <div className={styles.statNum}>{num}</div>
-                                <div className={styles.statLbl}>{lbl}</div>
+                                <div className={styles.statLbl}><Translate tKey={lblKey} /></div>
                             </div>
                         ))}
                     </div>
@@ -66,75 +70,38 @@ export default function AboutPage() {
             </section>
 
             {/* MISSION */}
-            <section className="section">
-                <div className="container">
+            <section className=section>
+                <div className=container>
                     <div className={styles.missionGrid}>
                         <div>
-                            <p className="section-label">Our Mission</p>
-                            <h2 className="text-h2">To close the gap between education and the real world.</h2>
+                            <p className=section-label><Translate tKey=about.mission.label /></p>
+                            <h2 className=text-h2><Translate tKey=about.mission.h2 /></h2>
                         </div>
                         <div>
                             <p className={styles.missionText}>
-                                Most tech courses are either too theoretical, too expensive, or too slow. By the time you graduate, the industry has already moved on. GDI FutureWorks was built to solve all three: real skills, real instructors, real outcomes — in the shortest time possible.
+                                <Translate tKey=about.mission.p1 />
                             </p>
                             <p className={styles.missionText} style={{ marginTop: 'var(--space-5)' }}>
-                                We serve professionals in Malaysia and Indonesia who are serious about their careers and need training that delivers measurable results — not certificates that collect dust.
+                                <Translate tKey=about.mission.p2 />
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
-
-            {/* MEET THE FOUNDERS */}
-            {/* 
-            <section className={styles.foundersSection}>
-                <div className="container">
-                    <div className={styles.sectionHead}>
-                        <p className="section-label">Meet the Founders</p>
-                        <h2 className="text-h2">40+ years of combined expertise,<br />delivered directly to you.</h2>
-                    </div>
-                    <div className={styles.foundersGrid}>
-                        <div className={styles.founderCard}>
-                            <img src="/team/feonna.png" alt="Feonna Watford" className={styles.founderImg} />
-                            <div className={styles.founderInfo}>
-                                <h3 className={styles.founderName}>Feonna Watford</h3>
-                                <p className={styles.founderRole}>Co-Founder · Operations & Digital Transformation</p>
-                                <p className={styles.founderBio}>
-                                    With over 20 years of corporate leadership across digital transformation and operations, Feonna designs the systems that ensure every training program at GDI FutureWorks delivers measurable, real-world career impact. She has led large-scale digital initiatives across Southeast Asia and brings that enterprise-level thinking to every curriculum she builds.
-                                </p>
-                            </div>
-                        </div>
-                        <div className={styles.founderCard}>
-                            <img src="/team/sergei.png" alt="Sergei Bandurka" className={styles.founderImg} />
-                            <div className={styles.founderInfo}>
-                                <h3 className={styles.founderName}>Sergei Bandurka</h3>
-                                <p className={styles.founderRole}>Co-Founder · Technology & Strategy</p>
-                                <p className={styles.founderBio}>
-                                    A veteran in corporate strategy and tech execution, Sergei brings two decades of experience designing programs that empower organizations and individuals to lead their industries. His hands-on approach to AI, data, and engineering education means students are always learning what the market actually needs — not what textbooks say it needs.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <p className={styles.founderCombined}>
-                        Together, Feonna and Sergei are actively building and refining GDI FutureWorks — bringing Fortune 500-level strategy and real-world execution experience directly to professionals across Malaysia and Indonesia.
-                    </p>
-                </div>
-            </section>
-            */}
 
             {/* PILLARS */}
             <section className={`section ${styles.pillarsSection}`}>
-                <div className="container">
+                <div className=container>
                     <div className={styles.sectionHead}>
-                        <p className="section-label">What Makes Us Different</p>
-                        <h2 className="text-h2">Built different. By design.</h2>
+                        <p className=section-label><Translate tKey=about.diff.label /></p>
+                        <h2 className=text-h2><Translate tKey=about.diff.h2 /></h2>
                     </div>
-                    <div className="grid-2">
+                    <div className=grid-2>
                         {pillars.map((p, i) => (
                             <div key={i} className={`card ${styles.pillarCard}`}>
                                 <div className={styles.pillarIcon}>{p.icon}</div>
-                                <h3 className={styles.pillarTitle}>{p.title}</h3>
-                                <p className={styles.pillarDesc}>{p.desc}</p>
+                                <h3 className={styles.pillarTitle}><Translate tKey={p.titleKey} /></h3>
+                                <p className={styles.pillarDesc}><Translate tKey={p.descKey} /></p>
                             </div>
                         ))}
                     </div>
@@ -143,12 +110,16 @@ export default function AboutPage() {
 
             {/* CTA */}
             <section className={styles.ctaSection}>
-                <div className="container">
+                <div className=container>
                     <div className={styles.ctaBox}>
-                        <h2 className={styles.ctaTitle}>Ready to accelerate your tech career?</h2>
+                        <h2 className={styles.ctaTitle}><Translate tKey=about.cta.h2 /></h2>
                         <div className={styles.ctaBtns}>
-                            <Link href="/#courses" className="btn btn-primary btn-lg">Browse Courses <ChevronRight size={20} /></Link>
-                            <Link href="/contact" className="btn btn-secondary btn-lg">Consult Advisor</Link>
+                            <Link href=/#courses className=btn btn-primary btn-lg>
+                                <Translate tKey=about.cta.browse /> <ChevronRight size={20} />
+                            </Link>
+                            <Link href=/contact className=btn btn-secondary btn-lg>
+                                <Translate tKey=about.cta.consult />
+                            </Link>
                         </div>
                     </div>
                 </div>

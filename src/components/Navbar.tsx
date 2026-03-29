@@ -72,7 +72,7 @@ export default function Navbar() {
         return <header className={styles.header}><div className={styles.container}></div></header>;
     }
 
-    const logoSrc = theme === 'dark' ? '/GDI_FutureWorks_Logo_Dark.png' : '/logo-final.svg';
+    const logoSrc = theme === 'dark' ? '/GDI_FutureWorks_Logo_Dark.webp' : '/logo-final.webp';
 
     return (
         <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>

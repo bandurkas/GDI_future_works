@@ -9,15 +9,15 @@ interface ThemeLogoProps {
 }
 
 /**
- * A theme-aware Logo component that switches between /logo-final.svg (light)
- * and /logo-dark.svg (dark) based on the current theme or a forced override.
+ * A theme-aware Logo component that switches between /logo-final.webp (light)
+ * and /logo-dark.webp (dark) based on the current theme or a forced override.
  */
 export default function ThemeLogo({ className, style, alt = "GDI FutureWorks Logo", forceDark = false }: ThemeLogoProps) {
     const { theme } = useTheme();
     
     // Choose logo based on forced preference or current theme
     const isDark = forceDark || theme === 'dark';
-    const logoSrc = isDark ? '/GDI_FutureWorks_Logo_Dark.png' : '/logo-final.svg';
+    const logoSrc = isDark ? '/GDI_FutureWorks_Logo_Dark.webp' : '/logo-final.webp';
     
     return (
         <img 
