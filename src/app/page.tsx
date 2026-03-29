@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Translate } from '@/components/LanguageContext';
 import CourseCardLazy from '@/components/CourseCardLazy';
 import PathCard from '@/components/PathCard';
+import PartnershipSection from '@/components/PartnershipSection';
 import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
 import { Sparkles, ArrowRight, Calendar } from 'lucide-react';
@@ -221,8 +222,8 @@ export default function HomePage() {
                         {courses.map((course) => <CourseCard key={course.id} course={course} />)}
                     </div>
                     <div className={styles.coursesFooter}>
-                        <p>Not sure which course is right for you?</p>
-                        <Link href="/contact" className={styles.advisorLink}>Consult Advisor <ArrowRight size={16} /></Link>
+                        <p><Translate tKey="courses.notSure" /></p>
+                        <Link href="/contact" className={styles.advisorLink}><Translate tKey="courses.advisor" /> <ArrowRight size={16} /></Link>
                     </div>
                 </div>
             </section>
@@ -298,56 +299,7 @@ export default function HomePage() {
             */}
 
             {/* ── SMART PARTNERSHIP ── */}
-            <section className={styles.greatEnglishSection}>
-                <div className="container">
-                    <div className={styles.greatEnglishCard}>
-                        <div className={styles.geBadge}>SMART PARTNERSHIP</div>
-                        <h2 className={styles.geTitle}>International TEFL Training Institute (iTTi)</h2>
-                        <p className={styles.geDesc}>
-                            Partnered with iTTi, a globally recognized teacher training institute dedicated to developing English proficiency and professional educators worldwide.
-                        </p>
-                        
-                        <div className={styles.gePathHeader}>
-                            <h3 className={styles.gePathTitle}>Choose Your Path</h3>
-
-                            <div className={styles.geGrid}>
-                                <PathCard 
-                                    title="Learn English"
-                                    description="Build strong English communication skills for academic success, IELTS, and global career opportunities."
-                                    list={[
-                                        "Academic Success",
-                                        "IELTS Preparation",
-                                        "Career Advancement",
-                                        "Global Opportunities"
-                                    ]}
-                                    ctaText="Start Learning →"
-                                    ctaHref="https://wa.me/628211704707"
-                                    variant="secondary"
-                                />
-
-                                <PathCard 
-                                    title="Teach English"
-                                    description="Passionate about Education? Earn an internationally recognized certification and learn the skills to teach English anywhere in the world."
-                                    list={[
-                                        "Internationally Recognized",
-                                        "Global Educator Network",
-                                        "Career Support"
-                                    ]}
-                                    ctaText="Get Certified →"
-                                    ctaHref="https://wa.me/628211704707"
-                                    variant="primary"
-                                />
-                            </div>
-                            
-                            <div className={styles.geStatusWrapper}>
-                                <span className={styles.geStatusBadge}>
-                                    Pre-enrolment starts now.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <PartnershipSection />
 
 
             {/* ── COHORT URGENCY ── */}
@@ -460,7 +412,7 @@ export default function HomePage() {
                             <Translate tKey="cta.btn" />
                         </a>
                         <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.ctaWaBtn}>
-                            💬 Consult Advisor
+                            <Translate tKey="cta.consultAdvisor" />
                         </a>
                     </div>
                     <p className={styles.guarantee}>

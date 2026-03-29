@@ -145,6 +145,32 @@ const translations: Record<Language, Record<string, string>> = {
         'courses.h2': 'Skills for the Future of Work',
         'courses.sub': 'Choose your course to see schedules & secure your spot',
         'courses.sub.link': 'Consult Advisor',
+        // Courses footer advisor
+        'courses.notSure': 'Not sure which course is right for you?',
+        'courses.advisor': 'Consult Advisor',
+
+        // Smart Partnership block
+        'partner.badge': 'SMART PARTNERSHIP',
+        'partner.title': 'International TEFL Training Institute (iTTi)',
+        'partner.desc': 'Partnered with iTTi, a globally recognized teacher training institute dedicated to developing English proficiency and professional educators worldwide.',
+        'partner.choosePath': 'Choose Your Path',
+        'partner.learn.title': 'Learn English',
+        'partner.learn.desc': 'Build strong English communication skills for academic success, IELTS, and global career opportunities.',
+        'partner.learn.i1': 'Academic Success',
+        'partner.learn.i2': 'IELTS Preparation',
+        'partner.learn.i3': 'Career Advancement',
+        'partner.learn.i4': 'Global Opportunities',
+        'partner.learn.cta': 'Start Learning →',
+        'partner.teach.title': 'Teach English',
+        'partner.teach.desc': 'Passionate about Education? Earn an internationally recognized certification and learn the skills to teach English anywhere in the world.',
+        'partner.teach.i1': 'Internationally Recognized',
+        'partner.teach.i2': 'Global Educator Network',
+        'partner.teach.i3': 'Career Support',
+        'partner.teach.cta': 'Get Certified →',
+        'partner.preEnrol': 'Pre-enrolment starts now.',
+
+        // CTA section bottom
+        'cta.consultAdvisor': '💬 Consult Advisor',
         // Course card drawer
         'card.trustedBy': 'Trusted by',
         'card.students': 'students',
@@ -639,6 +665,32 @@ const translations: Record<Language, Record<string, string>> = {
         'courses.h2': 'Keahlian untuk Masa Depan Pekerjaan',
         'courses.sub': 'Pilih kursusmu di bawah untuk melihat jadwal dan daftar',
         'courses.sub.link': 'Bicara dengan Konsultan',
+        // Courses footer advisor
+        'courses.notSure': 'Tidak yakin kursus mana yang cocok untukmu?',
+        'courses.advisor': 'Konsultasi Sekarang',
+
+        // Smart Partnership block
+        'partner.badge': 'KEMITRAAN STRATEGIS',
+        'partner.title': 'International TEFL Training Institute (iTTi)',
+        'partner.desc': 'Bermitra dengan iTTi, lembaga pelatihan guru yang diakui secara global dan berdedikasi dalam mengembangkan kemampuan bahasa Inggris dan pendidik profesional di seluruh dunia.',
+        'partner.choosePath': 'Pilih Jalurmu',
+        'partner.learn.title': 'Belajar Bahasa Inggris',
+        'partner.learn.desc': 'Bangun kemampuan komunikasi bahasa Inggris yang kuat untuk kesuksesan akademik, IELTS, dan peluang karier global.',
+        'partner.learn.i1': 'Sukses Akademik',
+        'partner.learn.i2': 'Persiapan IELTS',
+        'partner.learn.i3': 'Kemajuan Karier',
+        'partner.learn.i4': 'Peluang Global',
+        'partner.learn.cta': 'Mulai Belajar →',
+        'partner.teach.title': 'Mengajar Bahasa Inggris',
+        'partner.teach.desc': 'Bersemangat tentang Pendidikan? Raih sertifikasi yang diakui internasional dan kuasai keterampilan mengajar bahasa Inggris di mana saja di seluruh dunia.',
+        'partner.teach.i1': 'Diakui Internasional',
+        'partner.teach.i2': 'Jaringan Pendidik Global',
+        'partner.teach.i3': 'Dukungan Karier',
+        'partner.teach.cta': 'Dapatkan Sertifikat →',
+        'partner.preEnrol': 'Pra-pendaftaran dibuka sekarang.',
+
+        // CTA section bottom
+        'cta.consultAdvisor': '💬 Konsultasi Sekarang',
         // Course card drawer
         'card.trustedBy': 'Dipercaya oleh',
         'card.students': 'pelajar',
