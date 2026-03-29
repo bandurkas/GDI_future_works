@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
@@ -17,6 +18,10 @@ import { useLanguage, Translate } from '@/components/LanguageContext';
 
 export default function CommunityPage() {
     const { t } = useLanguage();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
+    if (!mounted) return null;
 
     const perks = [
         {
@@ -91,8 +96,8 @@ export default function CommunityPage() {
                         </span>
 
                         <h1 className={styles.heroTitle}>
-                            Your career <br />
-                            <span className={styles.heroAccent}>network starts here.</span>
+                            {t('comm.hero.title1')} <br />
+                            <span className={styles.heroAccent}>{t('comm.hero.title2')}</span>
                         </h1>
 
                         <p className={styles.heroSubtitle}>

@@ -1,10 +1,12 @@
+'use client';
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import Link from "next/link";
 import styles from "./Auth.module.css";
-import Image from "next/image";
 import ThemeLogo from "@/components/ThemeLogo";
+import { useLanguage } from "@/components/LanguageContext";
 
 export default function LoginPage() {
+    const { t } = useLanguage();
     return (
         <div className={styles.authContainer}>
             <div className={styles.authWrapper}>
@@ -14,8 +16,8 @@ export default function LoginPage() {
                 </Link>
 
                 <div className={styles.card}>
-                    <h2 className={styles.title}>Log in to your account</h2>
-                    <p className={styles.subtitle}>Welcome back to GDI FutureWorks</p>
+                    <h2 className={styles.title}>{t('auth.login.title')}</h2>
+                    <p className={styles.subtitle}>{t('auth.login.sub')}</p>
                     
                     <div className={styles.buttonWrapper}>
                         <GoogleSignInButton />
@@ -23,14 +25,14 @@ export default function LoginPage() {
 
                     <div className={styles.divider}>
                         <div className={styles.dividerLine} />
-                        <span className={styles.dividerText}>or</span>
+                        <span className={styles.dividerText}>{t('auth.login.or')}</span>
                         <div className={styles.dividerLine} />
                     </div>
 
                     <p className={styles.footerText}>
-                        Don&apos;t have an account?{" "}
+                        {t('auth.login.noAccount')}{" "}
                         <Link href="/signup" className={styles.link}>
-                            Sign up here
+                            {t('auth.login.signup')}
                         </Link>
                     </p>
                 </div>

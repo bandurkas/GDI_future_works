@@ -13,7 +13,7 @@ interface LanguageContextType {
     t: (key: string) => string;
 }
 
-const translations: Record<Language, Record<string, string>> = {
+export const translations: Record<Language, Record<string, string>> = {
     en: {
         // NAV
         'nav.courses': 'Courses',
@@ -191,6 +191,8 @@ const translations: Record<Language, Record<string, string>> = {
         // ── COMMUNITY PAGE ──
         'comm.hero.label': 'Community',
         'comm.hero.title': 'Your career network starts here.',
+        'comm.hero.title1': 'Your career ',
+        'comm.hero.title2': 'network starts here.',
         'comm.hero.sub': 'Every GDI FutureWorks student joins a career-focused community where learning continues long after the last session ends — and where real opportunities are shared every single day.',
         'comm.hero.cta': 'Join via a Course →',
         'comm.perks.label': 'What You Get',
@@ -396,7 +398,176 @@ const translations: Record<Language, Record<string, string>> = {
         'apply.success.text': 'Thank you for applying to join the GDI FutureWorks tutor network. Our team will review your profile, video, and curriculum outline.',
         'apply.success.meta': 'We typically respond within 3–5 business days',
         'apply.success.home': 'Return to Homepage',
+
+        // ── NAVBAR MOBILE MENU ──
+        'nav.forTutors': 'For Tutors',
+        'nav.login': 'Log in',
+        'nav.joinCta': 'Join GDI FutureWorks',
+        'nav.home': 'Home',
+        'nav.schedule': 'Live Schedule',
+        'nav.aboutUs': 'About Us',
+        'nav.teachWithUs': 'Teach with Us',
+        'nav.profileSettings': 'Profile Settings',
+        'nav.learningDashboard': 'Learning Dashboard',
+        'nav.dashboard': 'Dashboard',
+        'nav.chatUs': 'Chat us',
+        'nav.menu.preferences': 'Preferences',
+        'nav.menu.currency': 'Currency',
+        'nav.menu.language': 'Language',
+        'nav.menu.appearance': 'Appearance',
+        'nav.menu.explore': 'Explore',
+        'nav.menu.company': 'Company',
+        'nav.menu.account': 'Account',
+
+        // ── DASHBOARD ──
+        'dash.welcome': 'Welcome back,',
+        'dash.sub': "Here's what's happening with your learning",
+        'dash.adminPanel': 'Admin Panel',
+        'dash.popularCourses': 'Popular Courses',
+        'dash.seatsLeft': 'seats left',
+        'dash.full': 'Full',
+        'dash.viewCourse': 'View Course →',
+        'dash.nextSpots': 'Next Available Spots',
+        'dash.noSessions': 'No upcoming sessions available',
+        'dash.left': 'left',
+        'dash.book': 'Book',
+        'dash.myCourses': 'My Courses',
+        'dash.noEnrolled': "You haven't enrolled in any courses yet",
+        'dash.status.paid': 'Paid',
+        'dash.status.pending': 'Pending',
+        'dash.status.failed': 'Failed',
+
+        // ── LEARNING HUB ONBOARDING ──
+        'onboard.step': 'Step',
+        'onboard.of': 'of',
+        'onboard.stepDesc': 'Choose your interest',
+        'onboard.welcome': 'Welcome,',
+        'onboard.subtitle': "Let's personalize your learning journey.",
+        'onboard.seeMyCourses': 'See My Courses',
+        'onboard.continue': 'Continue',
+        'onboard.skip': 'Skip for now →',
+        'onboard.advisor': 'Talk to a Learning Advisor',
+        'onboard.advisorHours': 'Mon–Fri 9AM–6PM',
+        'onboard.cat.data.title': 'Data Analytics',
+        'onboard.cat.data.desc': 'Master Excel, SQL, and Python to make data-driven decisions.',
+        'onboard.cat.programming.title': 'Programming',
+        'onboard.cat.programming.desc': 'Learn modern web development and software engineering.',
+        'onboard.cat.ai.title': 'AI & Machine Learning',
+        'onboard.cat.ai.desc': 'Build intelligent systems and learn prompt engineering.',
+        'onboard.cat.digital.title': 'Digital Skills',
+        'onboard.cat.digital.desc': 'Enhance your career with digital marketing and design.',
+
+        // ── FOOTER ──
+        'footer.tagline': 'Learn IT skills that get you hired. Live courses led by industry professionals.',
+        'footer.badge1': 'Taught by Active Tech Leads & Industry Experts 🇮🇩 🇲🇾',
+        'footer.badge2': 'Special Partnership with iTTi (Great English)',
+        'footer.group.courses': 'Courses',
+        'footer.group.company': 'Company',
+        'footer.group.support': 'Support',
+        'footer.link.about': 'About Us',
+        'footer.link.community': 'Community',
+        'footer.link.faq': 'FAQ',
+        'footer.link.contact': 'Contact',
+        'footer.link.chat': 'Chat on WhatsApp',
+        'footer.rights': 'All rights reserved.',
+        'footer.privacy': 'Privacy',
+        'footer.terms': 'Terms',
+
+        // ── AUTH ──
+        'auth.login.title': 'Log in to your account',
+        'auth.login.sub': 'Welcome back to GDI FutureWorks',
+        'auth.login.or': 'or',
+        'auth.login.noAccount': "Don't have an account?",
+        'auth.login.signup': 'Sign up here',
+
+        // ── PROFILE ──
+        'profile.title': 'Your Profile',
+        'profile.myCourses': 'My Courses',
+        'profile.signOut': 'Sign Out',
+
+        // ── ABOUT ──
+        'about.label': 'About GDI FutureWorks',
+        'about.h1': 'Built by industry leaders. Designed for real careers.',
+        'about.intro': "GDI FutureWorks was founded by professionals who saw the same problem everywhere: talented people being left behind because education couldn't keep up with the speed of tech. We built the platform we wish had existed when we were starting out.",
+        'about.stats.trained': 'Professionals trained',
+        'about.stats.satisfaction': 'Student satisfaction',
+        'about.stats.courses': 'Expert-led courses',
+        'about.stats.countries': 'Countries served',
+        'about.mission.label': 'Our Mission',
+        'about.mission.h2': 'To close the gap between education and the real world.',
+        'about.mission.p1': "Most tech courses are either too theoretical, too expensive, or too slow. By the time you graduate, the industry has already moved on. GDI FutureWorks was built to solve all three: real skills, real instructors, real outcomes — in the shortest time possible.",
+        'about.mission.p2': 'We serve professionals in Malaysia and Indonesia who are serious about their careers and need training that delivers measurable results — not certificates that collect dust.',
+        'about.pillars.label': 'What Makes Us Different',
+        'about.pillars.h2': 'Built different. By design.',
+        'about.pillar1.title': 'Industry Practitioners Only',
+        'about.pillar1.desc': "Every instructor is an active tech professional — not a career academic. They bring the tools, workflows, and insider knowledge you need on day one.",
+        'about.pillar2.title': 'Portfolio-Ready Projects',
+        'about.pillar2.desc': 'Every course ends with a real project you can show employers immediately. No theoretical assignments. Just work that proves you can do the job.',
+        'about.pillar3.title': 'Fully Live & Interactive',
+        'about.pillar3.desc': 'Ask questions in real time. Get feedback on your work. Learn at the pace of your curiosity — not a pre-recorded video.',
+        'about.pillar4.title': 'Lifetime Community Access',
+        'about.pillar4.desc': 'Join a private network of driven professionals. Share job leads, get career advice, and stay connected to the people who can open doors.',
+        'about.cta.h2': 'Ready to accelerate your tech career?',
+        'about.cta.browse': 'Browse Courses',
+        'about.cta.consult': 'Consult Advisor',
+
+        // ── CONTACT ──
+        'contact.label': 'Connect with GDI',
+        'contact.h1': 'Connect with the Future of Work.',
+        'contact.subtitle': 'Reach out for enrollment support, corporate partnerships, or technical guidance. We are faster than you think.',
+        'contact.whatsapp.priority': 'Highest Priority',
+        'contact.whatsapp.title': 'WhatsApp',
+        'contact.whatsapp.desc': 'Direct access to our learning advisors. Ideal for quick questions about course details, enrollment, or technical help.',
+        'contact.whatsapp.btn': 'Start Chat',
+        'contact.email.badge': 'Response within 24h',
+        'contact.email.title': 'Email Support',
+        'contact.email.desc': 'For institutional partnerships, corporate inquiries, and formal support requests. We review all mail daily.',
+        'contact.email.btn': 'Send Email',
+        'contact.faq.label': 'Solutions Center',
+        'contact.faq.h2': 'Help & FAQ',
+        'contact.faq.q1': 'Can I start with no experience?',
+        'contact.faq.a1': 'Yes. Most courses are beginner-friendly and designed for fast learning.',
+        'contact.faq.q2': 'How fast can I learn?',
+        'contact.faq.a2': 'Some skills can be learned and applied in 1–2 weeks, such as: Canva + AI, Digital marketing basics, Freelance skills, and AI tools.',
+        'contact.faq.q3': 'Is it online or offline?',
+        'contact.faq.a3': 'Fully online. Learn from anywhere, anytime.',
+        'contact.faq.q4': 'What skills can I learn?',
+        'contact.faq.a4': 'You can master Canva + AI, Digital Marketing, AI Tools, No-code tools, Freelance skills, IT basics, and Business digital skills.',
+
+        // ── FAQ PAGE ──
+        'faq.page.label': 'FAQ',
+        'faq.page.h1': 'Frequently Asked Questions',
+        'faq.page.sub': 'Everything you need to know about GDI FutureWorks courses and enrollment.',
+        'faq.page.still': 'Still have questions?',
+        'faq.page.chat': '💬 Chat on WhatsApp',
+        'faq.page.q1': 'How are classes conducted?',
+        'faq.page.a1': 'All classes are live online video sessions with real-time interaction. You join via a link sent to your WhatsApp.',
+        'faq.page.q2': 'Do I need prior experience?',
+        'faq.page.a2': 'No. Our courses start from the absolute fundamentals — no prior coding or tech experience required.',
+        'faq.page.q3': 'Will I receive a certificate?',
+        'faq.page.a3': 'Yes. Upon completing all sessions and the portfolio project, you receive a verifiable certificate of completion.',
+        'faq.page.q4': 'Can I ask questions during class?',
+        'faq.page.a4': 'Absolutely. Sessions are fully interactive Q&A throughout. Ask anything — the instructor is there for you.',
+        'faq.page.q5': 'Will I build a real project?',
+        'faq.page.a5': 'Yes. Every course includes a portfolio-ready project based on a real business case you can show employers.',
+        'faq.page.q6': "What if I can't attend a session?",
+        'faq.page.a6': "Message us on WhatsApp and we'll help you reschedule to another date.",
+        'faq.page.q7': 'How do I access the course?',
+        'faq.page.a7': "Within minutes of payment, you'll receive a WhatsApp message with your session link and all course info.",
+        'faq.page.q8': 'Is this available outside Indonesia?',
+        'faq.page.a8': 'Yes — students from Malaysia, Singapore, Philippines, and Australia have all joined. Classes are in English.',
+
+        // ── SCHEDULE ──
+        'schedule.label': 'Schedule',
+        'schedule.h1': 'Pick a course. Choose your date.',
+        'schedule.sub': 'All sessions are live, online, and run by active industry experts. Select a course below to see available dates and reserve your spot.',
+        'schedule.datesAvailable': 'Dates available',
+        'schedule.custom.h': 'Need a custom schedule?',
+        'schedule.custom.p': "We open new cohorts based on demand. Chat with us and we'll find a time that works.",
+        'schedule.custom.btn': 'Chat on WhatsApp →',
+
     },
+
 
     id: {
         // NAV
@@ -577,6 +748,8 @@ const translations: Record<Language, Record<string, string>> = {
         // ── COMMUNITY PAGE (ID) ──
         'comm.hero.label': 'Komunitas',
         'comm.hero.title': 'Jaringan karier Anda dimulai di sini.',
+        'comm.hero.title1': 'Jaringan kariermu ',
+        'comm.hero.title2': 'dimulai di sini.',
         'comm.hero.sub': 'Setiap siswa GDI FutureWorks bergabung dalam komunitas yang fokus pada karier, di mana pembelajaran berlanjut jauh setelah sesi terakhir berakhir — dan di mana peluang nyata dibagikan setiap hari.',
         'comm.hero.cta': 'Bergabung melalui Kursus →',
         'comm.perks.label': 'Apa yang Anda Dapatkan',
@@ -782,6 +955,174 @@ const translations: Record<Language, Record<string, string>> = {
         'apply.success.text': 'Terima kasih telah mendaftar ke jaringan tutor GDI FutureWorks. Tim kami akan meninjau profil, video, dan outline kurikulummu.',
         'apply.success.meta': 'Kami biasanya merespons dalam 3–5 hari kerja',
         'apply.success.home': 'Kembali ke Beranda',
+
+        // ── NAVBAR MOBILE MENU ──
+        'nav.forTutors': 'Untuk Tutor',
+        'nav.login': 'Masuk',
+        'nav.joinCta': 'Bergabung dengan GDI FutureWorks',
+        'nav.home': 'Beranda',
+        'nav.schedule': 'Jadwal Live',
+        'nav.aboutUs': 'Tentang Kami',
+        'nav.teachWithUs': 'Mengajar Bersama Kami',
+        'nav.profileSettings': 'Pengaturan Profil',
+        'nav.learningDashboard': 'Dashboard Belajar',
+        'nav.dashboard': 'Dashboard',
+        'nav.chatUs': 'Chat kami',
+        'nav.menu.preferences': 'Preferensi',
+        'nav.menu.currency': 'Mata Uang',
+        'nav.menu.language': 'Bahasa',
+        'nav.menu.appearance': 'Tampilan',
+        'nav.menu.explore': 'Jelajahi',
+        'nav.menu.company': 'Perusahaan',
+        'nav.menu.account': 'Akun',
+
+        // ── DASHBOARD ──
+        'dash.welcome': 'Selamat datang kembali,',
+        'dash.sub': 'Berikut perkembangan belajarmu',
+        'dash.adminPanel': 'Panel Admin',
+        'dash.popularCourses': 'Kursus Populer',
+        'dash.seatsLeft': 'kursi tersisa',
+        'dash.full': 'Penuh',
+        'dash.viewCourse': 'Lihat Kursus →',
+        'dash.nextSpots': 'Jadwal Tersedia Berikutnya',
+        'dash.noSessions': 'Tidak ada sesi mendatang',
+        'dash.left': 'tersisa',
+        'dash.book': 'Pesan',
+        'dash.myCourses': 'Kursus Saya',
+        'dash.noEnrolled': 'Kamu belum mendaftar kursus apapun',
+        'dash.status.paid': 'Lunas',
+        'dash.status.pending': 'Menunggu',
+        'dash.status.failed': 'Gagal',
+
+        // ── LEARNING HUB ONBOARDING ──
+        'onboard.step': 'Langkah',
+        'onboard.of': 'dari',
+        'onboard.stepDesc': 'Pilih minatmu',
+        'onboard.welcome': 'Selamat datang,',
+        'onboard.subtitle': 'Mari personalisasi perjalanan belajarmu.',
+        'onboard.seeMyCourses': 'Lihat Kursus Saya',
+        'onboard.continue': 'Lanjutkan',
+        'onboard.skip': 'Lewati dulu →',
+        'onboard.advisor': 'Bicara dengan Konsultan Belajar',
+        'onboard.advisorHours': 'Sen–Jum 9AM–6PM',
+        'onboard.cat.data.title': 'Analisis Data',
+        'onboard.cat.data.desc': 'Kuasai Excel, SQL, dan Python untuk membuat keputusan berbasis data.',
+        'onboard.cat.programming.title': 'Pemrograman',
+        'onboard.cat.programming.desc': 'Pelajari pengembangan web modern dan rekayasa perangkat lunak.',
+        'onboard.cat.ai.title': 'AI & Machine Learning',
+        'onboard.cat.ai.desc': 'Bangun sistem cerdas dan pelajari prompt engineering.',
+        'onboard.cat.digital.title': 'Keterampilan Digital',
+        'onboard.cat.digital.desc': 'Tingkatkan karier dengan pemasaran digital dan desain.',
+
+        // ── FOOTER ──
+        'footer.tagline': 'Pelajari skill IT yang membuatmu diterima kerja. Kursus langsung oleh para profesional industri.',
+        'footer.badge1': 'Diajarkan oleh Tech Lead Aktif & Pakar Industri 🇮🇩 🇲🇾',
+        'footer.badge2': 'Kemitraan Khusus dengan iTTi (Great English)',
+        'footer.group.courses': 'Kursus',
+        'footer.group.company': 'Perusahaan',
+        'footer.group.support': 'Dukungan',
+        'footer.link.about': 'Tentang Kami',
+        'footer.link.community': 'Komunitas',
+        'footer.link.faq': 'FAQ',
+        'footer.link.contact': 'Kontak',
+        'footer.link.chat': 'Chat di WhatsApp',
+        'footer.rights': 'Hak cipta dilindungi.',
+        'footer.privacy': 'Privasi',
+        'footer.terms': 'Ketentuan',
+
+        // ── AUTH ──
+        'auth.login.title': 'Masuk ke akunmu',
+        'auth.login.sub': 'Selamat datang kembali di GDI FutureWorks',
+        'auth.login.or': 'atau',
+        'auth.login.noAccount': 'Belum punya akun?',
+        'auth.login.signup': 'Daftar di sini',
+
+        // ── PROFILE ──
+        'profile.title': 'Profil Kamu',
+        'profile.myCourses': 'Kursus Saya',
+        'profile.signOut': 'Keluar',
+
+        // ── ABOUT ──
+        'about.label': 'Tentang GDI FutureWorks',
+        'about.h1': 'Dibangun oleh pemimpin industri. Dirancang untuk karier nyata.',
+        'about.intro': 'GDI FutureWorks didirikan oleh para profesional yang melihat masalah yang sama di mana-mana: orang berbakat yang tertinggal karena pendidikan tidak bisa mengikuti kecepatan teknologi. Kami membangun platform yang kami inginkan ada ketika kami memulai.',
+        'about.stats.trained': 'Profesional terlatih',
+        'about.stats.satisfaction': 'Kepuasan siswa',
+        'about.stats.courses': 'Kursus dipandu ahli',
+        'about.stats.countries': 'Negara terlayani',
+        'about.mission.label': 'Misi Kami',
+        'about.mission.h2': 'Menutup kesenjangan antara pendidikan dan dunia nyata.',
+        'about.mission.p1': 'Kebanyakan kursus teknologi terlalu teoritis, terlalu mahal, atau terlalu lambat. Saat kamu lulus, industri sudah bergerak maju. GDI FutureWorks dibangun untuk menyelesaikan ketiganya: skill nyata, instruktur nyata, hasil nyata — dalam waktu sesingkat mungkin.',
+        'about.mission.p2': 'Kami melayani para profesional di Malaysia dan Indonesia yang serius dengan karier mereka dan membutuhkan pelatihan yang memberikan hasil nyata — bukan sekadar sertifikat yang tidak terpakai.',
+        'about.pillars.label': 'Yang Membuat Kami Berbeda',
+        'about.pillars.h2': 'Dibangun berbeda. By design.',
+        'about.pillar1.title': 'Hanya Praktisi Industri',
+        'about.pillar1.desc': 'Setiap instruktur adalah profesional teknologi aktif — bukan akademisi murni. Mereka membawa tools, alur kerja, dan pengetahuan insider yang kamu butuhkan sejak hari pertama.',
+        'about.pillar2.title': 'Proyek Siap Portofolio',
+        'about.pillar2.desc': 'Setiap kursus diakhiri dengan proyek nyata yang bisa langsung kamu tunjukkan ke perusahaan. Tanpa tugas teoritis. Hanya hasil kerja yang membuktikan kamu mampu.',
+        'about.pillar3.title': 'Sepenuhnya Live & Interaktif',
+        'about.pillar3.desc': 'Ajukan pertanyaan secara real time. Dapatkan umpan balik atas pekerjaanmu. Belajar sesuai kecepatanmu — bukan video rekaman.',
+        'about.pillar4.title': 'Akses Komunitas Seumur Hidup',
+        'about.pillar4.desc': 'Bergabunglah dalam jaringan privat para profesional bersemangat. Bagikan info lowongan, dapatkan saran karier, dan tetap terhubung dengan orang yang bisa membuka peluang.',
+        'about.cta.h2': 'Siap mempercepat karier teknologimu?',
+        'about.cta.browse': 'Lihat Kursus',
+        'about.cta.consult': 'Konsultasi dengan Konsultan',
+
+        // ── CONTACT ──
+        'contact.label': 'Hubungi GDI',
+        'contact.h1': 'Terhubung dengan Masa Depan Pekerjaan.',
+        'contact.subtitle': 'Hubungi kami untuk dukungan pendaftaran, kemitraan korporat, atau panduan teknis. Kami lebih cepat dari yang kamu kira.',
+        'contact.whatsapp.priority': 'Prioritas Tertinggi',
+        'contact.whatsapp.title': 'WhatsApp',
+        'contact.whatsapp.desc': 'Akses langsung ke konsultan belajar kami. Ideal untuk pertanyaan cepat tentang detail kursus, pendaftaran, atau bantuan teknis.',
+        'contact.whatsapp.btn': 'Mulai Chat',
+        'contact.email.badge': 'Respons dalam 24 jam',
+        'contact.email.title': 'Dukungan Email',
+        'contact.email.desc': 'Untuk kemitraan institusi, pertanyaan korporat, dan permintaan dukungan formal. Kami memeriksa semua email setiap hari.',
+        'contact.email.btn': 'Kirim Email',
+        'contact.faq.label': 'Pusat Solusi',
+        'contact.faq.h2': 'Bantuan & FAQ',
+        'contact.faq.q1': 'Bisakah saya mulai tanpa pengalaman?',
+        'contact.faq.a1': 'Ya. Kebanyakan kursus ramah bagi pemula dan dirancang untuk pembelajaran cepat.',
+        'contact.faq.q2': 'Seberapa cepat saya bisa belajar?',
+        'contact.faq.a2': 'Beberapa skill bisa dipelajari dan diterapkan dalam 1–2 minggu, seperti: Canva + AI, dasar digital marketing, skill freelance, dan AI tools.',
+        'contact.faq.q3': 'Apakah online atau offline?',
+        'contact.faq.a3': 'Sepenuhnya online. Belajar dari mana saja, kapan saja.',
+        'contact.faq.q4': 'Skill apa yang bisa saya pelajari?',
+        'contact.faq.a4': 'Kamu bisa menguasai Canva + AI, Digital Marketing, AI Tools, No-code tools, skill freelance, dasar IT, dan skill digital bisnis.',
+
+        // ── FAQ PAGE ──
+        'faq.page.label': 'FAQ',
+        'faq.page.h1': 'Pertanyaan yang Sering Diajukan',
+        'faq.page.sub': 'Semua yang perlu kamu ketahui tentang kursus dan pendaftaran GDI FutureWorks.',
+        'faq.page.still': 'Masih ada pertanyaan?',
+        'faq.page.chat': '💬 Chat di WhatsApp',
+        'faq.page.q1': 'Bagaimana kelas dilaksanakan?',
+        'faq.page.a1': 'Semua kelas adalah sesi video online langsung dengan interaksi real-time. Kamu bergabung melalui tautan yang dikirimkan ke WhatsApp-mu.',
+        'faq.page.q2': 'Apakah saya perlu pengalaman sebelumnya?',
+        'faq.page.a2': 'Tidak. Kursus kami dimulai dari dasar mutlak — tidak diperlukan pengalaman coding atau teknologi sebelumnya.',
+        'faq.page.q3': 'Apakah saya akan mendapatkan sertifikat?',
+        'faq.page.a3': 'Ya. Setelah menyelesaikan semua sesi dan proyek portofolio, kamu mendapatkan sertifikat penyelesaian yang dapat diverifikasi.',
+        'faq.page.q4': 'Bisakah saya bertanya selama kelas?',
+        'faq.page.a4': 'Tentu saja. Sesi sepenuhnya interaktif dengan tanya jawab sepanjang waktu. Tanya apa saja — instruktur ada untukmu.',
+        'faq.page.q5': 'Apakah saya akan membangun proyek nyata?',
+        'faq.page.a5': 'Ya. Setiap kursus mencakup proyek siap portofolio berdasarkan kasus bisnis nyata yang bisa kamu tunjukkan ke perusahaan.',
+        'faq.page.q6': 'Bagaimana jika saya tidak bisa menghadiri sesi?',
+        'faq.page.a6': 'Hubungi kami di WhatsApp dan kami akan membantumu menjadwalkan ulang ke tanggal lain.',
+        'faq.page.q7': 'Bagaimana cara mengakses kursus?',
+        'faq.page.a7': 'Dalam hitungan menit setelah pembayaran, kamu akan menerima pesan WhatsApp dengan tautan sesi dan semua info kursus.',
+        'faq.page.q8': 'Apakah ini tersedia di luar Indonesia?',
+        'faq.page.a8': 'Ya — siswa dari Malaysia, Singapura, Filipina, dan Australia semuanya telah bergabung. Kelas dilakukan dalam bahasa Inggris.',
+
+        // ── SCHEDULE ──
+        'schedule.label': 'Jadwal',
+        'schedule.h1': 'Pilih kursus. Pilih tanggalmu.',
+        'schedule.sub': 'Semua sesi live, online, dan dipandu oleh pakar industri aktif. Pilih kursus di bawah untuk melihat tanggal tersedia dan pesan tempatmu.',
+        'schedule.datesAvailable': 'Tanggal tersedia',
+        'schedule.custom.h': 'Butuh jadwal khusus?',
+        'schedule.custom.p': 'Kami membuka kohort baru berdasarkan permintaan. Chat bersama kami dan kami akan mencari waktu yang cocok.',
+        'schedule.custom.btn': 'Chat di WhatsApp →',
+
     }
 };
 
@@ -816,7 +1157,9 @@ export const LanguageProvider = ({ children, initialLanguage = 'en' }: { childre
     };
 
     const t = (key: string) => {
-        return translations[language][key] || key;
+        const val = translations[language][key];
+        // console.log(`[LanguageProvider t()] lang: ${language}, key: ${key}, val: ${val}`);
+        return val || key;
     };
 
     return (
@@ -828,8 +1171,12 @@ export const LanguageProvider = ({ children, initialLanguage = 'en' }: { childre
 
 export function useLanguage() {
     const context = useContext(LanguageContext);
+    if (!context || !context.language) {
+        console.error("WARNING: useLanguage used outside of LanguageProvider!");
+    }
     return context;
 }
+
 
 export function Translate({ tKey, defaultText }: { tKey: string, defaultText?: string }) {
     const { t } = useLanguage();

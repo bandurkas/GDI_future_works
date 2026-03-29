@@ -2,10 +2,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useLanguage } from "@/components/LanguageContext";
 
 export default function MobileProfilePage() {
     const router = useRouter();
+    const { t } = useLanguage();
     const [user, setUser] = useState<{ id: string; email: string; name: string; avatar?: string } | null>(null);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -54,7 +57,7 @@ export default function MobileProfilePage() {
 
     return (
         <div style={{ maxWidth: "600px", margin: "0 auto", padding: "60px 20px 100px", minHeight: "80vh", fontFamily: "var(--font-body)" }}>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 700, marginBottom: "30px" }}>Your Profile</h1>
+            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 700, marginBottom: "30px" }}>{t('profile.title')}</h1>
             
             <div style={{ background: "white", borderRadius: "16px", padding: "24px", border: "1px solid var(--border)", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", marginBottom: "30px", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}>
                 {user.avatar ? (
@@ -76,7 +79,7 @@ export default function MobileProfilePage() {
                     onClick={() => router.push("/dashboard")}
                     style={{ background: "white", border: "1px solid var(--border)", padding: "16px", borderRadius: "12px", fontSize: "15px", fontWeight: 600, color: "var(--foreground)", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
                 >
-                    <span>My Courses</span>
+                    <span>{t('profile.myCourses')}</span>
                     <span style={{ color: "var(--gray3)" }}>→</span>
                 </button>
                 
@@ -84,7 +87,7 @@ export default function MobileProfilePage() {
                     onClick={handleLogout}
                     style={{ background: "#fef2f2", border: "1px solid #fecaca", padding: "16px", borderRadius: "12px", fontSize: "15px", fontWeight: 600, color: "#dc2626", cursor: "pointer", marginTop: "20px" }}
                 >
-                    Sign Out
+                    {t('profile.signOut')}
                 </button>
             </div>
         </div>

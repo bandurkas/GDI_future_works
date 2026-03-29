@@ -134,7 +134,7 @@ export default function NavbarPremium() {
                         {isLoggedIn ? (
                             <>
                                 <Link href="/dashboard" className={styles.navActionBtn}>
-                                    Dashboard
+                                    <Translate tKey="nav.dashboard" defaultText="Dashboard" />
                                 </Link>
                                 <button
                                     onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); signOut({ callbackUrl: '/' }); setLegacyLoggedIn(false); }}
@@ -152,7 +152,7 @@ export default function NavbarPremium() {
 
                         <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.navActionBtn} aria-label="Chat with us on WhatsApp">
                             <IconChat />
-                            <span>Chat us</span>
+                            <span><Translate tKey="nav.chatUs" defaultText="Chat us" /></span>
                         </a>
 
                         <Link href="/cart" className={styles.iconBtn} aria-label="View shopping cart">
@@ -220,13 +220,13 @@ export default function NavbarPremium() {
 
                     {/* ── PREFERENCES ── */}
                     <div className={styles.mobileMenuSection}>
-                        <h4 className={styles.mobileMenuLabel}>Preferences</h4>
+                        <h4 className={styles.mobileMenuLabel}><Translate tKey="nav.menu.preferences" defaultText="Preferences" /></h4>
 
                         {/* Currency */}
                         <div className={styles.prefRow}>
                             <div className={styles.prefRowLeft}>
                                 <span className={styles.prefRowIcon}><Banknote size={16} /></span>
-                                <span className={styles.prefRowLabel}>Currency</span>
+                                <span className={styles.prefRowLabel}><Translate tKey="nav.menu.currency" defaultText="Currency" /></span>
                             </div>
                             <div className={styles.prefSegmented}>
                                 <button
@@ -250,7 +250,7 @@ export default function NavbarPremium() {
                         <div className={styles.prefRow}>
                             <div className={styles.prefRowLeft}>
                                 <span className={styles.prefRowIcon}><Globe size={16} /></span>
-                                <span className={styles.prefRowLabel}>Language</span>
+                                <span className={styles.prefRowLabel}><Translate tKey="nav.menu.language" defaultText="Language" /></span>
                             </div>
                             <div className={styles.prefSegmented}>
                                 <button
@@ -274,7 +274,7 @@ export default function NavbarPremium() {
                         <div className={styles.prefRow}>
                             <div className={styles.prefRowLeft}>
                                 <span className={styles.prefRowIcon}><Palette size={16} /></span>
-                                <span className={styles.prefRowLabel}>Appearance</span>
+                                <span className={styles.prefRowLabel}><Translate tKey="nav.menu.appearance" defaultText="Appearance" /></span>
                             </div>
                             <div className={styles.prefSegmented}>
                                 <button
@@ -297,32 +297,32 @@ export default function NavbarPremium() {
 
                     {/* ── EXPLORE ── */}
                     <div className={styles.mobileMenuSection}>
-                        <h4 className={styles.mobileMenuLabel}>Explore</h4>
+                        <h4 className={styles.mobileMenuLabel}><Translate tKey="nav.menu.explore" defaultText="Explore" /></h4>
                         <Link href="/" className={styles.mobileNavLink} onClick={closeMenu}>
-                            <span className={styles.mobileLinkIcon}><Home size={20} /></span> Home
+                            <span className={styles.mobileLinkIcon}><Home size={20} /></span> <Translate tKey="nav.home" defaultText="Home" />
                         </Link>
                         <Link href="/courses" className={styles.mobileNavLink} onClick={closeMenu}>
-                            <span className={styles.mobileLinkIcon}><BookOpen size={20} /></span> Courses
+                            <span className={styles.mobileLinkIcon}><BookOpen size={20} /></span> <Translate tKey="nav.courses" defaultText="Courses" />
                         </Link>
                         <Link href="/schedule" className={styles.mobileNavLink} onClick={closeMenu}>
-                            <span className={styles.mobileLinkIcon}><Calendar size={20} /></span> Live Schedule
+                            <span className={styles.mobileLinkIcon}><Calendar size={20} /></span> <Translate tKey="nav.schedule" defaultText="Live Schedule" />
                         </Link>
                     </div>
 
                     {/* ── COMPANY ── */}
                     <div className={styles.mobileMenuSection}>
-                        <h4 className={styles.mobileMenuLabel}>Company</h4>
+                        <h4 className={styles.mobileMenuLabel}><Translate tKey="nav.menu.company" defaultText="Company" /></h4>
                         <Link href="/about" className={styles.mobileNavLink} onClick={closeMenu}>
-                            <span className={styles.mobileLinkIcon}><Info size={20} /></span> About Us
+                            <span className={styles.mobileLinkIcon}><Info size={20} /></span> <Translate tKey="nav.aboutUs" defaultText="About Us" />
                         </Link>
                         <Link href="/community" className={styles.mobileNavLink} onClick={closeMenu}>
-                            <span className={styles.mobileLinkIcon}><Users size={20} /></span> Community
+                            <span className={styles.mobileLinkIcon}><Users size={20} /></span> <Translate tKey="nav.community" defaultText="Community" />
                         </Link>
                         <Link href="/for-tutors" className={styles.mobileNavLink} onClick={closeMenu}>
-                            <span className={styles.mobileLinkIcon}><GraduationCap size={20} /></span> Teach with Us
+                            <span className={styles.mobileLinkIcon}><GraduationCap size={20} /></span> <Translate tKey="nav.teachWithUs" defaultText="Teach with Us" />
                         </Link>
                         <Link href="/contact" className={styles.mobileNavLink} onClick={closeMenu}>
-                            <span className={styles.mobileLinkIcon}><MessageSquare size={20} /></span> Contact
+                            <span className={styles.mobileLinkIcon}><MessageSquare size={20} /></span> <Translate tKey="nav.contact" defaultText="Contact" />
                         </Link>
                     </div>
 
@@ -331,10 +331,10 @@ export default function NavbarPremium() {
                         {isLoggedIn ? (
                             <>
                                 <Link href="/profile" className={styles.mobileNavLink} onClick={closeMenu}>
-                                    <span className={styles.mobileLinkIcon}><User size={20} /></span> Profile Settings
+                                    <span className={styles.mobileLinkIcon}><User size={20} /></span> <Translate tKey="nav.profileSettings" defaultText="Profile Settings" />
                                 </Link>
                                 <Link href="/dashboard" className={styles.mobileNavLink} onClick={closeMenu}>
-                                    <span className={styles.mobileLinkIcon}><BarChart3 size={20} /></span> Learning Dashboard
+                                    <span className={styles.mobileLinkIcon}><BarChart3 size={20} /></span> <Translate tKey="nav.learningDashboard" defaultText="Learning Dashboard" />
                                 </Link>
                                 <button className={styles.mobileLogoutBtn} onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); signOut({ callbackUrl: '/' }); setLegacyLoggedIn(false); closeMenu(); }}>
                                     <span className={styles.mobileLinkIcon}><LogOut size={20} /></span>
@@ -342,7 +342,7 @@ export default function NavbarPremium() {
                                 </button>
                             </>
                         ) : (
-                            <Link href="/login" className={styles.mobileAuthBtn} onClick={closeMenu}>Join GDI FutureWorks</Link>
+                            <Link href="/login" className={styles.mobileAuthBtn} onClick={closeMenu}><Translate tKey="nav.joinCta" defaultText="Join GDI FutureWorks" /></Link>
                         )}
                     </div>
                 </nav>

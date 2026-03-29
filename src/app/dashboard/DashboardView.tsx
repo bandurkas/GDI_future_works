@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCurrency } from '@/components/CurrencyContext';
+import { useLanguage } from '@/components/LanguageContext';
 import styles from './Dashboard.module.css';
 
 export type PopularCourse = {
@@ -47,13 +48,13 @@ interface Props {
   purchases: PurchaseRecord[];
 }
 
-function seatsClass(n: number) {
+function seatsClass(n: number, styles: Record<string, string>) {
   if (n <= 3) return styles.spotSeatsLow;
   if (n <= 8) return styles.spotSeatsMed;
   return styles.spotSeatsOk;
 }
 
-function statusClass(s: string | null) {
+function statusClass(s: string | null, styles: Record<string, string>) {
   if (s === 'PAID') return styles.statusPaid;
   if (s === 'PENDING') return styles.statusPending;
   if (s === 'FAILED') return styles.statusFailed;
@@ -62,7 +63,15 @@ function statusClass(s: string | null) {
 
 export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCourses, spots, purchases }: Props) {
   const { currency } = useCurrency();
+  const { t } = useLanguage();
   const initials = firstName.slice(0, 2).toUpperCase();
+
+  const getStatusLabel = (status: string | null) => {
+    if (status === 'PAID') return t('dash.status.paid');
+    if (status === 'PENDING') return t('dash.status.pending');
+    if (status === 'FAILED') return t('dash.status.failed');
+    return status || '—';
+  };
 
   return (
     <div className={styles.wrap}>
@@ -75,8 +84,8 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
               : initials}
           </div>
           <div>
-            <h1 className={styles.greetName}>Welcome back, {firstName}</h1>
-            <p className={styles.greetSub}>Here&apos;s what&apos;s happening with your learning</p>
+            <h1 className={styles.greetName}>{t('dash.welcome')} {firstName}</h1>
+            <p className={styles.greetSub}>{t('dash.sub')}</p>
           </div>
         </div>
         {isAdmin && (
@@ -85,7 +94,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
               <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
               <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
             </svg>
-            Admin Panel
+            {t('dash.adminPanel')}
           </Link>
         )}
       </div>
@@ -93,7 +102,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
       {/* Popular Courses */}
       <div className={styles.section}>
         <div className={styles.sectionHead}>
-          <h2 className={styles.sectionTitle}>Popular Courses</h2>
+          <h2 className={styles.sectionTitle}>{t('dash.popularCourses')}</h2>
           <span className={styles.sectionCount} style={{ background: '#ebebeb', color: '#555' }}>{popularCourses.length}</span>
         </div>
         <div className={styles.courseGrid}>
@@ -112,11 +121,11 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
                   <div className={styles.courseMeta}>
                     <span className={styles.coursePrice}>{price}</span>
                     {c.seatsLeft > 0
-                      ? <span className={styles.courseSeats}>{c.seatsLeft} seats left</span>
-                      : <span className={styles.courseSeats} style={{ background: '#fee2e2', color: '#991b1b' }}>Full</span>}
+                      ? <span className={styles.courseSeats}>{c.seatsLeft} {t('dash.seatsLeft')}</span>
+                      : <span className={styles.courseSeats} style={{ background: '#fee2e2', color: '#991b1b' }}>{t('dash.full')}</span>}
                   </div>
                   <Link href={`/courses/${c.slug}`} className={styles.courseLink}>
-                    View Course →
+                    {t('dash.viewCourse')}
                   </Link>
                 </div>
               </div>
@@ -128,11 +137,11 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
       {/* Next Available Spots */}
       <div className={styles.section}>
         <div className={styles.sectionHead}>
-          <h2 className={styles.sectionTitle}>Next Available Spots</h2>
+          <h2 className={styles.sectionTitle}>{t('dash.nextSpots')}</h2>
           <span className={styles.sectionCount} style={{ background: '#dbeafe', color: '#1e40af' }}>{spots.length}</span>
         </div>
         {spots.length === 0
-          ? <div className={styles.empty}>No upcoming sessions available</div>
+          ? <div className={styles.empty}>{t('dash.noSessions')}</div>
           : (
             <div className={styles.spotList}>
               {spots.map((s, i) => (
@@ -146,11 +155,11 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
                     <div className={styles.spotTime}>{s.dayOfWeek} · {s.time}–{s.timeEnd}</div>
                   </div>
                   <div className={styles.spotRight}>
-                    <span className={`${styles.spotSeats} ${seatsClass(s.seatsLeft)}`}>
-                      {s.seatsLeft} left
+                    <span className={`${styles.spotSeats} ${seatsClass(s.seatsLeft, styles)}`}>
+                      {s.seatsLeft} {t('dash.left')}
                     </span>
                     <Link href={`/courses/${s.courseSlug}`} className={styles.spotBtn}>
-                      Book
+                      {t('dash.book')}
                     </Link>
                   </div>
                 </div>
@@ -162,11 +171,11 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
       {/* Purchase History */}
       <div className={styles.section}>
         <div className={styles.sectionHead}>
-          <h2 className={styles.sectionTitle}>My Courses</h2>
+          <h2 className={styles.sectionTitle}>{t('dash.myCourses')}</h2>
           <span className={styles.sectionCount} style={{ background: '#d1fae5', color: '#065f46' }}>{purchases.length}</span>
         </div>
         {purchases.length === 0
-          ? <div className={styles.empty}>You haven&apos;t enrolled in any courses yet</div>
+          ? <div className={styles.empty}>{t('dash.noEnrolled')}</div>
           : (
             <div className={styles.historyList}>
               {purchases.map(p => (
@@ -177,8 +186,8 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
                     <div className={styles.historyDate}>{p.sessionDate ?? '—'}</div>
                   </div>
                   {p.paymentStatus && (
-                    <span className={`${styles.historyStatus} ${statusClass(p.paymentStatus)}`}>
-                      {p.paymentStatus}
+                    <span className={`${styles.historyStatus} ${statusClass(p.paymentStatus, styles)}`}>
+                      {getStatusLabel(p.paymentStatus)}
                     </span>
                   )}
                   {p.amount != null && p.currency && (

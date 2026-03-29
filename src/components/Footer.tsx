@@ -1,9 +1,17 @@
 "use client";
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import styles from './Footer.module.css';
 import ThemeLogo from './ThemeLogo';
+import { useLanguage } from './LanguageContext';
 
 export default function Footer() {
+    const { t } = useLanguage();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
+    if (!mounted) return null;
+
     return (
         <footer className={styles.footer}>
             <div className={styles.container}>
@@ -12,10 +20,10 @@ export default function Footer() {
                         <Link href="/" className={styles.logo}>
                             <ThemeLogo className={styles.logoImg} alt="GDI FutureWorks" />
                         </Link>
-                        <p className={styles.tagline}>Learn IT skills that get you hired. Live courses led by industry professionals.</p>
+                        <p className={styles.tagline}>{t('footer.tagline')}</p>
                         <div className={styles.regionalBadges}>
-                            <span>Taught by Active Tech Leads & Industry Experts 🇮🇩 🇲🇾</span>
-                            <span>Special Partnership with iTTi (Great English)</span>
+                            <span>{t('footer.badge1')}</span>
+                            <span>{t('footer.badge2')}</span>
                         </div>
                         <div className={styles.socials}>
                             {[
@@ -33,7 +41,7 @@ export default function Footer() {
                     <div className={styles.links}>
                         {[
                             {
-                                title: 'Courses', items: [
+                                titleKey: 'footer.group.courses', items: [
                                     { label: 'Data Analytics', href: '/courses/data-analytics' },
                                     { label: 'Python Programming', href: '/courses/python-programming' },
                                     { label: 'Graphic Design & AI', href: '/courses/graphic-design-ai' },
@@ -41,36 +49,39 @@ export default function Footer() {
                                 ]
                             },
                             {
-                                title: 'Company', items: [
-                                    { label: 'About Us', href: '/about' },
-                                    { label: 'Community', href: '/community' },
-                                    { label: 'FAQ', href: '/faq' },
-                                    { label: 'Contact', href: '/contact' },
+                                titleKey: 'footer.group.company', items: [
+                                    { labelKey: 'footer.link.about', href: '/about' },
+                                    { labelKey: 'footer.link.community', href: '/community' },
+                                    { labelKey: 'footer.link.faq', href: '/faq' },
+                                    { labelKey: 'footer.link.contact', href: '/contact' },
                                 ]
                             },
                             {
-                                title: 'Support', items: [
-                                    { label: 'Chat on WhatsApp', href: 'https://wa.me/628211704707' },
+                                titleKey: 'footer.group.support', items: [
+                                    { labelKey: 'footer.link.chat', href: 'https://wa.me/628211704707' },
                                     { label: 'support@gdifuture.works', href: 'mailto:support@gdifuture.works' },
                                     { label: 'MENARA 165 LANTAI 14 UNIT E, JL. TB SIMATUPA CILANDAK TIMUR, PASAR MINGGU KOTA ADM. JAKARTA SELATAN DKI JAKARTA', href: '#' },
                                 ]
                             },
                         ].map((group) => (
-                            <div key={group.title} className={styles.linkGroup}>
-                                <h4 className={styles.linkTitle}>{group.title}</h4>
-                                {group.items.map(({ label, href }) => (
-                                    <a key={label} href={href} className={styles.link} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}>{label}</a>
-                                ))}
+                            <div key={group.titleKey} className={styles.linkGroup}>
+                                <h4 className={styles.linkTitle}>{t(group.titleKey)}</h4>
+                                {group.items.map((item) => {
+                                    const displayLabel = (item as any).labelKey ? t((item as any).labelKey) : (item as any).label;
+                                    return (
+                                        <a key={displayLabel} href={item.href} className={styles.link} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}>{displayLabel}</a>
+                                    );
+                                })}
                             </div>
                         ))}
                     </div>
                 </div>
 
                 <div className={styles.bottom}>
-                    <p className={styles.copy}>© 2025 GDI FutureWorks · Global Digital Informasi. All rights reserved.</p>
+                    <p className={styles.copy}>© 2025 GDI FutureWorks · Global Digital Informasi. {t('footer.rights')}</p>
                     <div className={styles.bottomLinks}>
-                        <a href="#" className={styles.link}>Privacy</a>
-                        <a href="#" className={styles.link}>Terms</a>
+                        <a href="#" className={styles.link}>{t('footer.privacy')}</a>
+                        <a href="#" className={styles.link}>{t('footer.terms')}</a>
                     </div>
                 </div>
             </div>

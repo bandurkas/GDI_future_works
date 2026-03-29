@@ -1,25 +1,34 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLanguage } from '@/components/LanguageContext';
 import styles from './page.module.css';
-const faqs = [
-    { q: 'How are classes conducted?', a: 'All classes are live online video sessions with real-time interaction. You join via a link sent to your WhatsApp.' },
-    { q: 'Do I need prior experience?', a: 'No. Our courses start from the absolute fundamentals — no prior coding or tech experience required.' },
-    { q: 'Will I receive a certificate?', a: 'Yes. Upon completing all sessions and the portfolio project, you receive a verifiable certificate of completion.' },
-    { q: 'Can I ask questions during class?', a: 'Absolutely. Sessions are fully interactive Q&A throughout. Ask anything — the instructor is there for you.' },
-    { q: 'Will I build a real project?', a: 'Yes. Every course includes a portfolio-ready project based on a real business case you can show employers.' },
-    { q: 'What if I can\'t attend a session?', a: 'Message us on WhatsApp and we\'ll help you reschedule to another date.' },
-    { q: 'How do I access the course?', a: 'Within minutes of payment, you\'ll receive a WhatsApp message with your session link and all course info.' },
-    { q: 'Is this available outside Indonesia?', a: 'Yes — students from Malaysia, Singapore, Philippines, and Australia have all joined. Classes are in English.' },
-];
+
 export default function FAQPage() {
+    const { t } = useLanguage();
     const [open, setOpen] = useState<number | null>(null);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
+    if (!mounted) return null;
+
+    const faqs = [
+        { q: t('faq.page.q1'), a: t('faq.page.a1') },
+        { q: t('faq.page.q2'), a: t('faq.page.a2') },
+        { q: t('faq.page.q3'), a: t('faq.page.a3') },
+        { q: t('faq.page.q4'), a: t('faq.page.a4') },
+        { q: t('faq.page.q5'), a: t('faq.page.a5') },
+        { q: t('faq.page.q6'), a: t('faq.page.a6') },
+        { q: t('faq.page.q7'), a: t('faq.page.a7') },
+        { q: t('faq.page.q8'), a: t('faq.page.a8') },
+    ];
+
     return (
         <div className={styles.page}>
             <section className={styles.hero}>
                 <div className="container">
-                    <p className="section-label">FAQ</p>
-                    <h1 className="text-h1">Frequently Asked Questions</h1>
-                    <p className="text-body-lg" style={{ maxWidth: 520 }}>Everything you need to know about GDI FutureWorks courses and enrollment.</p>
+                    <p className="section-label">{t('faq.page.label')}</p>
+                    <h1 className="text-h1">{t('faq.page.h1')}</h1>
+                    <p className="text-body-lg" style={{ maxWidth: 520 }}>{t('faq.page.sub')}</p>
                 </div>
             </section>
             <section className="section">
@@ -45,9 +54,9 @@ export default function FAQPage() {
                         ))}
                     </div>
                     <div className={styles.cta}>
-                        <p className={styles.ctaTxt}>Still have questions?</p>
+                        <p className={styles.ctaTxt}>{t('faq.page.still')}</p>
                         <a href="https://wa.me/628211704707" className="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer">
-                            💬 Chat on WhatsApp
+                            {t('faq.page.chat')}
                         </a>
                     </div>
                 </div>
