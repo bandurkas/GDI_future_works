@@ -19,18 +19,20 @@ import { jwtVerify } from 'jose';
 // Next.js downloads fonts at build time, serves from same origin, adds <link rel="preload">
 const jakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '600', '800'],
   style: ['normal'],
   display: 'swap',
   variable: '--font-display',
+  preload: true,
 });
 
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '700'],
   style: ['normal'],
   display: 'swap',
   variable: '--font-body',
+  preload: true,
 });
 
 export const metadata: Metadata = {
