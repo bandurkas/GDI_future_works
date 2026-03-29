@@ -115,7 +115,8 @@ export default function CommunityPage() {
 
                     <div className={styles.heroVisual}>
                         <Image 
-                            src="/assets/info_community.webp" 
+                            src="/assets/info_community.webp"
+                                unoptimized 
                             alt="Community Network" 
                             width={600} 
                             height={400} 

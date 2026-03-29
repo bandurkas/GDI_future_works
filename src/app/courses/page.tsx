@@ -39,7 +39,7 @@ export default function CoursesPage() {
 
                         {/* Image overlay */}
                         <div className={styles.sliderImageWrap}>
-                            <Image src="/assets/course_hero.webp" alt="Tech workspace with laptop" fill className={styles.sliderImage} priority />
+                            <Image src="/assets/course_hero.webp" alt="Tech workspace with laptop" fill className={styles.sliderImage} priority unoptimized />
                         </div>
 
                         {/* Arrow Controls */}

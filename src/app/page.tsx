@@ -134,6 +134,7 @@ export default function HomePage() {
                             width={500}
                             height={500}
                             priority
+                            unoptimized
                             sizes="(max-width: 1200px) 280px, 380px"
                         />
                     </div>
@@ -171,6 +172,7 @@ export default function HomePage() {
                                 width={360}
                                 height={360}
                                 priority
+                                unoptimized
                                 sizes="(max-width: 768px) 280px, 360px"
                             />
                         </div>
@@ -194,6 +196,7 @@ export default function HomePage() {
                             width={500}
                             height={500}
                             priority
+                            unoptimized
                             sizes="(max-width: 1200px) 280px, 380px"
                         />
                     </div>

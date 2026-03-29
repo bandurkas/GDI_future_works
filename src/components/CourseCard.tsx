@@ -263,7 +263,7 @@ export default function CourseCard({ course, featured }: Props) {
                                     <div className={styles.drawerSection}>
                                         <h5 className={styles.drawerQuestion}>{t('card.whatGet')}</h5>
                                         <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_what.webp" alt="What you get" width={400} height={200} className={styles.infoImage} loading="lazy" />
+                                            <Image src="/assets/info_what.webp" alt="What you get" width={400} height={200} className={styles.infoImage} loading="lazy" unoptimized />
                                             <div className={styles.infoList}>
                                                 {whatYouGet.slice(0, 6).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
@@ -277,7 +277,7 @@ export default function CourseCard({ course, featured }: Props) {
                                     <div className={styles.drawerSection}>
                                         <h5 className={styles.drawerQuestion}>{t('card.whoFor')}</h5>
                                         <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_who.webp" alt="Who is it for" width={400} height={200} className={styles.infoImage} loading="lazy" />
+                                            <Image src="/assets/info_who.webp" alt="Who is it for" width={400} height={200} className={styles.infoImage} loading="lazy" unoptimized />
                                             <div className={styles.infoList}>
                                                 {whoFor.slice(0, 4).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>
@@ -291,7 +291,7 @@ export default function CourseCard({ course, featured }: Props) {
                                     <div className={styles.drawerSection}>
                                         <h5 className={styles.drawerQuestion}>{t('card.whyWorth')}</h5>
                                         <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_why.webp" alt="Why worth it" width={400} height={200} className={styles.infoImage} loading="lazy" />
+                                            <Image src="/assets/info_why.webp" alt="Why worth it" width={400} height={200} className={styles.infoImage} loading="lazy" unoptimized />
                                             <div className={styles.infoList}>
                                                 {whyWorthIt.slice(0, 4).map((item, idx) => (
                                                     <div key={idx} className={styles.infoItem}>

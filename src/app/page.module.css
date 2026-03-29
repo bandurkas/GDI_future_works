@@ -400,14 +400,14 @@
 
 @media (max-width: 1024px) {
     .heroSection {
-        padding: 20px 0 48px;
+        padding: 20px 0 32px;
         background: #ffffff;
     }
 
     .heroLayout {
         flex-direction: column;
         text-align: center;
-        padding: 0 20px 40px;
+        padding: 0 20px 16px;
         gap: 0;
     }
 
@@ -417,7 +417,7 @@
     }
 
     .btnOutline {
-        display: none;
+        display: none !important;
     }
 
     .heroIllustration {
@@ -438,7 +438,7 @@
         display: block !important;
         width: 100%;
         max-width: 360px;
-        margin: 32px auto 0;
+        margin: 12px auto 0;
         animation: float 6s ease-in-out infinite;
         background: transparent;
         padding: 0;
@@ -491,7 +491,7 @@
 
 @media (max-width: 480px) {
     .heroSection {
-        padding: 24px 0 40px;
+        padding: 24px 0 24px;
     }
 
     .heroLayout {
@@ -500,6 +500,10 @@
 
     .heroIllustrationMobile {
         max-width: 280px;
+    }
+
+    .heroImage {
+        mix-blend-mode: normal;
     }
 
     .heroTitle {
