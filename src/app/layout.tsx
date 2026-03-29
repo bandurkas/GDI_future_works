@@ -122,7 +122,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://app.midtrans.com" />
         <link rel="dns-prefetch" href="https://app.midtrans.com" />
         {/* Non-critical CSS loaded async — cards, forms, animations, utilities */}
-        <link rel="preload" href="/deferred.css" as="style" onLoad="this.onload=null;this.rel='stylesheet'" />
+        <script dangerouslySetInnerHTML={{ __html: "var l=document.createElement('link');l.rel='stylesheet';l.href='/deferred.css';document.head.appendChild(l);" }} />
         <noscript><link rel="stylesheet" href="/deferred.css" /></noscript>
       </head>
       <body>
