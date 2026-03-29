@@ -108,11 +108,11 @@ const translations: Record<Language, Record<string, string>> = {
         'faq.wa': 'Ask us on WhatsApp',
 
         // Hero
-        'hero.badge': 'Trusted by 500+ Professionals in Southeast Asia',
-        'hero.title1': 'Choose your path into tech.',
-        'hero.title2': 'For The Modern World',
-        'hero.subhead': 'Real skills. Live training. Industry experts. Fast-track your career with practical courses designed for the modern workplace.',
-        'hero.cta1': 'Enroll Now (3 mins)',
+        'hero.badge': 'Platform for Global Talent',
+        'hero.title1': 'One platform for the next',
+        'hero.title2': 'generation of global talent',
+        'hero.subhead': 'Unlock your potential with world-class education and AI-driven tools.',
+        'hero.cta1': 'Get Started for Free',
         'hero.cta2': 'Explore Courses',
         'hero.taught': 'Taught by Active Tech Leads & Industry Experts',
 
@@ -494,12 +494,11 @@ const translations: Record<Language, Record<string, string>> = {
         // ── HOMEPAGE ──
 
         // Hero
-        'hero.badge': 'Dipercaya oleh 500+ Profesional di Asia Tenggara',
-
-        'hero.title1': 'Keterampilan Masa Depan',
-        'hero.title2': 'Untuk Dunia Modern',
-        'hero.subhead': 'Jalur Anda Menuju Kesuksesan',
-        'hero.cta1': 'Daftar Sekarang (3 menit)',
+        'hero.badge': 'Platform untuk Talenta Global',
+        'hero.title1': 'Satu platform untuk',
+        'hero.title2': 'generasi talenta global berikutnya',
+        'hero.subhead': 'Buka potensi kamu dengan pendidikan kelas dunia dan alat bantu berbasis AI.',
+        'hero.cta1': 'Mulai Gratis Sekarang',
         'hero.cta2': 'Lihat Kursus',
         'hero.taught': 'Kuasai Tekno, AI, dan Komunikasi Profesional untuk Pelajar & Profesional',
 
