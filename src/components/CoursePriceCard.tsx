@@ -48,7 +48,7 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
                 <div className={styles.priceAmount}>{displayPrice}</div>
                 <div className={styles.priceRight}>
                     <span className={styles.priceOrig}>{displayOriginal}</span>
-                    <span className="badge badge-accent">{discount}% off</span>
+                    <span className={`${styles.badge} ${styles.badgeAccent}`}>{discount}% off</span>
                 </div>
             </div>
 
@@ -56,7 +56,7 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
             <ul className={styles.priceIncludes}>
                 {inclusions.map((item) => (
                     <li key={item} className={styles.priceItem}>
-                        <div className="check-icon">✓</div>
+                        <div className={styles.checkIcon}>✓</div>
                         {item}
                     </li>
                 ))}

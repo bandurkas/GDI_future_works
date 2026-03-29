@@ -4,9 +4,9 @@
 
 /* ===== HERO ===== */
 .hero {
-    background: var(--bg-secondary);
-    padding: var(--space-10) 0 var(--space-16);
-    border-bottom: 1px solid var(--border);
+    background: #f9f9f9; /* --surface */
+    padding: clamp(3.5rem, 8vw, 5rem) 0;
+    /* No border-bottom for "No-Line" rule */
 }
 
 .breadcrumb {
@@ -48,22 +48,23 @@
 }
 
 .heroIcon {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    font-size: 1.625rem;
+    width: 64px;
+    height: 64px;
+    border-radius: 1.25rem;
+    font-size: 1.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
 }
 
 .heroTitle {
     font-family: var(--font-display);
-    font-size: clamp(1.625rem, 3.5vw, 2.5rem);
+    font-size: clamp(2.25rem, 5vw, 3.5rem); /* display-lg */
     font-weight: 800;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
-    color: var(--text-primary);
+    letter-spacing: -0.04em; /* Tight tracking for editorial feel */
+    line-height: 1.1;
+    color: #2d3435; /* on-surface */
 }
 
 .heroSubtitle {
@@ -125,8 +126,26 @@
 }
 
 .ratingCount {
-    color: var(--text-muted);
+    color: #888888; /* --gray3 */
     font-size: 0.875rem;
+}
+
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: #f2f4f4;
+    color: #2d3435;
+}
+
+.badgeAccent {
+    background: #ba1a20; /* Oxblood */
+    color: white;
 }
 
 /* Price card */
@@ -153,7 +172,7 @@
     font-family: var(--font-display);
     font-size: 2.5rem;
     font-weight: 800;
-    color: var(--accent);
+    color: #ba1a20; /* --primary / Oxblood */
 }
 
 .priceRight {
@@ -231,13 +250,14 @@
 
 /* Instructor */
 .instructorCard {
-    background: var(--bg-secondary);
-    border-radius: var(--radius-xl);
-    padding: var(--space-8);
+    background: #ffffff; /* --surface-container-lowest */
+    border-radius: 1rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
-    border: 1px solid var(--border);
+    gap: 1.5rem;
+    /* Atmosphere over structure: shadow replaces border */
+    box-shadow: 0 20px 40px rgba(45, 52, 53, 0.06); 
 }
 
 .instructorTop {
@@ -280,33 +300,108 @@
     color: var(--text-muted);
 }
 
-/* Instructor social links */
-.instructorSocials {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-}
-
-.socialLink {
+/* Instructor Upgrades */
+.socialPill {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-size: 0.75rem;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid #ebeeef;
+    border-radius: 8px;
+    font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--text-secondary);
-    background: var(--bg-card);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-full);
-    padding: 4px 10px;
+    color: #2d3435;
+    background: #ffffff;
     text-decoration: none;
-    transition: all 140ms ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.socialLink:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: var(--accent-light);
+.socialPill:hover {
+    background-color: #f2f4f4;
+    transform: translateY(-1px);
+}
+
+.videoBanner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background: #1e293b;
+    border-radius: 12px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 1.5rem 0;
+}
+
+.videoBanner:hover {
+    background: #0f172a;
+    transform: translateY(-1px);
+}
+
+.badgeChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background-color: #ffffff;
+    border: 1px dashed #ebeeef;
+    border-radius: 2rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #2d3435;
+}
+
+.quoteBlock {
+    padding: 1.25rem;
+    background: #ffffff;
+    border-left: 4px solid #ba1a20;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    color: #2d3435;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.checkList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.checkItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.9375rem;
+    color: #2d3435;
+}
+
+.checkIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: #dcfce7;
+    color: #16a34a;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 10px;
+}
+
+.iconPlay {
+    width: 36px;
+    height: 36px;
+    background: #4f46e5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
 }
 
 /* Loom intro button */
