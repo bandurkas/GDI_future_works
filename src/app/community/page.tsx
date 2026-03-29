@@ -16,7 +16,8 @@ import {
 import { useLanguage, Translate } from '@/components/LanguageContext';
 
 export default function CommunityPage() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const isID = language === 'id';
 
     const perks = [
         {
@@ -91,8 +92,11 @@ export default function CommunityPage() {
                         </span>
 
                         <h1 className={styles.heroTitle}>
-                            Your career <br />
-                            <span className={styles.heroAccent}>network starts here.</span>
+                            {isID ? (
+                                <>Jaringan karier <br /><span className={styles.heroAccent}>Anda dimulai di sini.</span></>
+                            ) : (
+                                <>Your career <br /><span className={styles.heroAccent}>network starts here.</span></>
+                            )}
                         </h1>
 
                         <p className={styles.heroSubtitle}>
