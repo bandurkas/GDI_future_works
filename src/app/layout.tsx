@@ -80,21 +80,35 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const headerStore = await headers();
 
   // Language detection — priority: cookie > Accept-Language header > default 'en'
+  // ── Geo detection priority: cookie → CF header → Accept-Language → default ──
+  const cfCountry = headerStore.get('cf-ipcountry') ?? '';
+  const isIndonesia = cfCountry === 'ID';
+
   const langCookie = cookieStore.get('GDI_LANG')?.value;
   let initialLang: 'en' | 'id';
   if (langCookie === 'id' || langCookie === 'en') {
+    // Priority 1: user has explicitly set a preference (cookie)
     initialLang = langCookie;
+  } else if (cfCountry && cfCountry !== 'XX') {
+    // Priority 2: Cloudflare country header (accurate, no API call)
+    initialLang = isIndonesia ? 'id' : 'en';
   } else {
+    // Priority 3: Accept-Language header fallback (no CF — dev/direct access)
     const acceptLang = headerStore.get('accept-language') ?? '';
     initialLang = acceptLang.toLowerCase().includes('id') ? 'id' : 'en';
   }
 
-  // Currency detection — priority: cookie > language > default 'MYR'
+  // Currency — same priority order, ID → IDR, everyone else → MYR
   const currCookie = cookieStore.get('GDI_CURRENCY')?.value;
   let initialCurr: 'IDR' | 'MYR';
   if (currCookie === 'IDR' || currCookie === 'MYR') {
+    // Priority 1: user preference
     initialCurr = currCookie;
+  } else if (cfCountry && cfCountry !== 'XX') {
+    // Priority 2: Cloudflare country header
+    initialCurr = isIndonesia ? 'IDR' : 'MYR';
   } else {
+    // Priority 3: derive from resolved language
     initialCurr = initialLang === 'id' ? 'IDR' : 'MYR';
   }
 
