@@ -280,6 +280,167 @@
     color: var(--text-muted);
 }
 
+/* Instructor social links */
+.instructorSocials {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.socialLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-full);
+    padding: 4px 10px;
+    text-decoration: none;
+    transition: all 140ms ease;
+}
+
+.socialLink:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+
+/* Loom intro button */
+.loomBtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: opacity 200ms ease, transform 200ms ease;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.loomBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.loomPlay {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #625DF5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    padding-left: 2px;
+}
+
+.loomDuration {
+    font-weight: 400;
+    opacity: 0.65;
+    margin-left: 4px;
+}
+
+/* Syllabus / Curriculum */
+.syllabusContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.syllabusItem {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.syllabusHeader {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: var(--space-4) var(--space-5);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.syllabusNum {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.syllabusTitle {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.syllabusList {
+    list-style: none;
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--bg-card);
+}
+
+.syllabusListItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.syllabusCheck {
+    color: var(--success);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.syllabusProject {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(16, 185, 129, 0.02));
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.syllabusProjectLabel {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--success);
+}
+
+.syllabusProject p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
 .instructorExp {
     font-size: 0.9375rem;
     color: var(--text-secondary);

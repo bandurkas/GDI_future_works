@@ -7,6 +7,10 @@ export interface Instructor {
     initials: string;
     accentColor: string;
     bgGradient: string;
+    photoUrl?: string;
+    linkedin?: string;
+    github?: string;
+    loom?: string;
 }
 
 export interface Schedule {
@@ -332,19 +336,22 @@ export const courses: Course[] = [
         durationID: '4 jam',
         testimonialQuoteID: 'Python akhirnya mudah dipahami. Saya mengotomatiskan setengah proses laporan bulanan saya hanya dalam 2 sesi.',
         instructor: {
-            name: 'Dian Pratiwi',
-            role: 'Senior Software Engineer',
-            company: 'Leading Tech Company',
-            experience: '7+ years in Python, backend & automation engineering',
+            name: 'Bayu Sedana',
+            role: 'Backend Developer & IT Trainer',
+            company: 'IT Consultant',
+            experience: '6 years in software engineering, data analysis & QA',
             credentials: [
-                'Trained 500+ professionals in Python',
-                'Engineering experience at Google, Gojek, and regional startups',
-                'Python open-source contributor (2,000+ GitHub stars)',
-                'AWS Certified Developer',
+                'Backend developer with 6 years experience (Python, Node.js, Flask, FastAPI)',
+                'Certified instructor at 2 Indonesian institutions',
+                'Advanced SQL certified — proficient in MySQL, PostgreSQL, SQLite',
+                '23+ GitHub projects covering Python automation, QA, and full-stack',
             ],
-            initials: 'DP',
+            initials: 'BS',
             accentColor: '#11998e',
             bgGradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
+            linkedin: 'https://www.linkedin.com/in/bayusedana/',
+            github: 'https://github.com/bayusedana26',
+            loom: 'https://www.loom.com/share/02fd0509dbd24954a22d67c1a7c94d6d',
         },
         schedules: [
             { id: 's1', date: 'Mar 14\u201315', dayOfWeek: 'Fri\u2013Sat', month: 'Mar', day: 14, time: '10:00', timeEnd: '12:00', seatsLeft: 5 },
