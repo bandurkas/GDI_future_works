@@ -370,7 +370,7 @@
 }
 
 .heroIllustrationLeft {
-    margin-right: -100px;
+    margin-right: -60px;
 }
 
 .heroIllustrationRight {
@@ -394,7 +394,7 @@
     .heroIllustration {
         max-width: 280px;
     }
-    .heroIllustrationLeft { margin-right: -60px; }
+    .heroIllustrationLeft { margin-right: -20px; }
     .heroIllustrationRight { margin-left: -60px; }
 }
 
