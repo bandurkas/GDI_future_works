@@ -119,9 +119,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${jakartaSans.variable} ${poppins.variable}`}
     >
       <head>
-
         <link rel="preconnect" href="https://app.midtrans.com" />
         <link rel="dns-prefetch" href="https://app.midtrans.com" />
+        {/* Non-critical CSS loaded async — cards, forms, animations, utilities */}
+        <link rel="preload" href="/deferred.css" as="style" onLoad="this.onload=null;this.rel='stylesheet'" />
+        <noscript><link rel="stylesheet" href="/deferred.css" /></noscript>
       </head>
       <body>
         <GoogleAuthProvider session={effectiveSession}>
