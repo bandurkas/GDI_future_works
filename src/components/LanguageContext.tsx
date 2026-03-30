@@ -111,7 +111,7 @@ const translations: Record<Language, Record<string, string>> = {
         'hero.badge': 'Trusted by 500+ Professionals in Southeast Asia',
         'hero.title1': 'Choose your path into tech.',
         'hero.title2': 'For The Modern World',
-        'hero.subhead': 'Real skills. Live training. Industry experts. Fast-track your career with practical courses designed for the modern workplace.',
+        'hero.subhead': 'Practical skills. Industry experts. Career acceleration.',
         'hero.cta1': 'Enroll Now (3 mins)',
         'hero.cta2': 'Explore Courses',
         'hero.taught': 'Taught by Active Tech Leads & Industry Experts',
