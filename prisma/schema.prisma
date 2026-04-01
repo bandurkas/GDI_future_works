@@ -319,6 +319,7 @@ model TutorApplication {
   name          String
   email         String            @unique
   linkedin      String?
+  whatsapp      String?
   bio           String?
   expertise     String
   videoLink     String

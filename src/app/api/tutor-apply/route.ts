@@ -12,6 +12,7 @@ const optionalUrl = z.preprocess(
 const schema = z.object({
     name: z.string().min(2).max(100),
     email: z.string().email(),
+    whatsapp: z.string().max(30).optional(),
     expertise: z.string().min(2).max(200),
     videoLink: z.string().url(),
     linkedin: optionalUrl,
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
             update: {
                 name: data.name,
                 linkedin: data.linkedin,
+                whatsapp: data.whatsapp,
                 bio: data.bio,
                 expertise: data.expertise,
                 videoLink: data.videoLink,
@@ -60,6 +62,7 @@ export async function POST(req: Request) {
                 name: data.name,
                 email: data.email,
                 linkedin: data.linkedin,
+                whatsapp: data.whatsapp,
                 bio: data.bio,
                 expertise: data.expertise,
                 videoLink: data.videoLink,
@@ -78,6 +81,7 @@ export async function POST(req: Request) {
             now.toTimeString().split(' ')[0],
             data.name,
             data.email,
+            data.whatsapp ?? '',
             data.expertise,
             data.bio ?? '',
             data.linkedin ?? '',
