@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { fmt } from '@/lib/utils';
 import AppActions from './AppActions';
 import s from './TutorsView.module.css';
+import { parseAvailability } from '@/lib/parseAvailability';
 
 const DAYS_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
@@ -15,30 +16,6 @@ const TIME_COLORS: Record<string, { dot: string; bg: string; label: string }> = 
   night:     { dot: '#6366f1', bg: 'rgba(99,102,241,0.15)',  label: 'Night'     },
   free:      { dot: '#10b981', bg: 'rgba(16,185,129,0.15)',  label: 'Free'      },
 };
-
-function parseAvailability(raw: string | null): Record<number, string[]> {
-  if (!raw) return {};
-  const result: Record<number, string[]> = {};
-  let items: string[] = [];
-  try {
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) items = parsed.map(String);
-    else items = [String(parsed)];
-  } catch {
-    items = raw.split(/[,\n]+/).map(s => s.trim()).filter(Boolean);
-  }
-  const dayMap: Record<string, number> = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
-  for (const item of items) {
-    const lower = item.toLowerCase().replace(/\s/g, '-');
-    const dayKey = Object.keys(dayMap).find(k => lower.startsWith(k));
-    if (dayKey === undefined) continue;
-    const dayIdx = dayMap[dayKey];
-    const timeKey = Object.keys(TIME_COLORS).find(t => lower.includes(t)) || 'free';
-    if (!result[dayIdx]) result[dayIdx] = [];
-    if (!result[dayIdx].includes(timeKey)) result[dayIdx].push(timeKey);
-  }
-  return result;
-}
 
 function minutesToTime(m: number) {
   return `${Math.floor(m / 60).toString().padStart(2, '0')}:${(m % 60).toString().padStart(2, '0')}`;

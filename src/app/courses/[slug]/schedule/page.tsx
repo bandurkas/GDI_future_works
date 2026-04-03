@@ -3,7 +3,7 @@ import { useState, use, useEffect } from 'react';
 import { useCurrency } from '@/components/CurrencyContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getCourseBySlug } from '@/data/courses';
+import { getCourseBySlug, type Schedule } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
@@ -17,6 +17,8 @@ export default function SchedulePage({ params }: Props) {
     const { data: session, status } = useSession();
     const { t, language } = useLanguage();
     const course = getCourseBySlug(slug);
+    const [dynamicSlots, setDynamicSlots] = useState<Schedule[] | null>(null);
+    const [slotsLoading, setSlotsLoading] = useState(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { addItem, customerInfo, updateCustomerInfo } = useCart();
     
@@ -34,13 +36,28 @@ export default function SchedulePage({ params }: Props) {
         }
     }, [session, email]);
 
+    // Fetch dynamic slots from tutor availability
+    useEffect(() => {
+        if (!course || !(course as any).tutorEmail) return;
+        setSlotsLoading(true);
+        fetch('/api/courses/' + slug + '/availability')
+            .then(r => r.json())
+            .then(data => {
+                if (data.slots && data.slots.length > 0) setDynamicSlots(data.slots);
+            })
+            .catch(() => {})
+            .finally(() => setSlotsLoading(false));
+    }, [slug, course]);
+
+    const slots: Schedule[] = dynamicSlots ?? (course?.schedules ?? []);
+
     const STEPS = [
         { number: 1, label: t('schedule.step1') },
         { number: 2, label: t('schedule.step2') },
         { number: 3, label: t('schedule.step3') },
     ];
 
-    const selected = course?.schedules?.find(d => d.id === selectedId);
+    const selected = slots.find(d => d.id === selectedId);
     
     const canContinue = selectedId && (isAuthenticated || email.trim().length > 0 || phone.trim().length > 0);
 
@@ -107,7 +124,11 @@ export default function SchedulePage({ params }: Props) {
                     <div className={styles.section}>
                         <h3 className={styles.sectionLabel}>{t('schedule.availableDates')}</h3>
                         
-                        {(!course.schedules || course.schedules.length === 0) ? (
+                        {(slotsLoading) ? (
+                            <div style={{ padding: '24px', background: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center', marginTop: '16px' }}>
+                                <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Loading available dates...</p>
+                            </div>
+                        ) : (slots.length === 0) ? (
                             <div style={{ padding: '24px', background: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center', marginTop: '16px' }}>
                                 <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{t('schedule.noSchedule')}</h4>
                                 <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
@@ -116,7 +137,7 @@ export default function SchedulePage({ params }: Props) {
                             </div>
                         ) : (
                             <div className={styles.dateGrid}>
-                                {course.schedules.map((slot) => {
+                                {slots.map((slot) => {
                                     const isFull = slot.seatsLeft === 0;
                                     const isUrgent = slot.seatsLeft > 0 && slot.seatsLeft <= 3;
                                     const dayNames = slot.dayOfWeek.split(/[–-]/);
