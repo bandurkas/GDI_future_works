@@ -27,8 +27,8 @@ const TIMEZONES = [
 interface FormData {
     name: string;
     email: string;
+    phone: string;
     linkedin: string;
-    whatsapp: string;
     bio: string;
     expertise: string;
     availability: string[];
@@ -43,8 +43,8 @@ interface FormData {
 const INITIAL: FormData = {
     name: '',
     email: '',
+    phone: '',
     linkedin: '',
-    whatsapp: '',
     bio: '',
     expertise: '',
     availability: [],
@@ -130,7 +130,7 @@ export default function TutorApplyPage() {
         if (s === 1) {
             if (formData.name.trim().length < 2)       return 'Full name must be at least 2 characters.';
             if (!formData.email.includes('@'))          return 'Please enter a valid email address.';
-            if (!formData.whatsapp.trim())              return 'Please enter your WhatsApp phone number.';
+            if (formData.phone.trim().length < 5)       return 'Please enter a valid phone number.';
             if (!formData.expertise)                    return 'Please select your expertise area.';
             if (!formData.bio.trim())                   return 'Please write a short professional bio.';
             if (!formData.linkedin.trim())              return 'Please enter your LinkedIn profile URL.';
@@ -179,8 +179,8 @@ export default function TutorApplyPage() {
             const payload = {
                 name:          formData.name.trim(),
                 email:         formData.email.trim().toLowerCase(),
+                phone:         formData.phone.trim(),
                 linkedin:      formData.linkedin.trim(),
-                whatsapp:      formData.whatsapp.trim(),
                 bio:           formData.bio.trim(),
                 expertise:     formData.expertise,
                 availability:  JSON.stringify(formData.availability),
@@ -296,13 +296,12 @@ export default function TutorApplyPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>{t('apply.f.whatsapp')}</label>
-                                    <p className={styles.hint}>{t('apply.f.whatsapp.hint')}</p>
+                                    <label className={styles.label}>{t('apply.f.phone')}</label>
                                     <input
-                                        type="tel" value={formData.whatsapp}
-                                        onChange={e => set('whatsapp', e.target.value)}
+                                        type="tel" value={formData.phone}
+                                        onChange={e => set('phone', e.target.value)}
                                         className={styles.input}
-                                        placeholder="+62 812 3456 7890"
+                                        placeholder="+62 812..."
                                     />
                                 </div>
                                 <div className={styles.formGroup}>

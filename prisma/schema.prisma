@@ -318,8 +318,8 @@ model TutorApplication {
   createdAt     DateTime          @default(now())
   name          String
   email         String            @unique
+  phone         String?
   linkedin      String?
-  whatsapp      String?
   bio           String?
   expertise     String
   videoLink     String
