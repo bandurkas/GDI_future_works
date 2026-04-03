@@ -888,8 +888,9 @@
 
 .btnOutline {
     display: inline-block;
-    border: 2px solid #cbd5e1;
-    color: var(--text-primary);
+    background: #ffffff;
+    border: 2px solid #1a1a1a;
+    color: #1a1a1a;
     padding: 14px 32px;
     border-radius: 100px;
     font-weight: 600;
