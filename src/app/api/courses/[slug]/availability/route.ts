@@ -12,7 +12,7 @@ const PERIOD_TIMES: Record<string, { time: string; timeEnd: string }> = {
   free:      { time: "09:00", timeEnd: "11:00" },
 };
 
-const DAY_NAMES  = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAY_NAMES   = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 export async function GET(
@@ -42,39 +42,34 @@ export async function GET(
 
   const slots: object[] = [];
 
-  for (let week = 0; week < 8; week++) {
-    for (let dayIdx = 0; dayIdx <= 6; dayIdx++) {
-      const periods = byDay[dayIdx];
-      if (!periods || periods.length === 0) continue;
+  // Only next 25 days
+  for (let offset = 0; offset < 25; offset++) {
+    const date = new Date(today);
+    date.setDate(date.getDate() + offset);
+    const dayIdx = date.getDay();
 
-      const base = new Date(today);
-      const currentDay = base.getDay();
-      let diff = dayIdx - currentDay;
-      if (diff < 0) diff += 7;
-      base.setDate(base.getDate() + diff + week * 7);
+    const periods = byDay[dayIdx];
+    if (!periods || periods.length === 0) continue;
 
-      if (base < today) continue;
+    const dateId =
+      date.getFullYear() + "-" +
+      String(date.getMonth() + 1).padStart(2, "0") + "-" +
+      String(date.getDate()).padStart(2, "0");
 
-      for (const period of periods) {
-        const pt = PERIOD_TIMES[period] ?? PERIOD_TIMES.free;
-        const dateStr = MONTH_NAMES[base.getMonth()] + " " + base.getDate();
-        const dateId = base.getFullYear() + "-" + String(base.getMonth()+1).padStart(2,"0") + "-" + String(base.getDate()).padStart(2,"0");
-        const id = dateId + "-" + period;
-        slots.push({
-          id,
-          date: dateStr,
-          dayOfWeek: DAY_NAMES[dayIdx],
-          month: MONTH_NAMES[base.getMonth()],
-          day: base.getDate(),
-          time: pt.time,
-          timeEnd: pt.timeEnd,
-          seatsLeft: 10,
-        });
-      }
+    for (const period of periods) {
+      const pt = PERIOD_TIMES[period] ?? PERIOD_TIMES.free;
+      slots.push({
+        id: dateId + "-" + period,
+        date: MONTH_NAMES[date.getMonth()] + " " + date.getDate(),
+        dayOfWeek: DAY_NAMES[dayIdx],
+        month: MONTH_NAMES[date.getMonth()],
+        day: date.getDate(),
+        time: pt.time,
+        timeEnd: pt.timeEnd,
+        seatsLeft: 10,
+      });
     }
   }
-
-  slots.sort((a: any, b: any) => a.id.localeCompare(b.id));
 
   return NextResponse.json({ slots });
 }
