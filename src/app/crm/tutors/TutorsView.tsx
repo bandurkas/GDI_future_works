@@ -493,7 +493,7 @@ function AvailabilityGrid({ raw }: { raw: string }) {
               const isEmpty = times.length === 0;
               return (
                 <div key={day} className={isEmpty ? `${s.availDay} ${s.availDayEmpty}` : `${s.availDay} ${s.availDayFilled}`}>
-                  <span className={s.availDayLabel} style={{ color: isEmpty ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.6)' }}>
+                  <span className={s.availDayLabel} style={{ color: isEmpty ? 'var(--crm-avail-label-empty)' : 'var(--crm-avail-label-filled)' }}>
                     {day}
                   </span>
                   {isEmpty ? (

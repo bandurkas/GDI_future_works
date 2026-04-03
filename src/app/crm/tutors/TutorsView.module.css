@@ -632,3 +632,26 @@
   font-size: 12px;
   color: var(--crm-text-dim);
 }
+
+/* ── Availability: light-theme contrast fixes ─── */
+:global([data-crm-theme=light]) .availDayEmpty {
+  background: rgba(0,0,0,0.045);
+  border-color: rgba(0,0,0,0.13);
+}
+
+:global([data-crm-theme=light]) .availDayFilled {
+  background: rgba(0,0,0,0.07);
+  border-color: rgba(0,0,0,0.16);
+}
+
+:global([data-crm-theme=light]) .availLegendItem {
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+:global([data-crm-theme=light]) .availDot {
+  box-shadow: 0 0 5px currentColor;
+}
+
+:global([data-crm-theme="light"]) .availDayLabel {
+  color: #000000;
+}
