@@ -79,28 +79,30 @@ export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }:
   return (
     <div className={styles.wrapper}>
       <div className={styles.ringWrapper}>
-        <div className={styles.ring}>
-          <span className={styles.ringIcon}>⏳</span>
+        <div className={`${styles.ring} ${styles.ringSuccess}`}>
+          <svg className={styles.checkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
         </div>
       </div>
 
       <div className={styles.text}>
-        <h2 className={styles.title}>Payment Under Review</h2>
+        <h2 className={styles.title}>Thank you! Your payment is being verified.</h2>
         <p className={styles.subtitle}>
-          {provider === 'paypal'
-            ? <>Your PayPal payment is being confirmed. This usually happens automatically within a few minutes.</>
-            : <>Your receipt has been received. Our team will verify your payment within <strong>5–30 minutes</strong>.</>}
+          Our team will contact you shortly with:
         </p>
+        <ul className={styles.contactList}>
+          <li>Enrollment confirmation</li>
+          <li>Next steps</li>
+          <li>Class access link</li>
+        </ul>
+        <p className={styles.verifyNote}>Verification usually takes a short time.</p>
       </div>
 
       <div className={styles.orderBox}>
         <span className={styles.orderLabel}>Order ID</span>
         <span className={styles.orderId}>{orderId}</span>
       </div>
-
-      <p className={styles.waNote}>
-        We&apos;ll notify you via WhatsApp once confirmed.
-      </p>
 
       <div className={styles.actions}>
         <a
