@@ -58,7 +58,7 @@ export default async function CourseDetailPage({ params }: Props) {
                                 {[
                                     { icon: '📅', label: 'Next session', val: course.nextSession },
                                     { icon: '⏱', label: 'Duration', val: course.format },
-                                    { icon: '👥', label: 'Format', val: 'Live · max 15 students' },
+                                    { icon: '👥', label: 'Format', val: 'Live · max 12 students' },
                                 ].map((m) => (
                                     <div key={m.label} className={styles.metaItem}>
                                         <span>{m.icon}</span>
@@ -243,7 +243,7 @@ export default async function CourseDetailPage({ params }: Props) {
                                     {[
                                         { icon: '💻', title: 'Live Online', desc: 'Join via video — interactive, not pre-recorded.' },
                                         { icon: '🙋', title: 'Ask Anything', desc: 'Q&A throughout the entire session.' },
-                                        { icon: '👥', title: 'Max 15 Students', desc: 'Small group for real attention.' },
+                                        { icon: '👥', title: 'Max 12 Students', desc: 'Small group for real attention.' },
                                         { icon: '⏱', title: course.format, desc: 'Compact, focused, and effective.' },
                                     ].map((f, i) => (
                                         <div key={i} className={styles.formatItem}>

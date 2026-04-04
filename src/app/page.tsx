@@ -418,9 +418,6 @@ export default function HomePage() {
                             <Translate tKey="cta.consultAdvisor" />
                         </a>
                     </div>
-                    <p className={styles.guarantee}>
-                        100% Satisfaction Guaranteed
-                    </p>
                 </div>
             </section>
 
