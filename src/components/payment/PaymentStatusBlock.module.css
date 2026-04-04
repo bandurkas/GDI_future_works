@@ -1,0 +1,106 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+}
+
+/* Pulsing ring */
+.ringWrapper {
+  position: relative;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50%       { box-shadow: 0 0 0 20px rgba(245, 158, 11, 0); }
+}
+
+.ring {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--warning-light);
+  border: 3px solid var(--warning);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.ringIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* Text */
+.text {
+  max-width: 360px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3);
+  letter-spacing: 0.01em;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Order ID */
+.orderBox {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.orderLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.orderId {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.waNote {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* CTAs */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 380px;
+}
+
+.autoCheck {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0;
+}
