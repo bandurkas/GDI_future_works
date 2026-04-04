@@ -401,17 +401,17 @@ export default function CartPage() {
                   ) : (
                     <div className={styles.thankYouBlock}>
                       <div className={styles.thankYouIcon}>🎉</div>
-                      <h2 className={styles.thankYouTitle}>Thank you! Your payment is being verified.</h2>
-                      <p className={styles.thankYouSub}>Our team will contact you shortly with:</p>
+                      <h2 className={styles.thankYouTitle}><Translate tKey="thankyou.title" /></h2>
+                      <p className={styles.thankYouSub}><Translate tKey="thankyou.sub" /></p>
                       <ul className={styles.thankYouList}>
-                        <li>Enrollment confirmation</li>
-                        <li>Next steps</li>
-                        <li>Class access link</li>
+                        <li><Translate tKey="thankyou.step1" /></li>
+                        <li><Translate tKey="thankyou.step2" /></li>
+                        <li><Translate tKey="thankyou.step3" /></li>
                       </ul>
-                      <p className={styles.thankYouTime}>Verification usually takes a short time.</p>
+                      <p className={styles.thankYouTime}><Translate tKey="thankyou.time" /></p>
                       {orderId && (
                         <div className={styles.thankYouOrderBox}>
-                          <span className={styles.thankYouOrderLabel}>Order ID</span>
+                          <span className={styles.thankYouOrderLabel}><Translate tKey="thankyou.orderId" /></span>
                           <code className={styles.thankYouOrderId}>{orderId}</code>
                         </div>
                       )}
@@ -426,7 +426,7 @@ export default function CartPage() {
                               rel="noopener noreferrer"
                               className={styles.paypalReopen}
                             >
-                              Re-open PayPal for {item.courseTitle} →
+                              <Translate tKey="thankyou.reopen" /> {item.courseTitle} →
                             </a>
                           ) : null;
                         })}

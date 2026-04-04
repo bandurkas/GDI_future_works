@@ -52,6 +52,14 @@ const translations: Record<Language, Record<string, string>> = {
         'cart.secure': 'Secure Checkout • 256-bit Encryption',
         'cart.addMore': 'Add another course',
         'cart.back': 'Back to Courses',
+        'thankyou.title': 'Thank you! Your payment is being verified.',
+        'thankyou.sub': 'Our team will contact you shortly with:',
+        'thankyou.step1': 'Enrollment confirmation',
+        'thankyou.step2': 'Next steps',
+        'thankyou.step3': 'Class access link',
+        'thankyou.time': 'Verification usually takes a short time.',
+        'thankyou.orderId': 'Order ID',
+        'thankyou.reopen': 'Re-open PayPal for',
 
         // GREAT ENGLISH CARD
         'ge.special': 'Special Partnership',
@@ -570,6 +578,14 @@ const translations: Record<Language, Record<string, string>> = {
         'cart.secure': 'Pembayaran Aman • Enkripsi 256-bit',
         'cart.addMore': 'Tambah kursus lainnya',
         'cart.back': 'Kembali ke Kursus',
+        'thankyou.title': 'Terima kasih! Pembayaran Anda sedang diverifikasi.',
+        'thankyou.sub': 'Tim kami akan segera menghubungi Anda dengan:',
+        'thankyou.step1': 'Konfirmasi pendaftaran',
+        'thankyou.step2': 'Langkah selanjutnya',
+        'thankyou.step3': 'Link akses kelas',
+        'thankyou.time': 'Verifikasi biasanya selesai dalam waktu singkat.',
+        'thankyou.orderId': 'ID Pesanan',
+        'thankyou.reopen': 'Buka ulang PayPal untuk',
 
         // GREAT ENGLISH CARD
         'ge.special': 'Kemitraan Khusus',
