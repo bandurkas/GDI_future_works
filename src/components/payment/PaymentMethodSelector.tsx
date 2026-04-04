@@ -4,6 +4,7 @@ import styles from './PaymentMethodSelector.module.css';
 interface PaymentMethodSelectorProps {
   selected: 'qris' | 'paypal' | null;
   onSelect: (method: 'qris' | 'paypal') => void;
+  currency?: 'IDR' | 'MYR';
 }
 
 function QrisLogo() {
@@ -24,7 +25,9 @@ function PayPalLogo() {
   );
 }
 
-export default function PaymentMethodSelector({ selected, onSelect }: PaymentMethodSelectorProps) {
+export default function PaymentMethodSelector({ selected, onSelect, currency = 'IDR' }: PaymentMethodSelectorProps) {
+  const isMYR = currency === 'MYR';
+
   return (
     <div className={styles.wrapper}>
       {/* QRIS Card */}
@@ -38,16 +41,32 @@ export default function PaymentMethodSelector({ selected, onSelect }: PaymentMet
           <div className={styles.cardIcon}><QrisLogo /></div>
           <div className={styles.cardInfo}>
             <div className={styles.cardTitle}>QRIS / GoPay</div>
-            <div className={styles.cardSub}>Pay via GoPay, OVO, Dana, or any bank app</div>
-            <div className={styles.cardMeta}>Instant · IDR only</div>
+            <div className={styles.cardSub}>
+              {isMYR
+                ? 'Pay via Malaysian bank app with QRIS support'
+                : 'Pay via GoPay, OVO, Dana, or any bank app'}
+            </div>
+            <div className={styles.cardMeta}>
+              {isMYR ? 'Charged in IDR · Works with most Malaysian banks' : 'Instant · IDR'}
+            </div>
           </div>
           <div className={`${styles.radio} ${selected === 'qris' ? styles.radioSelected : ''}`} />
         </div>
         <div className={styles.details}>
           <ul className={styles.detailList}>
-            <li>Scan QR from GoPay or any banking app</li>
-            <li>Upload receipt to confirm</li>
-            <li>Admin verifies within 5–30 min</li>
+            {isMYR ? (
+              <>
+                <li>Open your bank app and tap Scan QR / Pay</li>
+                <li>Scan the QRIS code — charged in IDR equivalent</li>
+                <li>Upload receipt · Admin verifies within 5–30 min</li>
+              </>
+            ) : (
+              <>
+                <li>Scan QR from GoPay or any banking app</li>
+                <li>Upload receipt to confirm</li>
+                <li>Admin verifies within 5–30 min</li>
+              </>
+            )}
           </ul>
         </div>
       </button>
@@ -64,7 +83,9 @@ export default function PaymentMethodSelector({ selected, onSelect }: PaymentMet
           <div className={styles.cardInfo}>
             <div className={styles.cardTitle}>PayPal</div>
             <div className={styles.cardSub}>Pay with credit/debit card or PayPal balance</div>
-            <div className={styles.cardMeta}>Instant · USD · No PayPal account needed</div>
+            <div className={styles.cardMeta}>
+              {isMYR ? 'Instant · USD · Recommended for Malaysia' : 'Instant · USD · No PayPal account needed'}
+            </div>
           </div>
           <div className={`${styles.radio} ${selected === 'paypal' ? styles.radioSelected : ''}`} />
         </div>

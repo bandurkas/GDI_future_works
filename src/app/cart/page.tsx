@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/components/CartContext';
 import { useLanguage, Translate } from '@/components/LanguageContext';
-import { formatPrice } from '@/lib/currency';
+import { useCurrency } from '@/components/CurrencyContext';
+import { formatPrice, convertToIdr } from '@/lib/currency';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -53,6 +54,7 @@ const PAYPAL_LINKS: Record<string, string> = {
 export default function CartPage() {
   const { items, removeItem, totalItems, clearCart, customerInfo, updateCustomerInfo } = useCart();
   const { language } = useLanguage();
+  const { currency } = useCurrency();
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -94,7 +96,12 @@ export default function CartPage() {
   }, [session]);
 
   const totalIDR = items.reduce((sum, item) => sum + item.priceIDR, 0);
-  const displayTotal = formatPrice(totalIDR, 'IDR');
+  const totalMYR = items.reduce((sum, item) => sum + item.priceMYR, 0);
+  const displayTotal = currency === 'MYR'
+    ? formatPrice(totalMYR, 'MYR')
+    : formatPrice(totalIDR, 'IDR');
+  // QRIS/Midtrans always charges in IDR — convert MYR if needed
+  const chargeAmountIDR = currency === 'MYR' ? convertToIdr(totalMYR, 'MYR') : totalIDR;
 
   const currentSlug = items[0]?.slug ?? '';
 
@@ -137,7 +144,9 @@ export default function CartPage() {
             customerName: name,
             customerEmail: email,
             customerPhone: phone,
-            currency: 'IDR',
+            currency: 'IDR', // Midtrans always processes IDR
+            displayCurrency: currency,
+            chargeAmountIDR,
           }),
         });
         const data = await res.json();
@@ -265,7 +274,11 @@ export default function CartPage() {
                           </div>
                         </div>
                         <div className={styles.itemActions}>
-                          <div className={styles.itemPrice}>{formatPrice(item.priceIDR, 'IDR')}</div>
+                          <div className={styles.itemPrice}>
+                            {currency === 'MYR'
+                              ? formatPrice(item.priceMYR, 'MYR')
+                              : formatPrice(item.priceIDR, 'IDR')}
+                          </div>
                           <button
                             className={styles.removeBtn}
                             onClick={() => handleRemoveItem(item.courseId, item.dateId, item.courseTitle)}
@@ -374,7 +387,7 @@ export default function CartPage() {
               {step === 'method' && (
                 <div className={styles.section}>
                   <h2 className={styles.sectionTitle}>Choose Payment Method</h2>
-                  <PaymentMethodSelector selected={method} onSelect={setMethod} />
+                  <PaymentMethodSelector selected={method} onSelect={setMethod} currency={currency} />
                   {createOrderError && <p className={styles.fieldError}>{createOrderError}</p>}
                   <button
                     className="btn btn-primary btn-xl btn-full"
@@ -393,7 +406,7 @@ export default function CartPage() {
                   {method === 'qris' && orderId ? (
                     <QRISPaymentBlock
                       orderId={orderId}
-                      amountIDR={totalIDR}
+                      amountIDR={chargeAmountIDR}
                       onPaid={() => { clearCart(); setPaid(true); }}
                     />
                   ) : method === 'qris' && !orderId ? (
