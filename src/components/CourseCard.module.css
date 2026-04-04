@@ -96,6 +96,10 @@
     line-height: 1.4;
     font-weight: 500;
     margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .tagsContainer {
@@ -103,6 +107,8 @@
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 8px;
+    max-height: 76px; /* cap at 2 tag rows so tall-tag cards don't grow */
+    overflow: hidden;
 }
 
 .tagBadge {
