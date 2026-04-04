@@ -56,14 +56,14 @@
 }
 
 .logoImage {
-    height: 34px !important;
+    height: 40px !important;
     width: auto;
     object-fit: contain;
     transition: height var(--transition-base);
 }
 
 .header.scrolled .logoImage {
-    height: 30px !important;
+    height: 36px !important;
 }
 
 .logo:hover {
