@@ -12,14 +12,24 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   const isLoginPage = pathname === '/crm/login';
   const isStudents = pathname.startsWith('/crm/students');
   const isTutors = pathname.startsWith('/crm/tutors');
+  const isPayments = pathname.startsWith('/crm/payments');
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
+  const [pendingCount, setPendingCount] = useState(0);
 
   // Load saved theme preference
   useEffect(() => {
     const saved = localStorage.getItem('crm-theme') as Theme | null;
     if (saved === 'light' || saved === 'dark') setTheme(saved);
   }, []);
+
+  // Fetch pending payment count for sidebar badge
+  useEffect(() => {
+    fetch('/api/admin/payments/pending-count')
+      .then((r) => r.json())
+      .then((d) => setPendingCount(d.count ?? 0))
+      .catch(() => {});
+  }, [pathname]);
 
   function toggleTheme() {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';
@@ -35,7 +45,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const pageLabel = isStudents ? 'Students' : isTutors ? 'Tutors' : 'Dashboard';
+  const pageLabel = isStudents ? 'Students' : isTutors ? 'Tutors' : isPayments ? 'Payments' : 'Dashboard';
   const isLight = theme === 'light';
 
   return (
@@ -80,6 +90,13 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
               <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
             </svg>
           }>Tutor Pipeline</NavItem>
+
+          <NavItem href="/crm/payments" active={isPayments} collapsed={collapsed} badge={pendingCount} icon={
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+          }>Payments</NavItem>
         </nav>
 
         {/* Bottom: user + logout */}
@@ -161,8 +178,8 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-function NavItem({ href, active, collapsed, icon, children }: {
-  href: string; active: boolean; collapsed: boolean; icon: React.ReactNode; children: React.ReactNode;
+function NavItem({ href, active, collapsed, icon, badge, children }: {
+  href: string; active: boolean; collapsed: boolean; icon: React.ReactNode; badge?: number; children: React.ReactNode;
 }) {
   const cls = [
     nav.item,
@@ -174,6 +191,23 @@ function NavItem({ href, active, collapsed, icon, children }: {
     <Link href={href} className={cls} title={collapsed ? String(children) : undefined}>
       <span className={nav.icon}>{icon}</span>
       {!collapsed && <span>{children}</span>}
+      {!collapsed && badge && badge > 0 ? (
+        <span style={{
+          marginLeft: 'auto',
+          background: '#EF4444',
+          color: '#fff',
+          fontSize: '0.68rem',
+          fontWeight: 700,
+          borderRadius: '100px',
+          minWidth: '18px',
+          height: '18px',
+          padding: '0 5px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          lineHeight: 1,
+        }}>{badge}</span>
+      ) : null}
     </Link>
   );
 }

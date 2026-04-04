@@ -111,10 +111,10 @@ export default function CartPage() {
 
   const handleContinueMethod = async () => {
     if (!method) return;
-    if (method === 'qris') {
-      setCreateOrderLoading(true);
-      setCreateOrderError(null);
-      try {
+    setCreateOrderLoading(true);
+    setCreateOrderError(null);
+    try {
+      if (method === 'qris') {
         const res = await fetch('/api/payment/create', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -129,12 +129,37 @@ export default function CartPage() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Could not create order');
         setOrderId(data.orderId);
-      } catch (err: any) {
-        setCreateOrderError(err.message || 'Something went wrong. Please try again.');
-        return;
-      } finally {
+      } else if (method === 'paypal') {
+        const res = await fetch('/api/payment/create-paypal', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: items.map((item: any) => ({
+              ...item,
+              paypalUrl: PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug] ?? '#',
+            })),
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Could not register order');
+        setOrderId(data.orderId);
+        // Open each PayPal link directly — skip the Pay step
+        items.forEach((item: any) => {
+          const url = PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug];
+          if (url) window.open(url, '_blank', 'noopener,noreferrer');
+        });
         setCreateOrderLoading(false);
+        setStep('payment');
+        return;
       }
+    } catch (err: any) {
+      setCreateOrderError(err.message || 'Something went wrong. Please try again.');
+      return;
+    } finally {
+      setCreateOrderLoading(false);
     }
     setStep('payment');
   };
@@ -334,12 +359,33 @@ export default function CartPage() {
                   ) : method === 'qris' && !orderId ? (
                     <p className={styles.fieldError}>Order could not be created. Please go back and try again.</p>
                   ) : (
-                    <PayPalPaymentBlock
-                      items={items.map(item => ({
-                        courseTitle: item.courseTitle,
-                        paypalUrl: PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug] ?? '#',
-                      }))}
-                    />
+                    <div className={styles.paypalInitiated}>
+                      <div className={styles.paypalInitiatedIcon}>✅</div>
+                      <h3 className={styles.paypalInitiatedTitle}>PayPal window opened!</h3>
+                      <p className={styles.paypalInitiatedText}>
+                        Complete your payment in the PayPal tab that just opened.
+                        Your enrollment will be activated within 30 minutes after verification.
+                      </p>
+                      {orderId && (
+                        <p className={styles.paypalInitiatedOrderId}>Order ID: <code>{orderId}</code></p>
+                      )}
+                      <div className={styles.paypalInitiatedLinks}>
+                        {items.map((item: any) => {
+                          const url = PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug];
+                          return url ? (
+                            <a
+                              key={item.courseId ?? item.slug}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={styles.paypalReopen}
+                            >
+                              Re-open PayPal for {item.courseTitle} →
+                            </a>
+                          ) : null;
+                        })}
+                      </div>
+                    </div>
                   )}
                 </div>
               )}
