@@ -55,6 +55,7 @@ export interface Course {
     rating: number;
     studentsCount: number;
     nextSession: string;
+    tutorEmail?: string;
     seatsLeft: number;
     targetRoles: string[];
     priceMYR: number;
@@ -89,6 +90,7 @@ export const courses: Course[] = [
     {
         id: 'data-analytics',
         slug: 'data-analytics',
+        tutorEmail: 'bayusedana26@gmail.com',
         category: 'Data Analytics',
         title: 'Basic Data Analyst',
         subtitle: 'From Raw Data to Business Insights',
@@ -420,6 +422,7 @@ export const courses: Course[] = [
     {
         id: 'graphic-design-ai',
         slug: 'graphic-design-ai',
+        tutorEmail: 'anumzulfiqar2@gamil.com',
         category: 'Graphic Design & AI',
         title: 'Graphic Design with AI',
         subtitle: 'Create Stunning Visuals \u2014 Faster',
@@ -588,6 +591,7 @@ export const courses: Course[] = [
     {
         id: 'llm-ai-engineering',
         slug: 'llm-ai-engineering',
+        tutorEmail: 'hassan.hanif2014@gmail.com',
         category: 'LLM & AI Engineering',
         title: 'LLM & AI Engineering',
         subtitle: 'Build Intelligent AI-Powered Products',

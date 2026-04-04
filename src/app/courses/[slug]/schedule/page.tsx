@@ -1,9 +1,7 @@
 'use client';
 import { useState, use, useEffect } from 'react';
-import { useCurrency } from '@/components/CurrencyContext';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getCourseBySlug } from '@/data/courses';
+import { getCourseBySlug, type Schedule } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
@@ -11,28 +9,65 @@ import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
 
+function formatTime(t: string) {
+    const [h, m] = t.split(':').map(Number);
+    const ampm = h < 12 ? 'AM' : 'PM';
+    const h12 = h % 12 || 12;
+    return `${h12}:${m.toString().padStart(2, '0')} ${ampm}`;
+}
+
 export default function SchedulePage({ params }: Props) {
     const { slug } = use(params);
     const router = useRouter();
     const { data: session, status } = useSession();
     const { t, language } = useLanguage();
     const course = getCourseBySlug(slug);
-    const [selectedId, setSelectedId] = useState<string | null>(null);
+
+    const [dynamicSlots, setDynamicSlots] = useState<Schedule[] | null>(null);
+    const [slotsLoading, setSlotsLoading] = useState(false);
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [selectedSlot, setSelectedSlot] = useState<Schedule | null>(null);
     const { addItem, customerInfo, updateCustomerInfo } = useCart();
-    
+
     const isID = language === 'id';
     const isAuthenticated = status === 'authenticated';
-    
-    // Contact State
+
     const [email, setEmail] = useState(customerInfo.email || '');
     const [phone, setPhone] = useState(customerInfo.phone || '');
 
-    // Prefill from session if empty
     useEffect(() => {
-        if (session?.user) {
-            if (!email && session.user.email) setEmail(session.user.email);
-        }
+        if (session?.user && !email && session.user.email) setEmail(session.user.email);
     }, [session, email]);
+
+    useEffect(() => {
+        if (!course || !(course as any).tutorEmail) return;
+        setSlotsLoading(true);
+        fetch('/api/courses/' + slug + '/availability')
+            .then(r => r.json())
+            .then(data => { if (data.slots?.length > 0) setDynamicSlots(data.slots); })
+            .catch(() => {})
+            .finally(() => setSlotsLoading(false));
+    }, [slug, course]);
+
+    const slots: Schedule[] = dynamicSlots ?? (course?.schedules ?? []);
+
+    // Group slots by calendar date
+    const slotsByDate = new Map<string, Schedule[]>();
+    for (const slot of slots) {
+        const match = slot.id.match(/^(\d{4}-\d{2}-\d{2})/);
+        const dateKey = match ? match[1] : slot.date + '-' + slot.day;
+        if (!slotsByDate.has(dateKey)) slotsByDate.set(dateKey, []);
+        slotsByDate.get(dateKey)!.push(slot);
+    }
+
+    const uniqueDates = Array.from(slotsByDate.entries()).map(([dateKey, dateSlots]) => {
+        const rep = dateSlots[0];
+        const allFull = dateSlots.every(s => s.seatsLeft === 0);
+        const someUrgent = dateSlots.some(s => s.seatsLeft > 0 && s.seatsLeft <= 3);
+        return { dateKey, dateSlots, rep, allFull, someUrgent };
+    });
+
+    const selectedDateSlots = selectedDate ? (slotsByDate.get(selectedDate) ?? []) : [];
 
     const STEPS = [
         { number: 1, label: t('schedule.step1') },
@@ -40,36 +75,31 @@ export default function SchedulePage({ params }: Props) {
         { number: 3, label: t('schedule.step3') },
     ];
 
-    const selected = course?.schedules?.find(d => d.id === selectedId);
-    
-    const canContinue = selectedId && (isAuthenticated || email.trim().length > 0 || phone.trim().length > 0);
+    const canContinue = !!selectedSlot && (isAuthenticated || email.trim().length > 0 || phone.trim().length > 0);
+
+    const handleDateSelect = (dateKey: string) => {
+        setSelectedDate(dateKey);
+        setSelectedSlot(null);
+    };
 
     const handleNext = () => {
-        if (!canContinue || !selected || !course) return;
-        
-        // Save customer info to context
+        if (!canContinue || !selectedSlot || !course) return;
         updateCustomerInfo({ email, phone });
-        
-        // Add course to cart
         addItem({
             courseId: course.id,
             courseTitle: course.title,
             slug: course.slug,
-            dateId: selected.id,
-            dateLabel: selected.date,
-            timeLabel: `${selected.time}–${selected.timeEnd}`,
+            dateId: selectedSlot.id,
+            dateLabel: selectedSlot.date,
+            timeLabel: `${selectedSlot.time}\u2013${selectedSlot.timeEnd}`,
             priceIDR: course.priceIDR,
             priceMYR: course.priceMYR,
-            icon: course.icon
+            icon: course.icon,
         });
-        
-        // Immediate redirect to cart
         router.push('/cart');
     };
 
-    // Localized course title
     const courseTitle = isID ? (course?.titleID || course?.title) : course?.title;
-    const courseFormat = course?.format;
 
     if (!course) return null;
 
@@ -77,19 +107,19 @@ export default function SchedulePage({ params }: Props) {
         <div className={styles.page}>
             <div className="container">
                 <div className={styles.inner}>
-                    {/* Top flow control */}
+                    {/* Back button */}
                     <button onClick={() => router.back()} className={styles.flowBackBtn} aria-label="Go back">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
                         <span>{t('schedule.back')}</span>
                     </button>
 
-                    {/* Progress indicator */}
+                    {/* Progress */}
                     <div className={styles.progress}>
                         {STEPS.map((s, i) => (
                             <div key={s.number} className={styles.progressStep}>
-                                <div className={`${styles.stepBubble} ${s.number === 1 ? styles.stepActive : ''}`}>
-                                    {s.number}
-                                </div>
+                                <div className={`${styles.stepBubble} ${s.number === 1 ? styles.stepActive : ''}`}>{s.number}</div>
                                 <span className={`${styles.stepLabel} ${s.number === 1 ? styles.stepLabelActive : ''}`}>{s.label}</span>
                                 {i < STEPS.length - 1 && <div className={styles.stepLine} />}
                             </div>
@@ -99,61 +129,95 @@ export default function SchedulePage({ params }: Props) {
                     <div>
                         <h1 className={styles.title}>{t('schedule.title')}</h1>
                         <p className={styles.subtitle}>
-                            {t('schedule.sessionFor')} <strong>{courseTitle}</strong> · {courseFormat}
+                            {t('schedule.sessionFor')} <strong>{courseTitle}</strong> &middot; {course.format}
                         </p>
                     </div>
 
-                    {/* Date grid */}
+                    {/* STEP 1 — Select Date */}
                     <div className={styles.section}>
                         <h3 className={styles.sectionLabel}>{t('schedule.availableDates')}</h3>
-                        
-                        {(!course.schedules || course.schedules.length === 0) ? (
-                            <div style={{ padding: '24px', background: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-light)', textAlign: 'center', marginTop: '16px' }}>
+
+                        {slotsLoading ? (
+                            <div className={styles.emptyState}>
+                                <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Loading available dates...</p>
+                            </div>
+                        ) : uniqueDates.length === 0 ? (
+                            <div className={styles.emptyState}>
                                 <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{t('schedule.noSchedule')}</h4>
-                                <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                                    {t('schedule.noScheduleDesc')}
-                                </p>
+                                <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{t('schedule.noScheduleDesc')}</p>
                             </div>
                         ) : (
                             <div className={styles.dateGrid}>
-                                {course.schedules.map((slot) => {
-                                    const isFull = slot.seatsLeft === 0;
-                                    const isUrgent = slot.seatsLeft > 0 && slot.seatsLeft <= 3;
-                                    const dayNames = slot.dayOfWeek.split(/[–-]/);
-                                    const dayName = dayNames.length > 0 ? dayNames[0] : slot.dayOfWeek;
-                                    
-                                    return (
-                                        <button
-                                            key={slot.id}
-                                            className={`${styles.dateCard} ${selectedId === slot.id ? styles.dateSelected : ''} ${isUrgent ? styles.dateUrgent : ''} ${isFull ? styles.dateFull : ''}`}
-                                            onClick={() => !isFull && setSelectedId(slot.id)}
-                                            aria-pressed={selectedId === slot.id}
-                                            disabled={isFull}
-                                            id={`date-${slot.id}`}
-                                        >
-                                            <span className={styles.dayName}>{dayName}</span>
-                                            <span className={styles.dayNum}>{slot.day}</span>
-                                            <span className={styles.dayMonth}>{slot.month}</span>
-                                            {isFull ? (
-                                                <span className={styles.fullBadge}>{t('schedule.fullyBooked')}</span>
-                                            ) : slot.seatsLeft <= 5 ? (
-                                                <span className={styles.seatBadge}>{slot.seatsLeft} {t('schedule.seatsLeft')}</span>
-                                            ) : null}
-                                        </button>
-                                    );
-                                })}
+                                {uniqueDates.map(({ dateKey, dateSlots, rep, allFull, someUrgent }) => (
+                                    <button
+                                        key={dateKey}
+                                        className={[
+                                            styles.dateCard,
+                                            selectedDate === dateKey ? styles.dateSelected : '',
+                                            someUrgent ? styles.dateUrgent : '',
+                                            allFull ? styles.dateFull : '',
+                                        ].join(' ')}
+                                        onClick={() => !allFull && handleDateSelect(dateKey)}
+                                        disabled={allFull}
+                                        aria-pressed={selectedDate === dateKey}
+                                    >
+                                        <span className={styles.dayName}>{rep.dayOfWeek}</span>
+                                        <span className={styles.dayNum}>{rep.day}</span>
+                                        <span className={styles.dayMonth}>{rep.month}</span>
+                                        {allFull ? (
+                                            <span className={styles.fullBadge}>{t('schedule.fullyBooked')}</span>
+                                        ) : (
+                                            <span className={styles.slotCount}>{dateSlots.length} {dateSlots.length === 1 ? 'slot' : 'slots'}</span>
+                                        )}
+                                    </button>
+                                ))}
                             </div>
                         )}
                     </div>
 
-                    {/* Time slot */}
-                    {selected && (
+                    {/* STEP 2 — Select Time */}
+                    {selectedDate && selectedDateSlots.length > 0 && (
                         <div className={`${styles.section} ${styles.timeSection}`}>
+                            <h3 className={styles.sectionLabel}>
+                                {selectedDateSlots[0].dayOfWeek} {selectedDateSlots[0].day} {selectedDateSlots[0].month} &mdash; Available Times
+                            </h3>
+                            <div className={styles.timeGrid}>
+                                {selectedDateSlots.map(slot => {
+                                    const isFull = slot.seatsLeft === 0;
+                                    const isSelected = selectedSlot?.id === slot.id;
+                                    return (
+                                        <button
+                                            key={slot.id}
+                                            className={[
+                                                styles.timeCard,
+                                                isSelected ? styles.timeSelected : '',
+                                                isFull ? styles.timeFull : '',
+                                            ].join(' ')}
+                                            onClick={() => !isFull && setSelectedSlot(slot)}
+                                            disabled={isFull}
+                                            aria-pressed={isSelected}
+                                        >
+                                            <span className={styles.timeRange}>
+                                                {formatTime(slot.time)} &mdash; {formatTime(slot.timeEnd)}
+                                            </span>
+                                            <span className={`${styles.timeStatus} ${isFull ? '' : styles.timeAvail}`}>
+                                                {isFull ? t('schedule.fullyBooked') : 'Available'}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Confirmed selection */}
+                    {selectedSlot && (
+                        <div className={`${styles.section} ${styles.confirmedSection}`}>
                             <h3 className={styles.sectionLabel}>{t('schedule.sessionTime')}</h3>
                             <div className={styles.timeSlot}>
                                 <span className={styles.timeIcon}>🕒</span>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span className={styles.timeVal}>{selected.time}–{selected.timeEnd || '12:00'} (GMT+8)</span>
+                                    <span className={styles.timeVal}>{selectedSlot.time}\u2013{selectedSlot.timeEnd} (GMT+8)</span>
                                     <span className={styles.timeMeta}>{t('schedule.liveOnline')}</span>
                                 </div>
                                 <div className={styles.timeCheck}>✓</div>
@@ -161,48 +225,28 @@ export default function SchedulePage({ params }: Props) {
                         </div>
                     )}
 
-                    {/* Contact Information */}
-                    {selected && !isAuthenticated && (
+                    {/* Contact info */}
+                    {selectedSlot && !isAuthenticated && (
                         <div className={styles.contactSection}>
                             <h3 className={styles.sectionLabel}>{t('schedule.yourDetails')}</h3>
                             <div className={styles.inputRow}>
                                 <div className={styles.inputGroup}>
                                     <label className={styles.inputLabel}>{t('schedule.emailLabel')}</label>
-                                    <input 
-                                        className={styles.inputField} 
-                                        type="email" 
-                                        placeholder={t('schedule.emailPlaceholder')}
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
+                                    <input className={styles.inputField} type="email" placeholder={t('schedule.emailPlaceholder')} value={email} onChange={e => setEmail(e.target.value)} />
                                 </div>
                                 <div className={styles.inputGroup}>
                                     <label className={styles.inputLabel}>{t('schedule.phoneLabel')}</label>
-                                    <input 
-                                        className={styles.inputField} 
-                                        type="tel" 
-                                        placeholder={t('schedule.phonePlaceholder')}
-                                        value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
-                                    />
+                                    <input className={styles.inputField} type="tel" placeholder={t('schedule.phonePlaceholder')} value={phone} onChange={e => setPhone(e.target.value)} />
                                 </div>
                             </div>
-                            
                             {!email && !phone && (
-                                <p style={{ fontSize: '0.8125rem', color: 'var(--accent)', fontWeight: '600', marginTop: '4px' }}>
-                                    {t('schedule.validationMsg')}
-                                </p>
+                                <p style={{ fontSize: '0.8125rem', color: 'var(--accent)', fontWeight: '600', marginTop: '4px' }}>{t('schedule.validationMsg')}</p>
                             )}
-                            
-                            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                                {t('schedule.contactNote')}
-                            </p>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>{t('schedule.contactNote')}</p>
                         </div>
                     )}
 
-                    <div className={styles.bottomNote}>
-                        {t('schedule.bottomNote')}
-                    </div>
+                    <div className={styles.bottomNote}>{t('schedule.bottomNote')}</div>
 
                     <button
                         onClick={handleNext}
@@ -210,11 +254,7 @@ export default function SchedulePage({ params }: Props) {
                         className={`btn btn-primary btn-xl btn-full ${!canContinue ? styles.ctaDisabled : ''}`}
                         id="schedule-next-cta"
                     >
-                        {selectedId ? (
-                            <>{t('schedule.next')}</>
-                        ) : (
-                            <>{t('schedule.selectDate')}</>
-                        )}
+                        {selectedSlot ? t('schedule.next') : selectedDate ? 'Select a Time' : t('schedule.selectDate')}
                     </button>
 
                     <button onClick={() => router.back()} className={styles.back}>{t('schedule.backFull')}</button>
