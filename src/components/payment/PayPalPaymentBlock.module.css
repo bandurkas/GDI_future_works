@@ -11,19 +11,19 @@
 
 .trustRow {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-2);
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .trustBadge {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-full);
-  padding: var(--space-1) var(--space-3);
+  padding: 4px 12px;
 }
 
 .note {
@@ -35,14 +35,99 @@
   max-width: 380px;
 }
 
-.container {
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
   width: 100%;
-  max-width: 400px;
-  min-height: 50px;
+}
+
+/* Official PayPal gold button */
+.paypalBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  background: #FFC439;
+  color: #003087;
+  border-radius: 50px;
+  padding: 0 var(--space-6);
+  height: 55px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1rem;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(255, 196, 57, 0.5);
+  letter-spacing: 0.01em;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.paypalBtn:hover {
+  background: #f0b429;
+  box-shadow: 0 4px 16px rgba(255, 196, 57, 0.6);
+  transform: translateY(-1px);
+}
+
+.paypalBtn:active {
+  transform: translateY(0);
+  background: #e6a921;
+}
+
+.btnInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.btnLabel {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #003087;
+}
+
+.btnSub {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #003087;
+  opacity: 0.75;
+}
+
+/* PayPal wordmark using official font feel */
+.ppMark {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.ppMark span:first-child {
+  color: #009CDE;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.35rem;
+  font-family: 'Arial', sans-serif;
+}
+
+.ppMark span:last-child {
+  color: #003087;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.35rem;
+  font-family: 'Arial', sans-serif;
 }
 
 .currency {
   font-size: 0.75rem;
   color: var(--text-muted);
+  text-align: center;
   margin: 0;
+}
+
+@media (max-width: 640px) {
+  .paypalBtn {
+    height: 52px;
+    border-radius: 12px;
+  }
 }

@@ -40,6 +40,16 @@ const STEP_INDEX: Record<Step, number> = {
   payment: 3,
 };
 
+
+const PAYPAL_LINKS: Record<string, string> = {
+  'data-analytics':              'https://www.paypal.com/ncp/payment/7R89GWTZY6T42',
+  'python-programming':          'https://www.paypal.com/ncp/payment/SQ9SHMYL8U258',
+  'graphic-design-ai':           'https://www.paypal.com/ncp/payment/V3RUE3TLKDRRQ',
+  'llm-ai-engineering':          'https://www.paypal.com/ncp/payment/U2EP8SMF6YRX2',
+  'intermediate-data-analytics': 'https://www.paypal.com/ncp/payment/ADWNHE46RYBT8',
+  'advanced-data-analytics':     'https://www.paypal.com/ncp/payment/QR4U3B4T9QEGG',
+};
+
 export default function CartPage() {
   const { items, removeItem, totalItems, clearCart, customerInfo, updateCustomerInfo } = useCart();
   const { language } = useLanguage();
@@ -324,7 +334,12 @@ export default function CartPage() {
                   ) : method === 'qris' && !orderId ? (
                     <p className={styles.fieldError}>Order could not be created. Please go back and try again.</p>
                   ) : (
-                    <PayPalPaymentBlock />
+                    <PayPalPaymentBlock
+                      items={items.map(item => ({
+                        courseTitle: item.courseTitle,
+                        paypalUrl: PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug] ?? '#',
+                      }))}
+                    />
                   )}
                 </div>
               )}
