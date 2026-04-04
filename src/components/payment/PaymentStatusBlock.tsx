@@ -11,10 +11,10 @@ interface PaymentStatusBlockProps {
 
 export default function PaymentStatusBlock({ orderId, slug }: PaymentStatusBlockProps) {
   const router = useRouter();
-  const [status, setStatus] = useState<'UNDER_REVIEW' | 'PAID'>('UNDER_REVIEW');
+  const [status, setStatus] = useState<'UNDER_REVIEW' | 'PAID' | 'FAILED'>('UNDER_REVIEW');
 
   useEffect(() => {
-    if (status === 'PAID') return;
+    if (status === 'PAID' || status === 'FAILED') return;
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`/api/payment/status?orderId=${orderId}`);
@@ -22,7 +22,10 @@ export default function PaymentStatusBlock({ orderId, slug }: PaymentStatusBlock
         if (data.status === 'PAID') {
           setStatus('PAID');
           clearInterval(interval);
-          router.push(`/courses/${slug}/confirmation?method=qris`);
+          router.push(`/courses/${slug}/confirmation?method=qris&paid=1`);
+        } else if (data.status === 'FAILED') {
+          setStatus('FAILED');
+          clearInterval(interval);
         }
       } catch {
         // silently retry
@@ -31,8 +34,46 @@ export default function PaymentStatusBlock({ orderId, slug }: PaymentStatusBlock
     return () => clearInterval(interval);
   }, [status, orderId, slug, router]);
 
-  const shortId = orderId.split('-').slice(-2).join('-');
   const waLink = `https://wa.me/628211704707?text=${encodeURIComponent(`Hi, I just submitted payment for order ${orderId}. Please verify when ready.`)}`;
+  const waRejectLink = `https://wa.me/628211704707?text=${encodeURIComponent(`Hi, my payment for order ${orderId} was not verified. Can you help me resubmit?`)}`;
+
+  if (status === 'FAILED') {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.ringWrapper}>
+          <div className={`${styles.ring} ${styles.ringFailed}`}>
+            <span className={styles.ringIcon}>❌</span>
+          </div>
+        </div>
+
+        <div className={styles.text}>
+          <h2 className={styles.title}>Payment Not Verified</h2>
+          <p className={styles.subtitle}>
+            Unfortunately, we could not verify your payment receipt. This may be due to an unreadable image or a payment amount mismatch.
+          </p>
+        </div>
+
+        <div className={styles.orderBox}>
+          <span className={styles.orderLabel}>Order ID</span>
+          <span className={styles.orderId}>{orderId}</span>
+        </div>
+
+        <div className={styles.actions}>
+          <a
+            href={waRejectLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary btn-lg btn-full"
+          >
+            💬 Contact Support on WhatsApp
+          </a>
+          <Link href="/cart" className="btn btn-secondary btn-lg btn-full">
+            Try Again
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.wrapper}>

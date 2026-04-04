@@ -62,6 +62,7 @@ export default function CartPage() {
   const [method, setMethod] = useState<PaymentMethod>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [paid, setPaid] = useState(false);
+  const [paidSlug, setPaidSlug] = useState<string>('');
   const [removeToast, setRemoveToast] = useState<string | null>(null);
   const removeToastTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -407,7 +408,7 @@ export default function CartPage() {
                     <QRISPaymentBlock
                       orderId={orderId}
                       amountIDR={chargeAmountIDR}
-                      onPaid={() => { clearCart(); setPaid(true); }}
+                      onPaid={() => { setPaidSlug(currentSlug); clearCart(); setPaid(true); }}
                     />
                   ) : method === 'qris' && !orderId ? (
                     <p className={styles.fieldError}>Order could not be created. Please go back and try again.</p>
@@ -451,7 +452,7 @@ export default function CartPage() {
 
               {/* ── Paid: Status ── */}
               {paid && orderId && (
-                <PaymentStatusBlock orderId={orderId} slug={currentSlug} />
+                <PaymentStatusBlock orderId={orderId} slug={paidSlug} />
               )}
 
             </div>
