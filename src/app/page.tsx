@@ -124,7 +124,7 @@ export default function HomePage() {
         <div className={styles.page}>
 
             {/* ── HERO ── */}
-            <section className={styles.heroSection}>
+            <section className={styles.heroSection} data-theme="light">
                 <div className={styles.heroLayout}>
                     {/* Left Illustration */}
                     <div className={`${styles.heroIllustration} ${styles.heroIllustrationLeft} ${styles.hideMobile}`}>

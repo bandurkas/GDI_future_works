@@ -122,6 +122,24 @@
   /* sticky bottom CTA height */
 }
 
+/* ===== LIGHT OVERRIDE (force light inside a dark-themed page) ===== */
+[data-theme="light"] {
+  --bg: #FFFFFF;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F2F2F2;
+  --bg-card: #FFFFFF;
+  --bg-card-elevated: #FFFFFF;
+  --bg-overlay: rgba(255, 255, 255, 0.88);
+  --bg-glass: rgba(255, 255, 255, 0.70);
+  --text-primary: #0D0D0D;
+  --text-secondary: #5C6470;
+  --text-muted: #9CA3AF;
+  --text-inverse: #FFFFFF;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-light: rgba(0, 0, 0, 0.04);
+  --border-strong: rgba(0, 0, 0, 0.14);
+}
+
 /* ===== DARK MODE ===== */
 [data-theme="dark"] {
   --bg: #0C0C0E;
