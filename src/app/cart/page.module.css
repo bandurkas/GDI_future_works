@@ -1,5 +1,5 @@
 .page {
-  padding: 64px 0 120px;
+  padding: calc(var(--nav-height) + 32px) 0 120px;
   min-height: 80vh;
   background: var(--bg-primary);
 }
