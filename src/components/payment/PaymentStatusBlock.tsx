@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './PaymentStatusBlock.module.css';
 
@@ -10,8 +9,7 @@ interface PaymentStatusBlockProps {
   provider?: 'qris' | 'paypal';
 }
 
-export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }: PaymentStatusBlockProps) {
-  const router = useRouter();
+export default function PaymentStatusBlock({ orderId, provider = 'qris' }: PaymentStatusBlockProps) {
   const [status, setStatus] = useState<'UNDER_REVIEW' | 'PAID' | 'FAILED'>('UNDER_REVIEW');
 
   useEffect(() => {
@@ -23,7 +21,6 @@ export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }:
         if (data.status === 'PAID') {
           setStatus('PAID');
           clearInterval(interval);
-          router.push(`/courses/${slug}/confirmation?method=qris&paid=1`);
         } else if (data.status === 'FAILED') {
           setStatus('FAILED');
           clearInterval(interval);
@@ -33,11 +30,52 @@ export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }:
       }
     }, 30_000);
     return () => clearInterval(interval);
-  }, [status, orderId, slug, router]);
+  }, [status, orderId]);
 
   const waLink = `https://wa.me/628211704707?text=${encodeURIComponent(`Hi, I just submitted payment for order ${orderId}. Please verify when ready.`)}`;
   const waRejectLink = `https://wa.me/628211704707?text=${encodeURIComponent(`Hi, my payment for order ${orderId} was not verified. Can you help me resubmit?`)}`;
 
+  /* ── PAID: green checkmark ── */
+  if (status === 'PAID') {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.ringWrapper}>
+          <div className={`${styles.ring} ${styles.ringSuccess}`}>
+            <svg className={styles.checkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+        </div>
+
+        <div className={styles.text}>
+          <h2 className={styles.title}>Thank you! Your payment is being verified.</h2>
+          <p className={styles.subtitle}>Our team will contact you shortly with:</p>
+          <ul className={styles.contactList}>
+            <li>Enrollment confirmation</li>
+            <li>Next steps</li>
+            <li>Class access link</li>
+          </ul>
+          <p className={styles.verifyNote}>Verification usually takes a short time.</p>
+        </div>
+
+        <div className={styles.orderBox}>
+          <span className={styles.orderLabel}>Order ID</span>
+          <span className={styles.orderId}>{orderId}</span>
+        </div>
+
+        <div className={styles.actions}>
+          <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full">
+            💬 Chat on WhatsApp
+          </a>
+          <Link href="/courses" className="btn btn-secondary btn-lg btn-full">
+            Browse Other Courses
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  /* ── FAILED: red ── */
   if (status === 'FAILED') {
     return (
       <div className={styles.wrapper}>
@@ -60,12 +98,7 @@ export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }:
         </div>
 
         <div className={styles.actions}>
-          <a
-            href={waRejectLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary btn-lg btn-full"
-          >
+          <a href={waRejectLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full">
             💬 Contact Support on WhatsApp
           </a>
           <Link href="/cart" className="btn btn-secondary btn-lg btn-full">
@@ -76,27 +109,22 @@ export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }:
     );
   }
 
+  /* ── UNDER_REVIEW: amber hourglass (default) ── */
   return (
     <div className={styles.wrapper}>
       <div className={styles.ringWrapper}>
-        <div className={`${styles.ring} ${styles.ringSuccess}`}>
-          <svg className={styles.checkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
+        <div className={`${styles.ring} ${styles.ringPending}`}>
+          <span className={styles.ringIcon}>⏳</span>
         </div>
       </div>
 
       <div className={styles.text}>
-        <h2 className={styles.title}>Thank you! Your payment is being verified.</h2>
+        <h2 className={styles.title}>Payment Under Review</h2>
         <p className={styles.subtitle}>
-          Our team will contact you shortly with:
+          {provider === 'paypal'
+            ? <>Your PayPal payment is being confirmed. This usually happens automatically within a few minutes.</>
+            : <>Your receipt has been submitted. Our team will verify your payment within <strong>5–30 minutes</strong> and send a WhatsApp confirmation.</>}
         </p>
-        <ul className={styles.contactList}>
-          <li>Enrollment confirmation</li>
-          <li>Next steps</li>
-          <li>Class access link</li>
-        </ul>
-        <p className={styles.verifyNote}>Verification usually takes a short time.</p>
       </div>
 
       <div className={styles.orderBox}>
@@ -104,13 +132,12 @@ export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }:
         <span className={styles.orderId}>{orderId}</span>
       </div>
 
+      <p className={styles.waNote}>
+        We&apos;ll notify you via WhatsApp once confirmed.
+      </p>
+
       <div className={styles.actions}>
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-primary btn-lg btn-full"
-        >
+        <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full">
           💬 Chat on WhatsApp
         </a>
         <Link href="/courses" className="btn btn-secondary btn-lg btn-full">
