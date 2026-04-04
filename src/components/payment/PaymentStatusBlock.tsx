@@ -7,9 +7,10 @@ import styles from './PaymentStatusBlock.module.css';
 interface PaymentStatusBlockProps {
   orderId: string;
   slug: string;
+  provider?: 'qris' | 'paypal';
 }
 
-export default function PaymentStatusBlock({ orderId, slug }: PaymentStatusBlockProps) {
+export default function PaymentStatusBlock({ orderId, slug, provider = 'qris' }: PaymentStatusBlockProps) {
   const router = useRouter();
   const [status, setStatus] = useState<'UNDER_REVIEW' | 'PAID' | 'FAILED'>('UNDER_REVIEW');
 
@@ -86,8 +87,9 @@ export default function PaymentStatusBlock({ orderId, slug }: PaymentStatusBlock
       <div className={styles.text}>
         <h2 className={styles.title}>Payment Under Review</h2>
         <p className={styles.subtitle}>
-          Your receipt has been received. Our team will verify your payment within{' '}
-          <strong>5–30 minutes</strong>.
+          {provider === 'paypal'
+            ? <>Your PayPal payment is being confirmed. This usually happens automatically within a few minutes.</>
+            : <>Your receipt has been received. Our team will verify your payment within <strong>5–30 minutes</strong>.</>}
         </p>
       </div>
 

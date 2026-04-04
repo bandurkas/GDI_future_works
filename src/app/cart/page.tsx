@@ -171,6 +171,7 @@ export default function CartPage() {
         if (!res.ok) throw new Error(data.error || 'Could not register order');
         setOrderId(data.orderId);
         // Open each PayPal link directly — skip the Pay step
+        setPaidSlug(currentSlug);
         items.forEach((item: any) => {
           const url = PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug];
           if (url) window.open(url, '_blank', 'noopener,noreferrer');
@@ -413,39 +414,44 @@ export default function CartPage() {
                   ) : method === 'qris' && !orderId ? (
                     <p className={styles.fieldError}>Order could not be created. Please go back and try again.</p>
                   ) : (
-                    <div className={styles.thankYouBlock}>
-                      <div className={styles.thankYouIcon}>🎉</div>
-                      <h2 className={styles.thankYouTitle}><Translate tKey="thankyou.title" /></h2>
-                      <p className={styles.thankYouSub}><Translate tKey="thankyou.sub" /></p>
-                      <ul className={styles.thankYouList}>
-                        <li><Translate tKey="thankyou.step1" /></li>
-                        <li><Translate tKey="thankyou.step2" /></li>
-                        <li><Translate tKey="thankyou.step3" /></li>
-                      </ul>
-                      <p className={styles.thankYouTime}><Translate tKey="thankyou.time" /></p>
-                      {orderId && (
-                        <div className={styles.thankYouOrderBox}>
-                          <span className={styles.thankYouOrderLabel}><Translate tKey="thankyou.orderId" /></span>
-                          <code className={styles.thankYouOrderId}>{orderId}</code>
+                    <>
+                      <div className={styles.thankYouBlock}>
+                        <div className={styles.thankYouIcon}>🎉</div>
+                        <h2 className={styles.thankYouTitle}><Translate tKey="thankyou.title" /></h2>
+                        <p className={styles.thankYouSub}><Translate tKey="thankyou.sub" /></p>
+                        <ul className={styles.thankYouList}>
+                          <li><Translate tKey="thankyou.step1" /></li>
+                          <li><Translate tKey="thankyou.step2" /></li>
+                          <li><Translate tKey="thankyou.step3" /></li>
+                        </ul>
+                        <p className={styles.thankYouTime}><Translate tKey="thankyou.time" /></p>
+                        {orderId && (
+                          <div className={styles.thankYouOrderBox}>
+                            <span className={styles.thankYouOrderLabel}><Translate tKey="thankyou.orderId" /></span>
+                            <code className={styles.thankYouOrderId}>{orderId}</code>
+                          </div>
+                        )}
+                        <div className={styles.thankYouLinks}>
+                          {items.map((item: any) => {
+                            const url = PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug];
+                            return url ? (
+                              <a
+                                key={item.courseId ?? item.slug}
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.paypalReopen}
+                              >
+                                <Translate tKey="thankyou.reopen" /> {item.courseTitle} →
+                              </a>
+                            ) : null;
+                          })}
                         </div>
-                      )}
-                      <div className={styles.thankYouLinks}>
-                        {items.map((item: any) => {
-                          const url = PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug];
-                          return url ? (
-                            <a
-                              key={item.courseId ?? item.slug}
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={styles.paypalReopen}
-                            >
-                              <Translate tKey="thankyou.reopen" /> {item.courseTitle} →
-                            </a>
-                          ) : null;
-                        })}
                       </div>
-                    </div>
+                      {orderId && (
+                        <PaymentStatusBlock orderId={orderId} slug={paidSlug} provider="paypal" />
+                      )}
+                    </>
                   )}
                 </div>
               )}
