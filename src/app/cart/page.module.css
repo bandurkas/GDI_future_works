@@ -557,6 +557,130 @@
   }
 }
 
+/* ── Payment step: centered layout ── */
+.progressCentered {
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.layoutCentered {
+  display: block !important;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Thank You / Verification block (PayPal + QRIS post-upload) ── */
+.thankYouBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 32px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.thankYouIcon {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.thankYouTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  max-width: 380px;
+}
+
+.thankYouSub {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.thankYouList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.thankYouList li {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.thankYouList li::before {
+  content: '✓';
+  color: var(--success);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.thankYouTime {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.thankYouOrderBox {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 14px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.thankYouOrderLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.thankYouOrderId {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  word-break: break-all;
+  background: none;
+  padding: 0;
+}
+
+.thankYouLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 4px;
+}
+
 /* ── PayPal Initiated Confirmation ── */
 .paypalInitiated {
   display: flex;

@@ -220,7 +220,7 @@ export default function CartPage() {
         </div>
 
         {/* Step progress */}
-        <div className={styles.progress}>
+        <div className={`${styles.progress} ${(step === 'payment' || paid) ? styles.progressCentered : ''}`}>
           {STEPS.map((s, i) => {
             const isDone = i < currentIdx;
             const isActive = i === currentIdx;
@@ -243,7 +243,7 @@ export default function CartPage() {
         </div>
 
         {/* Step content */}
-        <div className={styles.layout}>
+        <div className={`${styles.layout} ${(step === 'payment' || paid) ? styles.layoutCentered : ''}`}>
           <div className={styles.main}>
             <div key={step} className={styles.stepContent}>
 
@@ -399,17 +399,23 @@ export default function CartPage() {
                   ) : method === 'qris' && !orderId ? (
                     <p className={styles.fieldError}>Order could not be created. Please go back and try again.</p>
                   ) : (
-                    <div className={styles.paypalInitiated}>
-                      <div className={styles.paypalInitiatedIcon}>✅</div>
-                      <h3 className={styles.paypalInitiatedTitle}>PayPal window opened!</h3>
-                      <p className={styles.paypalInitiatedText}>
-                        Complete your payment in the PayPal tab that just opened.
-                        Your enrollment will be activated within 30 minutes after verification.
-                      </p>
+                    <div className={styles.thankYouBlock}>
+                      <div className={styles.thankYouIcon}>🎉</div>
+                      <h2 className={styles.thankYouTitle}>Thank you! Your payment is being verified.</h2>
+                      <p className={styles.thankYouSub}>Our team will contact you shortly with:</p>
+                      <ul className={styles.thankYouList}>
+                        <li>Enrollment confirmation</li>
+                        <li>Next steps</li>
+                        <li>Class access link</li>
+                      </ul>
+                      <p className={styles.thankYouTime}>Verification usually takes a short time.</p>
                       {orderId && (
-                        <p className={styles.paypalInitiatedOrderId}>Order ID: <code>{orderId}</code></p>
+                        <div className={styles.thankYouOrderBox}>
+                          <span className={styles.thankYouOrderLabel}>Order ID</span>
+                          <code className={styles.thankYouOrderId}>{orderId}</code>
+                        </div>
                       )}
-                      <div className={styles.paypalInitiatedLinks}>
+                      <div className={styles.thankYouLinks}>
                         {items.map((item: any) => {
                           const url = PAYPAL_LINKS[item.courseId] ?? PAYPAL_LINKS[item.slug];
                           return url ? (
