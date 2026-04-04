@@ -1,7 +1,6 @@
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import Link from "next/link";
 import styles from "./Auth.module.css";
-import Image from "next/image";
 import ThemeLogo from "@/components/ThemeLogo";
 
 export default function SignupPage() {
@@ -19,12 +18,6 @@ export default function SignupPage() {
                     
                     <div className={styles.buttonWrapper}>
                         <GoogleSignInButton />
-                    </div>
-
-                    <div className={styles.divider}>
-                        <div className={styles.dividerLine} />
-                        <span className={styles.dividerText}>or</span>
-                        <div className={styles.dividerLine} />
                     </div>
 
                     <p className={styles.footerText}>

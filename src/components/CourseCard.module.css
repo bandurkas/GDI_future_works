@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: auto;
+    height: 100%; /* Ensures equal height cards in a grid row */
 }
 
 .card {

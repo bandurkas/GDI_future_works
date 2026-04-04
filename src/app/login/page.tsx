@@ -21,12 +21,6 @@ export default function LoginPage() {
                         <GoogleSignInButton />
                     </div>
 
-                    <div className={styles.divider}>
-                        <div className={styles.dividerLine} />
-                        <span className={styles.dividerText}>or</span>
-                        <div className={styles.dividerLine} />
-                    </div>
-
                     <p className={styles.footerText}>
                         Don&apos;t have an account?{" "}
                         <Link href="/signup" className={styles.link}>

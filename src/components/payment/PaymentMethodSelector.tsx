@@ -32,6 +32,7 @@ export default function PaymentMethodSelector({ selected, onSelect }: PaymentMet
         type="button"
         className={`${styles.card} ${selected === 'qris' ? styles.selected : ''}`}
         onClick={() => onSelect('qris')}
+        aria-pressed={selected === 'qris'}
       >
         <div className={styles.cardMain}>
           <div className={styles.cardIcon}><QrisLogo /></div>
@@ -56,15 +57,23 @@ export default function PaymentMethodSelector({ selected, onSelect }: PaymentMet
         type="button"
         className={`${styles.card} ${selected === 'paypal' ? styles.selected : ''}`}
         onClick={() => onSelect('paypal')}
+        aria-pressed={selected === 'paypal'}
       >
         <div className={styles.cardMain}>
           <div className={styles.cardIcon}><PayPalLogo /></div>
           <div className={styles.cardInfo}>
             <div className={styles.cardTitle}>PayPal</div>
             <div className={styles.cardSub}>Pay with credit/debit card or PayPal balance</div>
-            <div className={styles.cardMeta}>Auto-confirmed · USD</div>
+            <div className={styles.cardMeta}>Instant · USD · No PayPal account needed</div>
           </div>
           <div className={`${styles.radio} ${selected === 'paypal' ? styles.radioSelected : ''}`} />
+        </div>
+        <div className={styles.details}>
+          <ul className={styles.detailList}>
+            <li>Click Continue — PayPal opens in a new tab</li>
+            <li>Pay with card or PayPal balance (no account required)</li>
+            <li>Enrollment confirmed automatically after payment</li>
+          </ul>
         </div>
       </button>
     </div>

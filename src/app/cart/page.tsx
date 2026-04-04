@@ -60,12 +60,26 @@ export default function CartPage() {
   const [method, setMethod] = useState<PaymentMethod>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [paid, setPaid] = useState(false);
+  const [removeToast, setRemoveToast] = useState<string | null>(null);
+  const removeToastTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleRemoveItem = (courseId: string, dateId: string, title: string) => {
+    removeItem(courseId, dateId);
+    if (removeToastTimer.current) clearTimeout(removeToastTimer.current);
+    setRemoveToast(title);
+    removeToastTimer.current = setTimeout(() => setRemoveToast(null), 3000);
+  };
 
   // Customer details form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [detailsError, setDetailsError] = useState<string | null>(null);
+  const [touched, setTouched] = useState({ name: false, email: false, phone: false });
+
+  const nameInvalid  = touched.name  && name.trim().length < 2;
+  const emailInvalid = touched.email && email.trim() !== '' && !email.includes('@');
+  const contactMissing = touched.email && touched.phone && !email.trim() && !phone.trim();
   const [createOrderLoading, setCreateOrderLoading] = useState(false);
   const [createOrderError, setCreateOrderError] = useState<string | null>(null);
 
@@ -254,8 +268,8 @@ export default function CartPage() {
                           <div className={styles.itemPrice}>{formatPrice(item.priceIDR, 'IDR')}</div>
                           <button
                             className={styles.removeBtn}
-                            onClick={() => removeItem(item.courseId, item.dateId)}
-                            aria-label="Remove item"
+                            onClick={() => handleRemoveItem(item.courseId, item.dateId, item.courseTitle)}
+                            aria-label={`Remove ${item.courseTitle} from cart`}
                           >
                             <Trash2 size={16} />
                           </button>
@@ -279,46 +293,72 @@ export default function CartPage() {
                   <h2 className={styles.sectionTitle}>Your Details</h2>
                   <div className={styles.form}>
                     <div className={styles.field}>
-                      <label className={styles.label} htmlFor="name">Full Name</label>
+                      <label className={styles.label} htmlFor="cart-name">Full Name</label>
                       <input
-                        id="name"
+                        id="cart-name"
                         className={styles.input}
                         type="text"
                         placeholder="e.g. Budi Santoso"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        onBlur={() => setTouched(t => ({ ...t, name: true }))}
                         autoComplete="name"
+                        data-error={nameInvalid ? 'true' : undefined}
+                        data-valid={touched.name && name.trim().length >= 2 ? 'true' : undefined}
+                        aria-describedby={nameInvalid ? 'name-error' : undefined}
                       />
+                      {nameInvalid && (
+                        <p id="name-error" className={styles.fieldError} role="alert">
+                          Please enter your full name (at least 2 characters)
+                        </p>
+                      )}
                     </div>
                     <div className={styles.field}>
-                      <label className={styles.label} htmlFor="email">Email Address</label>
+                      <label className={styles.label} htmlFor="cart-email">
+                        Email Address <span className={styles.labelHint}>(or WhatsApp below)</span>
+                      </label>
                       <input
-                        id="email"
+                        id="cart-email"
                         className={styles.input}
                         type="email"
                         inputMode="email"
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        onBlur={() => setTouched(t => ({ ...t, email: true }))}
                         autoComplete="email"
+                        data-error={emailInvalid ? 'true' : undefined}
+                        data-valid={email.includes('@') ? 'true' : undefined}
+                        aria-describedby={emailInvalid ? 'email-error' : undefined}
                       />
+                      {emailInvalid && (
+                        <p id="email-error" className={styles.fieldError} role="alert">
+                          Please enter a valid email address
+                        </p>
+                      )}
                     </div>
                     <div className={styles.field}>
-                      <label className={styles.label} htmlFor="phone">
+                      <label className={styles.label} htmlFor="cart-phone">
                         WhatsApp Number <span className={styles.labelHint}>(for enrollment confirmation)</span>
                       </label>
                       <input
-                        id="phone"
+                        id="cart-phone"
                         className={styles.input}
                         type="tel"
                         inputMode="tel"
                         placeholder="e.g. 0812 3456 7890"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
+                        onBlur={() => setTouched(t => ({ ...t, phone: true }))}
                         autoComplete="tel"
                       />
                     </div>
-                    {detailsError && <p className={styles.fieldError}>{detailsError}</p>}
+                    {contactMissing && (
+                      <p className={styles.fieldError} role="alert">Please provide at least an email or WhatsApp number</p>
+                    )}
+                    {detailsError && !nameInvalid && !emailInvalid && !contactMissing && (
+                      <p className={styles.fieldErrorGlobal} role="alert">{detailsError}</p>
+                    )}
                   </div>
                   <button
                     className="btn btn-primary btn-xl btn-full"
@@ -429,6 +469,14 @@ export default function CartPage() {
           )}
         </div>
       </div>
+
+      {/* Remove toast */}
+      {removeToast && (
+        <div className={styles.removeToast} role="status" aria-live="polite">
+          <Trash2 size={15} />
+          <span><strong>{removeToast}</strong> removed from cart</span>
+        </div>
+      )}
 
       {/* Mobile Sticky Footer */}
       {step !== 'payment' && !paid && (

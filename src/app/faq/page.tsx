@@ -31,16 +31,23 @@ export default function FAQPage() {
                                     className={styles.question}
                                     onClick={() => setOpen(open === i ? null : i)}
                                     aria-expanded={open === i}
+                                    aria-controls={`faq-answer-${i}`}
                                     id={`faq-${i}`}
                                 >
                                     <span>{faq.q}</span>
-                                    <svg className={`${styles.chevron} ${open === i ? styles.chevronOpen : ''}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                                    <svg className={`${styles.chevron} ${open === i ? styles.chevronOpen : ''}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
-                                {open === i && (
-                                    <div className={styles.answer}><p>{faq.a}</p></div>
-                                )}
+                                <div
+                                    id={`faq-answer-${i}`}
+                                    role="region"
+                                    aria-labelledby={`faq-${i}`}
+                                    hidden={open !== i}
+                                    className={styles.answer}
+                                >
+                                    <p>{faq.a}</p>
+                                </div>
                             </div>
                         ))}
                     </div>

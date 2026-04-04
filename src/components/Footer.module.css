@@ -121,33 +121,10 @@
     gap: var(--space-4);
 }
 
-.copy { margin-top: -4px; 
-
-@media (max-width: 600px) {
-    .copy { margin-top: -4px; 
-        line-height: 1.6;
-        margin-bottom: 12px;
-        opacity: 0.9;
-    }
-}
+.copy {
     font-size: 0.8125rem;
-
-@media (max-width: 600px) {
-    .copy { margin-top: -4px; 
-        line-height: 1.6;
-        margin-bottom: 12px;
-        opacity: 0.9;
-    }
-}
     color: var(--text-muted);
-
-@media (max-width: 600px) {
-    .copy { margin-top: -4px; 
-        line-height: 1.6;
-        margin-bottom: 12px;
-        opacity: 0.9;
-    }
-}
+    line-height: 1.6;
 }
 
 @media (max-width: 600px) {

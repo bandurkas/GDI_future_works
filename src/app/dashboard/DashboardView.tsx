@@ -81,7 +81,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
         </div>
         {isAdmin && (
           <Link href="/admin" className={styles.adminBtn}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
               <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
             </svg>
@@ -94,7 +94,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
       <div className={styles.section}>
         <div className={styles.sectionHead}>
           <h2 className={styles.sectionTitle}>Popular Courses</h2>
-          <span className={styles.sectionCount} style={{ background: '#ebebeb', color: '#555' }}>{popularCourses.length}</span>
+          <span className={styles.sectionCount}>{popularCourses.length}</span>
         </div>
         <div className={styles.courseGrid}>
           {popularCourses.map(c => {
@@ -103,7 +103,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
               : `MYR ${c.priceMYR}`;
             return (
               <div key={c.slug} className={styles.courseCard}>
-                <div className={styles.courseIconWrap}>
+                <div className={styles.courseIconWrap} aria-hidden="true">
                   {c.icon}
                 </div>
                 <div className={styles.courseBody}>
@@ -113,7 +113,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
                     <span className={styles.coursePrice}>{price}</span>
                     {c.seatsLeft > 0
                       ? <span className={styles.courseSeats}>{c.seatsLeft} seats left</span>
-                      : <span className={styles.courseSeats} style={{ background: '#fee2e2', color: '#991b1b' }}>Full</span>}
+                      : <span className={`${styles.courseSeats} ${styles.courseSeatsNone}`}>Full</span>}
                   </div>
                   <Link href={`/courses/${c.slug}`} className={styles.courseLink}>
                     View Course →
@@ -129,7 +129,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
       <div className={styles.section}>
         <div className={styles.sectionHead}>
           <h2 className={styles.sectionTitle}>Next Available Spots</h2>
-          <span className={styles.sectionCount} style={{ background: '#dbeafe', color: '#1e40af' }}>{spots.length}</span>
+          <span className={styles.sectionCount}>{spots.length}</span>
         </div>
         {spots.length === 0
           ? <div className={styles.empty}>No upcoming sessions available</div>
@@ -163,7 +163,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
       <div className={styles.section}>
         <div className={styles.sectionHead}>
           <h2 className={styles.sectionTitle}>My Courses</h2>
-          <span className={styles.sectionCount} style={{ background: '#d1fae5', color: '#065f46' }}>{purchases.length}</span>
+          <span className={styles.sectionCount}>{purchases.length}</span>
         </div>
         {purchases.length === 0
           ? <div className={styles.empty}>You haven&apos;t enrolled in any courses yet</div>
@@ -171,7 +171,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
             <div className={styles.historyList}>
               {purchases.map(p => (
                 <div key={p.id} className={styles.historyRow}>
-                  <div className={styles.historyIcon}>📚</div>
+                  <div className={styles.historyIcon} aria-hidden="true">📚</div>
                   <div className={styles.historyInfo}>
                     <div className={styles.historyTitle}>{p.courseTitle}</div>
                     <div className={styles.historyDate}>{p.sessionDate ?? '—'}</div>
@@ -182,7 +182,7 @@ export default function DashboardView({ firstName, avatarUrl, isAdmin, popularCo
                     </span>
                   )}
                   {p.amount != null && p.currency && (
-                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#555', flexShrink: 0 }}>
+                    <span className={styles.historyAmount}>
                       {p.currency} {p.amount.toLocaleString()}
                     </span>
                   )}

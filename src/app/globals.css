@@ -18,6 +18,7 @@
 
   /* Backgrounds */
   --bg: #FFFFFF;
+  --bg-primary: #FFFFFF;       /* Alias — used widely across CSS modules */
   --bg-secondary: #F2F2F2;
   --bg-card: #FFFFFF;
   --bg-card-elevated: #FFFFFF;
@@ -47,6 +48,8 @@
   --success-light: rgba(16, 185, 129, 0.10);
   --warning: #F59E0B;
   --warning-light: rgba(245, 158, 11, 0.10);
+  --error: #DC2626;
+  --error-light: rgba(220, 38, 38, 0.10);
   --whatsapp: #25D366;
   --accent-glow: rgba(212, 43, 43, 0.18);
 
@@ -122,6 +125,7 @@
 /* ===== DARK MODE ===== */
 [data-theme="dark"] {
   --bg: #0C0C0E;
+  --bg-primary: #0C0C0E;       /* Dark mode alias */
   --bg-secondary: #141416;
   --bg-card: #1C1C1F;
   --bg-card-elevated: #242428;
@@ -452,5 +456,57 @@ h6 {
 /* Loading state */
 .btn-loading {
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.75;
+  cursor: wait;
+}
+
+/* Disabled state — явный, не просто opacity */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ===== GLOBAL KEYFRAMES ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

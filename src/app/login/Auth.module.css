@@ -1,10 +1,10 @@
 .authContainer {
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg);
+    background-color: var(--bg-primary);
     padding: 40px 20px;
     font-family: var(--font-body);
 }

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Translate } from '@/components/LanguageContext';
 import CourseCardLazy from '@/components/CourseCardLazy';
+import CourseCarousel from '@/components/CourseCarousel';
 import PathCard from '@/components/PathCard';
 import PartnershipSection from '@/components/PartnershipSection';
 import HomeFAQ from '@/components/HomeFAQ';
@@ -158,8 +159,8 @@ export default function HomePage() {
                             <a href="#courses" className={styles.btnPrimaryRed}>
                                 <Translate tKey="hero.cta1" />
                             </a>
-                            <a href="#courses" className={styles.btnOutline}>
-                                <Translate tKey="hero.cta2" />
+                            <a href="/for-tutors" className={styles.btnOutline}>
+                                Teach With Us
                             </a>
                         </div>
 
@@ -221,9 +222,9 @@ export default function HomePage() {
                         <p className={styles.sectionLabel}><Translate tKey="courses.sub" /></p>
                         <h2 className={styles.sectionH2}><Translate tKey="courses.h2" /></h2>
                     </div>
-                    <div className={styles.courseCarousel}>
+                    <CourseCarousel>
                         {courses.map((course) => <CourseCard key={course.id} course={course} />)}
-                    </div>
+                    </CourseCarousel>
                     <div className={styles.coursesFooter}>
                         <p><Translate tKey="courses.notSure" /></p>
                         <Link href="/contact" className={styles.advisorLink}><Translate tKey="courses.advisor" /> <ArrowRight size={16} /></Link>

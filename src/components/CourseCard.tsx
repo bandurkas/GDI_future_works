@@ -112,7 +112,7 @@ export default function CourseCard({ course, featured }: Props) {
         }
     };
 
-    const openOutcomes = (e: React.MouseEvent) => {
+    const openOutcomes = (e: React.MouseEvent | React.KeyboardEvent) => {
         e.preventDefault();
         setOutcomesOpen(true);
     };
@@ -121,9 +121,21 @@ export default function CourseCard({ course, featured }: Props) {
         e.preventDefault();
         e.stopPropagation();
         setOutcomesOpen(false);
-        // Reset to default front view when drawer closes
         setTimeout(() => setShowSyllabusDetails(false), 300);
     };
+
+    // Close drawer on Escape key
+    useEffect(() => {
+        if (!outcomesOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setOutcomesOpen(false);
+                setTimeout(() => setShowSyllabusDetails(false), 300);
+            }
+        };
+        document.addEventListener('keydown', onKey);
+        return () => document.removeEventListener('keydown', onKey);
+    }, [outcomesOpen]);
 
     // Use a subset of ultra-specific outcomes for the drawer
     const specificOutcomes = outcomes.slice(0, 3);
@@ -134,6 +146,10 @@ export default function CourseCard({ course, featured }: Props) {
                 className={styles.card}
                 id={`course-card-${course.slug}`}
                 onClick={openOutcomes}
+                role="button"
+                tabIndex={0}
+                aria-label={`View details for ${title}`}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openOutcomes(e as any); } }}
             >
                 <div className={styles.cardContent}>
                     <h3 className={styles.title}>{title}</h3>

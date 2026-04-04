@@ -220,6 +220,31 @@
     }
 }
 
+@media (max-width: 480px) {
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr); /* 2-col is fine on 375px */
+        gap: var(--space-4);
+    }
+
+    .statNum {
+        font-size: 1.5rem;
+    }
+
+    .ctaBox {
+        padding: var(--space-8) var(--space-6);
+        border-radius: var(--radius-xl);
+    }
+
+    .ctaBtns {
+        flex-direction: column;
+    }
+
+    .ctaBtnGhost {
+        padding: 14px 24px;
+        justify-content: center;
+    }
+}
+
 /* Founders Section */
 .foundersSection {
     padding: 80px 0;

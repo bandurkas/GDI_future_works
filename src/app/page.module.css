@@ -134,8 +134,8 @@
     .sliderCard {
         flex-direction: column;
         align-items: flex-start;
-        padding: 48px 24px 280px;
-        min-height: 600px;
+        padding: 40px 24px 200px;
+        min-height: 480px;
     }
 
     .sliderContent {
@@ -320,7 +320,7 @@
     padding: 60px 0 80px;
     position: relative;
     overflow: hidden;
-    background: #ffffff;
+    background: var(--bg-primary);
     transition: background 0.3s;
 }
 
@@ -401,7 +401,7 @@
 @media (max-width: 1024px) {
     .heroSection {
         padding: 20px 0 32px;
-        background: #ffffff;
+        background: var(--bg-primary);
     }
 
     .heroLayout {

@@ -34,9 +34,11 @@ export default async function CourseDetailPage({ params }: Props) {
             <section className={styles.hero}>
                 <div className="container">
                     <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-                        <Link href="/">Courses</Link>
-                        <span aria-hidden> › </span>
-                        <span>{course.category}</span>
+                        <Link href="/">Home</Link>
+                        <span aria-hidden="true"> › </span>
+                        <Link href="/courses">Courses</Link>
+                        <span aria-hidden="true"> › </span>
+                        <span aria-current="page">{course.category}</span>
                     </nav>
 
                     <div className={styles.heroGrid}>
@@ -61,7 +63,7 @@ export default async function CourseDetailPage({ params }: Props) {
                                     { icon: '👥', label: 'Format', val: 'Live · max 12 students' },
                                 ].map((m) => (
                                     <div key={m.label} className={styles.metaItem}>
-                                        <span>{m.icon}</span>
+                                        <span aria-hidden="true">{m.icon}</span>
                                         <div>
                                             <span className={styles.metaLabel}>{m.label}</span>
                                             <span className={styles.metaVal}>{m.val}</span>
@@ -71,7 +73,7 @@ export default async function CourseDetailPage({ params }: Props) {
                             </div>
 
                             <div className={styles.heroRating}>
-                                <span className={styles.stars}>⭐⭐⭐⭐⭐</span>
+                                <span className={styles.stars} aria-label="5 stars">⭐⭐⭐⭐⭐</span>
                                 <strong>{course.rating}</strong>
                                 <span className={styles.ratingCount}>({course.studentsCount.toLocaleString()} students)</span>
                             </div>

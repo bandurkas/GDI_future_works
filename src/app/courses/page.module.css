@@ -134,8 +134,8 @@
     .sliderCard {
         flex-direction: column;
         align-items: flex-start;
-        padding: 48px 24px 280px;
-        min-height: 600px;
+        padding: 40px 24px 200px; /* было 280px — занимало весь viewport */
+        min-height: 480px;        /* было 600px — слишком много на маленьких экранах */
     }
 
     .sliderContent {
@@ -147,7 +147,7 @@
 
     .sliderImageWrap {
         width: 100%;
-        height: 50%;
+        height: 45%;
         top: auto;
         bottom: 0;
         left: 0;
@@ -156,6 +156,23 @@
 
     .sliderImage {
         object-position: center bottom;
+    }
+}
+
+@media (max-width: 480px) {
+    .sliderCard {
+        padding: 32px 20px 160px;
+        min-height: 400px;
+        border-radius: 20px;
+    }
+
+    .sliderTitle {
+        font-size: clamp(1.75rem, 7vw, 2.25rem);
+    }
+
+    .sliderDesc {
+        font-size: 1rem;
+        margin-bottom: 28px;
     }
 }
 

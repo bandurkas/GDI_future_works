@@ -27,9 +27,13 @@ export default function StickyBookingBar({ course }: Props) {
                         <span className={styles.priceOrig}>{displayOriginal}</span>
                     </div>
                     <div className={styles.meta}>
-                        📅 Next: {course.nextSession}
+                        <span aria-hidden="true">📅</span>
+                        <span className="sr-only">Next session:</span>
+                        {course.nextSession}
                         {course.seatsLeft <= 5 && (
-                            <span className={styles.urgent}> · {course.seatsLeft} seats left</span>
+                            <span className={styles.urgent} role="status" aria-live="polite">
+                                {' · '}{course.seatsLeft} seats left
+                            </span>
                         )}
                     </div>
                 </div>

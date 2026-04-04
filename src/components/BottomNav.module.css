@@ -49,10 +49,10 @@
 
     .label {
         font-family: var(--font-display);
-        font-size: 0.5625rem;
+        font-size: 0.625rem; /* 10px — было 9px, нечитаемо (WCAG мин 12px для labels) */
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.03em;
     }
 
     .active {

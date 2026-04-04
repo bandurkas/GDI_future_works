@@ -1,6 +1,6 @@
 .page {
     padding-top: var(--nav-height);
-    min-height: 100vh;
+    min-height: 100dvh; /* Fix: 100vh обрезает viewport на мобайле с browser chrome */
     background: var(--bg-secondary);
     padding-bottom: var(--space-20);
 }
@@ -27,6 +27,7 @@
     transition: color var(--transition-fast);
     padding: 0;
     margin-bottom: auto;
+    touch-action: manipulation;
 }
 
 .flowBackBtn:hover {
@@ -80,6 +81,12 @@
     box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
+.stepDone {
+    background: var(--success, #22c55e) !important;
+    border-color: var(--success, #22c55e) !important;
+    color: white !important;
+}
+
 .stepLabel {
     font-size: 0.75rem;
     font-weight: 600;
@@ -96,6 +103,11 @@
     height: 2px;
     background: var(--border);
     margin: 0 var(--space-3);
+    transition: background var(--transition-base);
+}
+
+.stepLineDone {
+    background: var(--success, #22c55e);
 }
 
 .title {
@@ -144,14 +156,17 @@
     cursor: pointer;
     transition: all var(--transition-fast);
     position: relative;
+    touch-action: manipulation;
+    min-height: 80px; /* Prevent height jumps across cards */
+    justify-content: center;
 }
 
-.dateCard:hover {
+.dateCard:hover:not(:disabled) {
     border-color: var(--accent);
     background: var(--accent-light);
 }
 
-.dateCard:active {
+.dateCard:active:not(:disabled) {
     transform: scale(0.96);
 }
 
@@ -169,14 +184,14 @@
 }
 
 .dateUrgent {
-    border-color: rgba(232, 0, 29, 0.25);
+    border-color: rgba(232, 0, 29, 0.35);
 }
 
 .dayName {
-    font-size: 0.6rem;
+    font-size: 0.625rem; /* 10px — минимально читаемо */
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     color: var(--text-muted);
 }
 
@@ -195,7 +210,7 @@
 }
 
 .seatBadge {
-    font-size: 0.5625rem;
+    font-size: 0.625rem; /* 10px, было 9px */
     color: var(--accent);
     font-weight: 700;
     background: var(--accent-light);
@@ -211,7 +226,7 @@
 
 /* Time */
 .timeSection {
-    animation: fadeInUp 0.3s var(--ease-out);
+    animation: fadeInUp 0.3s var(--ease-out, ease-out);
 }
 
 .timeSlot {
@@ -219,9 +234,8 @@
     align-items: center;
     gap: var(--space-4);
     padding: 16px 20px;
-    background: var(--bg-card);
-    border: 1.5px solid var(--accent);
     border-radius: var(--radius-lg);
+    border: 1.5px solid var(--accent);
     background: var(--accent-light);
 }
 
@@ -269,6 +283,7 @@
 .ctaDisabled {
     opacity: 0.45;
     pointer-events: none;
+    cursor: not-allowed;
 }
 
 .back {
@@ -280,50 +295,238 @@
     cursor: pointer;
     text-decoration: none;
     transition: color var(--transition-fast);
+    touch-action: manipulation;
 }
 
 .back:hover {
     color: var(--text-primary);
 }
 
-@media (max-width: 480px) {
-    .dateGrid {
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    }
+/* Contact Form */
+.contactSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background: var(--bg-card);
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    animation: fadeInUp 0.4s var(--ease-out, ease-out);
+}
 
-    .inner {
-        padding: var(--space-10) var(--space-4);
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.inputLabel {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em; /* уменьшено с 0.05 — легче читать */
+}
+
+.inputField {
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    width: 100%;
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* Validation states */
+.inputField[data-error="true"] {
+    border-color: var(--error, #dc2626);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.inputField[data-valid="true"] {
+    border-color: var(--success, #22c55e);
+}
+
+.fieldError {
+    font-size: 0.75rem;
+    color: var(--error, #dc2626);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.inputRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+/* Time grid */
+.timeGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.timeCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+    width: 100%;
+    touch-action: manipulation;
+}
+
+.timeCard:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+
+.timeSelected {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    box-shadow: var(--shadow-accent);
+}
+
+.timeSelected .timeRange,
+.timeSelected .timeStatus {
+    color: white !important;
+}
+
+.timeFull {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.timeRange {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.timeStatus {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.timeAvail {
+    color: #22c55e;
+}
+
+.slotCount {
+    font-size: 0.6875rem; /* 11px — было 9px (нечитаемо) */
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.dateFull {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.fullBadge {
+    font-size: 0.625rem; /* 10px — было 8px */
+    color: var(--text-muted);
+    font-weight: 600;
+    background: var(--bg-secondary);
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    margin-top: 2px;
+}
+
+/* Loading skeleton */
+.emptyState {
+    padding: 24px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-light, var(--border));
+    text-align: center;
+    margin-top: 16px;
+}
+
+.skeletonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--space-2);
+}
+
+.skeletonCard {
+    height: 80px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-secondary) 50%, var(--bg-card) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+/* API error state */
+.apiError {
+    padding: 16px 20px;
+    background: rgba(220, 38, 38, 0.06);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--error, #dc2626);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.confirmedSection {
+    animation: fadeInUp 0.3s var(--ease-out, ease-out);
+}
+
+.bottomNote {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+/* ── Keyframes — определены здесь, используются по всему файлу ── */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-
-@media (max-width: 600px) {
-    .progress {
-        flex-direction: column;
-        gap: 20px;
-        padding: 24px;
-        align-items: flex-start;
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
-
-    .progressStep {
-        flex-direction: row;
-        width: 100%;
-        gap: 16px;
-        align-items: center;
-    }
-
-    .stepLine {
-        display: none;
-    }
-
-    .stepLabel {
-        font-size: 0.9rem;
-        max-width: none;
-        text-align: left;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
 
+/* Success state */
 .addedSuccess {
     background: #f0fdf4;
     border: 1px solid #bbf7d0;
@@ -385,179 +588,51 @@
     flex: 1;
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .progress {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+        align-items: flex-start;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .progressStep {
+        flex-direction: row;
+        width: 100%;
+        gap: 16px;
+        align-items: center;
     }
-}
 
-.ctaDisabled {
-    opacity: 0.5;
-    pointer-events: none;
-    background: #94a3b8 !important;
-}
+    .stepLine {
+        display: none;
+    }
 
-/* Contact Form */
-.contactSection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    background: var(--bg-card);
-    padding: var(--space-6);
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--border);
-    animation: fadeInUp 0.4s var(--ease-out);
-}
-
-.inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.inputLabel {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.inputField {
-    padding: 14px 16px;
-    border-radius: var(--radius-md);
-    border: 1.5px solid var(--border);
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    font-size: 1rem;
-    transition: all var(--transition-base);
-}
-
-.inputField:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--bg-card);
-    box-shadow: 0 0 0 4px var(--accent-glow);
-}
-
-.inputRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
+    .stepLabel {
+        font-size: 0.9rem;
+        max-width: none;
+        text-align: left;
+    }
 }
 
 @media (max-width: 480px) {
+    .inner {
+        padding: var(--space-6) var(--space-4) var(--space-12);
+        gap: var(--space-6);
+    }
+
+    .dateGrid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+
+    .skeletonGrid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+
     .inputRow {
         grid-template-columns: 1fr;
     }
-}
-/* ── 2-step booking: time grid ────────────────────── */
-.timeGrid {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-}
 
-.timeCard {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    border-radius: var(--radius-lg);
-    background: var(--bg-card);
-    border: 1.5px solid var(--border);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    text-align: left;
-    width: 100%;
-}
-
-.timeCard:hover:not(:disabled) {
-    border-color: var(--accent);
-    background: var(--accent-light);
-}
-
-.timeSelected {
-    background: var(--accent) !important;
-    border-color: var(--accent) !important;
-    box-shadow: var(--shadow-accent);
-}
-
-.timeSelected .timeRange,
-.timeSelected .timeStatus {
-    color: white !important;
-}
-
-.timeFull {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.timeRange {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.timeStatus {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-muted);
-}
-
-.timeAvail {
-    color: #22c55e;
-}
-
-.slotCount {
-    font-size: 0.5625rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    margin-top: 2px;
-}
-
-.dateFull {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.fullBadge {
-    font-size: 0.5rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    background: var(--bg-secondary);
-    padding: 2px 6px;
-    border-radius: var(--radius-full);
-    margin-top: 2px;
-}
-
-.emptyState {
-    padding: 24px;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    border: 1px solid var(--border-light);
-    text-align: center;
-    margin-top: 16px;
-}
-
-.confirmedSection {
-    animation: fadeInUp 0.3s var(--ease-out);
-}
-
-.bottomNote {
-    font-size: 0.8125rem;
-    color: var(--text-muted);
-    text-align: center;
-}
-
-@media (max-width: 480px) {
     .timeCard {
         padding: 14px 16px;
         flex-direction: column;
@@ -567,5 +642,9 @@
 
     .timeRange {
         font-size: 0.9375rem;
+    }
+
+    .contactSection {
+        padding: var(--space-4);
     }
 }

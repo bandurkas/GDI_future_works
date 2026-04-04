@@ -121,7 +121,7 @@
 }
 
 .selected .details {
-  max-height: 200px;
+  max-height: 240px; /* PayPal details теперь тоже показываются */
   margin-top: var(--space-4);
 }
 

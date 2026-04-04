@@ -25,6 +25,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
 }
 
 .price {
@@ -35,6 +36,7 @@
     display: flex;
     align-items: baseline;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .priceOrig {
@@ -47,11 +49,15 @@
 .meta {
     font-size: 0.8125rem;
     color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
 }
 
 .urgent {
     color: var(--accent);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .cta {
@@ -64,16 +70,22 @@
     }
 
     .price {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
+        gap: 6px;
+    }
+
+    /* Hide original price on mobile to save space, keep seats left visible */
+    .priceOrig {
+        display: none;
+    }
+
+    /* Keep meta (seats left) — it's a key conversion signal */
+    .meta {
+        font-size: 0.75rem;
     }
 
     .cta {
-        padding: 14px 20px !important;
-        font-size: 0.9375rem !important;
-    }
-
-    .priceOrig,
-    .meta {
-        display: none;
+        padding: 12px 18px !important;
+        font-size: 0.875rem !important;
     }
 }
