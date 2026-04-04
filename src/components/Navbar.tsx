@@ -72,7 +72,7 @@ export default function Navbar() {
         return <header className={styles.header}><div className={styles.container}></div></header>;
     }
 
-    const logoSrc = theme === 'dark' ? '/GDI_FutureWorks_Logo_Dark.webp' : '/logo-final.webp';
+    const logoSrc = theme === 'dark' ? '/LOGO_FW_dark.svg' : '/LOGO_FW.svg';
 
     return (
         <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
@@ -91,6 +91,12 @@ export default function Navbar() {
                     </button>
 
                     <nav className={styles.nav} aria-label="Main navigation">
+                        <Link href="/" className={styles.navIconBtn} aria-label="Home">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" />
+                                <polyline points="9 21 9 12 15 12 15 21" />
+                            </svg>
+                        </Link>
                         <Link href="/about" className={styles.navLink}><Translate tKey="nav.about" defaultText="About" /></Link>
                         <Link href="/community" className={styles.navLink}><Translate tKey="nav.community" defaultText="Community" /></Link>
                         <Link href="/contact" className={styles.navLink}><Translate tKey="nav.contact" defaultText="Contact" /></Link>

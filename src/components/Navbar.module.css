@@ -93,6 +93,23 @@
     background: var(--bg-secondary);
 }
 
+.navIconBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.navIconBtn:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
 /* Actions Group */
 .actions {
     display: flex;

@@ -17,7 +17,7 @@ export default function ThemeLogo({ className, style, alt = "GDI FutureWorks Log
     
     // Choose logo based on forced preference or current theme
     const isDark = forceDark || theme === 'dark';
-    const logoSrc = isDark ? '/GDI_FutureWorks_Logo_Dark.webp' : '/logo-final.webp';
+    const logoSrc = isDark ? '/LOGO_FW_dark.svg' : '/LOGO_FW.svg';
     
     return (
         <img 
