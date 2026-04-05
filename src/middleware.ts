@@ -60,9 +60,8 @@ export async function middleware(req: NextRequest) {
 
     // Not authenticated → go to login
     if (!token) {
-      const url = new URL('/admin/login', 'https://gdifuture.works');
-      const callbackUrl = req.url.replace('http://localhost:3000', 'https://gdifuture.works');
-      url.searchParams.set('callbackUrl', callbackUrl);
+      const url = new URL('/admin/login', req.nextUrl.origin);
+      url.searchParams.set('callbackUrl', req.url);
       return NextResponse.redirect(url);
     }
 
@@ -147,5 +146,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/crm/:path*', '/login', '/signup'],
+  matcher: ['/admin/:path*', '/crm/:path*', '/login', '/signup', '/dashboard', '/dashboard/:path*', '/profile', '/profile/:path*'],
 };
