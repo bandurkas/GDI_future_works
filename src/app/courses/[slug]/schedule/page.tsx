@@ -31,8 +31,13 @@ export default function SchedulePage({ params }: Props) {
     const [dynamicSlots, setDynamicSlots] = useState<Schedule[] | null>(null);
     const [slotsLoading, setSlotsLoading] = useState(false);
     const [slotsError, setSlotsError] = useState(false);
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
-    const [selectedSlot, setSelectedSlot] = useState<Schedule | null>(null);
+
+    // Day 1 & Day 2 selection
+    const [day1Date, setDay1Date] = useState<string | null>(null);
+    const [day1Slot, setDay1Slot] = useState<Schedule | null>(null);
+    const [day2Date, setDay2Date] = useState<string | null>(null);
+    const [day2Slot, setDay2Slot] = useState<Schedule | null>(null);
+
     const { addItem, customerInfo, updateCustomerInfo } = useCart();
 
     const isID = language === 'id';
@@ -77,10 +82,16 @@ export default function SchedulePage({ params }: Props) {
         return { dateKey, dateSlots, rep, allFull, someUrgent };
     });
 
-    const selectedDateSlots = selectedDate ? (slotsByDate.get(selectedDate) ?? []) : [];
+    const day1DateSlots = day1Date ? (slotsByDate.get(day1Date) ?? []) : [];
+    const day2DateSlots = day2Date ? (slotsByDate.get(day2Date) ?? []) : [];
+    const bothSelected = !!day1Slot && !!day2Slot;
 
-    // Step progress: 1 = выбор даты/времени, 2 = корзина/детали, 3 = оплата
-    const currentStep = selectedSlot && !isAuthenticated ? 2 : 1;
+    const emailValid = email.trim().length > 0 && email.includes('@');
+    const phoneValid = phone.trim().length >= 6;
+    const contactOk = isAuthenticated || phoneValid;
+    const canContinue = bothSelected && contactOk;
+
+    const currentStep = bothSelected && !isAuthenticated ? 2 : 1;
 
     const STEPS = [
         { number: 1, label: t('schedule.step1') },
@@ -88,27 +99,30 @@ export default function SchedulePage({ params }: Props) {
         { number: 3, label: t('schedule.step3') },
     ];
 
-    const emailValid = email.trim().length > 0 && email.includes('@');
-    const phoneValid = phone.trim().length >= 6;
-    const contactOk = isAuthenticated || phoneValid;
-    const canContinue = !!selectedSlot && contactOk;
+    const handleDay1Select = (dateKey: string) => {
+        setDay1Date(dateKey);
+        setDay1Slot(null);
+        // Changing Day 1 resets Day 2
+        setDay2Date(null);
+        setDay2Slot(null);
+    };
 
-    const handleDateSelect = (dateKey: string) => {
-        setSelectedDate(dateKey);
-        setSelectedSlot(null);
+    const handleDay2Select = (dateKey: string) => {
+        setDay2Date(dateKey);
+        setDay2Slot(null);
     };
 
     const handleNext = () => {
-        if (!canContinue || !selectedSlot || !course) return;
+        if (!canContinue || !day1Slot || !day2Slot || !course) return;
         const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
         updateCustomerInfo({ email, phone: fullPhone });
         addItem({
             courseId: course.id,
             courseTitle: course.title,
             slug: course.slug,
-            dateId: selectedSlot.id,
-            dateLabel: selectedSlot.date,
-            timeLabel: `${selectedSlot.time}\u2013${selectedSlot.timeEnd}`,
+            dateId: `${day1Slot.id}+${day2Slot.id}`,
+            dateLabel: `${day1Slot.date} & ${day2Slot.date}`,
+            timeLabel: `${day1Slot.time}–${day1Slot.timeEnd} / ${day2Slot.time}–${day2Slot.timeEnd}`,
             priceIDR: course.priceIDR,
             priceMYR: course.priceMYR,
             icon: course.icon,
@@ -116,9 +130,114 @@ export default function SchedulePage({ params }: Props) {
         router.push('/cart');
     };
 
+    // Dynamic CTA label
+    const ctaLabel = () => {
+        if (!day1Date) return isID ? 'Pilih Tanggal Hari ke-1' : 'Select Day 1 Date';
+        if (!day1Slot) return isID ? 'Pilih Waktu untuk Hari ke-1' : 'Select a Time for Day 1';
+        if (!day2Date) return isID ? 'Pilih Tanggal Hari ke-2' : 'Select Day 2 Date';
+        if (!day2Slot) return isID ? 'Pilih Waktu untuk Hari ke-2' : 'Select a Time for Day 2';
+        if (!contactOk) return isID ? 'Masukkan Detail Kamu' : 'Enter Your Details';
+        return isID ? 'Tambah ke Keranjang →' : 'Add to Cart →';
+    };
+
     const courseTitle = isID ? (course?.titleID || course?.title) : course?.title;
 
     if (!course) return null;
+
+    // Reusable date grid renderer
+    const renderDateGrid = (
+        onSelect: (dk: string) => void,
+        activeDate: string | null,
+        markedDate?: string | null, // Day 1 dateKey shown in Day 2 grid
+    ) => {
+        if (slotsError) {
+            return (
+                <div className={styles.apiError} role="alert">
+                    <span aria-hidden="true">⚠️</span>
+                    <span>Couldn't load live availability. Showing default schedule — contact us to confirm.</span>
+                </div>
+            );
+        }
+        if (slotsLoading) {
+            return (
+                <div className={styles.skeletonGrid} aria-busy="true" aria-label="Loading available dates">
+                    {[1, 2, 3, 4].map(n => <div key={n} className={styles.skeletonCard} />)}
+                </div>
+            );
+        }
+        if (uniqueDates.length === 0) {
+            return (
+                <div className={styles.emptyState}>
+                    <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{t('schedule.noSchedule')}</h4>
+                    <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{t('schedule.noScheduleDesc')}</p>
+                </div>
+            );
+        }
+        return (
+            <div className={styles.dateGrid} role="group" aria-label="Available dates">
+                {uniqueDates.map(({ dateKey, dateSlots, rep, allFull, someUrgent }) => {
+                    const isDay1Marked = markedDate === dateKey;
+                    return (
+                        <button
+                            key={dateKey}
+                            className={[
+                                styles.dateCard,
+                                activeDate === dateKey ? styles.dateSelected : '',
+                                someUrgent && !allFull ? styles.dateUrgent : '',
+                                allFull ? styles.dateFull : '',
+                                isDay1Marked ? styles.dateDay1Marked : '',
+                            ].join(' ')}
+                            onClick={() => !allFull && onSelect(dateKey)}
+                            disabled={allFull}
+                            aria-pressed={activeDate === dateKey}
+                            aria-label={`${rep.dayOfWeek} ${rep.day} ${rep.month}${allFull ? ', fully booked' : someUrgent ? ', almost full' : ''}`}
+                        >
+                            <span className={styles.dayName} aria-hidden="true">{language === 'id' ? (DAY_ID[rep.dayOfWeek] ?? rep.dayOfWeek) : rep.dayOfWeek}</span>
+                            <span className={styles.dayNum} aria-hidden="true">{rep.day}</span>
+                            <span className={styles.dayMonth} aria-hidden="true">{rep.month}</span>
+                            {allFull ? (
+                                <span className={styles.fullBadge}>{t('schedule.fullyBooked')}</span>
+                            ) : isDay1Marked ? (
+                                <span className={styles.day1Badge}>{isID ? 'Hari 1' : 'Day 1'}</span>
+                            ) : (
+                                <span className={styles.slotCount}>{dateSlots.length} {dateSlots.length === 1 ? 'slot' : 'slots'}</span>
+                            )}
+                        </button>
+                    );
+                })}
+            </div>
+        );
+    };
+
+    // Reusable time slot renderer
+    const renderTimeSlots = (dateSlots: Schedule[], selectedSlot: Schedule | null, onSelect: (s: Schedule) => void, label: string) => (
+        <section className={`${styles.section} ${styles.timeSection}`} aria-labelledby={`times-label-${label}`}>
+            <h2 id={`times-label-${label}`} className={styles.sectionLabel}>
+                {language === 'id' ? (DAY_ID[dateSlots[0].dayOfWeek] ?? dateSlots[0].dayOfWeek) : dateSlots[0].dayOfWeek} {dateSlots[0].day} {dateSlots[0].month} &mdash; {isID ? 'Waktu Tersedia' : 'Available Times'}
+            </h2>
+            <div className={styles.timeGrid} role="group" aria-label="Available time slots">
+                {dateSlots.map(slot => {
+                    const isFull = slot.seatsLeft === 0;
+                    const isSelected = selectedSlot?.id === slot.id;
+                    return (
+                        <button
+                            key={slot.id}
+                            className={[styles.timeCard, isSelected ? styles.timeSelected : '', isFull ? styles.timeFull : ''].join(' ')}
+                            onClick={() => !isFull && onSelect(slot)}
+                            disabled={isFull}
+                            aria-pressed={isSelected}
+                            aria-label={`${formatTime(slot.time)} to ${formatTime(slot.timeEnd)}${isFull ? ', fully booked' : ''}`}
+                        >
+                            <span className={styles.timeRange}>{formatTime(slot.time)} &mdash; {formatTime(slot.timeEnd)}</span>
+                            <span className={`${styles.timeStatus} ${isFull ? '' : styles.timeAvail}`}>
+                                {isFull ? t('schedule.fullyBooked') : isID ? 'Tersedia' : 'Available'}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+        </section>
+    );
 
     return (
         <div className={styles.page}>
@@ -140,21 +259,13 @@ export default function SchedulePage({ params }: Props) {
                             return (
                                 <div key={s.number} className={styles.progressStep}>
                                     <div
-                                        className={[
-                                            styles.stepBubble,
-                                            isDone ? styles.stepDone : '',
-                                            isActive ? styles.stepActive : '',
-                                        ].join(' ')}
+                                        className={[styles.stepBubble, isDone ? styles.stepDone : '', isActive ? styles.stepActive : ''].join(' ')}
                                         aria-current={isActive ? 'step' : undefined}
                                     >
                                         {isDone ? '✓' : s.number}
                                     </div>
-                                    <span className={`${styles.stepLabel} ${isActive ? styles.stepLabelActive : ''}`}>
-                                        {s.label}
-                                    </span>
-                                    {i < STEPS.length - 1 && (
-                                        <div className={`${styles.stepLine} ${isDone ? styles.stepLineDone : ''}`} />
-                                    )}
+                                    <span className={`${styles.stepLabel} ${isActive ? styles.stepLabelActive : ''}`}>{s.label}</span>
+                                    {i < STEPS.length - 1 && <div className={`${styles.stepLine} ${isDone ? styles.stepLineDone : ''}`} />}
                                 </div>
                             );
                         })}
@@ -167,116 +278,100 @@ export default function SchedulePage({ params }: Props) {
                         </p>
                     </div>
 
-                    {/* STEP 1 — Select Date */}
-                    <section className={styles.section} aria-labelledby="dates-label">
-                        <h2 id="dates-label" className={styles.sectionLabel}>{t('schedule.availableDates')}</h2>
+                    {/* ── DAY 1 BLOCK ── */}
+                    <div className={`${styles.dayBlock} ${day1Slot ? styles.dayComplete : ''}`}>
+                        <div className={styles.dayBlockLabel}>
+                            <span className={styles.dayBadge}>1</span>
+                            <span>{isID ? 'Hari ke-1' : 'Day 1'}</span>
+                            {day1Slot && <span className={styles.dayCheckmark}>✓</span>}
+                        </div>
 
-                        {slotsError ? (
-                            <div className={styles.apiError} role="alert">
-                                <span aria-hidden="true">⚠️</span>
-                                <span>Couldn't load live availability. Showing default schedule — contact us to confirm.</span>
-                            </div>
-                        ) : slotsLoading ? (
-                            <div className={styles.skeletonGrid} aria-busy="true" aria-label="Loading available dates">
-                                {[1, 2, 3, 4].map(n => (
-                                    <div key={n} className={styles.skeletonCard} />
-                                ))}
-                            </div>
-                        ) : uniqueDates.length === 0 ? (
-                            <div className={styles.emptyState}>
-                                <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{t('schedule.noSchedule')}</h4>
-                                <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{t('schedule.noScheduleDesc')}</p>
+                        {/* Day 1 confirmed summary */}
+                        {day1Slot ? (
+                            <div className={styles.dayConfirmedRow}>
+                                <span className={styles.dayConfirmedText}>
+                                    {language === 'id' ? (DAY_ID[day1Slot.dayOfWeek] ?? day1Slot.dayOfWeek) : day1Slot.dayOfWeek}, {day1Slot.day} {day1Slot.month} &middot; {day1Slot.time}–{day1Slot.timeEnd}
+                                </span>
+                                <button
+                                    className={styles.changeBtn}
+                                    onClick={() => { setDay1Date(null); setDay1Slot(null); setDay2Date(null); setDay2Slot(null); }}
+                                >
+                                    {isID ? 'Ubah' : 'Change'}
+                                </button>
                             </div>
                         ) : (
-                            <div className={styles.dateGrid} role="group" aria-label="Available dates">
-                                {uniqueDates.map(({ dateKey, dateSlots, rep, allFull, someUrgent }) => (
-                                    <button
-                                        key={dateKey}
-                                        className={[
-                                            styles.dateCard,
-                                            selectedDate === dateKey ? styles.dateSelected : '',
-                                            someUrgent ? styles.dateUrgent : '',
-                                            allFull ? styles.dateFull : '',
-                                        ].join(' ')}
-                                        onClick={() => !allFull && handleDateSelect(dateKey)}
-                                        disabled={allFull}
-                                        aria-pressed={selectedDate === dateKey}
-                                        aria-label={`${rep.dayOfWeek} ${rep.day} ${rep.month}${allFull ? ', fully booked' : someUrgent ? ', almost full' : ''}`}
-                                    >
-                                        <span className={styles.dayName} aria-hidden="true">{language === 'id' ? (DAY_ID[rep.dayOfWeek] ?? rep.dayOfWeek) : rep.dayOfWeek}</span>
-                                        <span className={styles.dayNum} aria-hidden="true">{rep.day}</span>
-                                        <span className={styles.dayMonth} aria-hidden="true">{rep.month}</span>
-                                        {allFull ? (
-                                            <span className={styles.fullBadge}>{t('schedule.fullyBooked')}</span>
-                                        ) : (
-                                            <span className={styles.slotCount}>{dateSlots.length} {dateSlots.length === 1 ? 'slot' : 'slots'}</span>
-                                        )}
-                                    </button>
-                                ))}
-                            </div>
+                            <section className={styles.section} aria-labelledby="day1-dates-label">
+                                <h2 id="day1-dates-label" className={styles.sectionLabel}>{t('schedule.availableDates')}</h2>
+                                {renderDateGrid(handleDay1Select, day1Date)}
+                                {day1Date && day1DateSlots.length > 0 && renderTimeSlots(day1DateSlots, day1Slot, setDay1Slot, 'day1')}
+                            </section>
                         )}
-                    </section>
+                    </div>
 
-                    {/* STEP 2 — Select Time */}
-                    {selectedDate && selectedDateSlots.length > 0 && (
-                        <section className={`${styles.section} ${styles.timeSection}`} aria-labelledby="times-label">
-                            <h2 id="times-label" className={styles.sectionLabel}>
-                                {language === 'id' ? (DAY_ID[selectedDateSlots[0].dayOfWeek] ?? selectedDateSlots[0].dayOfWeek) : selectedDateSlots[0].dayOfWeek} {selectedDateSlots[0].day} {selectedDateSlots[0].month} &mdash; Available Times
-                            </h2>
-                            <div className={styles.timeGrid} role="group" aria-label="Available time slots">
-                                {selectedDateSlots.map(slot => {
-                                    const isFull = slot.seatsLeft === 0;
-                                    const isSelected = selectedSlot?.id === slot.id;
-                                    return (
-                                        <button
-                                            key={slot.id}
-                                            className={[
-                                                styles.timeCard,
-                                                isSelected ? styles.timeSelected : '',
-                                                isFull ? styles.timeFull : '',
-                                            ].join(' ')}
-                                            onClick={() => !isFull && setSelectedSlot(slot)}
-                                            disabled={isFull}
-                                            aria-pressed={isSelected}
-                                            aria-label={`${formatTime(slot.time)} to ${formatTime(slot.timeEnd)}${isFull ? ', fully booked' : ''}`}
-                                        >
-                                            <span className={styles.timeRange}>
-                                                {formatTime(slot.time)} &mdash; {formatTime(slot.timeEnd)}
-                                            </span>
-                                            <span className={`${styles.timeStatus} ${isFull ? '' : styles.timeAvail}`}>
-                                                {isFull ? t('schedule.fullyBooked') : 'Available'}
-                                            </span>
-                                        </button>
-                                    );
-                                })}
+                    {/* ── DAY 2 BLOCK — only shown after Day 1 is complete ── */}
+                    {day1Slot && (
+                        <div className={`${styles.dayBlock} ${day2Slot ? styles.dayComplete : ''}`}>
+                            <div className={styles.dayBlockLabel}>
+                                <span className={styles.dayBadge}>2</span>
+                                <span>{isID ? 'Hari ke-2' : 'Day 2'}</span>
+                                {day2Slot && <span className={styles.dayCheckmark}>✓</span>}
                             </div>
-                        </section>
-                    )}
 
-                    {/* Confirmed selection */}
-                    {selectedSlot && (
-                        <section className={`${styles.section} ${styles.confirmedSection}`} aria-labelledby="session-label">
-                            <h2 id="session-label" className={styles.sectionLabel}>{t('schedule.sessionTime')}</h2>
-                            <div className={styles.timeSlot}>
-                                <span className={styles.timeIcon} aria-hidden="true">🕒</span>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span className={styles.timeVal}>{selectedSlot.time}&ndash;{selectedSlot.timeEnd} (GMT+8)</span>
-                                    <span className={styles.timeMeta}>{t('schedule.liveOnline')}</span>
+                            {/* Day 2 confirmed summary */}
+                            {day2Slot ? (
+                                <div className={styles.dayConfirmedRow}>
+                                    <span className={styles.dayConfirmedText}>
+                                        {language === 'id' ? (DAY_ID[day2Slot.dayOfWeek] ?? day2Slot.dayOfWeek) : day2Slot.dayOfWeek}, {day2Slot.day} {day2Slot.month} &middot; {day2Slot.time}–{day2Slot.timeEnd}
+                                    </span>
+                                    <button
+                                        className={styles.changeBtn}
+                                        onClick={() => { setDay2Date(null); setDay2Slot(null); }}
+                                    >
+                                        {isID ? 'Ubah' : 'Change'}
+                                    </button>
                                 </div>
-                                <div className={styles.timeCheck} aria-hidden="true">✓</div>
+                            ) : (
+                                <section className={styles.section} aria-labelledby="day2-dates-label">
+                                    <h2 id="day2-dates-label" className={styles.sectionLabel}>{t('schedule.availableDates')}</h2>
+                                    {renderDateGrid(handleDay2Select, day2Date, day1Date)}
+                                    {day2Date && day2DateSlots.length > 0 && renderTimeSlots(day2DateSlots, day2Slot, setDay2Slot, 'day2')}
+                                </section>
+                            )}
+                        </div>
+                    )}
+
+                    {/* ── SESSION SUMMARY — shown after both days selected ── */}
+                    {bothSelected && day1Slot && day2Slot && (
+                        <section className={`${styles.section} ${styles.confirmedSection}`} aria-labelledby="session-label">
+                            <h2 id="session-label" className={styles.sectionLabel}>
+                                📅 {isID ? 'Sesi 2 Hari Kamu' : 'Your 2-Day Session'}
+                            </h2>
+                            <div className={styles.twoSessionSummary}>
+                                <div className={styles.sessionRow}>
+                                    <span className={styles.sessionDayTag}>{isID ? 'Hari 1' : 'Day 1'}</span>
+                                    <span className={styles.sessionInfo}>
+                                        {language === 'id' ? (DAY_ID[day1Slot.dayOfWeek] ?? day1Slot.dayOfWeek) : day1Slot.dayOfWeek}, {day1Slot.day} {day1Slot.month} &middot; {day1Slot.time}–{day1Slot.timeEnd}
+                                    </span>
+                                    <span className={styles.timeCheck}>✓</span>
+                                </div>
+                                <div className={styles.sessionRow}>
+                                    <span className={styles.sessionDayTag}>{isID ? 'Hari 2' : 'Day 2'}</span>
+                                    <span className={styles.sessionInfo}>
+                                        {language === 'id' ? (DAY_ID[day2Slot.dayOfWeek] ?? day2Slot.dayOfWeek) : day2Slot.dayOfWeek}, {day2Slot.day} {day2Slot.month} &middot; {day2Slot.time}–{day2Slot.timeEnd}
+                                    </span>
+                                    <span className={styles.timeCheck}>✓</span>
+                                </div>
                             </div>
                         </section>
                     )}
 
-                    {/* Contact info — only for non-authenticated users */}
-                    {selectedSlot && !isAuthenticated && (
+                    {/* ── CONTACT FORM — only for non-authenticated users, after both days selected ── */}
+                    {bothSelected && !isAuthenticated && (
                         <section className={styles.contactSection} aria-labelledby="contact-label">
                             <div className={styles.contactHeader}>
                                 <h2 id="contact-label" className={styles.sectionLabel}>{t('schedule.yourDetails')}</h2>
                                 <p className={styles.contactSubtitle}>
-                                    {isID
-                                        ? 'Kami butuh info ini untuk mengirim link kelas kamu.'
-                                        : 'We need this to send your class access link.'}
+                                    {isID ? 'Kami butuh info ini untuk mengirim link kelas kamu.' : 'We need this to send your class access link.'}
                                 </p>
                             </div>
 
@@ -290,12 +385,7 @@ export default function SchedulePage({ params }: Props) {
                                     <span className={styles.requiredStar}>*</span>
                                 </label>
                                 <div className={styles.phoneInputGroup}>
-                                    <select
-                                        className={styles.countrySelect}
-                                        value={countryCode}
-                                        onChange={e => setCountryCode(e.target.value)}
-                                        aria-label="Country code"
-                                    >
+                                    <select className={styles.countrySelect} value={countryCode} onChange={e => setCountryCode(e.target.value)} aria-label="Country code">
                                         <option value="+62">🇮🇩 +62</option>
                                         <option value="+60">🇲🇾 +60</option>
                                         <option value="+65">🇸🇬 +65</option>
@@ -317,15 +407,11 @@ export default function SchedulePage({ params }: Props) {
                                 </div>
                                 {phoneTouched && !phoneValid && (
                                     <span className={styles.fieldError} role="alert">
-                                        ⚠ {isID
-                                            ? 'Nomor telepon diperlukan untuk konfirmasi kelas'
-                                            : 'Phone number is required to confirm your class'}
+                                        ⚠ {isID ? 'Nomor telepon diperlukan untuk konfirmasi kelas' : 'Phone number is required to confirm your class'}
                                     </span>
                                 )}
                                 <p className={styles.fieldHelper}>
-                                    📲 {isID
-                                        ? 'Kami akan menghubungi Anda untuk konfirmasi jadwal kelas'
-                                        : 'We will contact you to confirm your class schedule'}
+                                    📲 {isID ? 'Kami akan menghubungi Anda untuk konfirmasi jadwal kelas' : 'We will contact you to confirm your class schedule'}
                                 </p>
                             </div>
 
@@ -333,9 +419,7 @@ export default function SchedulePage({ params }: Props) {
                             <div className={styles.inputGroup}>
                                 <label htmlFor="schedule-email" className={styles.inputLabel}>
                                     {isID ? 'Email' : 'Email'}
-                                    <span className={styles.optionalTag}>
-                                        {isID ? 'Opsional' : 'Optional'}
-                                    </span>
+                                    <span className={styles.optionalTag}>{isID ? 'Opsional' : 'Optional'}</span>
                                 </label>
                                 <input
                                     id="schedule-email"
@@ -356,9 +440,7 @@ export default function SchedulePage({ params }: Props) {
                                     </span>
                                 )}
                                 <p className={styles.fieldHelper}>
-                                    📄 {isID
-                                        ? 'Kami akan mengirim invoice dan detail kelas'
-                                        : 'We will send your invoice and class details'}
+                                    📄 {isID ? 'Kami akan mengirim invoice dan detail kelas' : 'We will send your invoice and class details'}
                                 </p>
                             </div>
                         </section>
@@ -373,7 +455,7 @@ export default function SchedulePage({ params }: Props) {
                         id="schedule-next-cta"
                         aria-disabled={!canContinue}
                     >
-                        {selectedSlot ? t('schedule.next') : selectedDate ? 'Select a Time' : t('schedule.selectDate')}
+                        {ctaLabel()}
                     </button>
 
                     <button onClick={() => router.back()} className={styles.back}>{t('schedule.backFull')}</button>

@@ -748,3 +748,143 @@
         padding: var(--space-4);
     }
 }
+
+/* ── Day Block (2-day selection) ── */
+.dayBlock {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    animation: fadeInUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.dayComplete {
+    border-color: var(--success, #22c55e);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.dayBlockLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.dayBadge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dayCheckmark {
+    margin-left: auto;
+    color: var(--success, #22c55e);
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+/* Confirmed day row (after selection) */
+.dayConfirmedRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.dayConfirmedText {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.changeBtn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.changeBtn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Day 1 marker in Day 2 grid */
+.dateDay1Marked {
+    border-color: var(--accent) !important;
+    opacity: 1 !important;
+}
+
+.day1Badge {
+    font-size: 0.625rem;
+    color: var(--accent);
+    font-weight: 700;
+    background: var(--accent-light);
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+/* 2-day session summary */
+.twoSessionSummary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sessionRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.sessionDayTag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.sessionInfo {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+}
