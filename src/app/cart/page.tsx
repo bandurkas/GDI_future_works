@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/components/CartContext';
 import { useLanguage, Translate } from '@/components/LanguageContext';
@@ -59,6 +59,7 @@ export default function CartPage() {
   const { data: session } = useSession();
 
   const [step, setStep] = useState<Step>('summary');
+  const [direction, setDirection] = useState<'forward' | 'back'>('forward');
   const [method, setMethod] = useState<PaymentMethod>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [paid, setPaid] = useState(false);
@@ -81,8 +82,16 @@ export default function CartPage() {
   const [detailsError, setDetailsError] = useState<string | null>(null);
   const [touched, setTouched] = useState({ name: false, email: false, phone: false });
 
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (step === 'details') {
+      setTimeout(() => nameInputRef.current?.focus(), 320); // after slide animation
+    }
+  }, [step]);
+
   const nameInvalid  = touched.name  && name.trim().length < 2;
-  const emailInvalid = touched.email && email.trim() !== '' && !email.includes('@');
+  const emailInvalid = touched.email && (!email.trim() || !email.includes('@'));
   const phoneInvalid = touched.phone && phone.trim().length < 6;
   const phoneEmpty   = touched.phone && !phone.trim();
   const [createOrderLoading, setCreateOrderLoading] = useState(false);
@@ -111,7 +120,7 @@ export default function CartPage() {
   // Step navigation
   const goBack = () => {
     const idx = STEP_INDEX[step];
-    if (idx > 0) setStep(STEPS[idx - 1].key);
+    if (idx > 0) { setDirection('back'); setStep(STEPS[idx - 1].key); }
   };
 
   const validateDetails = () => {
@@ -119,10 +128,17 @@ export default function CartPage() {
     setTouched(allTouched);
     if (!name.trim() || name.trim().length < 2) {
       setDetailsError(language === 'id' ? 'Masukkan nama lengkap Anda.' : 'Please enter your full name.');
+      setTimeout(() => document.querySelector('[data-error="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
       return false;
     }
     if (!phone.trim() || phone.trim().length < 6) {
       setDetailsError(language === 'id' ? 'Nomor telepon diperlukan untuk konfirmasi kelas.' : 'Phone number is required to confirm your class.');
+      setTimeout(() => document.querySelector('[data-error="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+      return false;
+    }
+    if (!email.trim() || !email.includes('@')) {
+      setDetailsError(language === 'id' ? 'Email wajib diisi untuk mengirim invoice.' : 'Email is required to send your invoice.');
+      setTimeout(() => document.querySelector('[data-error="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
       return false;
     }
     setDetailsError(null);
@@ -133,6 +149,7 @@ export default function CartPage() {
     if (!validateDetails()) return;
     const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
     updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone });
+    setDirection('forward');
     setStep('method');
   };
 
@@ -182,6 +199,7 @@ export default function CartPage() {
           if (url) window.open(url, '_blank', 'noopener,noreferrer');
         });
         setCreateOrderLoading(false);
+        setDirection('forward');
         setStep('payment');
         return;
       }
@@ -191,6 +209,7 @@ export default function CartPage() {
     } finally {
       setCreateOrderLoading(false);
     }
+    setDirection('forward');
     setStep('payment');
   };
 
@@ -261,7 +280,7 @@ export default function CartPage() {
         {/* Step content */}
         <div className={`${styles.layout} ${(step === 'payment' || paid) ? styles.layoutCentered : ''}`}>
           <div className={styles.main}>
-            <div key={step} className={styles.stepContent}>
+            <div key={step} className={`${styles.stepContent} ${direction === 'back' ? styles.stepContentBack : styles.stepContentForward}`}>
 
               {/* ── Step 1: Order Summary ── */}
               {step === 'summary' && (
@@ -300,7 +319,7 @@ export default function CartPage() {
                   <button
                     className="btn btn-primary btn-xl btn-full"
                     style={{ marginTop: '8px' }}
-                    onClick={() => setStep('details')}
+                    onClick={() => { setDirection('forward'); setStep('details'); }}
                   >
                     Continue to Details <ArrowRight size={18} />
                   </button>
@@ -329,6 +348,7 @@ export default function CartPage() {
                       </label>
                       <input
                         id="cart-name"
+                        ref={nameInputRef}
                         className={styles.input}
                         type="text"
                         placeholder={language === 'id' ? 'cth. Budi Santoso' : 'e.g. Budi Santoso'}
@@ -402,9 +422,7 @@ export default function CartPage() {
                     <div className={styles.field}>
                       <label className={styles.label} htmlFor="cart-email">
                         {language === 'id' ? 'Email' : 'Email'}
-                        <span className={styles.optionalBadge}>
-                          {language === 'id' ? 'Opsional' : 'Optional'}
-                        </span>
+                        <span className={styles.requiredBadge}>*</span>
                       </label>
                       <input
                         id="cart-email"
@@ -417,11 +435,13 @@ export default function CartPage() {
                         onBlur={() => setTouched(t => ({ ...t, email: true }))}
                         autoComplete="email"
                         data-error={emailInvalid ? 'true' : undefined}
-                        data-valid={email.includes('@') ? 'true' : undefined}
+                        data-valid={touched.email && email.trim() !== '' && email.includes('@') ? 'true' : undefined}
                       />
                       {emailInvalid && (
                         <p className={styles.fieldError} role="alert">
-                          ⚠ {language === 'id' ? 'Masukkan alamat email yang valid' : 'Please enter a valid email address'}
+                          ⚠ {language === 'id'
+                            ? 'Email wajib diisi agar kami bisa mengirim invoice kelas'
+                            : 'Email is required so we can send your class invoice'}
                         </p>
                       )}
                       <p className={styles.fieldHelper}>
@@ -577,7 +597,7 @@ export default function CartPage() {
               className="btn btn-primary"
               style={{ padding: '12px 24px', borderRadius: '12px', fontWeight: 700 }}
               onClick={() => {
-                if (step === 'summary') setStep('details');
+                if (step === 'summary') { setDirection('forward'); setStep('details'); }
                 else if (step === 'details') handleContinueDetails();
                 else if (step === 'method') handleContinueMethod();
               }}
