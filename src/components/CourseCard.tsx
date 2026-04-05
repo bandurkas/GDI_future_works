@@ -203,6 +203,19 @@ export default function CourseCard({ course, featured }: Props) {
 
                         {/* ── GRADIENT HERO ── */}
                         <div className={styles.drawerHero} style={{ background: course.iconBg }}>
+                            {/* Ambient orbs */}
+                            <div className={styles.heroOrb1} />
+                            <div className={styles.heroOrb2} />
+
+                            {/* SVG geometric lines */}
+                            <svg className={styles.heroSvg} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                                <path d="M0 100 L30 40 L70 60 L100 0" stroke="white" strokeWidth="0.12" fill="none" />
+                                <path d="M0 0 L50 100 L100 20"         stroke="white" strokeWidth="0.12" fill="none" />
+                                <circle cx="80" cy="70" r="20"         stroke="white" strokeWidth="0.08" fill="none" />
+                                <circle cx="15" cy="25" r="12"         stroke="white" strokeWidth="0.08" fill="none" />
+                            </svg>
+
+                            {/* Top row */}
                             <div className={styles.drawerHeroTop}>
                                 <span className={styles.drawerBadge}>{course.category}</span>
                                 <div className={styles.drawerHeroActions}>
@@ -217,16 +230,29 @@ export default function CourseCard({ course, featured }: Props) {
                                     </button>
                                 </div>
                             </div>
-                            <div className={styles.drawerIconWrapper}>
-                                <div className={styles.drawerIconRing}>
-                                    <span className={styles.drawerHeroEmoji}>{course.icon}</span>
+
+                            {/* Small echo bubble — left */}
+                            <div className={styles.heroBubbleSmall}>
+                                <span className={styles.heroBubbleSmallEmoji}>{course.icon}</span>
+                            </div>
+
+                            {/* Main glass bubble — right-center */}
+                            <div className={styles.heroBubbleMain}>
+                                <div className={styles.heroBubbleHighlight} />
+                                <span className={styles.drawerHeroEmoji}>{course.icon}</span>
+                            </div>
+
+                            {/* Bottom: title + trust */}
+                            <div className={styles.drawerHeroBottom}>
+                                <h4 className={styles.drawerTitle}>{title}</h4>
+                                <div className={styles.drawerTrust}>
+                                    <Star size={13} fill="rgba(255,255,255,0.95)" color="rgba(255,255,255,0.95)" style={{ marginRight: '6px' }} />
+                                    <span>{course.rating} · {t('card.trustedBy')} {course.studentsCount}+ {t('card.students')}</span>
                                 </div>
                             </div>
-                            <h4 className={styles.drawerTitle}>{title}</h4>
-                            <div className={styles.drawerTrust}>
-                                <Star size={13} fill="rgba(255,255,255,0.95)" color="rgba(255,255,255,0.95)" style={{ marginRight: '6px' }} />
-                                <span>{course.rating} · {t('card.trustedBy')} {course.studentsCount}+ {t('card.students')}</span>
-                            </div>
+
+                            {/* Corner sparkle */}
+                            <Sparkles size={18} className={styles.heroSparkle} aria-hidden />
                         </div>
 
                         {/* ── PRICE STRIP ── */}
