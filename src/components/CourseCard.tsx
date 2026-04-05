@@ -219,15 +219,8 @@ export default function CourseCard({ course, featured }: Props) {
                             </div>
                             <div className={styles.drawerIconWrapper}>
                                 <div className={styles.drawerIconRing}>
-                                    {course.imageIcon ? (
-                                        <Image src={course.imageIcon} alt={title} width={48} height={48} className={styles.drawerIconImg} unoptimized />
-                                    ) : (
-                                        <span className={styles.drawerHeroEmoji}>{course.icon}</span>
-                                    )}
+                                    <span className={styles.drawerHeroEmoji}>{course.icon}</span>
                                 </div>
-                                {course.imageIcon && (
-                                    <span className={styles.drawerEmojiAccent}>{course.icon}</span>
-                                )}
                             </div>
                             <h4 className={styles.drawerTitle}>{title}</h4>
                             <div className={styles.drawerTrust}>
