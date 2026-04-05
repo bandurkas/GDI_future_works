@@ -455,7 +455,7 @@
     }
 
     .heroTitle {
-        font-size: clamp(1.75rem, 7.5vw, 2.8rem) !important;
+        font-size: clamp(1.6rem, 7vw, 2.8rem) !important;
         letter-spacing: -0.04em;
         margin-bottom: 16px;
         padding: 0 20px;
@@ -464,13 +464,14 @@
     }
 
     .heroSubhead {
-        font-size: 1.1rem;
+        font-size: clamp(0.85rem, 3.8vw, 1rem);
         max-width: 100%;
         margin-bottom: 28px;
         padding: 0 20px;
         width: 100%;
         box-sizing: border-box;
         text-align: center;
+        overflow-wrap: break-word;
     }
 
     .ctaGroup {
