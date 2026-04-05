@@ -77,12 +77,14 @@ export default function CartPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [countryCode, setCountryCode] = useState('+62');
   const [detailsError, setDetailsError] = useState<string | null>(null);
   const [touched, setTouched] = useState({ name: false, email: false, phone: false });
 
   const nameInvalid  = touched.name  && name.trim().length < 2;
   const emailInvalid = touched.email && email.trim() !== '' && !email.includes('@');
-  const contactMissing = touched.email && touched.phone && !email.trim() && !phone.trim();
+  const phoneInvalid = touched.phone && phone.trim().length < 6;
+  const phoneEmpty   = touched.phone && !phone.trim();
   const [createOrderLoading, setCreateOrderLoading] = useState(false);
   const [createOrderError, setCreateOrderError] = useState<string | null>(null);
 
@@ -113,12 +115,14 @@ export default function CartPage() {
   };
 
   const validateDetails = () => {
+    const allTouched = { name: true, email: true, phone: true };
+    setTouched(allTouched);
     if (!name.trim() || name.trim().length < 2) {
-      setDetailsError('Please enter your full name.');
+      setDetailsError(language === 'id' ? 'Masukkan nama lengkap Anda.' : 'Please enter your full name.');
       return false;
     }
-    if (!email.trim() && !phone.trim()) {
-      setDetailsError('Please provide at least an email or WhatsApp number.');
+    if (!phone.trim() || phone.trim().length < 6) {
+      setDetailsError(language === 'id' ? 'Nomor telepon diperlukan untuk konfirmasi kelas.' : 'Phone number is required to confirm your class.');
       return false;
     }
     setDetailsError(null);
@@ -127,7 +131,8 @@ export default function CartPage() {
 
   const handleContinueDetails = () => {
     if (!validateDetails()) return;
-    updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: phone.trim() });
+    const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+    updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone });
     setStep('method');
   };
 
@@ -305,82 +310,138 @@ export default function CartPage() {
               {/* ── Step 2: Customer Details ── */}
               {step === 'details' && (
                 <div className={styles.section}>
-                  <h2 className={styles.sectionTitle}>Your Details</h2>
+                  <div className={styles.detailsHeader}>
+                    <h2 className={styles.sectionTitle}>
+                      {language === 'id' ? '👤 Data Kamu' : '👤 Your Details'}
+                    </h2>
+                    <p className={styles.detailsSubtitle}>
+                      {language === 'id'
+                        ? 'Kami butuh info ini untuk mengirim link kelas kamu.'
+                        : 'We need this to send your class access link.'}
+                    </p>
+                  </div>
+
                   <div className={styles.form}>
+                    {/* Name */}
                     <div className={styles.field}>
-                      <label className={styles.label} htmlFor="cart-name">Full Name</label>
+                      <label className={styles.label} htmlFor="cart-name">
+                        {language === 'id' ? 'Nama Lengkap' : 'Full Name'}
+                      </label>
                       <input
                         id="cart-name"
                         className={styles.input}
                         type="text"
-                        placeholder="e.g. Budi Santoso"
+                        placeholder={language === 'id' ? 'cth. Budi Santoso' : 'e.g. Budi Santoso'}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         onBlur={() => setTouched(t => ({ ...t, name: true }))}
                         autoComplete="name"
                         data-error={nameInvalid ? 'true' : undefined}
                         data-valid={touched.name && name.trim().length >= 2 ? 'true' : undefined}
-                        aria-describedby={nameInvalid ? 'name-error' : undefined}
                       />
                       {nameInvalid && (
-                        <p id="name-error" className={styles.fieldError} role="alert">
-                          Please enter your full name (at least 2 characters)
+                        <p className={styles.fieldError} role="alert">
+                          ⚠ {language === 'id' ? 'Masukkan nama lengkap kamu.' : 'Please enter your full name.'}
                         </p>
                       )}
                     </div>
+
+                    {/* Phone — required */}
+                    <div className={styles.field}>
+                      <label className={styles.label} htmlFor="cart-phone">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#25D366', marginRight: 5, verticalAlign: 'middle' }}>
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        {language === 'id' ? 'Nomor WhatsApp / Telepon' : 'WhatsApp / Phone Number'}
+                        <span className={styles.requiredBadge}>*</span>
+                      </label>
+                      <div className={styles.phoneInputGroup}>
+                        <select
+                          className={styles.countrySelect}
+                          value={countryCode}
+                          onChange={(e) => setCountryCode(e.target.value)}
+                          aria-label="Country code"
+                        >
+                          <option value="+62">🇮🇩 +62</option>
+                          <option value="+60">🇲🇾 +60</option>
+                          <option value="+65">🇸🇬 +65</option>
+                          <option value="+1">🇺🇸 +1</option>
+                        </select>
+                        <input
+                          id="cart-phone"
+                          className={styles.phoneInput}
+                          type="tel"
+                          inputMode="numeric"
+                          placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
+                          value={phone}
+                          onChange={(e) => {
+                            const digits = e.target.value.replace(/[^\d\s]/g, '');
+                            setPhone(digits);
+                          }}
+                          onBlur={() => setTouched(t => ({ ...t, phone: true }))}
+                          autoComplete="tel"
+                          data-error={(phoneInvalid || phoneEmpty) ? 'true' : undefined}
+                          data-valid={touched.phone && phone.trim().length >= 6 ? 'true' : undefined}
+                        />
+                      </div>
+                      {(phoneInvalid || phoneEmpty) && (
+                        <p className={styles.fieldError} role="alert">
+                          ⚠ {language === 'id'
+                            ? 'Nomor telepon diperlukan untuk konfirmasi kelas'
+                            : 'Phone number is required to confirm your class'}
+                        </p>
+                      )}
+                      <p className={styles.fieldHelper}>
+                        📲 {language === 'id'
+                          ? 'Kami akan menghubungi Anda untuk konfirmasi jadwal kelas'
+                          : 'We will contact you to confirm your class schedule'}
+                      </p>
+                    </div>
+
+                    {/* Email — optional */}
                     <div className={styles.field}>
                       <label className={styles.label} htmlFor="cart-email">
-                        Email Address <span className={styles.labelHint}>(or WhatsApp below)</span>
+                        {language === 'id' ? 'Email' : 'Email'}
+                        <span className={styles.optionalBadge}>
+                          {language === 'id' ? 'Opsional' : 'Optional'}
+                        </span>
                       </label>
                       <input
                         id="cart-email"
                         className={styles.input}
                         type="email"
                         inputMode="email"
-                        placeholder="you@example.com"
+                        placeholder={language === 'id' ? 'contoh@email.com' : 'you@example.com'}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onBlur={() => setTouched(t => ({ ...t, email: true }))}
                         autoComplete="email"
                         data-error={emailInvalid ? 'true' : undefined}
                         data-valid={email.includes('@') ? 'true' : undefined}
-                        aria-describedby={emailInvalid ? 'email-error' : undefined}
                       />
                       {emailInvalid && (
-                        <p id="email-error" className={styles.fieldError} role="alert">
-                          Please enter a valid email address
+                        <p className={styles.fieldError} role="alert">
+                          ⚠ {language === 'id' ? 'Masukkan alamat email yang valid' : 'Please enter a valid email address'}
                         </p>
                       )}
+                      <p className={styles.fieldHelper}>
+                        📄 {language === 'id'
+                          ? 'Kami akan mengirim invoice dan detail kelas'
+                          : 'We will send your invoice and class details'}
+                      </p>
                     </div>
-                    <div className={styles.field}>
-                      <label className={styles.label} htmlFor="cart-phone">
-                        WhatsApp Number <span className={styles.labelHint}>(for enrollment confirmation)</span>
-                      </label>
-                      <input
-                        id="cart-phone"
-                        className={styles.input}
-                        type="tel"
-                        inputMode="tel"
-                        placeholder="e.g. 0812 3456 7890"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        onBlur={() => setTouched(t => ({ ...t, phone: true }))}
-                        autoComplete="tel"
-                      />
-                    </div>
-                    {contactMissing && (
-                      <p className={styles.fieldError} role="alert">Please provide at least an email or WhatsApp number</p>
-                    )}
-                    {detailsError && !nameInvalid && !emailInvalid && !contactMissing && (
+
+                    {detailsError && !nameInvalid && !phoneInvalid && !phoneEmpty && !emailInvalid && (
                       <p className={styles.fieldErrorGlobal} role="alert">{detailsError}</p>
                     )}
                   </div>
+
                   <button
                     className="btn btn-primary btn-xl btn-full"
                     style={{ marginTop: '8px' }}
                     onClick={handleContinueDetails}
                   >
-                    Continue to Payment <ArrowRight size={18} />
+                    {language === 'id' ? 'Lanjut ke Pembayaran' : 'Continue to Payment'} <ArrowRight size={18} />
                   </button>
                 </div>
               )}

@@ -283,10 +283,20 @@
 }
 
 /* Details form */
+.detailsHeader {
+  margin-bottom: 24px;
+}
+
+.detailsSubtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 4px 0 0;
+}
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .field {
@@ -299,12 +309,100 @@
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
 .labelHint {
   font-weight: 500;
   color: var(--text-muted);
   font-size: 0.8125rem;
+}
+
+.requiredBadge {
+  color: var(--error, #DC2626);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.optionalBadge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 8px;
+  margin-left: 4px;
+}
+
+.fieldHelper {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Phone input with country code */
+.phoneInputGroup {
+  display: flex;
+  gap: 0;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border-strong);
+  overflow: hidden;
+  background: var(--bg-card);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.phoneInputGroup:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.countrySelect {
+  flex-shrink: 0;
+  padding: 0 10px;
+  min-height: 52px;
+  border: none;
+  border-right: 1.5px solid var(--border-strong);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 6px;
+  outline: none;
+}
+
+.phoneInput {
+  flex: 1;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: var(--font-body);
+  box-sizing: border-box;
+  min-height: 52px;
+  outline: none;
+}
+
+.phoneInput::placeholder {
+  color: var(--text-muted);
+}
+
+.phoneInputGroup:has(.phoneInput[data-error="true"]) {
+  border-color: var(--error, #DC2626);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.phoneInputGroup:has(.phoneInput[data-valid="true"]) {
+  border-color: var(--success, #10B981);
 }
 
 .input {
