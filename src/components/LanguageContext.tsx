@@ -622,7 +622,7 @@ const translations: Record<Language, Record<string, string>> = {
         'cohort.sub': 'Kelompok kecil berarti mentoring nyata. Maksimal 12 peserta per kohort.',
         'cohort.seats': 'kursi tersisa',
         'cohort.format': 'Live Online · Kelompok Kecil',
-        'cohort.cta': 'Pesan Tempat Kamu →',
+        'cohort.cta': 'Pesan Tempat Anda →',
         'cohort.full': 'Kohort Penuh',
 
         // Mini FAQ
@@ -687,7 +687,7 @@ const translations: Record<Language, Record<string, string>> = {
         'courses.advisor': 'Konsultasi Sekarang',
 
         // Smart Partnership block
-        'partner.badge': 'KEMITRAAN STRATEGIS',
+        'partner.badge': 'Kemitraan Strategis',
         'partner.title': 'International TEFL Training Institute (iTTi)',
         'partner.desc': 'Bermitra dengan iTTi, lembaga pelatihan guru yang diakui secara global dan berdedikasi dalam mengembangkan kemampuan bahasa Inggris dan pendidik profesional di seluruh dunia.',
         'partner.choosePath': 'Pilih Jalurmu',
@@ -754,7 +754,7 @@ const translations: Record<Language, Record<string, string>> = {
         'schedule.selectDate': 'Pilih tanggal untuk melanjutkan',
 
         // Differentiators
-        'diff.h2': 'Mengapa Para Profesional Memilih Kami',
+        'diff.h2': 'Mengapa para profesional memilih kami',
         'benefit1.title': 'Kurikulum Teruji Korporat',
         'benefit1.desc': 'Pelajari persis apa yang dibutuhkan perusahaan besar, melampaui teori akademis yang sudah ketinggalan zaman.',
         'benefit2.title': 'Langsung Bisa Digunakan',
@@ -1047,7 +1047,7 @@ const translations: Record<Language, Record<string, string>> = {
         'about.hero.h1.2': 'Dirancang untuk karier nyata.',
         'about.hero.p': 'GDI FutureWorks didirikan oleh para profesional yang melihat masalah yang sama di mana-mana: banyak orang berbakat tertinggal karena pendidikan tidak mampu mengikuti kecepatan perkembangan teknologi. Kami membangun platform yang kami harap sudah ada saat kami baru memulai.',
         'about.stats.0': 'Tenaga Profesional',
-        'about.stats.1': 'Kepuasaan Siswa',
+        'about.stats.1': 'Kepuasan Siswa',
         'about.stats.2': 'Dipandu oleh para ahli',
         'about.stats.3': 'Tersedia di 2 negara',
         'about.mission.badge': 'Misi Kami',
@@ -1064,9 +1064,9 @@ const translations: Record<Language, Record<string, string>> = {
         'about.pillar3.desc': 'Ajukan pertanyaan secara langsung (real-time). Dapatkan feedback untuk pertanyaan atau tugas Anda. Belajar mengikuti rasa ingin tahu Anda — bukan dari video rekaman.',
         'about.pillar4.title': 'Akses Komunitas Seumur Hidup',
         'about.pillar4.desc': 'Anda bisa bergabung dengan jaringan privat para profesional yang bersemangat. Akan ada update yang selalu dibagikan untuk peluang kerja, serta saran karier, dan tetap terhubung dengan orang-orang yang dapat membuka peluang bagi Anda.',
-        'about.cta.h2': 'Sudah Siap mempercepat karier teknologi Anda?',
+        'about.cta.h2': 'Sudah siap mempercepat karier teknologi Anda?',
         'about.cta.browse': 'Jelajahi Kursus',
-        'about.cta.consult': 'Konsultasi dengan team',
+        'about.cta.consult': 'Konsultasi dengan tim',
     }
 };
 

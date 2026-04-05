@@ -16,6 +16,11 @@ function formatTime(t: string) {
     return `${h12}:${m.toString().padStart(2, '0')} ${ampm}`;
 }
 
+const DAY_ID: Record<string, string> = {
+    Monday: 'Senin', Tuesday: 'Selasa', Wednesday: 'Rabu',
+    Thursday: 'Kamis', Friday: 'Jumat', Saturday: 'Sabtu', Sunday: 'Minggu',
+};
+
 export default function SchedulePage({ params }: Props) {
     const { slug } = use(params);
     const router = useRouter();
@@ -196,7 +201,7 @@ export default function SchedulePage({ params }: Props) {
                                         aria-pressed={selectedDate === dateKey}
                                         aria-label={`${rep.dayOfWeek} ${rep.day} ${rep.month}${allFull ? ', fully booked' : someUrgent ? ', almost full' : ''}`}
                                     >
-                                        <span className={styles.dayName} aria-hidden="true">{rep.dayOfWeek}</span>
+                                        <span className={styles.dayName} aria-hidden="true">{language === 'id' ? (DAY_ID[rep.dayOfWeek] ?? rep.dayOfWeek) : rep.dayOfWeek}</span>
                                         <span className={styles.dayNum} aria-hidden="true">{rep.day}</span>
                                         <span className={styles.dayMonth} aria-hidden="true">{rep.month}</span>
                                         {allFull ? (
@@ -214,7 +219,7 @@ export default function SchedulePage({ params }: Props) {
                     {selectedDate && selectedDateSlots.length > 0 && (
                         <section className={`${styles.section} ${styles.timeSection}`} aria-labelledby="times-label">
                             <h2 id="times-label" className={styles.sectionLabel}>
-                                {selectedDateSlots[0].dayOfWeek} {selectedDateSlots[0].day} {selectedDateSlots[0].month} &mdash; Available Times
+                                {language === 'id' ? (DAY_ID[selectedDateSlots[0].dayOfWeek] ?? selectedDateSlots[0].dayOfWeek) : selectedDateSlots[0].dayOfWeek} {selectedDateSlots[0].day} {selectedDateSlots[0].month} &mdash; Available Times
                             </h2>
                             <div className={styles.timeGrid} role="group" aria-label="Available time slots">
                                 {selectedDateSlots.map(slot => {
