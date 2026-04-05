@@ -207,8 +207,9 @@ export default function CourseCard({ course, featured }: Props) {
                                 <span className={styles.drawerBadge}>{course.category}</span>
                                 <div className={styles.drawerHeroActions}>
                                     {course.seatsLeft > 0 && course.seatsLeft <= 8 && (
-                                        <span className={styles.seatsChip}>
-                                            {course.seatsLeft <= 3 ? '🔴' : '🟡'} {course.seatsLeft} {isID ? 'kursi tersisa' : 'seats left'}
+                                        <span className={`${styles.seatsChip} ${course.seatsLeft <= 3 ? styles.seatsUrgent : ''}`}>
+                                            <span className={styles.seatsDot} />
+                                            {course.seatsLeft} {isID ? 'kursi tersisa' : 'seats left'}
                                         </span>
                                     )}
                                     <button className={styles.closeBtn} onClick={closeOutcomes} aria-label="Close">
@@ -216,7 +217,18 @@ export default function CourseCard({ course, featured }: Props) {
                                     </button>
                                 </div>
                             </div>
-                            <div className={styles.drawerHeroEmoji}>{course.icon}</div>
+                            <div className={styles.drawerIconWrapper}>
+                                <div className={styles.drawerIconRing}>
+                                    {course.imageIcon ? (
+                                        <Image src={course.imageIcon} alt={title} width={48} height={48} className={styles.drawerIconImg} unoptimized />
+                                    ) : (
+                                        <span className={styles.drawerHeroEmoji}>{course.icon}</span>
+                                    )}
+                                </div>
+                                {course.imageIcon && (
+                                    <span className={styles.drawerEmojiAccent}>{course.icon}</span>
+                                )}
+                            </div>
                             <h4 className={styles.drawerTitle}>{title}</h4>
                             <div className={styles.drawerTrust}>
                                 <Star size={13} fill="rgba(255,255,255,0.95)" color="rgba(255,255,255,0.95)" style={{ marginRight: '6px' }} />
