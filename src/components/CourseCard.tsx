@@ -8,16 +8,16 @@ import styles from './CourseCard.module.css';
 import { useLanguage } from './LanguageContext';
 import { useCurrency } from './CurrencyContext';
 import { formatPrice } from '@/lib/currency';
-import { 
-    Video, 
-    MessageSquare, 
-    Monitor, 
-    GraduationCap, 
-    Rocket, 
-    Users, 
-    TrendingUp, 
-    Star, 
-    CheckCircle2, 
+import {
+    Video,
+    MessageSquare,
+    Monitor,
+    GraduationCap,
+    Rocket,
+    Users,
+    TrendingUp,
+    Star,
+    CheckCircle2,
     AlertTriangle,
     ArrowRight,
     X,
@@ -25,7 +25,8 @@ import {
     Zap,
     Timer,
     Dumbbell,
-    Sparkles
+    Sparkles,
+    Play
 } from 'lucide-react';
 
 interface Props {
@@ -62,6 +63,7 @@ export default function CourseCard({ course, featured }: Props) {
     const [outcomesOpen, setOutcomesOpen] = useState(false);
     const [showSyllabusDetails, setShowSyllabusDetails] = useState(false);
     const [showSeatInfo, setShowSeatInfo] = useState(false);
+    const [showVideo, setShowVideo] = useState(false);
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
     const { language, t } = useLanguage();
@@ -324,11 +326,47 @@ export default function CourseCard({ course, featured }: Props) {
                                 <div className={styles.avatar} style={{ background: course.instructor.bgGradient }}>
                                     {course.instructor.initials}
                                 </div>
-                                <div>
+                                <div className={styles.instructorInfo}>
                                     <div className={styles.instructorName}>{t('card.ledBy')} {course.instructor.name}</div>
                                     <div className={styles.instructorCompany}>{course.instructor.company}</div>
                                 </div>
+                                {course.instructor.loom && (
+                                    <button
+                                        className={styles.watchIntroBtn}
+                                        onClick={(e) => { e.stopPropagation(); setShowVideo(true); }}
+                                        aria-label="Watch tutor intro video"
+                                    >
+                                        <Play size={11} />
+                                        Watch intro
+                                    </button>
+                                )}
                             </div>
+
+                            {showVideo && course.instructor.loom && (
+                                <div className={styles.videoPanel}>
+                                    <div className={styles.videoPanelHeader}>
+                                        <span className={styles.videoPanelTitle}>
+                                            <Play size={13} /> {course.instructor.name} — Intro
+                                        </span>
+                                        <button
+                                            className={styles.videoPanelClose}
+                                            onClick={() => setShowVideo(false)}
+                                            aria-label="Close video"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                    </div>
+                                    <div className={styles.videoWrapper}>
+                                        <iframe
+                                            src={course.instructor.loom.replace('/share/', '/embed/')}
+                                            frameBorder={0}
+                                            allowFullScreen
+                                            allow="autoplay; fullscreen"
+                                            className={styles.videoIframe}
+                                        />
+                                    </div>
+                                </div>
+                            )}
 
                             {testimonialQuote && (
                                 <div className={styles.testimonialBlock}>

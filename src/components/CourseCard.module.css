@@ -610,6 +610,80 @@
     margin-top: 2px;
 }
 
+.instructorInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.watchIntroBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1.5px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.18s, color 0.18s;
+}
+.watchIntroBtn:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ─── Inline video panel ─────────────────────────────── */
+.videoPanel {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+    background: #000;
+    animation: fadeInUp 220ms ease both;
+}
+.videoPanelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #111;
+}
+.videoPanelTitle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+.videoPanelClose {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 2px;
+    transition: color 0.15s;
+}
+.videoPanelClose:hover { color: #fff; }
+.videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+.videoIframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .drawerFooter {
     margin-top: auto;
     padding-top: var(--space-4);
