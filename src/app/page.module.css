@@ -458,12 +458,19 @@
         font-size: clamp(1.75rem, 7.5vw, 2.8rem) !important;
         letter-spacing: -0.04em;
         margin-bottom: 16px;
+        padding: 0 20px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .heroSubhead {
         font-size: 1.1rem;
         max-width: 100%;
         margin-bottom: 28px;
+        padding: 0 20px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
     }
 
     .ctaGroup {
@@ -495,7 +502,11 @@
     }
 
     .heroLayout {
-        padding: 0 16px;
+        padding: 0;
+    }
+
+    .heroContainer {
+        padding: 16px 24px 0;
     }
 
     .heroIllustrationMobile {
@@ -508,6 +519,11 @@
 
     .heroTitle {
         font-size: clamp(1.5rem, 8vw, 2.2rem) !important;
+        padding: 0;
+    }
+
+    .heroSubhead {
+        padding: 0;
     }
 }
 
