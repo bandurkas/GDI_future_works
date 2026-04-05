@@ -63,7 +63,6 @@ export default function CourseCard({ course, featured }: Props) {
     const [outcomesOpen, setOutcomesOpen] = useState(false);
     const [showSyllabusDetails, setShowSyllabusDetails] = useState(false);
     const [showSeatInfo, setShowSeatInfo] = useState(false);
-    const [showVideo, setShowVideo] = useState(false);
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
     const { language, t } = useLanguage();
@@ -331,14 +330,17 @@ export default function CourseCard({ course, featured }: Props) {
                                     <div className={styles.instructorCompany}>{course.instructor.company}</div>
                                 </div>
                                 {course.instructor.loom && (
-                                    <button
+                                    <a
+                                        href={course.instructor.loom}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className={styles.watchIntroBtn}
-                                        onClick={(e) => { e.stopPropagation(); setShowVideo(true); }}
+                                        onClick={(e) => e.stopPropagation()}
                                         aria-label="Watch tutor intro video"
                                     >
                                         <Play size={11} />
                                         Watch intro
-                                    </button>
+                                    </a>
                                 )}
                             </div>
 
@@ -406,34 +408,6 @@ export default function CourseCard({ course, featured }: Props) {
                 document.body
             )}
 
-            {showVideo && course.instructor.loom && createPortal(
-                <div className={styles.videoOverlay} onClick={() => setShowVideo(false)}>
-                    <div className={styles.videoModal} onClick={(e) => e.stopPropagation()}>
-                        <div className={styles.videoModalHeader}>
-                            <span className={styles.videoPanelTitle}>
-                                <Play size={14} /> {course.instructor.name} — Intro
-                            </span>
-                            <button
-                                className={styles.videoPanelClose}
-                                onClick={() => setShowVideo(false)}
-                                aria-label="Close video"
-                            >
-                                <X size={18} />
-                            </button>
-                        </div>
-                        <div className={styles.videoWrapper}>
-                            <iframe
-                                src={course.instructor.loom.replace('/share/', '/embed/')}
-                                frameBorder={0}
-                                allowFullScreen
-                                allow="autoplay; fullscreen"
-                                className={styles.videoIframe}
-                            />
-                        </div>
-                    </div>
-                </div>,
-                document.body
-            )}
         </div>
     );
 }
