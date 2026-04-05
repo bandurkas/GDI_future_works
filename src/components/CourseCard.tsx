@@ -342,32 +342,6 @@ export default function CourseCard({ course, featured }: Props) {
                                 )}
                             </div>
 
-                            {showVideo && course.instructor.loom && (
-                                <div className={styles.videoPanel}>
-                                    <div className={styles.videoPanelHeader}>
-                                        <span className={styles.videoPanelTitle}>
-                                            <Play size={13} /> {course.instructor.name} — Intro
-                                        </span>
-                                        <button
-                                            className={styles.videoPanelClose}
-                                            onClick={() => setShowVideo(false)}
-                                            aria-label="Close video"
-                                        >
-                                            <X size={16} />
-                                        </button>
-                                    </div>
-                                    <div className={styles.videoWrapper}>
-                                        <iframe
-                                            src={course.instructor.loom.replace('/share/', '/embed/')}
-                                            frameBorder={0}
-                                            allowFullScreen
-                                            allow="autoplay; fullscreen"
-                                            className={styles.videoIframe}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-
                             {testimonialQuote && (
                                 <div className={styles.testimonialBlock}>
                                     <p className={styles.testimonialQuote}>&ldquo;{testimonialQuote}&rdquo;</p>
@@ -426,6 +400,35 @@ export default function CourseCard({ course, featured }: Props) {
                                     <p>{t('card.seatsDesc')}</p>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )}
+
+            {showVideo && course.instructor.loom && createPortal(
+                <div className={styles.videoOverlay} onClick={() => setShowVideo(false)}>
+                    <div className={styles.videoModal} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.videoModalHeader}>
+                            <span className={styles.videoPanelTitle}>
+                                <Play size={14} /> {course.instructor.name} — Intro
+                            </span>
+                            <button
+                                className={styles.videoPanelClose}
+                                onClick={() => setShowVideo(false)}
+                                aria-label="Close video"
+                            >
+                                <X size={18} />
+                            </button>
+                        </div>
+                        <div className={styles.videoWrapper}>
+                            <iframe
+                                src={course.instructor.loom.replace('/share/', '/embed/')}
+                                frameBorder={0}
+                                allowFullScreen
+                                allow="autoplay; fullscreen"
+                                className={styles.videoIframe}
+                            />
                         </div>
                     </div>
                 </div>,

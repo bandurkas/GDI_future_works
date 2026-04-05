@@ -637,45 +637,81 @@
     color: #fff;
 }
 
-/* ─── Inline video panel ─────────────────────────────── */
-.videoPanel {
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1.5px solid var(--border);
-    background: #000;
-    animation: fadeInUp 220ms ease both;
+/* ─── Video modal (portal, full-screen overlay) ──────── */
+.videoOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: fadeIn 200ms ease both;
+    backdrop-filter: blur(4px);
 }
-.videoPanelHeader {
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.videoModal {
+    width: 100%;
+    max-width: 720px;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: #111;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+    animation: scaleIn 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.93); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.videoModalHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 12px;
-    background: #111;
+    padding: 12px 16px;
+    background: #1a1a1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
+
 .videoPanelTitle {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     color: #fff;
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     font-weight: 600;
 }
+
 .videoPanelClose {
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     display: flex;
     align-items: center;
-    border-radius: 4px;
-    padding: 2px;
-    transition: color 0.15s;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background 0.15s, color 0.15s;
 }
-.videoPanelClose:hover { color: #fff; }
+.videoPanelClose:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
 .videoWrapper {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
+    background: #000;
 }
 .videoIframe {
     position: absolute;
