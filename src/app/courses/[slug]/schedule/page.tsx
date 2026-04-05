@@ -40,6 +40,7 @@ export default function SchedulePage({ params }: Props) {
 
     const [email, setEmail] = useState(customerInfo.email || '');
     const [phone, setPhone] = useState(customerInfo.phone || '');
+    const [countryCode, setCountryCode] = useState('+62');
     const [emailTouched, setEmailTouched] = useState(false);
     const [phoneTouched, setPhoneTouched] = useState(false);
 
@@ -88,8 +89,8 @@ export default function SchedulePage({ params }: Props) {
     ];
 
     const emailValid = email.trim().length > 0 && email.includes('@');
-    const phoneValid = phone.trim().length >= 8;
-    const contactOk = isAuthenticated || emailValid || phoneValid;
+    const phoneValid = phone.trim().length >= 6;
+    const contactOk = isAuthenticated || phoneValid;
     const canContinue = !!selectedSlot && contactOk;
 
     const handleDateSelect = (dateKey: string) => {
@@ -99,7 +100,8 @@ export default function SchedulePage({ params }: Props) {
 
     const handleNext = () => {
         if (!canContinue || !selectedSlot || !course) return;
-        updateCustomerInfo({ email, phone });
+        const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+        updateCustomerInfo({ email, phone: fullPhone });
         addItem({
             courseId: course.id,
             courseTitle: course.title,
@@ -269,65 +271,96 @@ export default function SchedulePage({ params }: Props) {
                     {/* Contact info — only for non-authenticated users */}
                     {selectedSlot && !isAuthenticated && (
                         <section className={styles.contactSection} aria-labelledby="contact-label">
-                            <h2 id="contact-label" className={styles.sectionLabel}>{t('schedule.yourDetails')}</h2>
-                            <div className={styles.inputRow}>
-                                <div className={styles.inputGroup}>
-                                    <label htmlFor="schedule-email" className={styles.inputLabel}>
-                                        {t('schedule.emailLabel')}
-                                    </label>
-                                    <input
-                                        id="schedule-email"
-                                        className={styles.inputField}
-                                        type="email"
-                                        inputMode="email"
-                                        autoComplete="email"
-                                        placeholder={t('schedule.emailPlaceholder')}
-                                        value={email}
-                                        onChange={e => setEmail(e.target.value)}
-                                        onBlur={() => setEmailTouched(true)}
-                                        data-error={emailTouched && email && !emailValid ? 'true' : undefined}
-                                        data-valid={emailValid ? 'true' : undefined}
-                                        aria-describedby={emailTouched && email && !emailValid ? 'email-error' : undefined}
-                                    />
-                                    {emailTouched && email && !emailValid && (
-                                        <span id="email-error" className={styles.fieldError} role="alert">
-                                            Enter a valid email address
-                                        </span>
-                                    )}
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label htmlFor="schedule-phone" className={styles.inputLabel}>
-                                        {t('schedule.phoneLabel')}
-                                    </label>
+                            <div className={styles.contactHeader}>
+                                <h2 id="contact-label" className={styles.sectionLabel}>{t('schedule.yourDetails')}</h2>
+                                <p className={styles.contactSubtitle}>
+                                    {isID
+                                        ? 'Kami butuh info ini untuk mengirim link kelas kamu.'
+                                        : 'We need this to send your class access link.'}
+                                </p>
+                            </div>
+
+                            {/* Phone — required */}
+                            <div className={styles.inputGroup}>
+                                <label htmlFor="schedule-phone" className={styles.inputLabel}>
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#25D366', marginRight: 4, verticalAlign: 'middle', flexShrink: 0 }}>
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                    </svg>
+                                    {isID ? 'Nomor WhatsApp / Telepon' : 'WhatsApp / Phone Number'}
+                                    <span className={styles.requiredStar}>*</span>
+                                </label>
+                                <div className={styles.phoneInputGroup}>
+                                    <select
+                                        className={styles.countrySelect}
+                                        value={countryCode}
+                                        onChange={e => setCountryCode(e.target.value)}
+                                        aria-label="Country code"
+                                    >
+                                        <option value="+62">🇮🇩 +62</option>
+                                        <option value="+60">🇲🇾 +60</option>
+                                        <option value="+65">🇸🇬 +65</option>
+                                        <option value="+1">🇺🇸 +1</option>
+                                    </select>
                                     <input
                                         id="schedule-phone"
-                                        className={styles.inputField}
+                                        className={styles.phoneInput}
                                         type="tel"
-                                        inputMode="tel"
+                                        inputMode="numeric"
                                         autoComplete="tel"
-                                        placeholder={t('schedule.phonePlaceholder')}
+                                        placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
                                         value={phone}
-                                        onChange={e => setPhone(e.target.value)}
+                                        onChange={e => setPhone(e.target.value.replace(/[^\d\s]/g, ''))}
                                         onBlur={() => setPhoneTouched(true)}
-                                        data-error={phoneTouched && phone && !phoneValid ? 'true' : undefined}
+                                        data-error={phoneTouched && !phoneValid ? 'true' : undefined}
                                         data-valid={phoneValid ? 'true' : undefined}
-                                        aria-describedby={phoneTouched && phone && !phoneValid ? 'phone-error' : undefined}
                                     />
-                                    {phoneTouched && phone && !phoneValid && (
-                                        <span id="phone-error" className={styles.fieldError} role="alert">
-                                            Enter a valid phone number (min 8 digits)
-                                        </span>
-                                    )}
                                 </div>
-                            </div>
-                            {!email && !phone && (
-                                <p style={{ fontSize: '0.8125rem', color: 'var(--accent)', fontWeight: '600', marginTop: '4px' }}>
-                                    {t('schedule.validationMsg')}
+                                {phoneTouched && !phoneValid && (
+                                    <span className={styles.fieldError} role="alert">
+                                        ⚠ {isID
+                                            ? 'Nomor telepon diperlukan untuk konfirmasi kelas'
+                                            : 'Phone number is required to confirm your class'}
+                                    </span>
+                                )}
+                                <p className={styles.fieldHelper}>
+                                    📲 {isID
+                                        ? 'Kami akan menghubungi Anda untuk konfirmasi jadwal kelas'
+                                        : 'We will contact you to confirm your class schedule'}
                                 </p>
-                            )}
-                            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                                {t('schedule.contactNote')}
-                            </p>
+                            </div>
+
+                            {/* Email — optional */}
+                            <div className={styles.inputGroup}>
+                                <label htmlFor="schedule-email" className={styles.inputLabel}>
+                                    {isID ? 'Email' : 'Email'}
+                                    <span className={styles.optionalTag}>
+                                        {isID ? 'Opsional' : 'Optional'}
+                                    </span>
+                                </label>
+                                <input
+                                    id="schedule-email"
+                                    className={styles.inputField}
+                                    type="email"
+                                    inputMode="email"
+                                    autoComplete="email"
+                                    placeholder={isID ? 'contoh@email.com' : 'you@example.com'}
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    onBlur={() => setEmailTouched(true)}
+                                    data-error={emailTouched && email && !emailValid ? 'true' : undefined}
+                                    data-valid={emailValid ? 'true' : undefined}
+                                />
+                                {emailTouched && email && !emailValid && (
+                                    <span className={styles.fieldError} role="alert">
+                                        ⚠ {isID ? 'Masukkan alamat email yang valid' : 'Enter a valid email address'}
+                                    </span>
+                                )}
+                                <p className={styles.fieldHelper}>
+                                    📄 {isID
+                                        ? 'Kami akan mengirim invoice dan detail kelas'
+                                        : 'We will send your invoice and class details'}
+                                </p>
+                            </div>
                         </section>
                     )}
 
