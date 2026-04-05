@@ -490,7 +490,7 @@ export default function CartPage() {
                     <QRISPaymentBlock
                       orderId={orderId}
                       amountIDR={chargeAmountIDR}
-                      onPaid={() => { setPaidSlug(currentSlug); clearCart(); setPaid(true); }}
+                      onPaid={() => { setPaidSlug(currentSlug); clearCart(); setPaid(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     />
                   ) : method === 'qris' && !orderId ? (
                     <p className={styles.fieldError}>Order could not be created. Please go back and try again.</p>
