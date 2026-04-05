@@ -62,7 +62,6 @@ const getValueIcon = (idx: number) => {
 export default function CourseCard({ course, featured }: Props) {
     const [outcomesOpen, setOutcomesOpen] = useState(false);
     const [showSyllabusDetails, setShowSyllabusDetails] = useState(false);
-    const [showSeatInfo, setShowSeatInfo] = useState(false);
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
     const { language, t } = useLanguage();
@@ -201,28 +200,71 @@ export default function CourseCard({ course, featured }: Props) {
                         onTouchEnd={onTouchEnd}
                     >
                         <div className={styles.dragHandle} />
-                        <div className={styles.drawerHeader}>
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                    <span className={styles.drawerBadge}>{course.category}</span>
+
+                        {/* ── GRADIENT HERO ── */}
+                        <div className={styles.drawerHero} style={{ background: course.iconBg }}>
+                            <div className={styles.drawerHeroTop}>
+                                <span className={styles.drawerBadge}>{course.category}</span>
+                                <div className={styles.drawerHeroActions}>
+                                    {course.seatsLeft > 0 && course.seatsLeft <= 8 && (
+                                        <span className={styles.seatsChip}>
+                                            {course.seatsLeft <= 3 ? '🔴' : '🟡'} {course.seatsLeft} {isID ? 'kursi tersisa' : 'seats left'}
+                                        </span>
+                                    )}
                                     <button className={styles.closeBtn} onClick={closeOutcomes} aria-label="Close">
-                                        <X size={20} />
+                                        <X size={18} />
                                     </button>
                                 </div>
-                                <h4 className={styles.drawerTitle}>{title}</h4>
-                                <div className={styles.drawerTrust}>
-                                    <Star size={14} fill="#F59E0B" color="#F59E0B" style={{ marginRight: '6px' }} />
-                                    <span>{t('card.trustedBy')} {course.studentsCount}+ {t('card.students')}</span>
-                                </div>
+                            </div>
+                            <div className={styles.drawerHeroEmoji}>{course.icon}</div>
+                            <h4 className={styles.drawerTitle}>{title}</h4>
+                            <div className={styles.drawerTrust}>
+                                <Star size={13} fill="rgba(255,255,255,0.95)" color="rgba(255,255,255,0.95)" style={{ marginRight: '6px' }} />
+                                <span>{course.rating} · {t('card.trustedBy')} {course.studentsCount}+ {t('card.students')}</span>
                             </div>
                         </div>
 
+                        {/* ── PRICE STRIP ── */}
+                        <div className={styles.priceStrip}>
+                            <span className={styles.priceStripMain}>{displayPrice}</span>
+                            <span className={styles.priceStripOriginal}>{displayOriginal}</span>
+                            <span className={styles.priceStripSave}>−{savePct}%</span>
+                            <span className={styles.priceStripNote}>{isID ? '· Akses seumur hidup' : '· Lifetime access'}</span>
+                        </div>
+
                         <div className={styles.drawerBody}>
+
+                            {/* Description */}
                             <div className={styles.drawerSection}>
-                                <h5 className={styles.drawerQuestion}>{t('card.aboutCourse')}</h5>
                                 <p className={styles.drawerDesc}>{description}</p>
                             </div>
 
+                            {/* ── VIDEO CTA — HIGH CONVERSION ── */}
+                            {course.instructor.loom && (
+                                <a
+                                    href={course.instructor.loom}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.videoCtaCard}
+                                    onClick={(e) => e.stopPropagation()}
+                                    aria-label={`Watch ${course.instructor.name} intro video`}
+                                >
+                                    <div className={styles.videoCtaAvatar} style={{ background: course.instructor.bgGradient }}>
+                                        <span className={styles.videoCtaInitials}>{course.instructor.initials}</span>
+                                        <div className={styles.videoCtaPlayRing}>
+                                            <Play size={18} fill="white" color="white" />
+                                        </div>
+                                    </div>
+                                    <div className={styles.videoCtaInfo}>
+                                        <div className={styles.videoCtaLabel}>▶ {isID ? 'KENALI INSTRUKTUR ANDA' : 'MEET YOUR INSTRUCTOR'}</div>
+                                        <div className={styles.videoCtaName}>{course.instructor.name}</div>
+                                        <div className={styles.videoCtaRole}>{course.instructor.role}</div>
+                                    </div>
+                                    <div className={styles.videoCtaArrow}>→</div>
+                                </a>
+                            )}
+
+                            {/* Syllabus view OR default view */}
                             {syllabusDetails && showSyllabusDetails ? (
                                 <>
                                     {syllabusDetails.sessions.map((session, idx) => (
@@ -231,9 +273,9 @@ export default function CourseCard({ course, featured }: Props) {
                                             <ul className={styles.drawerList}>
                                                 {session.items.map((item, i) => (
                                                     <li key={i} className={styles.drawerListItem}>
-                                                         <div className={styles.checkIcon}><CheckCircle2 size={16} /></div>
-                                                         <span>{item}</span>
-                                                     </li>
+                                                        <div className={styles.checkIcon}><CheckCircle2 size={16} /></div>
+                                                        <span>{item}</span>
+                                                    </li>
                                                 ))}
                                             </ul>
                                         </div>
@@ -241,7 +283,7 @@ export default function CourseCard({ course, featured }: Props) {
 
                                     <div className={styles.drawerSection}>
                                         <h5 className={styles.drawerQuestion}>{t('card.yourProject')}</h5>
-                                        <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                                        <div style={{ background: 'var(--bg-secondary)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border)' }}>
                                             <p className={styles.drawerDesc} style={{ margin: 0, fontSize: '0.9375rem', lineHeight: 1.5 }}>
                                                 {syllabusDetails.project}
                                             </p>
@@ -256,14 +298,26 @@ export default function CourseCard({ course, featured }: Props) {
                                                     <li key={i} className={styles.drawerListItem} style={{ alignItems: 'flex-start' }}>
                                                         <TrendingUp size={20} style={{ marginRight: '8px', color: '#166534' }} />
                                                         <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#166534' }}>{role}</span>
-                                                     </li>
+                                                    </li>
                                                 ))}
                                             </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.drawerSection}>
+                                        <h5 className={styles.drawerQuestion}>{t('card.whoFor')}</h5>
+                                        <div className={styles.infoList}>
+                                            {whoFor.slice(0, 4).map((item, idx) => (
+                                                <div key={idx} className={styles.infoItem}>
+                                                    <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 </>
                             ) : (
                                 <>
+                                    {/* What you'll learn */}
                                     <div className={styles.drawerSection}>
                                         <h5 className={styles.drawerQuestion}>{t('card.whatLearn')}</h5>
                                         <div className={styles.drawerMicrotext}>{t('card.practicalSkills')}</div>
@@ -277,131 +331,82 @@ export default function CourseCard({ course, featured }: Props) {
                                         </ul>
                                     </div>
 
+                                    {/* What's included — chip grid */}
                                     <div className={styles.drawerSection}>
                                         <h5 className={styles.drawerQuestion}>{t('card.whatGet')}</h5>
-                                        <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_what.webp" alt="What you get" width={400} height={200} className={styles.infoImage} loading="lazy" unoptimized />
-                                            <div className={styles.infoList}>
-                                                {whatYouGet.slice(0, 6).map((item, idx) => (
-                                                    <div key={idx} className={styles.infoItem}>
-                                                        <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>{t('card.whoFor')}</h5>
-                                        <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_who.webp" alt="Who is it for" width={400} height={200} className={styles.infoImage} loading="lazy" unoptimized />
-                                            <div className={styles.infoList}>
-                                                {whoFor.slice(0, 4).map((item, idx) => (
-                                                    <div key={idx} className={styles.infoItem}>
-                                                        <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.drawerSection}>
-                                        <h5 className={styles.drawerQuestion}>{t('card.whyWorth')}</h5>
-                                        <div className={styles.infoGraphicCard}>
-                                            <Image src="/assets/info_why.webp" alt="Why worth it" width={400} height={200} className={styles.infoImage} loading="lazy" unoptimized />
-                                            <div className={styles.infoList}>
-                                                {whyWorthIt.slice(0, 4).map((item, idx) => (
-                                                    <div key={idx} className={styles.infoItem}>
-                                                        <CheckCircle2 size={14} className={styles.infoCheck} /> {item}
-                                                    </div>
-                                                ))}
-                                            </div>
+                                        <div className={styles.featureChipGrid}>
+                                            {whatYouGet.slice(0, 6).map((item, idx) => (
+                                                <div key={idx} className={styles.featureChip}>
+                                                    <span className={styles.featureChipIcon}>{getFeatureIcon(item)}</span>
+                                                    <span className={styles.featureChipText}>{item}</span>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 </>
                             )}
 
-                            <div className={styles.instructorRow}>
-                                <div className={styles.avatar} style={{ background: course.instructor.bgGradient }}>
-                                    {course.instructor.initials}
-                                </div>
-                                <div className={styles.instructorInfo}>
-                                    <div className={styles.instructorName}>{t('card.ledBy')} {course.instructor.name}</div>
-                                    <div className={styles.instructorCompany}>{course.instructor.company}</div>
-                                </div>
-                                {course.instructor.loom && (
-                                    <a
-                                        href={course.instructor.loom}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.watchIntroBtn}
-                                        onClick={(e) => e.stopPropagation()}
-                                        aria-label="Watch tutor intro video"
-                                    >
-                                        <Play size={11} />
-                                        Watch intro
-                                    </a>
-                                )}
-                            </div>
-
+                            {/* Testimonial — editorial pull quote */}
                             {testimonialQuote && (
                                 <div className={styles.testimonialBlock}>
-                                    <p className={styles.testimonialQuote}>&ldquo;{testimonialQuote}&rdquo;</p>
+                                    <div className={styles.testimonialMark}>&ldquo;</div>
+                                    <p className={styles.testimonialQuote}>{testimonialQuote}</p>
                                     <p className={styles.testimonialAuthor}>— {course.testimonialAuthor}</p>
                                 </div>
                             )}
-                        </div>
 
-                        <div className={styles.drawerFooter}>
-                            <div className={styles.actionRow}>
-                                <button
-                                    className={styles.urgencyAlertBtn}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setShowSeatInfo(!showSeatInfo);
-                                    }}
-                                    aria-label="Seat availability info"
-                                >
-                                    <AlertTriangle size={18} />
-                                </button>
-                                <div className={styles.drawerButtons}>
-                                    {course.syllabusDetails && !showSyllabusDetails ? (
-                                        <button
-                                            className={`btn ${styles.downloadBtn}`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                setShowSyllabusDetails(true);
-                                                const drawerBody = e.currentTarget.closest(`.${styles.drawerContent}`)?.querySelector(`.${styles.drawerBody}`);
-                                                if (drawerBody) {
-                                                    drawerBody.scrollTop = 0;
-                                                }
-                                            }}
-                                        >
-                                            {t('card.getDetails')}
-                                        </button>
-                                    ) : (
-                                        <a
-                                            href={`https://wa.me/628211704707?text=Hi%2C%20I%27d%20like%20more%20details%20about%20${encodeURIComponent(course.title)}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={`btn ${styles.downloadBtn}`}
-                                        >
-                                            {t('card.askQuestion')}
-                                        </a>
-                                    )}
-                                    <Link href={`/courses/${course.slug}/schedule`} className={`btn btn-primary ${styles.scheduleBtn}`}>
-                                        {t('card.schedule')}
-                                    </Link>
+                            {/* Instructor card */}
+                            <div className={styles.instructorCard}>
+                                <div className={styles.instructorCardTop}>
+                                    <div className={styles.avatar} style={{ background: course.instructor.bgGradient }}>
+                                        {course.instructor.initials}
+                                    </div>
+                                    <div className={styles.instructorInfo}>
+                                        <div className={styles.instructorName}>{t('card.ledBy')} {course.instructor.name}</div>
+                                        <div className={styles.instructorRole}>{course.instructor.role}</div>
+                                    </div>
                                 </div>
+                                {course.instructor.credentials && course.instructor.credentials.length > 0 && (
+                                    <div className={styles.credentialPills}>
+                                        {course.instructor.credentials.slice(0, 2).map((cred, i) => (
+                                            <span key={i} className={styles.credentialPill}>{cred}</span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
-                            {showSeatInfo && (
-                                <div className={styles.urgencyTooltip}>
-                                    <strong>{t('card.seatsLimited')}</strong>
-                                    <p>{t('card.seatsDesc')}</p>
-                                </div>
-                            )}
+                        </div>
+
+                        {/* ── FOOTER ── */}
+                        <div className={styles.drawerFooter}>
+                            <div className={styles.drawerButtons}>
+                                {course.syllabusDetails && !showSyllabusDetails ? (
+                                    <button
+                                        className={`btn ${styles.downloadBtn}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            setShowSyllabusDetails(true);
+                                            const drawerBody = e.currentTarget.closest(`.${styles.drawerContent}`)?.querySelector(`.${styles.drawerBody}`);
+                                            if (drawerBody) drawerBody.scrollTop = 0;
+                                        }}
+                                    >
+                                        {t('card.getDetails')}
+                                    </button>
+                                ) : (
+                                    <a
+                                        href={`https://wa.me/628211704707?text=Hi%2C%20I%27d%20like%20more%20details%20about%20${encodeURIComponent(course.title)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={`btn ${styles.downloadBtn}`}
+                                    >
+                                        {t('card.askQuestion')}
+                                    </a>
+                                )}
+                                <Link href={`/courses/${course.slug}/schedule`} className={`btn btn-primary ${styles.scheduleBtn}`}>
+                                    {t('card.schedule')}
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>,
