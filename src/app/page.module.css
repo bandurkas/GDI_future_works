@@ -648,18 +648,72 @@
     letter-spacing: 0.1em;
 }
 
+/* Animated glowing border wrapper */
+.logoGridWrapper {
+    position: relative;
+    border-radius: 100px;
+    padding: 2px;
+    overflow: hidden;
+    display: inline-flex;
+}
+
+/* The spinning conic-gradient that creates the moving border */
+.logoGridWrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        transparent 55%,
+        rgba(212, 43, 43, 0) 60%,
+        rgba(212, 43, 43, 0.7) 66%,
+        rgba(255, 110, 110, 1) 72%,
+        rgba(212, 43, 43, 0.7) 78%,
+        rgba(212, 43, 43, 0) 84%,
+        transparent 89%,
+        transparent 100%
+    );
+    animation: spinBorder 5s linear infinite;
+    z-index: 0;
+}
+
+/* Inner fill — masks the conic gradient except at the edge (creates the border) */
+.logoGridWrapper::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--bg-primary);
+    border-radius: 98px;
+    z-index: 1;
+}
+
+@keyframes spinBorder {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 .logoGridMini {
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 40px;
-    opacity: 0.6;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    padding: 14px 28px;
+    opacity: 0.55;
     filter: grayscale(1);
-    transition: opacity 0.3s;
+    transition: opacity 0.35s, filter 0.35s;
 }
 
-.logoGridMini:hover {
+.logoGridWrapper:hover .logoGridMini {
     opacity: 1;
+    filter: grayscale(0);
 }
 
 .miniLogoText {
@@ -667,6 +721,7 @@
     font-weight: 700;
     color: #1a1a1a;
     letter-spacing: -0.01em;
+    white-space: nowrap;
 }
 
 .regionalPresence {

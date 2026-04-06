@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 // ── STATIC DATA ──────────────────────────────────────────────────────────────
 
-const proofCompanies = ['Google', 'Microsoft', 'Gojek', 'Tokopedia', 'Grab', 'Mars'];
+const proofCompanies = ['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Gojek', 'Tokopedia', 'Grab', 'Mars'];
 
 
 
@@ -180,10 +180,12 @@ export default function HomePage() {
 
                         <div className={styles.trustedByRow}>
                             <p className={styles.trustedByLabel}><Translate tKey="hero.trustedBy" /></p>
-                            <div className={styles.logoGridMini}>
-                                {proofCompanies.map((c) => (
-                                    <span key={c} className={styles.miniLogoText}>{c}</span>
-                                ))}
+                            <div className={styles.logoGridWrapper}>
+                                <div className={styles.logoGridMini}>
+                                    {proofCompanies.map((c) => (
+                                        <span key={c} className={styles.miniLogoText}>{c}</span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
