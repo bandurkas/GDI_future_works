@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 // ── STATIC DATA ──────────────────────────────────────────────────────────────
 
-const proofCompanies = ['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Gojek', 'Tokopedia', 'Grab', 'Mars'];
+const proofCompanies = ['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Gojek', 'Tokopedia', 'Grab'];
 
 
 
