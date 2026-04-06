@@ -57,7 +57,7 @@ type Tutor = {
   profile: TutorProfile | null;
 };
 type Application = {
-  id: string; name: string; email: string; status: string; expertise: string | null;
+  id: string; name: string; email: string; phone: string | null; status: string; expertise: string | null;
   timezone: string | null; bio: string | null; availability: string | null;
   linkedin: string | null; videoLink: string | null; portfolioLink: string | null;
   curriculum: string | null; lessonPlan: string | null;
@@ -223,6 +223,7 @@ function AppCard({ a }: { a: Application }) {
             <div className={s.cardName}>{a.name}</div>
             <div className={s.cardSubRow}>
               <span className={s.cardEmail}>{a.email}</span>
+              {a.phone && <span className={s.cardPhone}>📞 {a.phone}</span>}
               {a.expertise && <span className={s.expertiseTag}>{a.expertise}</span>}
               {a.timezone && <span className={s.cardTimezone}>🕐 {a.timezone}</span>}
             </div>
@@ -293,6 +294,7 @@ function TutorCard({ t, isArchived = false }: { t: Tutor; isArchived?: boolean }
             <div className={s.cardName}>{t.user.name || '—'}</div>
             <div className={s.cardSubRow}>
               <span className={s.cardEmail}>{t.user.email}</span>
+              {t.user.phone && <span className={s.cardPhone}>📞 {t.user.phone}</span>}
               {t.expertise.slice(0, 3).map(e => (
                 <span key={e} className={s.expertiseTag}>{e}</span>
               ))}

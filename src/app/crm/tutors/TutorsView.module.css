@@ -284,6 +284,11 @@
   color: var(--crm-text-muted);
 }
 
+.cardPhone {
+  font-size: 11px;
+  color: var(--crm-text-muted);
+}
+
 .cardTimezone {
   font-size: 11px;
   color: var(--crm-text-dim);
