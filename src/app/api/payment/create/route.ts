@@ -34,10 +34,14 @@ export async function POST(req: Request) {
 
         const dbUser = await prisma.user.upsert({
             where: { email },
-            update: { name: customerName || undefined },
+            update: {
+                ...(customerName  ? { name: customerName }    : {}),
+                ...(customerPhone ? { phone: customerPhone }  : {}),
+            },
             create: {
                 email,
                 name: customerName || 'Student',
+                phone: customerPhone || null,
                 role: 'STUDENT',
                 isActive: true,
             },

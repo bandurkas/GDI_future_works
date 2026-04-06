@@ -13,5 +13,19 @@ export default async function CrmStudentsPage() {
     orderBy: { createdAt: 'desc' },
   });
 
-  return <StudentsView students={students} />;
+  // Backfill phone from payment metadata for students where user.phone is null
+  const studentsWithPhone = students.map(st => {
+    if (st.user.phone) return st;
+    // Try to find phone stored in any payment's metadata
+    for (const p of st.payments) {
+      const meta = p.metadata as any;
+      const phone = meta?.customerPhone || meta?.customer_details?.phone;
+      if (phone) {
+        return { ...st, user: { ...st.user, phone } };
+      }
+    }
+    return st;
+  });
+
+  return <StudentsView students={studentsWithPhone} />;
 }
