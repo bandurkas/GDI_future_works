@@ -648,37 +648,32 @@
     letter-spacing: 0.1em;
 }
 
-/* Glowing border wrapper — simple border + animated glow */
-.logoGridWrapper {
-    display: inline-flex;
-    border-radius: 100px;
-    border: 1.5px solid rgba(212, 43, 43, 0.35);
-    animation: glowBorder 3s ease-in-out infinite;
-}
-
-@keyframes glowBorder {
-    0%, 100% { box-shadow: 0 0 6px rgba(212, 43, 43, 0.2); }
-    50%       { box-shadow: 0 0 18px rgba(212, 43, 43, 0.55), 0 0 36px rgba(212, 43, 43, 0.15); }
-}
-
-/* Marquee clip container */
-.logoGridMini {
-    overflow: hidden;
-    padding: 12px 24px;
+/* Marquee outer — clips the scrolling track, shows glow border */
+.marqueeOuter {
     width: min(680px, 88vw);
+    overflow: hidden;
     border-radius: 100px;
+    border: 1.5px solid rgba(212, 43, 43, 0.3);
+    padding: 12px 0;
+    animation: glowPulse 3s ease-in-out infinite;
 }
 
-/* The scrolling track — doubled content for seamless loop */
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(212, 43, 43, 0.15); }
+    50%       { box-shadow: 0 0 20px rgba(212, 43, 43, 0.45); }
+}
+
+/* Scrolling track — width: max-content is key, no flex on parent */
 .marqueeTrack {
     display: flex;
     align-items: center;
     gap: 48px;
     width: max-content;
     animation: marqueeScroll 22s linear infinite;
+    padding: 0 24px;
 }
 
-.logoGridWrapper:hover .marqueeTrack {
+.marqueeOuter:hover .marqueeTrack {
     animation-play-state: paused;
 }
 
@@ -695,6 +690,10 @@
     white-space: nowrap;
     flex-shrink: 0;
 }
+
+/* keep old class name unused but harmless */
+.logoGridMini { display: none; }
+.logoGridWrapper { display: none; }
 
 .regionalPresence {
     display: flex;
