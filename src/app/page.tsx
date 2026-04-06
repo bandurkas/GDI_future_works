@@ -181,9 +181,9 @@ export default function HomePage() {
                         <div className={styles.trustedByRow}>
                             <p className={styles.trustedByLabel}><Translate tKey="hero.trustedBy" /></p>
                             <div className={styles.logoGridWrapper}>
-                                <div className={styles.logoGridMini}>
-                                    {proofCompanies.map((c) => (
-                                        <span key={c} className={styles.miniLogoText}>{c}</span>
+                                <div className={styles.marqueeTrack}>
+                                    {[...proofCompanies, ...proofCompanies].map((c, i) => (
+                                        <span key={i} className={styles.miniLogoText}>{c}</span>
                                     ))}
                                 </div>
                             </div>

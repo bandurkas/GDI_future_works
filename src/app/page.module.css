@@ -697,23 +697,31 @@
     to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+/* Marquee clip container — sits above the ::after fill */
 .logoGridMini {
     position: relative;
     z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px 28px;
-    padding: 14px 28px;
-    opacity: 0.55;
-    filter: grayscale(1);
-    transition: opacity 0.35s, filter 0.35s;
+    overflow: hidden;
+    padding: 14px 0;
+    width: min(680px, 90vw);
 }
 
-.logoGridWrapper:hover .logoGridMini {
-    opacity: 1;
-    filter: grayscale(0);
+/* The scrolling track — doubled content for seamless loop */
+.marqueeTrack {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    width: max-content;
+    animation: marqueeScroll 22s linear infinite;
+}
+
+.logoGridWrapper:hover .marqueeTrack {
+    animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
 }
 
 .miniLogoText {
@@ -722,6 +730,7 @@
     color: #1a1a1a;
     letter-spacing: -0.01em;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .regionalPresence {
