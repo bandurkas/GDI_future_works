@@ -43,6 +43,45 @@ export async function appendToLogSheet(rows: string[][]) {
     });
 }
 
+export async function appendToInterestSheet(rows: string[][]) {
+    const sheets = await getGoogleSheetsClient();
+    const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+
+    const meta = await sheets.spreadsheets.get({ spreadsheetId });
+    let sheetName = meta.data.sheets?.find(s => s.properties?.title === 'iTTiInterest')?.properties?.title
+                 || 'iTTiInterest';
+
+    // If sheet doesn't exist yet, fall back to first sheet until manually created
+    const sheetExists = meta.data.sheets?.some(s => s.properties?.title === 'iTTiInterest');
+    if (!sheetExists) {
+        sheetName = meta.data.sheets?.[0]?.properties?.title || 'Sheet1';
+    }
+
+    const existing = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: `${sheetName}!A1:A1`,
+    });
+
+    if (!existing.data.values?.length) {
+        await sheets.spreadsheets.values.update({
+            spreadsheetId,
+            range: `${sheetName}!A1`,
+            valueInputOption: 'RAW',
+            requestBody: {
+                values: [['Date', 'Time', 'Name', 'Email', 'Country', 'Interest', 'Goal', 'Budget']],
+            },
+        });
+    }
+
+    await sheets.spreadsheets.values.append({
+        spreadsheetId,
+        range: `${sheetName}!A:A`,
+        valueInputOption: 'USER_ENTERED',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: rows },
+    });
+}
+
 export async function appendToTutorSheet(rows: string[][]) {
     const sheets = await getGoogleSheetsClient();
     const spreadsheetId = process.env.GOOGLE_TUTOR_SHEET_ID || process.env.GOOGLE_SHEET_ID; // Use specific sheet if available, else primary

@@ -157,25 +157,17 @@ const translations: Record<Language, Record<string, string>> = {
         'courses.notSure': 'Not sure which course is right for you?',
         'courses.advisor': 'Consult Advisor',
 
-        // Smart Partnership block
-        'partner.badge': 'SMART PARTNERSHIP',
-        'partner.title': 'International TEFL Training Institute (iTTi)',
-        'partner.desc': 'Partnered with iTTi, a globally recognized teacher training institute dedicated to developing English proficiency and professional educators worldwide.',
-        'partner.choosePath': 'Choose Your Path',
+        // iTTi interest section
+        'partner.title': 'Explore English Learning & Teaching Pathways',
+        'partner.desc': 'Whether you want to improve your English or explore teaching opportunities, we are developing programmes designed for real-world outcomes. Register your interest to be the first to access upcoming learning pathways.',
         'partner.learn.title': 'Learn English',
         'partner.learn.desc': 'Build strong English communication skills for academic success, IELTS, and global career opportunities.',
         'partner.learn.i1': 'Academic Success',
         'partner.learn.i2': 'IELTS Preparation',
         'partner.learn.i3': 'Career Advancement',
         'partner.learn.i4': 'Global Opportunities',
-        'partner.learn.cta': 'Start Learning →',
-        'partner.teach.title': 'Teach English',
-        'partner.teach.desc': 'Passionate about Education? Earn an internationally recognized certification and learn the skills to teach English anywhere in the world.',
-        'partner.teach.i1': 'Internationally Recognized',
-        'partner.teach.i2': 'Global Educator Network',
-        'partner.teach.i3': 'Career Support',
-        'partner.teach.cta': 'Get Certified →',
-        'partner.preEnrol': 'Pre-enrolment starts now.',
+        'partner.teach.title': 'Teach English | Work Globally | Build a flexible income',
+        'partner.teach.desc': 'Explore pathways to develop the skills needed to teach English and work with learners across different countries and platforms.',
 
         // CTA section bottom
         'cta.consultAdvisor': '💬 Consult Advisor',
@@ -686,25 +678,17 @@ const translations: Record<Language, Record<string, string>> = {
         'courses.notSure': 'Tidak yakin kursus mana yang cocok untukmu?',
         'courses.advisor': 'Konsultasi Sekarang',
 
-        // Smart Partnership block
-        'partner.badge': 'Kemitraan Strategis',
-        'partner.title': 'International TEFL Training Institute (iTTi)',
-        'partner.desc': 'Bermitra dengan iTTi, lembaga pelatihan guru yang diakui secara global dan berdedikasi dalam mengembangkan kemampuan bahasa Inggris dan pendidik profesional di seluruh dunia.',
-        'partner.choosePath': 'Pilih Jalurmu',
+        // iTTi interest section
+        'partner.title': 'Jelajahi Jalur Belajar & Mengajar Bahasa Inggris',
+        'partner.desc': 'Baik kamu ingin meningkatkan kemampuan bahasa Inggris atau menjelajahi peluang mengajar, kami sedang mengembangkan program yang dirancang untuk hasil nyata. Daftarkan minatmu untuk menjadi yang pertama mengakses jalur pembelajaran.',
         'partner.learn.title': 'Belajar Bahasa Inggris',
         'partner.learn.desc': 'Bangun kemampuan komunikasi bahasa Inggris yang kuat untuk kesuksesan akademik, IELTS, dan peluang karier global.',
         'partner.learn.i1': 'Sukses Akademik',
         'partner.learn.i2': 'Persiapan IELTS',
         'partner.learn.i3': 'Kemajuan Karier',
         'partner.learn.i4': 'Peluang Global',
-        'partner.learn.cta': 'Mulai Belajar →',
-        'partner.teach.title': 'Mengajar Bahasa Inggris',
-        'partner.teach.desc': 'Bersemangat tentang Pendidikan? Raih sertifikasi yang diakui internasional dan kuasai keterampilan mengajar bahasa Inggris di mana saja di seluruh dunia.',
-        'partner.teach.i1': 'Diakui Internasional',
-        'partner.teach.i2': 'Jaringan Pendidik Global',
-        'partner.teach.i3': 'Dukungan Karier',
-        'partner.teach.cta': 'Dapatkan Sertifikat →',
-        'partner.preEnrol': 'Pra-pendaftaran dibuka sekarang.',
+        'partner.teach.title': 'Mengajar Bahasa Inggris | Bekerja Global | Bangun Penghasilan Fleksibel',
+        'partner.teach.desc': 'Jelajahi jalur untuk mengembangkan keterampilan mengajar bahasa Inggris dan bekerja dengan pelajar dari berbagai negara dan platform.',
 
         // CTA section bottom
         'cta.consultAdvisor': '💬 Konsultasi Sekarang',

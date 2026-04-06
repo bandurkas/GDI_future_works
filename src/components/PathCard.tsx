@@ -8,8 +8,8 @@ interface PathCardProps {
   title: string;
   description: string;
   list?: string[];
-  ctaText: string;
-  ctaHref: string;
+  ctaText?: string;
+  ctaHref?: string;
   variant?: 'primary' | 'secondary';
 }
 
@@ -26,7 +26,7 @@ const PathCard: React.FC<PathCardProps> = ({
       <div className={styles.topContent}>
         <h4 className={styles.title}>{title}</h4>
         <p className={styles.description}>{description}</p>
-        
+
         {list && list.length > 0 && (
           <ul className={styles.list}>
             {list.map((item, index) => (
@@ -39,16 +39,18 @@ const PathCard: React.FC<PathCardProps> = ({
         )}
       </div>
 
-      <div className={styles.ctaWrapper}>
-        <a
-          href={ctaHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={variant === 'primary' ? styles.btnPrimary : styles.btnSecondary}
-        >
-          {ctaText}
-        </a>
-      </div>
+      {ctaText && ctaHref && (
+        <div className={styles.ctaWrapper}>
+          <a
+            href={ctaHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={variant === 'primary' ? styles.btnPrimary : styles.btnSecondary}
+          >
+            {ctaText}
+          </a>
+        </div>
+      )}
     </div>
   );
 };
