@@ -648,62 +648,25 @@
     letter-spacing: 0.1em;
 }
 
-/* Animated glowing border wrapper */
+/* Glowing border wrapper — simple border + animated glow */
 .logoGridWrapper {
-    position: relative;
-    border-radius: 100px;
-    padding: 2px;
-    overflow: hidden;
     display: inline-flex;
+    border-radius: 100px;
+    border: 1.5px solid rgba(212, 43, 43, 0.35);
+    animation: glowBorder 3s ease-in-out infinite;
 }
 
-/* The spinning conic-gradient that creates the moving border */
-.logoGridWrapper::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 800px;
-    height: 800px;
-    transform: translate(-50%, -50%) rotate(0deg);
-    background: conic-gradient(
-        from 0deg,
-        transparent 0%,
-        transparent 55%,
-        rgba(212, 43, 43, 0) 60%,
-        rgba(212, 43, 43, 0.7) 66%,
-        rgba(255, 110, 110, 1) 72%,
-        rgba(212, 43, 43, 0.7) 78%,
-        rgba(212, 43, 43, 0) 84%,
-        transparent 89%,
-        transparent 100%
-    );
-    animation: spinBorder 5s linear infinite;
-    z-index: 0;
+@keyframes glowBorder {
+    0%, 100% { box-shadow: 0 0 6px rgba(212, 43, 43, 0.2); }
+    50%       { box-shadow: 0 0 18px rgba(212, 43, 43, 0.55), 0 0 36px rgba(212, 43, 43, 0.15); }
 }
 
-/* Inner fill — masks the conic gradient except at the edge (creates the border) */
-.logoGridWrapper::after {
-    content: '';
-    position: absolute;
-    inset: 2px;
-    background: var(--bg-primary);
-    border-radius: 98px;
-    z-index: 1;
-}
-
-@keyframes spinBorder {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Marquee clip container — sits above the ::after fill */
+/* Marquee clip container */
 .logoGridMini {
-    position: relative;
-    z-index: 2;
     overflow: hidden;
-    padding: 14px 0;
-    width: min(680px, 90vw);
+    padding: 12px 24px;
+    width: min(680px, 88vw);
+    border-radius: 100px;
 }
 
 /* The scrolling track — doubled content for seamless loop */
@@ -727,7 +690,7 @@
 .miniLogoText {
     font-size: 0.875rem;
     font-weight: 700;
-    color: #1a1a1a;
+    color: #555;
     letter-spacing: -0.01em;
     white-space: nowrap;
     flex-shrink: 0;
