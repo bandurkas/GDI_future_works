@@ -217,6 +217,13 @@ export default function PartnershipSection() {
                             title={t('partner.teach.title')}
                             description={t('partner.teach.desc')}
                             variant="primary"
+                            accentBar
+                            highlights={[
+                                { icon: '🌍', text: 'Work in 150+ countries' },
+                                { icon: '💻', text: 'Teach online, anywhere' },
+                                { icon: '📜', text: 'Internationally recognised' },
+                                { icon: '💰', text: 'Build flexible income' },
+                            ]}
                         />
                     </div>
 

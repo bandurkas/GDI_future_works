@@ -12,6 +12,25 @@
   overflow: hidden;
 }
 
+.cardAccent {
+  border-color: rgba(212, 43, 43, 0.25);
+  background: rgba(212, 43, 43, 0.04);
+}
+
+.cardAccent:hover {
+  border-color: rgba(212, 43, 43, 0.4) !important;
+}
+
+.accentBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #D42B2B 0%, #ff7a7a 60%, rgba(212,43,43,0) 100%);
+  border-radius: 20px 20px 0 0;
+}
+
 .card:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.2);
@@ -64,6 +83,43 @@
   font-weight: 800;
   font-size: 0.875rem;
   margin-top: 1px;
+}
+
+/* Highlight pills — 2×2 grid for visual weight */
+.highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.highlightPill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover .highlightPill {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.highlightIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.highlightText {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.35;
 }
 
 .ctaWrapper {
