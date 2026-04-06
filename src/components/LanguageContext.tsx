@@ -122,6 +122,7 @@ const translations: Record<Language, Record<string, string>> = {
         'hero.subhead': 'Real skills. Live training. Industry experts.',
         'hero.cta1': 'Enroll Now (3 mins)',
         'hero.cta2': 'Explore Courses',
+        'hero.teachWithUs': 'Teach With Us',
         'hero.taught': 'Taught by Active Tech Leads & Industry Experts',
         'hero.trustedBy': 'Our instructors work at leading tech companies',
 
@@ -168,6 +169,12 @@ const translations: Record<Language, Record<string, string>> = {
         'partner.learn.i4': 'Global Opportunities',
         'partner.teach.title': 'Teach English | Work Globally | Build a flexible income',
         'partner.teach.desc': 'Explore pathways to develop the skills needed to teach English and work with learners across different countries and platforms.',
+        'partner.teach.b1': 'Work in 150+ countries',
+        'partner.teach.b2': 'Teach online, anywhere',
+        'partner.teach.b3': 'Internationally recognised',
+        'partner.teach.b4': 'Build a flexible income',
+        'partner.actionNote': 'Be the first to receive updates when our programmes launch.',
+        'partner.registerBtn': 'Register your interest →',
 
         // CTA section bottom
         'cta.consultAdvisor': '💬 Consult Advisor',
@@ -643,6 +650,7 @@ const translations: Record<Language, Record<string, string>> = {
         'hero.subhead': 'Jalur Anda Menuju Kesuksesan',
         'hero.cta1': 'Daftar Sekarang (3 menit)',
         'hero.cta2': 'Lihat Kursus',
+        'hero.teachWithUs': 'Mengajar Bersama Kami',
         'hero.taught': 'Kuasai Tekno, AI, dan Komunikasi Profesional untuk Pelajar & Profesional',
         'hero.trustedBy': 'Instruktur kami bekerja di perusahaan teknologi terkemuka',
 
@@ -689,6 +697,12 @@ const translations: Record<Language, Record<string, string>> = {
         'partner.learn.i4': 'Peluang Global',
         'partner.teach.title': 'Mengajar Bahasa Inggris | Bekerja Global | Bangun Penghasilan Fleksibel',
         'partner.teach.desc': 'Jelajahi jalur untuk mengembangkan keterampilan mengajar bahasa Inggris dan bekerja dengan pelajar dari berbagai negara dan platform.',
+        'partner.teach.b1': 'Bekerja di lebih dari 150 negara',
+        'partner.teach.b2': 'Mengajar secara online, di mana saja',
+        'partner.teach.b3': 'Diakui secara internasional',
+        'partner.teach.b4': 'Bangun penghasilan fleksibel',
+        'partner.actionNote': 'Jadilah orang pertama yang menerima pembaruan saat program kami diluncurkan.',
+        'partner.registerBtn': 'Daftarkan minatmu →',
 
         // CTA section bottom
         'cta.consultAdvisor': '💬 Konsultasi Sekarang',
@@ -922,7 +936,7 @@ const translations: Record<Language, Record<string, string>> = {
 
         // ── TUTOR APPLY PAGE ──
         'apply.eyebrow': 'Daftar Tutor',
-        'apply.title.pre': 'Jadilah Tutor ',
+        'apply.title.pre': 'Jadilah Tutor di ',
         'apply.title.brand': 'GDI',
         'apply.title.post': '',
         'apply.subtitle': 'Bergabunglah sebagai tutor ahli dan mulai menghasilkan dari keahlianmu.',

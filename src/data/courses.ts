@@ -361,7 +361,7 @@ export const courses: Course[] = [
             { id: 's2', date: 'Apr 5',  dayOfWeek: 'Sunday',   month: 'Apr', day: 5,  time: '14:00', timeEnd: '16:00', seatsLeft: 0  },
             { id: 's3', date: 'Apr 11', dayOfWeek: 'Saturday', month: 'Apr', day: 11, time: '10:00', timeEnd: '12:00', seatsLeft: 0  },
             { id: 's4', date: 'Apr 12', dayOfWeek: 'Sunday',   month: 'Apr', day: 12, time: '19:00', timeEnd: '21:00', seatsLeft: 2  },
-            { id: 's5', date: 'Apr 19', dayOfWeek: 'Saturday', month: 'Apr', day: 19, time: '14:00', timeEnd: '16:00', seatsLeft: 7  },
+            { id: 's5', date: 'Apr 18', dayOfWeek: 'Saturday', month: 'Apr', day: 18, time: '14:00', timeEnd: '16:00', seatsLeft: 7  },
             { id: 's6', date: 'Apr 26', dayOfWeek: 'Sunday',   month: 'Apr', day: 26, time: '10:00', timeEnd: '12:00', seatsLeft: 12 },
         ],
         tags: ['Python', 'Automation', 'Scripting', 'APIs', 'Productivity'],
@@ -620,7 +620,7 @@ export const courses: Course[] = [
             'Understand how LLMs actually work under the hood',
             'Build custom AI chatbots and intelligent assistants',
             'Integrate the OpenAI API into real web applications',
-            'master prompt engineering for reliable, consistent outputs',
+            'Master prompt engineering for reliable, consistent outputs',
             'Deploy AI-powered features to production environments',
         ],
         whoFor: [

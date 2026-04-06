@@ -219,18 +219,18 @@ export default function PartnershipSection() {
                             variant="primary"
                             accentBar
                             list={[
-                                'Work in 150+ countries',
-                                'Teach online, anywhere',
-                                'Internationally recognised',
-                                'Build a flexible income',
+                                t('partner.teach.b1'),
+                                t('partner.teach.b2'),
+                                t('partner.teach.b3'),
+                                t('partner.teach.b4'),
                             ]}
                         />
                     </div>
 
                     <div className={styles.geActionRow}>
-                        <p className={styles.geActionNote}>Be the first to receive updates when our programmes launch.</p>
+                        <p className={styles.geActionNote}>{t('partner.actionNote')}</p>
                         <button className={styles.geRegisterBtn} onClick={() => setDrawerOpen(true)}>
-                            Register your interest →
+                            {t('partner.registerBtn')}
                         </button>
                     </div>
                 </div>

@@ -19,6 +19,8 @@ function formatTime(t: string) {
 const DAY_ID: Record<string, string> = {
     Monday: 'Senin', Tuesday: 'Selasa', Wednesday: 'Rabu',
     Thursday: 'Kamis', Friday: 'Jumat', Saturday: 'Sabtu', Sunday: 'Minggu',
+    'Mon–Tue': 'Sen–Sel', 'Tue–Wed': 'Sel–Rab', 'Wed–Thu': 'Rab–Kam',
+    'Thu–Fri': 'Kam–Jum', 'Sat–Sun': 'Sab–Min', 'Fri–Sat': 'Jum–Sab',
 };
 
 export default function SchedulePage({ params }: Props) {

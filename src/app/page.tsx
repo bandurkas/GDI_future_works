@@ -160,7 +160,7 @@ export default function HomePage() {
                                 <Translate tKey="hero.cta1" />
                             </a>
                             <a href="/for-tutors" className={styles.btnOutline}>
-                                Teach With Us
+                                <Translate tKey="hero.teachWithUs" />
                             </a>
                         </div>
 

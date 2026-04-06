@@ -139,7 +139,7 @@ export default async function CourseDetailPage({ params }: Props) {
                                     {/* Status Badges */}
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', margin: '0.5rem 0 1rem', padding: '1.25rem', border: '1px dashed #ebeeef', borderRadius: '1rem', background: '#f2f4f4' }}>
                                         <div className={styles.badgeChip}>⭐ Verified Industry Expert</div>
-                                        <div className={styles.badgeChip}>🔬 Currently at {course.instructor.company}</div>
+                                        <div className={styles.badgeChip}>🔬 Currently an {course.instructor.company} Professional</div>
                                         <div className={styles.badgeChip}>📊 6+ Years Experience</div>
                                         <div className={styles.badgeChip}>👥 Active IT Trainer</div>
                                     </div>
