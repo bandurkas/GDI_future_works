@@ -37,6 +37,7 @@ export default function StudentsView({ students }: { students: Student[] }) {
     return base.filter(st =>
       st.user.name?.toLowerCase().includes(q) ||
       st.user.email.toLowerCase().includes(q) ||
+      (st.user.phone || '').toLowerCase().includes(q) ||
       (st.country || '').toLowerCase().includes(q)
     );
   }, [search, tab, active, leads, paid]);
@@ -73,7 +74,7 @@ export default function StudentsView({ students }: { students: Student[] }) {
             <input
               className={s.searchInput}
               type="text"
-              placeholder="Search name, email, country…"
+              placeholder="Search name, email, phone, country…"
               value={search}
               onChange={e => setSearch(e.target.value)}
             />

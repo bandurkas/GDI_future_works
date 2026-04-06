@@ -111,12 +111,21 @@ export async function POST(req: Request) {
                 }
             });
 
-            // If success, upgrade Student access
+            // If success, upgrade Student access + save phone if provided
             if (isSettled) {
                 await tx.student.update({
                     where: { id: payment.studentId },
                     data: { status: 'ACTIVE' as StudentStatus }
                 });
+
+                // Save phone from Midtrans customer_details if not already stored
+                const phone = customer_details?.phone;
+                if (phone) {
+                    await tx.user.updateMany({
+                        where: { student: { id: payment.studentId }, phone: null },
+                        data: { phone },
+                    });
+                }
             }
         });
 
