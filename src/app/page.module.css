@@ -409,12 +409,12 @@
         text-align: center;
         padding: 0 20px 16px;
         gap: 0;
+        max-width: 100%;
+        overflow: hidden;
     }
 
     /* Hide badge and outline button on mobile — cleaner look */
-    .trustBadge {
-        display: none;
-    }
+    /* display: none; */
 
     .btnOutline {
         display: none !important;
@@ -452,6 +452,8 @@
         backdrop-filter: none !important;
         border-radius: 0;
         max-width: 100%;
+        width: 100%;
+        overflow: hidden;
     }
 
     .heroTitle {
@@ -466,12 +468,20 @@
     .heroSubhead {
         font-size: clamp(0.85rem, 3.8vw, 1rem);
         max-width: 100%;
-        margin-bottom: 28px;
-        padding: 0 20px;
         width: 100%;
         box-sizing: border-box;
+        margin-bottom: 28px;
+        padding: 0;
         text-align: center;
         overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .heroSubhead span {
+        display: inline;
+        white-space: normal;
+        word-break: break-word;
     }
 
     .ctaGroup {
@@ -520,11 +530,14 @@
 
     .heroTitle {
         font-size: clamp(1.5rem, 8vw, 2.2rem) !important;
-        padding: 0;
     }
 
     .heroSubhead {
-        padding: 0;
+        font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.5;
     }
 }
 
@@ -555,6 +568,8 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    max-width: calc(100vw - 40px);
+    text-align: center;
 }
 
 .heroTitle {

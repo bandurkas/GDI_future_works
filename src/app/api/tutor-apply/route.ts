@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { appendToTutorSheet } from '@/lib/googleSheets';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { rateLimit, getIP } from '@/lib/rateLimit';
+
 
 // Helper: treats empty string as undefined so .optional() URL fields don't fail on ""
 const optionalUrl = z.preprocess(
@@ -30,6 +32,16 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+    // Rate limit: 5 submissions per minute per IP
+    const ip = getIP(req);
+    const rl = rateLimit(`tutor-apply:${ip}`, 5, 60_000);
+    if (!rl.success) {
+        return NextResponse.json(
+            { error: true, message: 'Too many requests. Please wait a minute and try again.', code: 'RATE_LIMITED' },
+            { status: 429, headers: { 'Retry-After': String(Math.ceil((rl.reset - Date.now()) / 1000)) } }
+        );
+    }
+
     try {
         const body = await req.json();
         const result = schema.safeParse(body);
@@ -37,8 +49,12 @@ export async function POST(req: Request) {
         if (!result.success) {
             console.error('[tutor-apply] Zod validation failed:', JSON.stringify(result.error.issues));
             console.error('[tutor-apply] Body received:', JSON.stringify(body));
-            return NextResponse.json({ error: result.error.issues[0].message, field: result.error.issues[0].path }, { status: 400 });
+            return NextResponse.json(
+                { error: true, message: result.error.issues[0].message, code: 'VALIDATION_ERROR', field: result.error.issues[0].path },
+                { status: 400 }
+            );
         }
+
 
         const data = result.data;
 

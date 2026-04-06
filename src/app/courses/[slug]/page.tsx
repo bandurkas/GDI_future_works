@@ -17,11 +17,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const course = getCourseBySlug(slug);
     if (!course) return {};
+    const title = `${course.title} — GDI FutureWorks`;
+    const description = course.description;
+    const url = `https://gdifuture.works/courses/${slug}`;
     return {
-        title: `${course.title} — GDI FutureWorks`,
-        description: course.description,
+        title,
+        description,
+        alternates: { canonical: url },
+        openGraph: {
+            title,
+            description,
+            url,
+            siteName: 'GDI FutureWorks',
+            type: 'website',
+            images: [{ url: 'https://gdifuture.works/LOGO_FW.svg', width: 800, height: 600, alt: title }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: ['https://gdifuture.works/LOGO_FW.svg'],
+        },
     };
 }
+
 
 export default async function CourseDetailPage({ params }: Props) {
     const { slug } = await params;

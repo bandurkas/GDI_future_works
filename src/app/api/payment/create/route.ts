@@ -1,20 +1,32 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCourseBySlug } from '@/data/courses';
+import { rateLimit, getIP } from '@/lib/rateLimit';
 
 export async function POST(req: Request) {
+    // Rate limit: 10 payment attempts per minute per IP
+    const ip = getIP(req);
+    const rl = rateLimit(`payment-create:${ip}`, 10, 60_000);
+    if (!rl.success) {
+        return NextResponse.json(
+            { error: true, message: 'Too many requests. Please try again shortly.', code: 'RATE_LIMITED' },
+            { status: 429, headers: { 'Retry-After': String(Math.ceil((rl.reset - Date.now()) / 1000)) } }
+        );
+    }
+
     try {
         const body = await req.json();
         const { items, customerName, customerEmail, customerPhone } = body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
-            return NextResponse.json({ error: 'No items in cart' }, { status: 400 });
+            return NextResponse.json({ error: true, message: 'No items in cart', code: 'EMPTY_CART' }, { status: 400 });
         }
 
         const email = (customerEmail || '').trim().toLowerCase();
         if (!email || !email.includes('@')) {
-            return NextResponse.json({ error: 'Valid email is required' }, { status: 400 });
+            return NextResponse.json({ error: true, message: 'Valid email is required', code: 'INVALID_EMAIL' }, { status: 400 });
         }
+
 
         const totalIDR = items.reduce((sum: number, item: any) => sum + (item.priceIDR ?? 0), 0);
 
