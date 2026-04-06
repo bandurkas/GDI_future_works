@@ -296,12 +296,13 @@ export default function TutorApplyPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>{t('apply.f.phone')}</label>
+                                    <label className={styles.label}>{t('apply.f.phone')} <span style={{ color: '#e53e3e' }}>*</span></label>
                                     <input
                                         type="tel" value={formData.phone}
                                         onChange={e => set('phone', e.target.value)}
                                         className={styles.input}
                                         placeholder="+62 812..."
+                                        required
                                     />
                                 </div>
                                 <div className={styles.formGroup}>

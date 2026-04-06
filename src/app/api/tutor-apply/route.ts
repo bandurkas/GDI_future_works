@@ -13,7 +13,7 @@ const schema = z.object({
     name: z.string().min(2).max(100),
     email: z.string().email(),
     expertise: z.string().min(2).max(200),
-    phone: z.string().min(5).max(25).optional(),
+    phone: z.string().min(5, 'Please enter a valid phone number.').max(25),
     videoLink: z.string().url(),
     linkedin: optionalUrl,
     bio: z.string().max(1000).optional(),
