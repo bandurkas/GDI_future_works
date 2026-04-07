@@ -1,6 +1,8 @@
+'use client';
 import { use } from 'react';
 import Link from 'next/link';
 import { getCourseBySlug } from '@/data/courses';
+import { useMetaPixel } from '@/hooks/useMetaPixel';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ method?: string }> };
@@ -8,6 +10,7 @@ type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ method
 export default function ConfirmationPage({ params, searchParams }: Props) {
     const { slug } = use(params);
     const { method } = use(searchParams);
+    const { trackLead } = useMetaPixel();
     const course = getCourseBySlug(slug);
 
     const isQris = method === 'qris';
@@ -50,6 +53,7 @@ export default function ConfirmationPage({ params, searchParams }: Props) {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="btn btn-primary btn-lg btn-full"
+                                    onClick={() => trackLead('confirmation_page_wa_pending')}
                                 >
                                     💬 Chat on WhatsApp
                                 </a>
@@ -131,6 +135,7 @@ export default function ConfirmationPage({ params, searchParams }: Props) {
                                     rel="noopener noreferrer"
                                     className="btn btn-primary btn-lg btn-full"
                                     id="confirmation-whatsapp-btn"
+                                    onClick={() => trackLead('confirmation_page_wa_success')}
                                 >
                                     💬 Open WhatsApp Chat
                                 </a>

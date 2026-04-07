@@ -5,6 +5,7 @@ import { getCourseBySlug, type Schedule } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
+import { useMetaPixel } from '@/hooks/useMetaPixel';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -28,6 +29,7 @@ export default function SchedulePage({ params }: Props) {
     const router = useRouter();
     const { data: session, status } = useSession();
     const { t, language } = useLanguage();
+    const { trackLead } = useMetaPixel();
     const course = getCourseBySlug(slug);
 
     const [dynamicSlots, setDynamicSlots] = useState<Schedule[] | null>(null);
@@ -117,6 +119,7 @@ export default function SchedulePage({ params }: Props) {
     const handleNext = () => {
         if (!canContinue || !day1Slot || !day2Slot || !course) return;
         const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+        trackLead('course_booking_start');
         updateCustomerInfo({ email, phone: fullPhone });
         addItem({
             courseId: course.id,
