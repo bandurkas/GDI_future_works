@@ -114,10 +114,12 @@
 .bottom {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding-top: var(--space-6);
+    padding-bottom: var(--space-4); /* Add some padding for scrolling clearance */
     border-top: 1px solid var(--border);
-    gap: var(--space-4);
+    gap: var(--space-8);
+    flex-wrap: wrap;
 }
 
 .copy {
@@ -127,7 +129,8 @@
 }
 
 @media (max-width: 600px) {
-    .copy { margin-top: -4px; 
+    .copy { 
+        margin-top: -4px; 
         line-height: 1.6;
         margin-bottom: 12px;
         opacity: 0.9;
@@ -136,7 +139,12 @@
 
 .bottomLinks {
     display: flex;
-    gap: var(--space-4);
+    gap: var(--space-6);
+    align-items: center;
+}
+
+.bottomLinks .link {
+    font-size: 0.8125rem; /* Match the copy text size for cohesion */
 }
 
 @media (max-width: 900px) {
@@ -154,11 +162,6 @@
     .links {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-6);
-    }
-
-    .bottom {
-        flex-direction: column;
-        align-items: flex-start;
     }
 
     .container {
