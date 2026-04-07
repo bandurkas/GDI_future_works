@@ -1,3 +1,4 @@
+'use client';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,23 +10,16 @@ import PartnershipSection from '@/components/PartnershipSection';
 import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
 import { Sparkles, ArrowRight, Calendar } from 'lucide-react';
+import { useMetaPixel } from '@/hooks/useMetaPixel';
 import styles from './page.module.css';
 
 // CourseCard is lazily loaded via CourseCardLazy (client wrapper with dynamic import)
 // This keeps the heavy CourseCard JS bundle out of the initial render path
 const CourseCard = CourseCardLazy;
 
-export const metadata: Metadata = {
-    title: 'GDI FutureWorks | Get Hired in Tech — Live Courses by Industry Experts',
-    description: 'Live IT training by engineers from Google, Microsoft & Tokopedia. Build real projects, earn a certificate, and get job-ready in 4 weeks.',
-};
-
 // ── STATIC DATA ──────────────────────────────────────────────────────────────
 
 const proofCompanies = ['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Gojek', 'Tokopedia', 'Grab'];
-
-
-
 
 const instructors = [
     {
@@ -120,6 +114,8 @@ const trustBadges = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
+    const { trackLead } = useMetaPixel();
+
     return (
         <div className={styles.page}>
 
@@ -216,6 +212,7 @@ export default function HomePage() {
                     ))}
                 </div>
             </div>
+            */}
 
             {/* ── COURSES ── */}
             <section className={styles.coursesSection} id="courses">
@@ -233,76 +230,6 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
-
-            {/* ── INSTRUCTOR AUTHORITY (HIDDEN) ── */}
-            {/* 
-            <section className={styles.instructorAuthSection}>
-                <div className="container">
-                    <div className={styles.sectionHeader}>
-                        <p className={styles.sectionLabel}>World-Class Faculty</p>
-                        <h2 className={styles.sectionH2}>Learn from Industry Insiders</h2>
-                    </div>
-                    <div className={styles.instructorCards}>
-                        {instructors.map((inst) => (
-                            <div key={inst.name} className={styles.instructorCard}>
-                                <div className={styles.instAvatar} style={{ background: inst.gradient }}>{inst.initials}</div>
-                                <div className={styles.instInfo}>
-                                    <span className={styles.instActiveBadge}>Active Instructor</span>
-                                    <p className={styles.instName}>{inst.name}</p>
-                                    <p className={styles.instRole}>{inst.role}</p>
-                                    <p className={styles.instCompany}>{inst.company}</p>
-                                    <p className={styles.instCourse}>Teaching: {inst.course}</p>
-                                    <div className={styles.instTools}>
-                                        {inst.tools.map((tool) => (
-                                            <span key={tool} className={styles.instToolTag}>{tool}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-            */}
-
-            {/* ── TESTIMONIALS (HIDDEN) ── */}
-            {/* 
-            <section className={styles.testimonialsSection}>
-                <div className="container">
-                    <div className={styles.sectionHeader}>
-                        <p className={styles.sectionLabel}>Student Outcomes</p>
-                        <h2 className={styles.sectionH2}>Real Results from Real Students</h2>
-                    </div>
-                    <div className={`${styles.testimonials} ${styles.geGrid}`}>
-                        {testimonials.map((t) => (
-                            <div key={t.name} className={styles.testimonialCard}>
-                                <div className={styles.tStars}>★★★★★</div>
-                                <p className={styles.tQuote}>&ldquo;{t.quote}&rdquo;</p>
-                                <div className={styles.tBeforeAfter}>
-                                    <div>
-                                        <span className={styles.tLabel}>Before</span>
-                                        <p className={styles.tState}>{t.before}</p>
-                                    </div>
-                                    <div className={styles.tArrow}>→</div>
-                                    <div>
-                                        <span className={styles.tLabel}>After</span>
-                                        <p className={styles.tState}>{t.after}</p>
-                                    </div>
-                                </div>
-                                <span className={styles.tOutcomeMetric}>{t.outcome}</span>
-                                <div className={styles.tMeta}>
-                                    <div className={styles.tAvatar} style={{ background: t.gradient }}>{t.initials}</div>
-                                    <div>
-                                        <p className={styles.tName}>{t.flag} {t.name}</p>
-                                        <p className={styles.tCourse}>{t.course}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-            */}
 
             {/* ── SMART PARTNERSHIP ── */}
             <PartnershipSection />
@@ -417,7 +344,13 @@ export default function HomePage() {
                         <a href="#courses" className={styles.btnPrimaryWhite}>
                             <Translate tKey="cta.btn" />
                         </a>
-                        <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.ctaWaBtn}>
+                        <a 
+                            href="https://wa.me/628211704707" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className={styles.ctaWaBtn}
+                            onClick={() => trackLead('wa_consult_advisor')}
+                        >
                             <Translate tKey="cta.consultAdvisor" />
                         </a>
                     </div>

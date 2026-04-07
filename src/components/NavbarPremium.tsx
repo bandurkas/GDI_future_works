@@ -9,6 +9,7 @@ import { useCart } from './CartContext';
 import { useTheme } from './ThemeProvider';
 import { useCurrency } from './CurrencyContext';
 import ThemeLogo from './ThemeLogo';
+import { useMetaPixel } from '@/hooks/useMetaPixel';
 import {
     Home,
     BookOpen,
@@ -30,6 +31,7 @@ export default function NavbarPremium() {
     const [scrolled, setScrolled] = useState(false);
     const { theme, toggleTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { trackLead } = useMetaPixel();
 
     const pathname = usePathname();
     const router = useRouter();
@@ -171,7 +173,7 @@ export default function NavbarPremium() {
                             </Link>
                         )}
 
-                        <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.navActionBtn} aria-label="Chat with us on WhatsApp">
+                        <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.navActionBtn} aria-label="Chat with us on WhatsApp" onClick={() => trackLead('whatsapp_header')}>
                             <IconChat />
                             <span>Chat us</span>
                         </a>

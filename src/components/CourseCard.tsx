@@ -8,6 +8,7 @@ import styles from './CourseCard.module.css';
 import { useLanguage } from './LanguageContext';
 import { useCurrency } from './CurrencyContext';
 import { formatPrice } from '@/lib/currency';
+import { useMetaPixel } from '@/hooks/useMetaPixel';
 import {
     Video,
     MessageSquare,
@@ -68,6 +69,8 @@ export default function CourseCard({ course, featured }: Props) {
     const { currency } = useCurrency();
 
     const isID = language === 'id';
+
+    const { trackLead } = useMetaPixel();
 
     // Localized course content
     const title = isID ? (course.titleID || course.title) : course.title;
@@ -430,6 +433,7 @@ export default function CourseCard({ course, featured }: Props) {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={`btn ${styles.downloadBtn}`}
+                                        onClick={() => trackLead('wa_course_card')}
                                     >
                                         {t('card.askQuestion')}
                                     </a>

@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { courses, getCourseBySlug } from '@/data/courses';
 import StickyBookingBar from '@/components/StickyBookingBar';
 import CoursePriceCard from '@/components/CoursePriceCard';
+import WhatsAppTrackedLink from '@/components/WhatsAppTrackedLink';
 import { Translate } from '@/components/LanguageContext';
 import styles from './page.module.css';
 
@@ -185,14 +186,13 @@ export default async function CourseDetailPage({ params }: Props) {
                                     <h3 className={styles.pathTitle}>Unlock the Full {course.category} Career Path</h3>
                                     <p className={styles.pathDesc}>Bundle this course with two advanced modules and get <strong>25% off</strong> the total price. Master the skills that employers are actively hiring for.</p>
                                 </div>
-                                <a
+                                <WhatsAppTrackedLink
                                     href={`https://wa.me/628211704707?text=${encodeURIComponent(`Hi, I'm interested in the bundle offer for ${course.title}. Can you tell me more?`)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
                                     className={styles.pathBtn}
+                                    eventSource="course_bundle"
                                 >
                                     Claim Bundle Offer
-                                </a>
+                                </WhatsAppTrackedLink>
                             </section>
 
                             {/* BLOCK 2 — OUTCOMES */}

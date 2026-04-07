@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { useLanguage } from '@/components/LanguageContext';
+import { useMetaPixel } from '@/hooks/useMetaPixel';
 
 const EXPERTISE_OPTIONS = [
     'Graphic Design with AI',
@@ -58,6 +59,7 @@ const INITIAL: FormData = {
 
 export default function TutorApplyPage() {
     const { t } = useLanguage();
+    const { trackLead } = useMetaPixel();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState<FormData>(INITIAL);
     const [error, setError] = useState('');
@@ -198,6 +200,9 @@ export default function TutorApplyPage() {
             });
 
             if (res.ok) {
+                // Track successful application as Lead
+                trackLead('tutor_application');
+                
                 setIsSuccess(true);
                 return;
             }
@@ -509,11 +514,9 @@ export default function TutorApplyPage() {
                                     </ul>
                                     <p style={{ marginTop: '12px' }}>
                                         {t('apply.terms.footer')}{' '}
-                                        <a href="#" onClick={e => e.preventDefault()} title="Coming soon"
-                                           style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'default' }}>{t('apply.terms.tos')}</a>
+                                        <Link href="/terms" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{t('apply.terms.tos')}</Link>
                                         {' '}{t('apply.terms.and')}{' '}
-                                        <a href="#" onClick={e => e.preventDefault()} title="Coming soon"
-                                           style={{ color: 'var(--accent)', textDecoration: 'underline', cursor: 'default' }}>{t('apply.terms.pp')}</a>.
+                                        <Link href="/privacy" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{t('apply.terms.pp')}</Link>.
                                     </p>
                                 </div>
                                 <label className={styles.agreementRow}>
