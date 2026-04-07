@@ -1,10 +1,11 @@
 'use client';
 import { useMetaPixel } from '@/hooks/useMetaPixel';
-import { ReactNode } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
 interface WhatsAppTrackedLinkProps {
   href: string;
   className?: string;
+  style?: CSSProperties;
   children: ReactNode;
   eventSource: string;
   target?: string;
@@ -14,6 +15,7 @@ interface WhatsAppTrackedLinkProps {
 export default function WhatsAppTrackedLink({
   href,
   className,
+  style,
   children,
   eventSource,
   target = '_blank',
@@ -29,6 +31,7 @@ export default function WhatsAppTrackedLink({
     <a
       href={href}
       className={className}
+      style={style}
       target={target}
       rel={rel}
       onClick={handleClick}

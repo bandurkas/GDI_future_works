@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useMetaPixel } from '@/hooks/useMetaPixel';
 import styles from './page.module.css';
 const faqs = [
     { q: 'How are classes conducted?', a: 'All classes are live online video sessions with real-time interaction. You join via a link sent to your WhatsApp.' },
@@ -13,6 +14,7 @@ const faqs = [
 ];
 export default function FAQPage() {
     const [open, setOpen] = useState<number | null>(null);
+    const { trackLead } = useMetaPixel();
     return (
         <div className={styles.page}>
             <section className={styles.hero}>
@@ -53,7 +55,7 @@ export default function FAQPage() {
                     </div>
                     <div className={styles.cta}>
                         <p className={styles.ctaTxt}>Still have questions?</p>
-                        <a href="https://wa.me/628211704707" className="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer">
+                        <a href="https://wa.me/628211704707" className="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer" onClick={() => trackLead('faq_page_wa')}>
                             💬 Chat on WhatsApp
                         </a>
                     </div>

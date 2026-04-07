@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import styles from './page.module.css';
+import WhatsAppTrackedLink from '@/components/WhatsAppTrackedLink';
 
 export const metadata: Metadata = {
     title: 'Data Deletion Instructions — GDI FutureWorks',
@@ -58,10 +59,9 @@ export default function DataDeletionPage() {
                                         <span>hello@gdifuture.works</span>
                                     </div>
                                 </a>
-                                <a
+                                <WhatsAppTrackedLink
                                     href="https://wa.me/628211704707?text=Hi%2C%20I%20would%20like%20to%20request%20deletion%20of%20my%20personal%20data%20from%20GDI%20FutureWorks."
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    eventSource="data_deletion_wa"
                                     className={styles.methodBtn}
                                 >
                                     <span className={styles.methodIcon}>💬</span>
@@ -69,7 +69,7 @@ export default function DataDeletionPage() {
                                         <strong>WhatsApp</strong>
                                         <span>+62 821-1704-707</span>
                                     </div>
-                                </a>
+                                </WhatsAppTrackedLink>
                             </div>
                             <p className={styles.note}>
                                 Please include your <strong>registered email address</strong> in your request so we can identify and delete your data. We will confirm deletion within <strong>14 business days</strong>.
