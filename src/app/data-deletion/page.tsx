@@ -52,11 +52,11 @@ export default function DataDeletionPage() {
                             <h2>How to submit a request</h2>
                             <p>Send a deletion request to us using any of the following methods:</p>
                             <div className={styles.methods}>
-                                <a href="mailto:hello@gdifuture.works?subject=Data Deletion Request" className={styles.methodBtn}>
+                                <a href="mailto:support@gdifuture.works?subject=Data Deletion Request" className={styles.methodBtn}>
                                     <span className={styles.methodIcon}>✉️</span>
                                     <div>
                                         <strong>Email</strong>
-                                        <span>hello@gdifuture.works</span>
+                                        <span>support@gdifuture.works</span>
                                     </div>
                                 </a>
                                 <WhatsAppTrackedLink

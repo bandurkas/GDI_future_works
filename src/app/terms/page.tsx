@@ -46,7 +46,7 @@ All payments are processed securely. GDI FutureWorks does not store card or bank
 
 **No refund:** Requests made less than 24 hours before the session, or after the session has started, are not eligible for a refund.
 
-To request a refund, contact us via WhatsApp or email at hello@gdifuture.works with your order ID and reason. Refunds are processed within 5–7 business days.`,
+To request a refund, contact us via WhatsApp or email at support@gdifuture.works with your order ID and reason. Refunds are processed within 5–7 business days.`,
     },
     {
         title: '5. Rescheduling',
@@ -106,12 +106,12 @@ For significant changes, we will notify enrolled students via email or WhatsApp.
         title: '12. Governing Law',
         content: `These Terms are governed by the laws of the Republic of Indonesia. Any disputes shall be subject to the jurisdiction of the courts of Indonesia.
 
-For disputes, we encourage first attempting resolution via direct communication at hello@gdifuture.works.`,
+For disputes, we encourage first attempting resolution via direct communication at support@gdifuture.works.`,
     },
     {
         title: '13. Contact',
         content: `PT Global Digital Informasi
-Email: hello@gdifuture.works
+Email: support@gdifuture.works
 WhatsApp: +62 821-1704-707
 Website: https://gdifuture.works`,
     },
@@ -190,8 +190,8 @@ export default function TermsPage() {
                             {/* CTA */}
                             <div className={styles.cta}>
                                 <p>Questions about these terms?</p>
-                                <a href="mailto:hello@gdifuture.works" className={styles.ctaBtn}>
-                                    Contact Us → hello@gdifuture.works
+                                <a href="mailto:support@gdifuture.works" className={styles.ctaBtn}>
+                                    Contact Us → support@gdifuture.works
                                 </a>
                             </div>
                         </div>

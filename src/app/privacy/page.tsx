@@ -18,7 +18,7 @@ const sections = [
         title: '1. Who We Are',
         content: `GDI FutureWorks is operated by PT Global Digital Informasi, a technology education company based in Indonesia. We provide live online IT courses to students across Southeast Asia.
 
-Contact: hello@gdifuture.works | gdifuture.works`,
+Contact: support@gdifuture.works | gdifuture.works`,
     },
     {
         title: '2. What Data We Collect',
@@ -94,7 +94,7 @@ You may request deletion of your data at any time by contacting us.`,
 - **Object** to data processing for marketing purposes
 - **Data portability** — receive your data in a structured format
 
-To exercise any of these rights, contact us at: hello@gdifuture.works`,
+To exercise any of these rights, contact us at: support@gdifuture.works`,
     },
     {
         title: '8. Data Security',
@@ -122,7 +122,7 @@ We encourage you to review this policy periodically.`,
         content: `If you have questions about this Privacy Policy or how we handle your data, please contact:
 
 PT Global Digital Informasi
-Email: hello@gdifuture.works
+Email: support@gdifuture.works
 Website: https://gdifuture.works
 WhatsApp: +62 821-1704-707`,
     },
@@ -207,8 +207,8 @@ export default function PrivacyPage() {
                             {/* CTA */}
                             <div className={styles.cta}>
                                 <p>Have a question about your data?</p>
-                                <a href="mailto:hello@gdifuture.works" className={styles.ctaBtn}>
-                                    Contact Us → hello@gdifuture.works
+                                <a href="mailto:support@gdifuture.works" className={styles.ctaBtn}>
+                                    Contact Us → support@gdifuture.works
                                 </a>
                             </div>
                         </div>
