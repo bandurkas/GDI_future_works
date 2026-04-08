@@ -100,10 +100,17 @@ const testimonials = [
 
 const getNextWeekend = (staggerWeeks = 0) => {
     let now = new Date();
-    // Requirements: "closest date 24-25 april", "move automatically accordantly the real time"
-    const minStart = new Date(2026, 3, 25); // Apr 25, 2026 (Saturday)
-    if (now < minStart) {
-        now = minStart;
+    
+    // Requirements: exactly 1 time "24-25 april", then strictly Saturday-Sunday weekends
+    const specialEventEnd = new Date(2026, 3, 25, 23, 59, 59); // April 25, 2026
+    
+    if (now < specialEventEnd) {
+        if (staggerWeeks === 0) {
+            return "Apr 24–25"; // Explicit special case
+        }
+        // If staggering beyond the first week, base the calculation off the *following* weekend
+        now = new Date(2026, 3, 27); // Jump to Monday, April 27
+        staggerWeeks = staggerWeeks - 1; // Since we skipped week 0
     }
 
     // Move next to Saturday
@@ -118,9 +125,6 @@ const getNextWeekend = (staggerWeeks = 0) => {
     const sun = new Date(now);
     sun.setDate(sun.getDate() + 1);
 
-    const monthNames = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
-    // JS getMonth() runs 0-11. We matched monthNames such that monthNames[3] = Apr, wait.
-    // Standard array is 0=Jan.
     const stdMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     
     if (sat.getMonth() === sun.getMonth()) {
