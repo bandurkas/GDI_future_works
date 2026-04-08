@@ -1,5 +1,7 @@
 'use client';
 import { Metadata } from 'next';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Translate } from '@/components/LanguageContext';
@@ -113,11 +115,32 @@ const trustBadges = [
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+
+function CourseAutoOpener() {
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        const slug = searchParams.get('course');
+        if (!slug) return;
+        const tryOpen = (attempts = 0) => {
+            const card = document.getElementById(`course-card-${slug}`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => card.click(), 400);
+            } else if (attempts < 15) {
+                setTimeout(() => tryOpen(attempts + 1), 300);
+            }
+        };
+        setTimeout(() => tryOpen(), 300);
+    }, [searchParams]);
+    return null;
+}
+
 export default function HomePage() {
     const { trackLead } = useMetaPixel();
 
     return (
         <div className={styles.page}>
+            <Suspense fallback={null}><CourseAutoOpener /></Suspense>
 
             {/* ── HERO ── */}
             <section className={styles.heroSection} data-theme="light">
