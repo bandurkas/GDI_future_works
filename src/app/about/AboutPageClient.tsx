@@ -39,7 +39,8 @@ export default function AboutPageClient() {
                             </p>
                         </div>
                         <div className={styles.heroVisual}>
-                            <Image src="/assets/info_about.webp" alt="About GDI FutureWorks" width={500} height={500} unoptimized />
+                            <Image className={styles.lightImg} src="/assets/about_hero_light.png" alt="About GDI FutureWorks" width={500} height={500} unoptimized />
+                            <Image className={styles.darkImg} src="/assets/about_hero_dark.png" alt="About GDI FutureWorks" width={500} height={500} unoptimized />
                         </div>
                     </div>
                 </div>

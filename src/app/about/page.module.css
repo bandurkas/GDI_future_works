@@ -34,12 +34,26 @@
     flex: 1;
     display: flex;
     justify-content: center;
-    mix-blend-mode: multiply;
 }
 
 .heroVisual img {
     max-width: 100%;
     height: auto;
+    border-radius: var(--radius-xl);
+}
+
+.lightImg {
+    display: block;
+}
+.darkImg {
+    display: none;
+}
+
+:global([data-theme='dark']) .lightImg {
+    display: none;
+}
+:global([data-theme='dark']) .darkImg {
+    display: block;
 }
 
 @media (max-width: 768px) {
