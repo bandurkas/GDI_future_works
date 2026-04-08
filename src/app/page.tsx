@@ -98,11 +98,43 @@ const testimonials = [
     },
 ];
 
+const getNextWeekend = (staggerWeeks = 0) => {
+    let now = new Date();
+    // Requirements: "closest date 24-25 april", "move automatically accordantly the real time"
+    const minStart = new Date(2026, 3, 25); // Apr 25, 2026 (Saturday)
+    if (now < minStart) {
+        now = minStart;
+    }
+
+    // Move next to Saturday
+    const day = now.getDay();
+    const diffToSat = (6 - day + 7) % 7;
+    now.setDate(now.getDate() + diffToSat);
+
+    // Add staggered weeks
+    now.setDate(now.getDate() + (staggerWeeks * 7));
+
+    const sat = new Date(now);
+    const sun = new Date(now);
+    sun.setDate(sun.getDate() + 1);
+
+    const monthNames = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
+    // JS getMonth() runs 0-11. We matched monthNames such that monthNames[3] = Apr, wait.
+    // Standard array is 0=Jan.
+    const stdMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    
+    if (sat.getMonth() === sun.getMonth()) {
+        return `${stdMonthNames[sat.getMonth()]} ${sat.getDate()}–${sun.getDate()}`;
+    } else {
+        return `${stdMonthNames[sat.getMonth()]} ${sat.getDate()} – ${stdMonthNames[sun.getMonth()]} ${sun.getDate()}`;
+    }
+};
+
 const cohorts = [
-    { course: 'Basic Data Analyst', date: 'Apr 5–6', seatsLeft: 3, slug: 'data-analytics', color: '#667eea' },
-    { course: 'Python for Professionals', date: 'Apr 7–8', seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
-    { course: 'Graphic Design with AI', date: 'Apr 12–13', seatsLeft: 6, slug: 'graphic-design-ai', color: '#f093fb' },
-    { course: 'LLM & AI Engineering', date: 'Apr 14–15', seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
+    { course: 'Basic Data Analyst', date: getNextWeekend(0), seatsLeft: 3, slug: 'data-analytics', color: '#667eea' },
+    { course: 'Python for Professionals', date: getNextWeekend(0), seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
+    { course: 'Graphic Design with AI', date: getNextWeekend(1), seatsLeft: 6, slug: 'graphic-design-ai', color: '#f093fb' },
+    { course: 'LLM & AI Engineering', date: getNextWeekend(1), seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
 ];
 
 const trustBadges = [
@@ -274,7 +306,7 @@ export default function HomePage() {
                                         {c.seatsLeft} <Translate tKey="cohort.seats" />
                                     </span>
                                 </div>
-                                <p className={styles.cohortDate}><Calendar size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} /> {c.date}</p>
+                                <p className={styles.cohortDate} suppressHydrationWarning><Calendar size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} /> {c.date}</p>
                                 <p className={styles.cohortFormat}><Translate tKey="cohort.format" /></p>
                                 <Link href={`/courses/${c.slug}/schedule`} className={styles.cohortCta}>
                                     <Translate tKey="cohort.cta" />
