@@ -12,6 +12,7 @@ import { CurrencyProvider } from '@/components/CurrencyContext';
 import { auth } from '@/auth';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { jwtVerify } from 'jose';
+import MetaPixel from '@/components/MetaPixel';
 
 // Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
 
@@ -119,22 +120,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${jakartaSans.variable} ${poppins.variable}`}
     >
       <head>
+        {/* Preconnect to critical origins */}
         <link rel="preconnect" href="https://app.midtrans.com" />
         <link rel="dns-prefetch" href="https://app.midtrans.com" />
-        {/* Meta Pixel — injected directly for guaranteed execution */}
-        <script dangerouslySetInnerHTML={{ __html: `
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '933830285795477');
-          fbq('track', 'PageView');
-        `}} />
-        <noscript><img height="1" width="1" style={{display:'none'}} src="https://www.facebook.com/tr?id=933830285795477&ev=PageView&noscript=1" alt="" /></noscript>
+        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        {/* Preload LCP hero image for homepage */}
+        <link
+          rel="preload"
+          as="image"
+          href="/assets/notion_hero_right.webp"
+          imageSizes="(max-width: 1200px) 280px, 380px"
+        />
         {/* Non-critical CSS loaded async — cards, forms, animations, utilities */}
         <script dangerouslySetInnerHTML={{ __html: "var l=document.createElement('link');l.rel='stylesheet';l.href='/deferred.css';document.head.appendChild(l);" }} />
         <noscript><link rel="stylesheet" href="/deferred.css" /></noscript>
@@ -152,6 +149,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </ThemeProvider>
           </CurrencyProvider>
         </GoogleAuthProvider>
+        {/* Meta Pixel — loaded after page is interactive, non-blocking */}
+        <MetaPixel />
       </body>
       <GoogleAnalytics gaId="G-HJ7BSBB2SF" />
     </html>
