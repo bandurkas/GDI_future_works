@@ -115,8 +115,8 @@
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 8px;
-    /* Exact height for 2 tag rows (tag height ~35px + gap 8px + row 2 ~35px) */
-    height: 78px;
+    margin-bottom: 12px;
+    height: 84px;
     overflow: hidden;
     align-content: flex-start;
 }
