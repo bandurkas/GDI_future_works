@@ -104,7 +104,7 @@ export async function appendToTutorSheet(rows: string[][]) {
             range: `${sheetName}!A1`,
             valueInputOption: 'RAW',
             requestBody: {
-                values: [['Date', 'Time', 'Name', 'Email', 'Expertise', 'Bio', 'LinkedIn', 'Video Link', 'Portfolio Link', 'Curriculum', 'Lesson Plan']],
+                values: [['Date', 'Time', 'Name', 'Email', 'Phone', 'Expertise', 'Bio', 'LinkedIn', 'Video Link', 'Portfolio Link', 'Curriculum', 'Lesson Plan', 'UTM Source', 'UTM Medium', 'UTM Campaign']],
             },
         });
     }

@@ -454,3 +454,17 @@ enum ApplicationStatus {
   REJECTED
   ARCHIVED
 }
+
+model MarketingPerformance {
+  id          String   @id @default(uuid())
+  date        DateTime @default(now())
+  channel     String   // e.g. "WA Indonesia", "Site", "Malaysia WA"
+  spend       Decimal  @db.Decimal(12, 2)
+  impressions Int
+  lpv         Int?     // Landing Page Views
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date, channel])
+}

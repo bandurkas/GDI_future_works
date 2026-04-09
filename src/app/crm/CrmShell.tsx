@@ -13,6 +13,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   const isStudents = pathname.startsWith('/crm/students');
   const isTutors = pathname.startsWith('/crm/tutors');
   const isPayments = pathname.startsWith('/crm/payments');
+  const isAdsReports = pathname.startsWith('/crm/ads-reports');
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
   const [pendingCount, setPendingCount] = useState(0);
@@ -45,7 +46,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const pageLabel = isStudents ? 'Students' : isTutors ? 'Tutors' : isPayments ? 'Payments' : 'Dashboard';
+  const pageLabel = isStudents ? 'Students' : isTutors ? 'Tutors' : isPayments ? 'Payments' : isAdsReports ? 'Ads Reports' : 'Dashboard';
   const isLight = theme === 'light';
 
   return (
@@ -97,6 +98,14 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
               <line x1="1" y1="10" x2="23" y2="10"/>
             </svg>
           }>Payments</NavItem>
+
+          {!collapsed && <div className={styles.navSection} style={{ marginTop: '1.5rem' }}>Insights</div>}
+
+          <NavItem href="/crm/ads-reports" active={isAdsReports} collapsed={collapsed} icon={
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>
+            </svg>
+          }>Ads Reports</NavItem>
         </nav>
 
         {/* Bottom: user + logout */}

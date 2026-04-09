@@ -123,6 +123,9 @@ export async function POST(req: Request) {
             data.lessonPlan ?? '',
             data.availability ?? '',
             data.timezone ?? '',
+            data.utmSource ?? '',
+            data.utmMedium ?? '',
+            data.utmCampaign ?? ''
         ];
 
         try {
