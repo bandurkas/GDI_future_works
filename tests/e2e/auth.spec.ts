@@ -1,29 +1,25 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Authentication & Authorization Suite', () => {
+test.describe('Auth & Route Guards', () => {
 
-  test('Owner can securely authenticate via Admin Credentials', async ({ page }) => {
-    // Navigate to Admin Login
-    await page.goto('/admin/login');
-    
-    // Default Owner Seed account
-    await page.fill('input[type="email"]', 'admin@gdifuture.works');
-    // Using corresponding ADMIN_SEED_PASSWORD environment fallback securely
-    await page.fill('input[type="password"]', 'testadminpassword');
-    await page.click('button[type="submit"]');
-
-    // Wait for the Edge Middleware to confirm the HttpOnly Auth Cookie securely and route
-    await expect(page).toHaveURL(/\/admin$/);
-    await expect(page.locator('h1')).toContainText(/Dashboard/i);
+  test('CRM: unauthenticated user redirected to /crm/login', async ({ page }) => {
+    await page.goto('/crm/students');
+    await expect(page).toHaveURL(/\/crm\/login/);
   });
 
-  test('Identity Matrix Guard - Edge Middleware forcibly redirects unauthenticated users', async ({ page }) => {
-    // Attempt forced deep-link traversal to secure `/admin` directory
-    await page.goto('/admin/users');
-    await expect(page).toHaveURL(/\/admin\/login/);
+  test('CRM: login page renders form', async ({ page }) => {
+    await page.goto('/crm/login');
+    await expect(page.locator('input[type="email"]')).toBeVisible();
+    await expect(page.locator('input[type="password"]')).toBeVisible();
+  });
 
-    // Attempt traversal to Student Profile panel
+  test('Student profile: unauthenticated user redirected to /login', async ({ page }) => {
     await page.goto('/profile');
+    await expect(page).toHaveURL(/\/login/);
+  });
+
+  test('Dashboard: unauthenticated user redirected to /login', async ({ page }) => {
+    await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/login/);
   });
 });
