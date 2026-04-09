@@ -59,3 +59,39 @@ dist/
 gdi_deploy*
 .claude/
 skills-lock.json
+
+# Payment receipts (user uploads — store on S3/CDN, not in git)
+/public/receipts/
+
+# Legacy scripts from other projects
+*.py
+backup.sh
+build_success.txt
+deploy_log.txt
+dump.js
+ghost_hunter.js
+check_courses.js
+download_imgs.js
+remote_pwd_setter.js
+update_pricing.js
+seed_v1.js
+seed_v1_remote.js
+seed_missing_courses.js
+set_pass.js
+test-prisma.js
+test_auth.js
+test_auth.ts
+test_gsheets.js
+test_sheets.js
+test_sheets_read.js
+test_sheets_read_all.js
+
+# macOS system files
+._*
+.DS_Store
+
+# Old unoptimized images (replaced by WebP versions)
+/public/assets/about_hero_dark.png
+/public/assets/about_hero_light.png
+/public/assets/notion_hero_left.jpg
+/public/assets/notion_hero_right.jpg

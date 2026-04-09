@@ -1,12 +1,17 @@
 // @ts-check
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     compress: true,
     poweredByHeader: false,
+    productionBrowserSourceMaps: false,
 
     experimental: {
         optimizeCss: true,
-        optimizePackageImports: ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', 'recharts'],
+        optimizePackageImports: ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
     },
 
     images: {
@@ -37,7 +42,7 @@ const nextConfig = {
                 ],
             },
             {
-                source: '/:file(.*\.webp)',
+                source: '/:file(.*\\.webp)',
                 headers: [
                     { key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' },
                 ],
@@ -63,4 +68,4 @@ const nextConfig = {
     },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
