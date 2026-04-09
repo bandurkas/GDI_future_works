@@ -178,74 +178,7 @@ export default async function AdsReportsPage() {
         </div>
       </section>
 
-      <div className="grid staggered">
-        {/* Attribution Bar Chart */}
-        <section className={cn("glassCard", "staggered")}>
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-lg font-bold">Attribution Mix (30d)</h2>
-            <PieChart size={18} className="text-slate-500" />
-          </div>
-          <div className="space-y-6">
-            {sortedSources.length > 0 ? sortedSources.map(([source, count]) => (
-              <div key={source}>
-                <div className="flex justify-between items-end mb-2">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-tighter flex items-center gap-2">
-                    <ChevronRight size={10} className="text-indigo-500" />
-                    {source}
-                  </span>
-                  <span className="text-sm font-black mono text-main">{count} <span className="text-[10px] text-slate-500">LEADS</span></span>
-                </div>
-                <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full"
-                    style={{ width: `${(count / Math.max(allLeadsWithUtm.length, 1)) * 100}%` }}
-                  />
-                </div>
-              </div>
-            )) : (
-              <div className="text-center py-12 rounded-2xl bg-white/5 border border-white/5">
-                <p className="text-xs text-slate-500 uppercase font-bold tracking-widest">Awaiting telemetric data...</p>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Intelligence Feed */}
-        <section className="glassCard bg-indigo-500/5">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="p-2 bg-indigo-500/10 rounded-xl">
-              <Zap size={20} className="text-amber-500" />
-            </div>
-            <h2 className="text-lg font-bold">Growth Intelligence</h2>
-          </div>
-          
-          <div className="space-y-5">
-              {todayPerf.slice(0, 3).map(p => (
-                  <div key={p.id} className="relative pl-6 border-l border-slate-200 dark:border-white/10 py-1">
-                      <div className="absolute left-[-4px] top-2 w-2 h-2 rounded-full bg-amber-500" />
-                      <p className="text-[10px] font-black uppercase text-amber-500 tracking-widest">{p.channel}</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-300 mt-1.5 leading-relaxed font-medium">
-                        {p.notes}
-                      </p>
-                  </div>
-              ))}
-              {!todayPerf.length && (
-                  <p className="text-sm text-slate-400 leading-relaxed italic">
-                      "System operational. 100% data coverage. Monitoring future trends..."
-                  </p>
-              )}
-          </div>
-          
-          <div className="mt-12 p-5 bg-black/5 rounded-2xl border border-black/5">
-            <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-2">Optimization Strategy</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              {todayPerf.some(p => p.notes?.toLowerCase().includes('learning')) 
-                ? "Machine learning stabilization period detected for Malaysia. Avoid scaling until Day 5."
-                : "Operational focus: Scale Indonesia WhatsApp channel. High CPM-to-Leads conversion stable over 3 days."}
-            </p>
-          </div>
-        </section>
-      </div>
+      {/* Attribution and Intelligence sections removed momentarily for future improvement */}
     </div>
   );
 }
