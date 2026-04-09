@@ -332,7 +332,6 @@ model TutorApplication {
   createdAt     DateTime          @default(now())
   name          String
   email         String            @unique
-  phone         String?
   linkedin      String?
   bio           String?
   expertise     String
@@ -343,6 +342,7 @@ model TutorApplication {
   availability  String?
   timezone      String?
   status        ApplicationStatus @default(PENDING)
+  phone         String?
 
   // Marketing Attribution
   utmSource     String?
@@ -405,11 +405,11 @@ enum BookingStatus {
 
 enum PaymentStatus {
   PENDING
-  PAYMENT_UPLOADED
-  UNDER_REVIEW
   PAID
   FAILED
   REFUNDED
+  PAYMENT_UPLOADED
+  UNDER_REVIEW
 }
 
 enum PaymentProvider {
