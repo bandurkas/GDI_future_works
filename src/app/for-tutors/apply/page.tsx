@@ -3,7 +3,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { useLanguage } from '@/components/LanguageContext';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion, trackEvent } from '@/lib/analytics';
+import { getStoredUTMs } from '@/lib/utm';
 
 const EXPERTISE_OPTIONS = [
     'Graphic Design with AI',
@@ -59,7 +60,6 @@ const INITIAL: FormData = {
 
 export default function TutorApplyPage() {
     const { t } = useLanguage();
-    const { trackLead } = useMetaPixel();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState<FormData>(INITIAL);
     const [error, setError] = useState('');
@@ -162,7 +162,15 @@ export default function TutorApplyPage() {
         const err = validate(step);
         if (err) { setError(err); return; }
         setError('');
-        setStep(s => s + 1);
+        setStep(s => {
+            const newStep = s + 1;
+            // Track step-level progress to pinpoint drop-offs
+            trackEvent('tutor_application_step_complete', { 
+                step: s,
+                total_steps: STEPS.length 
+            });
+            return newStep;
+        });
     };
 
     const goBack = () => {
@@ -170,7 +178,6 @@ export default function TutorApplyPage() {
         setStep(s => s - 1);
     };
 
-    // ── Submit ─────────────────────────────────────────────────
     const handleSubmit = async () => {
         const err = validate(5);
         if (err) { setError(err); return; }
@@ -191,6 +198,8 @@ export default function TutorApplyPage() {
                 portfolioLink: formData.portfolioLink.trim(),
                 curriculum:    formData.curriculum.trim(),
                 lessonPlan:    formData.lessonPlan.trim(),
+                // Include captured attribution data
+                ...getStoredUTMs()
             };
 
             const res = await fetch('/api/tutor-apply', {
@@ -200,8 +209,8 @@ export default function TutorApplyPage() {
             });
 
             if (res.ok) {
-                // Track successful application as Lead
-                trackLead('tutor_application');
+                // Track complete conversion with attribution
+                trackConversion('tutor_application', 'completed_form');
                 
                 setIsSuccess(true);
                 return;

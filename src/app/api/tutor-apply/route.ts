@@ -29,6 +29,12 @@ const schema = z.object({
         )
         .optional(),
     timezone: z.string().max(100).optional(),
+    // UTM fields
+    utmSource: z.string().max(200).optional(),
+    utmMedium: z.string().max(200).optional(),
+    utmCampaign: z.string().max(200).optional(),
+    utmContent: z.string().max(200).optional(),
+    utmTerm: z.string().max(200).optional(),
 });
 
 export async function POST(req: Request) {
@@ -72,7 +78,12 @@ export async function POST(req: Request) {
                 availability: data.availability,
                 timezone: data.timezone,
                 phone: data.phone,
-                status: 'PENDING'
+                status: 'PENDING',
+                utmSource: data.utmSource,
+                utmMedium: data.utmMedium,
+                utmCampaign: data.utmCampaign,
+                utmContent: data.utmContent,
+                utmTerm: data.utmTerm
             },
             create: {
                 name: data.name,
@@ -87,7 +98,12 @@ export async function POST(req: Request) {
                 availability: data.availability,
                 timezone: data.timezone,
                 phone: data.phone,
-                status: 'PENDING'
+                status: 'PENDING',
+                utmSource: data.utmSource,
+                utmMedium: data.utmMedium,
+                utmCampaign: data.utmCampaign,
+                utmContent: data.utmContent,
+                utmTerm: data.utmTerm
             }
         });
 

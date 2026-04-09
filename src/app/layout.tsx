@@ -10,9 +10,8 @@ import GoogleAuthProvider from '@/components/GoogleAuthProvider';
 import LazyOneTap from '@/components/LazyOneTap';
 import { CurrencyProvider } from '@/components/CurrencyContext';
 import { auth } from '@/auth';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import TrackingInitializer from '@/components/TrackingInitializer';
 import { jwtVerify } from 'jose';
-import MetaPixel from '@/components/MetaPixel';
 
 // Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
 
@@ -149,10 +148,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </ThemeProvider>
           </CurrencyProvider>
         </GoogleAuthProvider>
-        {/* Meta Pixel — loaded after page is interactive, non-blocking */}
-        <MetaPixel />
+        {/* Centralized Analytics & UTM Capture */}
+        <TrackingInitializer />
       </body>
-      <GoogleAnalytics gaId="G-HJ7BSBB2SF" />
     </html>
   );
 }

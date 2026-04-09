@@ -2,10 +2,9 @@
 import Link from 'next/link';
 import styles from './Footer.module.css';
 import ThemeLogo from './ThemeLogo';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 
 export default function Footer() {
-    const { trackLead } = useMetaPixel();
     return (
         <footer className={styles.footer}>
             <div className={styles.container}>
@@ -32,7 +31,7 @@ export default function Footer() {
                                     aria-label={label}
                                     target={href.startsWith('http') ? '_blank' : undefined}
                                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                                    onClick={() => label === 'WhatsApp' ? trackLead('whatsapp_footer') : undefined}
+                                    onClick={() => label === 'WhatsApp' ? trackConversion('whatsapp_click', 'whatsapp_footer') : undefined}
                                 >
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d={path} /></svg>
                                 </a>
@@ -75,7 +74,7 @@ export default function Footer() {
                                         className={styles.link}
                                         target={href.startsWith('http') ? '_blank' : undefined}
                                         rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                                        onClick={() => label === 'Chat on WhatsApp' ? trackLead('whatsapp_footer') : undefined}
+                                        onClick={() => label === 'Chat on WhatsApp' ? trackConversion('whatsapp_click', 'whatsapp_footer_link') : undefined}
                                     >
                                         {label}
                                     </a>

@@ -43,6 +43,13 @@ model Student {
   payments  Payment[]
   reviews   Review[]
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Marketing Attribution
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
 }
 
 model Tutor {
@@ -268,6 +275,13 @@ model Lead {
   deletedAt  DateTime?
   activities LeadActivity[]
 
+  // Marketing Attribution
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+
   @@index([email, status])
 }
 
@@ -329,6 +343,13 @@ model TutorApplication {
   availability  String?
   timezone      String?
   status        ApplicationStatus @default(PENDING)
+
+  // Marketing Attribution
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  utmContent    String?
+  utmTerm       String?
 }
 
 enum UserRole {
