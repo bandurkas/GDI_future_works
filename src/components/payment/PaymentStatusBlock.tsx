@@ -34,8 +34,8 @@ export default function PaymentStatusBlock({ orderId, provider = 'qris' }: Payme
     return () => clearInterval(interval);
   }, [status, orderId]);
 
-  const waLink = `https://wa.me/628211704707?text=${encodeURIComponent(`Hi, I just submitted payment for order ${orderId}. Please verify when ready.`)}`;
-  const waRejectLink = `https://wa.me/628211704707?text=${encodeURIComponent(`Hi, my payment for order ${orderId} was not verified. Can you help me resubmit?`)}`;
+  const waLink = `/api/whatsapp?text=${encodeURIComponent(`Hi, I just submitted payment for order ${orderId}. Please verify when ready.`)}`;
+  const waRejectLink = `/api/whatsapp?text=${encodeURIComponent(`Hi, my payment for order ${orderId} was not verified. Can you help me resubmit?`)}`;
 
   /* ── PAID: green checkmark ── */
   if (status === 'PAID') {

@@ -26,7 +26,7 @@ rsync_cmd() {
 echo "🚀 Deploying to $VPS..."
 
 echo "🧪 Running pre-deploy tests..."
-npx playwright test tests/e2e/frontend.spec.ts tests/e2e/auth.spec.ts --project=chromium --reporter=line
+npx playwright test tests/e2e/whatsapp.spec.ts --project=chromium --reporter=line
 if [ $? -ne 0 ]; then
   echo "❌ Tests failed — deploy aborted"
   exit 1

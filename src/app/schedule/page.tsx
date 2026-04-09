@@ -69,7 +69,7 @@ export default function SchedulePage() {
                     <p style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: 8 }}>Need a custom schedule?</p>
                     <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', marginBottom: 16 }}>We open new cohorts based on demand. Chat with us and we&apos;ll find a time that works.</p>
                     <WhatsAppTrackedLink 
-                        href="https://wa.me/628211704707" 
+                        href="/api/whatsapp" 
                         eventSource="general_schedule_wa"
                         style={{ display: 'inline-block', background: 'var(--whatsapp)', color: 'white', fontWeight: 700, fontSize: '0.9375rem', padding: '12px 24px', borderRadius: 100, textDecoration: 'none' }}
                     >

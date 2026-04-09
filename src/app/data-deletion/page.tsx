@@ -60,7 +60,7 @@ export default function DataDeletionPage() {
                                     </div>
                                 </a>
                                 <WhatsAppTrackedLink
-                                    href="https://wa.me/628211704707?text=Hi%2C%20I%20would%20like%20to%20request%20deletion%20of%20my%20personal%20data%20from%20GDI%20FutureWorks."
+                                    href="/api/whatsapp?text=Hi%2C%20I%20would%20like%20to%20request%20deletion%20of%20my%20personal%20data%20from%20GDI%20FutureWorks."
                                     eventSource="data_deletion_wa"
                                     className={styles.methodBtn}
                                 >

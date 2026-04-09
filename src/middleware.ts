@@ -77,9 +77,62 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  // ─── WhatsApp redirection (High Performance) ─────────────────────────────
+  if (pathname === '/api/whatsapp') {
+    const text = req.nextUrl.searchParams.get('text');
+    const debugParam = req.nextUrl.searchParams.get('debug_country');
+    
+    // Detection priority: Debug > Cookie > Cloudflare Header > Accept-Language
+    let country: string | null = null;
+    let signal = 'default';
+
+    if (debugParam) {
+      country = debugParam.toUpperCase();
+      signal = 'debug_param';
+    } else {
+      const currencyCookie = req.cookies.get('GDI_CURRENCY')?.value;
+      if (currencyCookie === 'IDR') {
+        country = 'ID';
+        signal = 'cookie_idr';
+      } else if (currencyCookie === 'MYR') {
+        country = 'MY';
+        signal = 'cookie_myr';
+      }
+    }
+
+    if (!country) {
+      const cfCountry = req.headers.get('cf-ipcountry');
+      if (cfCountry && cfCountry !== 'XX') {
+        country = cfCountry.toUpperCase();
+        signal = 'cloudflare';
+      }
+    }
+
+    if (!country) {
+      const acceptLang = req.headers.get('accept-language') ?? '';
+      if (acceptLang.toLowerCase().includes('id')) {
+        country = 'ID';
+        signal = 'accept_language';
+      }
+    }
+
+    const isIndonesia = country === 'ID';
+    const phone = isIndonesia ? '628211704707' : '60174833318';
+    
+    const url = new URL(`https://wa.me/${phone}`);
+    if (text) url.searchParams.set('text', text);
+
+    const response = NextResponse.redirect(url.toString(), 302);
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set('Vary', 'Cookie, Accept-Language, cf-ipcountry');
+    response.headers.set('X-Debug-Country', country ?? 'unknown');
+    response.headers.set('X-Debug-Signal', signal);
+    return response;
+  }
+
   return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {
-  matcher: ['/crm/:path*', '/login', '/signup', '/dashboard', '/dashboard/:path*', '/profile', '/profile/:path*'],
+  matcher: ['/crm/:path*', '/login', '/signup', '/dashboard', '/dashboard/:path*', '/profile', '/profile/:path*', '/api/whatsapp'],
 };

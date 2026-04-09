@@ -56,7 +56,7 @@ export default function ContactPageClient() {
                             <div className={styles.cardTitle}>{t('contact.wa.title')}</div>
                             <p className={styles.cardDesc}>{t('contact.wa.desc')}</p>
                             <a
-                                href="https://wa.me/628211704707"
+                                href="/api/whatsapp"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-primary btn-lg"
@@ -106,7 +106,7 @@ export default function ContactPageClient() {
                     <div style={{ textAlign: 'center', marginTop: 40 }}>
                         <p style={{ marginBottom: 16, fontWeight: 600 }}>{t('contact.faq.still')}</p>
                         <a
-                            href="https://wa.me/628211704707"
+                            href="/api/whatsapp"
                             className="btn btn-primary btn-lg"
                             target="_blank"
                             rel="noopener noreferrer"

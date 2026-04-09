@@ -51,7 +51,7 @@ export default function HomeFAQ() {
                 <div className={styles.faqFooter}>
                     <p>{t('faq.footer')}</p>
                     <a
-                        href="https://wa.me/628211704707"
+                        href="/api/whatsapp"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.faqWa}

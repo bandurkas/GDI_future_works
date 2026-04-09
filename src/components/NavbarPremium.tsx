@@ -173,7 +173,7 @@ export default function NavbarPremium() {
                             </Link>
                         )}
 
-                        <a href="https://wa.me/628211704707" target="_blank" rel="noopener noreferrer" className={styles.navActionBtn} aria-label="Chat with us on WhatsApp" onClick={() => trackLead('whatsapp_header')}>
+                        <a href="/api/whatsapp" target="_blank" rel="noopener noreferrer" className={styles.navActionBtn} aria-label="Chat with us on WhatsApp" onClick={() => trackLead('whatsapp_header')}>
                             <IconChat />
                             <span>Chat us</span>
                         </a>

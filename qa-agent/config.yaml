@@ -1,0 +1,115 @@
+name: AI QA Agent
+description: Full automated QA testing agent for website https://gdifuture.works/
+
+model: gpt-4o
+temperature: 0.1
+
+memory:
+  type: ephemeral
+
+tools:
+  - browser
+  - playwright
+  - crawler
+  - screenshot
+  - console_logs
+  - network_monitor
+
+objectives:
+  - Crawl entire website
+  - Click all links and buttons
+  - Test forms
+  - Test mobile responsiveness
+  - Check grammar
+  - Detect errors
+  - Generate QA report
+
+settings:
+  max_pages: 50
+  max_depth: 3
+  capture_screenshots: true
+  detect_console_errors: true
+  detect_network_errors: true
+
+agents:
+  - name: Navigation QA Agent
+    role: Click all UI elements
+    tasks:
+      - crawl_site
+      - click_all_links
+      - click_all_buttons
+      - open_dropdowns
+      - open_modals
+    output:
+      - broken_links
+      - ui_issues
+      - navigation_errors
+
+  - name: Mobile QA Agent
+    role: Test mobile responsiveness
+    devices:
+      - iPhone 14
+      - iPhone SE
+      - Pixel 7
+      - Galaxy S23
+    tasks:
+      - test_responsive
+      - test_touch
+      - test_mobile_navigation
+      - test_forms_mobile
+    output:
+      - mobile_layout_issues
+      - touch_issues
+      - mobile_bugs
+
+  - name: Grammar QA Agent
+    role: Check grammar and text issues
+    tasks:
+      - scan_all_text
+      - detect_grammar
+      - detect_translation_issues
+      - detect_empty_labels
+    languages:
+      - English
+      - Indonesian
+    output:
+      - grammar_errors
+      - translation_errors
+
+  - name: Checkout QA Agent
+    role: Test purchase flow
+    tasks:
+      - register_user
+      - login_user
+      - add_to_cart
+      - checkout
+      - test_payment
+    output:
+      - checkout_errors
+      - payment_errors
+
+  - name: Performance QA Agent
+    role: Test performance
+    network_profiles:
+      - slow_3g
+      - fast_3g
+      - wifi
+    tasks:
+      - measure_load_time
+      - detect_slow_pages
+      - detect_large_assets
+    output:
+      - performance_issues
+
+report:
+  format: markdown
+  include:
+    - screenshots
+    - bug_severity
+    - reproduction_steps
+
+severity_levels:
+  - critical
+  - high
+  - medium
+  - low

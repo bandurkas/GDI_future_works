@@ -1,0 +1,32 @@
+wing: void_chromosphere
+rooms:
+- name: types
+  description: Files from types/
+- name: qa_agent
+  description: Files from qa-agent/
+- name: prisma
+  description: Files from prisma/
+- name: testing
+  description: Files from tests/
+- name: public
+  description: Files from public/
+- name: logo
+  description: Files from logo/
+- name: scripts
+  description: Files from scripts/
+- name: playwright_report
+  description: Files from playwright-report/
+- name: test_results
+  description: Files from test-results/
+- name: src
+  description: Files from src/
+- name: backend
+  description: Files from server/
+- name: team
+  description: Files from team/
+- name: design
+  description: Files from assets/
+- name: frontend
+  description: Files from components/
+- name: general
+  description: Files that don't fit other rooms
