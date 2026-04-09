@@ -49,7 +49,7 @@ export default function ConfirmationPage({ params, searchParams }: Props) {
 
                             <div className={styles.actions}>
                                 <a
-                                    href="https://wa.me/628211704707"
+                                    href="/api/whatsapp"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="btn btn-primary btn-lg btn-full"
@@ -130,7 +130,7 @@ export default function ConfirmationPage({ params, searchParams }: Props) {
 
                             <div className={styles.actions}>
                                 <a
-                                    href="https://wa.me/628211704707"
+                                    href="/api/whatsapp"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="btn btn-primary btn-lg btn-full"

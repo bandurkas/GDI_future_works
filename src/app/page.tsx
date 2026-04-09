@@ -404,7 +404,7 @@ export default function HomePage() {
                             <Translate tKey="cta.btn" />
                         </a>
                         <a 
-                            href="https://wa.me/628211704707" 
+                            href="/api/whatsapp" 
                             target="_blank" 
                             rel="noopener noreferrer" 
                             className={styles.ctaWaBtn}

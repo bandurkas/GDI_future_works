@@ -429,7 +429,7 @@ export default function CourseCard({ course, featured }: Props) {
                                     </button>
                                 ) : (
                                     <a
-                                        href={`https://wa.me/628211704707?text=Hi%2C%20I%27d%20like%20more%20details%20about%20${encodeURIComponent(course.title)}`}
+                                        href={`/api/whatsapp?text=Hi%2C%20I%27d%20like%20more%20details%20about%20${encodeURIComponent(course.title)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={`btn ${styles.downloadBtn}`}

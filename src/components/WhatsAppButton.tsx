@@ -6,7 +6,7 @@ export default function WhatsAppButton() {
 
     return (
         <a
-            href="https://wa.me/628211704707?text=Hi%2C%20I%27m%20interested%20in%20GDI%20FutureWorks%20courses."
+            href="/api/whatsapp?text=Hi%2C%20I%27m%20interested%20in%20GDI%20FutureWorks%20courses."
             target="_blank"
             rel="noopener noreferrer"
             className={styles.btn}

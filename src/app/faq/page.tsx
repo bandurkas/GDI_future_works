@@ -55,7 +55,7 @@ export default function FAQPage() {
                     </div>
                     <div className={styles.cta}>
                         <p className={styles.ctaTxt}>Still have questions?</p>
-                        <a href="https://wa.me/628211704707" className="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer" onClick={() => trackLead('faq_page_wa')}>
+                        <a href="/api/whatsapp" className="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer" onClick={() => trackLead('faq_page_wa')}>
                             💬 Chat on WhatsApp
                         </a>
                     </div>

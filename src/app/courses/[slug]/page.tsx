@@ -187,7 +187,7 @@ export default async function CourseDetailPage({ params }: Props) {
                                     <p className={styles.pathDesc}>Bundle this course with two advanced modules and get <strong>25% off</strong> the total price. Master the skills that employers are actively hiring for.</p>
                                 </div>
                                 <WhatsAppTrackedLink
-                                    href={`https://wa.me/628211704707?text=${encodeURIComponent(`Hi, I'm interested in the bundle offer for ${course.title}. Can you tell me more?`)}`}
+                                    href={`/api/whatsapp?text=${encodeURIComponent(`Hi, I'm interested in the bundle offer for ${course.title}. Can you tell me more?`)}`}
                                     className={styles.pathBtn}
                                     eventSource="course_bundle"
                                 >
