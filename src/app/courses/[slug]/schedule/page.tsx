@@ -128,6 +128,8 @@ export default function SchedulePage({ params }: Props) {
                     utmSource: utms.utmSource,
                     utmMedium: utms.utmMedium,
                     utmCampaign: utms.utmCampaign,
+                    utmContent: utms.utmContent,
+                    utmTerm: utms.utmTerm,
                 })
             }).catch(e => console.error('Failed to sync lead:', e));
         } catch (e) {}
