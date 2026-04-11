@@ -109,9 +109,23 @@ export default function SchedulePage({ params }: Props) {
         setDay2Slot(null);
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (!canContinue || !day1Slot || !day2Slot || !course) return;
         const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+        
+        // Sync to CRM Lead table
+        try {
+            fetch('/api/leads/schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: fullPhone,
+                    courseSlug: slug,
+                    courseTitle: course.title,
+                })
+            }).catch(e => console.error('Failed to sync lead:', e));
+        } catch (e) {}
+
         trackLead('course_booking_start');
         updateCustomerInfo({ email: '', phone: fullPhone });
         addItem({
@@ -135,7 +149,7 @@ export default function SchedulePage({ params }: Props) {
         if (!day2Date) return isID ? 'Pilih Tanggal Hari ke-2' : 'Select Day 2 Date';
         if (!day2Slot) return isID ? 'Pilih Waktu untuk Hari ke-2' : 'Select a Time for Day 2';
         if (!contactOk) return isID ? 'Masukkan Detail Kamu' : 'Enter Your Details';
-        return isID ? 'Tambah ke Keranjang →' : 'Add to Cart →';
+        return t('schedule.next');
     };
 
     const courseTitle = isID ? (course?.titleID || course?.title) : course?.title;
