@@ -343,7 +343,7 @@ function StudentCard({ st }: { st: Student }) {
 
         <div className={s.cardRight}>
           <span className={s.statusBadge} style={{ background: sc.bg, color: sc.text }}>{st.status}</span>
-          <span className={s.cardDate}>{fmt(st.createdAt)}</span>
+          <span className={s.cardDate}>{fmt(new Date(st.createdAt))}</span>
           {displayPayment && (
             <div className={s.payRow}>
               <PayBadge status={displayPayment.status} />
@@ -503,7 +503,7 @@ function LeadCard({ ld }: { ld: CRMLead }) {
 
         <div className={s.cardRight}>
           <span className={s.statusBadge} style={{ background: sc.bg, color: sc.text }}>FRESH</span>
-          <span className={s.cardDate}>{fmt(ld.createdAt)}</span>
+          <span className={s.cardDate}>{fmt(new Date(ld.createdAt))}</span>
           <div className={s.menuWrap}>
              <button className={s.menuBtn} onClick={() => setConfirmDelete(true)} disabled={saving}>✕</button>
           </div>
