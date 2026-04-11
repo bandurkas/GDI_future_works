@@ -27,5 +27,22 @@ export default async function CrmStudentsPage() {
     return st;
   });
 
-  return <StudentsView students={studentsWithPhone} />;
+  });
+  
+  // Fetch high-intent leads from the schedule flow
+  const leads = await prisma.lead.findMany({
+    where: { 
+      status: 'NEW',
+      type: 'STUDENT'
+    },
+    include: {
+      activities: {
+        orderBy: { createdAt: 'desc' },
+        take: 5
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  return <StudentsView students={studentsWithPhone} freshLeads={JSON.parse(JSON.stringify(leads))} />;
 }

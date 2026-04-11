@@ -7,9 +7,15 @@ import s from './StudentsView.module.css';
 
 type Payment = { status: string; amount: any; currency: string; metadata: any; createdAt: Date };
 type Student = {
-  id: string; status: string; createdAt: Date; country: string | null;
+  id: string; status: string; createdAt: Date | string; country: string | null;
   user: { name: string | null; email: string; phone: string | null };
   payments: Payment[];
+};
+type CRMLead = {
+  id: string; email: string; phone: string | null; source: string | null; status: string;
+  createdAt: Date | string;
+  utmSource: string | null; utmMedium: string | null; utmCampaign: string | null;
+  activities: { type: string; notes: string | null; createdAt: Date | string }[];
 };
 
 const STATUS_STYLE: Record<string, { bg: string; text: string; border: string }> = {
@@ -20,9 +26,9 @@ const STATUS_STYLE: Record<string, { bg: string; text: string; border: string }>
   ARCHIVED:  { bg: 'rgba(107,114,128,0.1)',  text: '#9ca3af',  border: 'rgba(107,114,128,0.5)' },
 };
 
-export default function StudentsView({ students }: { students: Student[] }) {
+export default function StudentsView({ students, freshLeads = [] }: { students: Student[], freshLeads?: CRMLead[] }) {
   const [search, setSearch]           = useState('');
-  const [tab, setTab]                 = useState<'all' | 'leads' | 'paid'>('all');
+  const [tab, setTab]                 = useState<'all' | 'leads' | 'paid' | 'fresh'>('all');
   const [showAddModal, setShowAddModal] = useState(false);
 
   const active = useMemo(() => students.filter(st => st.status !== 'ARCHIVED'), [students]);
@@ -93,6 +99,7 @@ export default function StudentsView({ students }: { students: Student[] }) {
       <div className={s.tabs}>
         {([
           ['all',   'ALL',        active.length],
+          ['fresh', 'FRESH LEADS', freshLeads.length],
           ['leads', 'FOLLOW UP',  leads.length],
           ['paid',  'PAID',       paid.length],
         ] as const).map(([key, label, count]) => (
@@ -108,7 +115,15 @@ export default function StudentsView({ students }: { students: Student[] }) {
       </div>
 
       {/* Sections */}
-      {tab !== 'paid' && (
+      {tab === 'fresh' && (
+        <SectionBlock title="FRESH LEADS — SCHEDULE FLOW" count={freshLeads.length} accent="#ec4899">
+          {freshLeads.length === 0
+            ? <EmptyCard icon="⚡" title="No fresh leads" sub="Hot leads from the schedule selection flow appear here" />
+            : freshLeads.map(ld => <LeadCard key={ld.id} ld={ld} />)}
+        </SectionBlock>
+      )}
+
+      {tab !== 'paid' && tab !== 'fresh' && (
         <SectionBlock title="LEADS — FOLLOW UP" count={fLeads.length} accent="#f59e0b">
           {fLeads.length === 0
             ? <EmptyCard icon="👋" title="No leads yet" sub={search ? 'Try a different search' : 'Leads appear when students register without completing payment'} />
@@ -116,7 +131,7 @@ export default function StudentsView({ students }: { students: Student[] }) {
         </SectionBlock>
       )}
 
-      {tab !== 'leads' && (
+      {tab !== 'leads' && tab !== 'fresh' && (
         <SectionBlock title="PAID STUDENTS" count={fPaid.length} accent="#10b981">
           {fPaid.length === 0
             ? <EmptyCard icon="🎓" title="No paid students yet" sub={search ? 'Try a different search' : 'Students who complete checkout will appear here'} />
@@ -422,6 +437,103 @@ function StudentCard({ st }: { st: Student }) {
               <button className={s.confirmDelete} onClick={handleDelete} disabled={saving}>
                 {saving ? 'Deleting…' : 'Delete'}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Lead Card ─────────────────────────────────── */
+function LeadCard({ ld }: { ld: CRMLead }) {
+  const router = useRouter();
+  const initials = 'L';
+  const sc = { bg: 'rgba(236,72,153,0.12)', text: '#ec4899', border: '#ec4899' };
+  
+  // Parse the latest note if it's JSON
+  let details: any = null;
+  const latestActivity = ld.activities[0];
+  if (latestActivity?.notes) {
+    try {
+      details = JSON.parse(latestActivity.notes);
+    } catch (e) {
+      details = { course: ld.source || 'Unknown Course' };
+    }
+  }
+
+  const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  async function handleDelete() {
+    setSaving(true);
+    const res = await fetch(`/api/admin/leads/${ld.id}`, { method: 'DELETE' });
+    if (res.ok) router.refresh();
+    setSaving(false);
+    setConfirmDelete(false);
+  }
+
+  return (
+    <div className={s.card} style={{ borderLeft: `3px solid ${sc.border}` }}>
+      <div className={s.cardTop}>
+        <div className={s.cardLeft}>
+          <div className={s.cardAvatar} style={{ background: sc.bg, color: sc.text }}>{initials}</div>
+          <div className={s.cardNameWrap}>
+            <div className={s.cardName}>Fresh Lead</div>
+            <div className={s.chips}>
+              <a href={`mailto:${ld.email}`} className={`${s.chip} ${s.chipEmail}`}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                {ld.email}
+              </a>
+              {ld.phone && (
+                <a href={`tel:${ld.phone}`} className={`${s.chip} ${s.chipPhone}`}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l1.27-.9a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                  {ld.phone}
+                </a>
+              )}
+              {ld.utmSource && <span className={s.chipCountry} title={`UTM: ${ld.utmMedium}/${ld.utmCampaign}`}><span>📢</span>{ld.utmSource}</span>}
+            </div>
+          </div>
+        </div>
+
+        <div className={s.cardRight}>
+          <span className={s.statusBadge} style={{ background: sc.bg, color: sc.text }}>FRESH</span>
+          <span className={s.cardDate}>{fmt(ld.createdAt)}</span>
+          <div className={s.menuWrap}>
+             <button className={s.menuBtn} onClick={() => setConfirmDelete(true)} disabled={saving}>✕</button>
+          </div>
+        </div>
+      </div>
+
+      {details && (
+        <div className={s.cartSection}>
+          <div className={s.cartLabel}>Intent Context</div>
+          <div className={s.cartList}>
+            <div className={s.cartItem}>
+              <div>
+                <div className={s.cartItemTitle}>{details.course}</div>
+                <div className={s.cartItemMeta}>
+                  {details.dates && <span className={s.cartItemDetail}>📅 {details.dates}</span>}
+                  {details.times && <span className={s.cartItemDetail}>🕐 {details.times}</span>}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmDelete && (
+        <div className={s.confirmBox}>
+          <div className={s.confirmInner}>
+            <p className={s.confirmText}>Remove this lead permanentely?</p>
+            <div className={s.confirmBtns}>
+              <button className={s.confirmCancel} onClick={() => setConfirmDelete(false)}>Cancel</button>
+              <button className={s.confirmDelete} onClick={handleDelete} disabled={saving}>Delete</button>
             </div>
           </div>
         </div>

@@ -122,6 +122,8 @@ export default function SchedulePage({ params }: Props) {
                     phone: fullPhone,
                     courseSlug: slug,
                     courseTitle: course.title,
+                    dateLabel: `${day1Slot.date} & ${day2Slot.date}`,
+                    timeLabel: `${day1Slot.time}–${day1Slot.timeEnd} / ${day2Slot.time}–${day2Slot.timeEnd}`,
                 })
             }).catch(e => console.error('Failed to sync lead:', e));
         } catch (e) {}

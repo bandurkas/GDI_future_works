@@ -3,7 +3,11 @@ import { prisma } from '@/lib/prisma';
 
 export async function POST(req: NextRequest) {
     try {
-        const { phone, courseSlug, courseTitle, utmSource, utmMedium, utmCampaign } = await req.json();
+        const { 
+            phone, courseSlug, courseTitle, 
+            dateLabel, timeLabel,
+            utmSource, utmMedium, utmCampaign 
+        } = await req.json();
 
         if (!phone) {
             return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
@@ -52,7 +56,13 @@ export async function POST(req: NextRequest) {
             data: {
                 leadId: lead.id,
                 type: 'WHATSAPP',
-                notes: `Started schedule selection for: ${courseTitle || courseSlug}`,
+                notes: JSON.stringify({
+                    action: 'started_schedule_selection',
+                    course: courseTitle || courseSlug,
+                    dates: dateLabel || '',
+                    times: timeLabel || '',
+                    timestamp: new Date().toISOString()
+                }),
             },
         });
 
