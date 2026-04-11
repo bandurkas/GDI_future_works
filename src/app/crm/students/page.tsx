@@ -27,8 +27,6 @@ export default async function CrmStudentsPage() {
     return st;
   });
 
-  });
-  
   // Fetch high-intent leads from the schedule flow
   const leads = await prisma.lead.findMany({
     where: { 
