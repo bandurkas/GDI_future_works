@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 import styles from './PaymentStatusBlock.module.css';
 
 interface PaymentStatusBlockProps {
@@ -12,7 +12,6 @@ interface PaymentStatusBlockProps {
 
 export default function PaymentStatusBlock({ orderId, provider = 'qris' }: PaymentStatusBlockProps) {
   const [status, setStatus] = useState<'UNDER_REVIEW' | 'PAID' | 'FAILED'>('UNDER_REVIEW');
-  const { trackLead } = useMetaPixel();
 
   useEffect(() => {
     if (status === 'PAID' || status === 'FAILED') return;
@@ -66,7 +65,7 @@ export default function PaymentStatusBlock({ orderId, provider = 'qris' }: Payme
         </div>
 
         <div className={styles.actions}>
-          <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full" onClick={() => trackLead('payment_status_wa')}>
+          <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full" onClick={() => trackConversion('whatsapp_click', 'payment_status_wa')}>
             💬 Chat on WhatsApp
           </a>
           <Link href="/courses" className="btn btn-secondary btn-lg btn-full">
@@ -100,7 +99,7 @@ export default function PaymentStatusBlock({ orderId, provider = 'qris' }: Payme
         </div>
 
         <div className={styles.actions}>
-          <a href={waRejectLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full" onClick={() => trackLead('payment_status_wa_reject')}>
+          <a href={waRejectLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full" onClick={() => trackConversion('whatsapp_click', 'payment_status_wa_reject')}>
             💬 Contact Support on WhatsApp
           </a>
           <Link href="/cart" className="btn btn-secondary btn-lg btn-full">
@@ -139,7 +138,7 @@ export default function PaymentStatusBlock({ orderId, provider = 'qris' }: Payme
       </p>
 
       <div className={styles.actions}>
-        <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full" onClick={() => trackLead('payment_status_wa_pending')}>
+        <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg btn-full" onClick={() => trackConversion('whatsapp_click', 'payment_status_wa_pending')}>
           💬 Chat on WhatsApp
         </a>
         <Link href="/courses" className="btn btn-secondary btn-lg btn-full">

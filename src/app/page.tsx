@@ -12,7 +12,7 @@ import PartnershipSection from '@/components/PartnershipSection';
 import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
 import { Sparkles, ArrowRight, Calendar } from 'lucide-react';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 import styles from './page.module.css';
 
 // CourseCard is lazily loaded via CourseCardLazy (client wrapper with dynamic import)
@@ -172,7 +172,6 @@ function CourseAutoOpener() {
 }
 
 export default function HomePage() {
-    const { trackLead } = useMetaPixel();
 
     return (
         <div className={styles.page}>
@@ -408,7 +407,7 @@ export default function HomePage() {
                             target="_blank" 
                             rel="noopener noreferrer" 
                             className={styles.ctaWaBtn}
-                            onClick={() => trackLead('wa_consult_advisor')}
+                            onClick={() => trackConversion('whatsapp_click', 'wa_consult_advisor')}
                         >
                             <Translate tKey="cta.consultAdvisor" />
                         </a>

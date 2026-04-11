@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useLanguage } from './LanguageContext';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 import styles from './HomeFAQ.module.css';
 
 const faqKeys = [
@@ -15,7 +15,6 @@ const faqKeys = [
 export default function HomeFAQ() {
     const [open, setOpen] = useState<number | null>(null);
     const { t } = useLanguage();
-    const { trackLead } = useMetaPixel();
 
     return (
         <section className={styles.faqSection}>
@@ -55,7 +54,7 @@ export default function HomeFAQ() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.faqWa}
-                        onClick={() => trackLead('wa_home_faq')}
+                        onClick={() => trackConversion('whatsapp_click', 'wa_home_faq')}
                     >
                         💬 {t('faq.wa')}
                     </a>

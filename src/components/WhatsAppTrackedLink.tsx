@@ -1,5 +1,5 @@
 'use client';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 import { ReactNode, CSSProperties } from 'react';
 
 interface WhatsAppTrackedLinkProps {
@@ -21,10 +21,8 @@ export default function WhatsAppTrackedLink({
   target = '_blank',
   rel = 'noopener noreferrer',
 }: WhatsAppTrackedLinkProps) {
-  const { trackLead } = useMetaPixel();
-
   const handleClick = () => {
-    trackLead(eventSource);
+    trackConversion('whatsapp_click', eventSource);
   };
 
   return (

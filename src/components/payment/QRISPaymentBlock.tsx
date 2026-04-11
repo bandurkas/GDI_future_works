@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Download, CheckCircle, Loader2 } from 'lucide-react';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 import ReceiptUploader from './ReceiptUploader';
 import styles from './QRISPaymentBlock.module.css';
 
@@ -12,7 +12,6 @@ interface QRISPaymentBlockProps {
 }
 
 export default function QRISPaymentBlock({ orderId, amountIDR, onPaid }: QRISPaymentBlockProps) {
-  const { trackLead } = useMetaPixel();
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,7 +56,7 @@ export default function QRISPaymentBlock({ orderId, amountIDR, onPaid }: QRISPay
       }
 
       // Track successful receipt upload as Lead
-      trackLead('payment_qris');
+      trackConversion('payment_qris');
 
       onPaid();
     } catch (err: any) {

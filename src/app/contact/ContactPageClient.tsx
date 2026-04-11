@@ -4,11 +4,10 @@ import { MessageCircle, Mail, ArrowRight, Zap, Send } from 'lucide-react';
 import styles from './page.module.css';
 import FAQAccordion from '@/components/FAQAccordion';
 import { useLanguage } from '@/components/LanguageContext';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 
 export default function ContactPageClient() {
     const { t } = useLanguage();
-    const { trackLead } = useMetaPixel();
 
     const faqs = [
         { q: t('contact.faq.q1'), a: t('contact.faq.a1') },
@@ -61,7 +60,7 @@ export default function ContactPageClient() {
                                 rel="noopener noreferrer"
                                 className="btn btn-primary btn-lg"
                                 style={{ width: '100%', marginTop: 'auto' }}
-                                onClick={() => trackLead('wa_contact_page')}
+                                onClick={() => trackConversion('whatsapp_click', 'wa_contact_page')}
                             >
                                 {t('contact.wa.btn')} <ArrowRight size={18} strokeWidth={1.5} />
                             </a>
@@ -110,7 +109,7 @@ export default function ContactPageClient() {
                             className="btn btn-primary btn-lg"
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={() => trackLead('wa_contact_page_faq')}
+                            onClick={() => trackConversion('whatsapp_click', 'wa_contact_page_faq')}
                         >
                             {t('contact.faq.chatBtn')}
                         </a>

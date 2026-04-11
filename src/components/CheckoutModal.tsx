@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
+import { trackConversion } from '@/lib/analytics';
 import styles from './CheckoutModal.module.css';
 
 interface CheckoutModalProps {
@@ -34,6 +35,7 @@ export default function CheckoutModal({ isOpen, onClose, onSubmit, totalAmount, 
         setError('');
         try {
             await onSubmit({ name, phone, email });
+            trackConversion('checkout_form');
         } catch (err: any) {
             setError(err.message || 'Something went wrong. Please try again.');
             setLoading(false);

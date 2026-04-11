@@ -5,12 +5,11 @@ import { createPortal } from 'react-dom';
 import { X, CheckCircle2 } from 'lucide-react';
 import PathCard from '@/components/PathCard';
 import { useLanguage } from '@/components/LanguageContext';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 import pageStyles from '@/app/page.module.css';
 import styles from './PartnershipSection.module.css';
 
 function InterestDrawer({ onClose }: { onClose: () => void }) {
-    const { trackLead } = useMetaPixel();
     const [form, setForm] = useState({
         name: '',
         email: '',
@@ -43,7 +42,7 @@ function InterestDrawer({ onClose }: { onClose: () => void }) {
             }
             
             // Track successful submission as Lead
-            trackLead('partnership_form');
+            trackConversion('partnership_form');
             
             setSubmitted(true);
         } catch (err: any) {

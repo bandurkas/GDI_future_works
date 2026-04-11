@@ -1,5 +1,5 @@
 'use client';
-import { useMetaPixel } from '@/hooks/useMetaPixel';
+import { trackConversion } from '@/lib/analytics';
 import styles from './PayPalPaymentBlock.module.css';
 
 interface PayPalPaymentBlockProps {
@@ -7,7 +7,6 @@ interface PayPalPaymentBlockProps {
 }
 
 export default function PayPalPaymentBlock({ items }: PayPalPaymentBlockProps) {
-  const { trackLead } = useMetaPixel();
   const single = items.length === 1;
 
   return (
@@ -30,7 +29,7 @@ export default function PayPalPaymentBlock({ items }: PayPalPaymentBlockProps) {
             target="_blank"
             rel="noopener noreferrer"
             className={styles.paypalBtn}
-            onClick={() => trackLead('payment_paypal')}
+            onClick={() => trackConversion('payment_paypal')}
           >
             {/* PayPal two-tone wordmark */}
             <div className={styles.ppMark} aria-label="PayPal">
