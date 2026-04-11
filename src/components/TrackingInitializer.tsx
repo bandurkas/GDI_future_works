@@ -20,11 +20,14 @@ function TrackingLogic() {
         captureUTMs();
     }, [pathname, searchParams]);
 
-    // Check if the current route is excluded from tracking
-    const isExcluded = pathname.startsWith('/admin') || pathname.startsWith('/crm');
+    // Check if the current route is excluded from tracking (Admin / CRM / Internal)
+    const isInternalRoute = pathname.startsWith('/admin') || pathname.startsWith('/crm');
+    
+    // Safety check: ensure tracking is disabled on internal routes
+    const isExcluded = isInternalRoute;
 
     if (isExcluded) {
-        return null;
+        return null; // Return nothing, ensuring GA4/Meta Pixel components don't mount
     }
 
     return (

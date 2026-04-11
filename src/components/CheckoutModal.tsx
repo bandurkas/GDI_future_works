@@ -24,8 +24,9 @@ export default function CheckoutModal({ isOpen, onClose, onSubmit, totalAmount, 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name || !phone || !email) {
-            setError('Please fill in all fields');
+        // Simplified: only name and phone are strictly required for initial lead capture
+        if (!name || !phone) {
+            setError('Please fill in your name and phone number');
             return;
         }
         
@@ -79,22 +80,11 @@ export default function CheckoutModal({ isOpen, onClose, onSubmit, totalAmount, 
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
+                            autoFocus
                             disabled={loading}
                         />
                     </div>
                     
-                    <div className={styles.inputGroup}>
-                        <label htmlFor="email">Email Address</label>
-                        <input 
-                            id="email"
-                            type="email" 
-                            placeholder="john@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            disabled={loading}
-                        />
-                    </div>
                     
                     <div className={styles.inputGroup}>
                         <label htmlFor="phone">Phone Number (WhatsApp preferred)</label>
