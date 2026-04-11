@@ -749,7 +749,6 @@ const translations: Record<Language, Record<string, string>> = {
         'schedule.contactNote': '* Kami membutuhkan setidaknya email atau nomor telepon untuk mengirim link bergabung.',
         'schedule.bottomNote': '💬 Butuh tanggal lain? WhatsApp kami — kami membuka sesi baru berdasarkan permintaan.',
         'schedule.next': 'Lanjut →',
-        'schedule.next': 'Lanjut →',
         'schedule.selectDate': 'Pilih tanggal untuk melanjutkan',
 
         // Differentiators
