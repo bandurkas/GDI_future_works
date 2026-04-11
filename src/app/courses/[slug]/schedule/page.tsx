@@ -47,15 +47,9 @@ export default function SchedulePage({ params }: Props) {
     const isID = language === 'id';
     const isAuthenticated = status === 'authenticated';
 
-    const [email, setEmail] = useState(customerInfo.email || '');
     const [phone, setPhone] = useState(customerInfo.phone || '');
     const [countryCode, setCountryCode] = useState('+62');
-    const [emailTouched, setEmailTouched] = useState(false);
     const [phoneTouched, setPhoneTouched] = useState(false);
-
-    useEffect(() => {
-        if (session?.user && !email && session.user.email) setEmail(session.user.email);
-    }, [session, email]);
 
     useEffect(() => {
         if (!course || !(course as any).tutorEmail) return;
@@ -90,7 +84,6 @@ export default function SchedulePage({ params }: Props) {
     const day2DateSlots = day2Date ? (slotsByDate.get(day2Date) ?? []) : [];
     const bothSelected = !!day1Slot && !!day2Slot;
 
-    const emailValid = email.trim().length > 0 && email.includes('@');
     const phoneValid = phone.trim().length >= 6;
     const contactOk = isAuthenticated || phoneValid;
     const canContinue = bothSelected && contactOk;
@@ -120,7 +113,7 @@ export default function SchedulePage({ params }: Props) {
         if (!canContinue || !day1Slot || !day2Slot || !course) return;
         const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
         trackLead('course_booking_start');
-        updateCustomerInfo({ email, phone: fullPhone });
+        updateCustomerInfo({ email: '', phone: fullPhone });
         addItem({
             courseId: course.id,
             courseTitle: course.title,
@@ -417,35 +410,6 @@ export default function SchedulePage({ params }: Props) {
                                 )}
                                 <p className={styles.fieldHelper}>
                                     📲 {isID ? 'Kami akan menghubungi Anda untuk konfirmasi jadwal kelas' : 'We will contact you to confirm your class schedule'}
-                                </p>
-                            </div>
-
-                            {/* Email — optional */}
-                            <div className={styles.inputGroup}>
-                                <label htmlFor="schedule-email" className={styles.inputLabel}>
-                                    {isID ? 'Email' : 'Email'}
-                                    <span className={styles.optionalTag}>{isID ? 'Opsional' : 'Optional'}</span>
-                                </label>
-                                <input
-                                    id="schedule-email"
-                                    className={styles.inputField}
-                                    type="email"
-                                    inputMode="email"
-                                    autoComplete="email"
-                                    placeholder={isID ? 'contoh@email.com' : 'you@example.com'}
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                    onBlur={() => setEmailTouched(true)}
-                                    data-error={emailTouched && email && !emailValid ? 'true' : undefined}
-                                    data-valid={emailValid ? 'true' : undefined}
-                                />
-                                {emailTouched && email && !emailValid && (
-                                    <span className={styles.fieldError} role="alert">
-                                        ⚠ {isID ? 'Masukkan alamat email yang valid' : 'Enter a valid email address'}
-                                    </span>
-                                )}
-                                <p className={styles.fieldHelper}>
-                                    📄 {isID ? 'Kami akan mengirim invoice dan detail kelas' : 'We will send your invoice and class details'}
                                 </p>
                             </div>
                         </section>
