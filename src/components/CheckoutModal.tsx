@@ -84,7 +84,17 @@ export default function CheckoutModal({ isOpen, onClose, onSubmit, totalAmount, 
                             disabled={loading}
                         />
                     </div>
-                    
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="email">Email Address (Optional)</label>
+                        <input 
+                            id="email"
+                            type="email" 
+                            placeholder="john@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            disabled={loading}
+                        />
+                    </div>
                     
                     <div className={styles.inputGroup}>
                         <label htmlFor="phone">Phone Number (WhatsApp preferred)</label>

@@ -9,7 +9,7 @@ import styles from './page.module.css';
 
 export default function GlobalCheckoutPage() {
     const { items, totalItems } = useCart();
-    const [form, setForm] = useState({ name: '', whatsapp: '' });
+    const [form, setForm] = useState({ name: '', whatsapp: '', email: '' });
     const { language } = useLanguage();
     const { currency } = useCurrency();
 
@@ -22,7 +22,7 @@ export default function GlobalCheckoutPage() {
     const isValid = form.name.trim().length > 1 && form.whatsapp.trim().length > 6;
 
     const paymentHref = isValid
-        ? `/payment?n=${encodeURIComponent(form.name)}&p=${encodeURIComponent(form.whatsapp)}`
+        ? `/payment?n=${encodeURIComponent(form.name)}&p=${encodeURIComponent(form.whatsapp)}&e=${encodeURIComponent(form.email)}`
         : '#';
 
     const handleProceed = (e: React.MouseEvent) => {
@@ -95,6 +95,17 @@ export default function GlobalCheckoutPage() {
                                     placeholder="+62 812 3456 7890"
                                     value={form.whatsapp} onChange={onChange}
                                     autoComplete="tel"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label" htmlFor="email">Email Address (Optional)</label>
+                                <input
+                                    id="email" name="email" type="email"
+                                    className="form-input"
+                                    placeholder="you@example.com"
+                                    value={form.email} onChange={onChange}
+                                    autoComplete="email"
                                 />
                             </div>
 
