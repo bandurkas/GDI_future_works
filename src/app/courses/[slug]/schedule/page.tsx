@@ -6,6 +6,7 @@ import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
 import { trackConversion } from '@/lib/analytics';
+import { getStoredUTMs } from '@/lib/utm';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -114,6 +115,7 @@ export default function SchedulePage({ params }: Props) {
         
         // Sync to CRM Lead table
         try {
+            const utms = getStoredUTMs() || {};
             fetch('/api/leads/schedule', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -123,6 +125,9 @@ export default function SchedulePage({ params }: Props) {
                     courseTitle: course.title,
                     dateLabel: `${day1Slot.date} & ${day2Slot.date}`,
                     timeLabel: `${day1Slot.time}–${day1Slot.timeEnd} / ${day2Slot.time}–${day2Slot.timeEnd}`,
+                    utmSource: utms.utmSource,
+                    utmMedium: utms.utmMedium,
+                    utmCampaign: utms.utmCampaign,
                 })
             }).catch(e => console.error('Failed to sync lead:', e));
         } catch (e) {}
