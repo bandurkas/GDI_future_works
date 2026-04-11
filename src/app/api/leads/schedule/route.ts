@@ -13,30 +13,39 @@ export async function POST(req: NextRequest) {
         const cleanPhone = phone.replace(/\D/g, '');
         const pseudoEmail = `lead_${cleanPhone}@noemail.gdi`;
 
-        // Upsert the Lead in Prisma
-        const lead = await prisma.lead.upsert({
-            where: { email: pseudoEmail },
-            update: {
-                phone,
-                status: 'NEW',
-                source: `Schedule: ${courseTitle || courseSlug}`,
-                utmSource,
-                utmMedium,
-                utmCampaign,
-                updatedAt: new Date(),
-            },
-            create: {
-                email: pseudoEmail,
-                name: 'Schedule Lead', 
-                phone,
-                type: 'STUDENT',
-                status: 'NEW',
-                source: `Schedule: ${courseTitle || courseSlug}`,
-                utmSource,
-                utmMedium,
-                utmCampaign,
-            },
+        // Find existing or create new lead
+        let lead = await prisma.lead.findFirst({
+            where: { email: pseudoEmail }
         });
+
+        if (lead) {
+            lead = await prisma.lead.update({
+                where: { id: lead.id },
+                data: {
+                    phone,
+                    status: 'NEW',
+                    source: `Schedule: ${courseTitle || courseSlug}`,
+                    utmSource,
+                    utmMedium,
+                    utmCampaign,
+                    updatedAt: new Date(),
+                }
+            });
+        } else {
+            lead = await prisma.lead.create({
+                data: {
+                    email: pseudoEmail,
+                    name: 'Schedule Lead', 
+                    phone,
+                    type: 'STUDENT',
+                    status: 'NEW',
+                    source: `Schedule: ${courseTitle || courseSlug}`,
+                    utmSource,
+                    utmMedium,
+                    utmCampaign,
+                }
+            });
+        }
 
         // Record activity
         await prisma.leadActivity.create({
