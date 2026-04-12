@@ -62,6 +62,13 @@
 - **Legacy Cleanup**: Decommissioned `useMetaPixel.ts` and `lib/metaPixel.ts` to reduce technical debt.
 - **Status**: **FULLY OPERATIONAL**. Attribution accuracy now at 100% for the schedule flow.
 
+### 6. Tutor Pipeline Recovery (April 12, 2026)
+- **Incident**: Reported data loss in the Tutor Pipeline where all records appeared to have disappeared.
+- **Root Cause**: The application was pointing to an empty legacy database (`gdi_crm_v2`) while the actual data with tutors and curriculum was stored in the canonical `gdi_future_works` database.
+- **Resolution**: Updated VPS `.env` to point to `gdi_future_works`, ran `prisma generate`, and restarted the app via PM2. 
+- **Safety**: Renamed the empty legacy database to `gdi_crm_v2_EMPTY_BACKUP`.
+- **Status**: **DATA FULLY RESTORED**. 4 applications and 3 tutors verified in the UI.
+
 ### 🔮 Future Considerations
 - Monitor conversion rates post-deployment targeting the 70%+ submit rate goal.
 - Implement "Converted" status tracking in the Leads table once a lead completes a purchase.
