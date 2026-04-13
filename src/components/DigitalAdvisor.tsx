@@ -115,17 +115,17 @@ export default function DigitalAdvisor() {
                 {step === 'intro' && (
                     <>
                         <div className={styles.message}>
-                            Hi! I'm Maya. 👋 Need help choosing the right IT course for your career? Let's chat!
+                            Hai! Saya Maya. 👋 Butuh bantuan pilih kursus IT? Yuk chat!
                         </div>
 
                         <div className={styles.actions}>
                             <button className={styles.btnPrimary} onClick={handleWhatsApp}>
                                 <MessageCircle size={18} />
-                                Chat with Maya
+                                Chat dengan Maya
                             </button>
                             <button className={styles.btnSecondary} onClick={() => setStep('form')}>
                                 <Calendar size={18} />
-                                Book consultation
+                                Konsultasi Gratis
                             </button>
                         </div>
                     </>
@@ -138,7 +138,7 @@ export default function DigitalAdvisor() {
                         </div>
                         <input 
                             type="tel" 
-                            placeholder="Your Phone Number" 
+                            placeholder="Nomor WA / Telepon" 
                             className={styles.input}
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -146,7 +146,7 @@ export default function DigitalAdvisor() {
                             required
                         />
                         <button className={styles.btnSubmit} disabled={isSubmitting}>
-                            {isSubmitting ? 'Sending...' : 'Call me back'}
+                            {isSubmitting ? 'Mengirim...' : 'Hubungi saya'}
                         </button>
                     </form>
                 )}
@@ -154,8 +154,8 @@ export default function DigitalAdvisor() {
                 {step === 'success' && (
                     <div className={styles.successState}>
                         <span className={styles.successIcon}>✨</span>
-                        <div className={styles.successTitle}>Perfect!</div>
-                        <div className={styles.successSub}>Thank you, I'll call you back shortly.</div>
+                        <div className={styles.successTitle}>Selesai!</div>
+                        <div className={styles.successSub}>Terima kasih, saya akan segera hubungi.</div>
                     </div>
                 )}
             </div>
