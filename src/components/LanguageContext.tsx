@@ -537,6 +537,16 @@ const translations: Record<Language, Record<string, string>> = {
         'about.cta.h2': 'Ready to accelerate your tech career?',
         'about.cta.browse': 'Browse Courses',
         'about.cta.consult': 'Consult Advisor',
+        // MAYA WIDGET
+        'maya.intro': "Hi! I'm Maya. 👋 Need help choosing the right IT course for your career? Let's chat!",
+        'maya.role': 'Digital Course Advisor',
+        'maya.chatBtn': "Chat with Maya",
+        'maya.consultBtn': "Book consultation",
+        'maya.phonePlaceholder': "Your Phone Number",
+        'maya.submitBtn': "Call me back",
+        'maya.submitting': "Sending...",
+        'maya.successTitle': "Perfect!",
+        'maya.successSub': "Thank you, I'll call you back shortly.",
     },
 
     id: {
@@ -1065,6 +1075,16 @@ const translations: Record<Language, Record<string, string>> = {
         'about.cta.h2': 'Sudah siap mempercepat karier teknologi Anda?',
         'about.cta.browse': 'Jelajahi Kursus',
         'about.cta.consult': 'Konsultasi dengan tim',
+        // MAYA WIDGET
+        'maya.intro': "Hai! Saya Maya. 👋 Butuh bantuan pilih kursus IT? Yuk chat!",
+        'maya.role': 'Konsultan Kursus Digital',
+        'maya.chatBtn': "Chat dengan Maya",
+        'maya.consultBtn': "Konsultasi Gratis",
+        'maya.phonePlaceholder': "Nomor WA / Telepon",
+        'maya.submitBtn': "Hubungi saya",
+        'maya.submitting': "Mengirim...",
+        'maya.successTitle': "Selesai!",
+        'maya.successSub': "Terima kasih, saya akan segera hubungi.",
     }
 };
 

@@ -2,9 +2,11 @@
 import { useState, useEffect } from 'react';
 import styles from './DigitalAdvisor.module.css';
 import { X, MessageCircle, Calendar } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 import { trackConversion } from '@/lib/analytics';
 
 export default function DigitalAdvisor() {
+    const { t } = useLanguage();
     const [isVisible, setIsVisible] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [isDismissed, setIsDismissed] = useState(false);
@@ -108,24 +110,24 @@ export default function DigitalAdvisor() {
                     </div>
                     <div className={styles.info}>
                         <span className={styles.name}>Maya</span>
-                        <span className={styles.role}>Digital Course Advisor</span>
+                        <span className={styles.role}>{t('maya.role')}</span>
                     </div>
                 </div>
 
                 {step === 'intro' && (
                     <>
                         <div className={styles.message}>
-                            Hai! Saya Maya. 👋 Butuh bantuan pilih kursus IT? Yuk chat!
+                            {t('maya.intro')}
                         </div>
 
                         <div className={styles.actions}>
                             <button className={styles.btnPrimary} onClick={handleWhatsApp}>
                                 <MessageCircle size={18} />
-                                Chat dengan Maya
+                                {t('maya.chatBtn')}
                             </button>
                             <button className={styles.btnSecondary} onClick={() => setStep('form')}>
                                 <Calendar size={18} />
-                                Konsultasi Gratis
+                                {t('maya.consultBtn')}
                             </button>
                         </div>
                     </>
@@ -138,7 +140,7 @@ export default function DigitalAdvisor() {
                         </div>
                         <input 
                             type="tel" 
-                            placeholder="Nomor WA / Telepon" 
+                            placeholder={t('maya.phonePlaceholder')}
                             className={styles.input}
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -146,7 +148,7 @@ export default function DigitalAdvisor() {
                             required
                         />
                         <button className={styles.btnSubmit} disabled={isSubmitting}>
-                            {isSubmitting ? 'Mengirim...' : 'Hubungi saya'}
+                            {isSubmitting ? t('maya.submitting') : t('maya.submitBtn')}
                         </button>
                     </form>
                 )}
@@ -154,8 +156,8 @@ export default function DigitalAdvisor() {
                 {step === 'success' && (
                     <div className={styles.successState}>
                         <span className={styles.successIcon}>✨</span>
-                        <div className={styles.successTitle}>Selesai!</div>
-                        <div className={styles.successSub}>Terima kasih, saya akan segera hubungi.</div>
+                        <div className={styles.successTitle}>{t('maya.successTitle')}</div>
+                        <div className={styles.successSub}>{t('maya.successSub')}</div>
                     </div>
                 )}
             </div>
