@@ -10,11 +10,33 @@ import { fmt } from '@/lib/utils';
 import AIGlow from '@/components/AIGlow/AIGlow';
 import s from './PipelineView.module.css';
 
+
+const countryFlag = {
+  Indonesia: "🇮🇩", India: "🇮🇳", Singapore: "🇸🇬", Malaysia: "🇲🇾",
+  Thailand: "🇹🇭", Vietnam: "🇻🇳", Philippines: "🇵🇭", Japan: "🇯🇵",
+  China: "🇨🇳", USA: "🇺🇸", UK: "🇬🇧",
+  Australia: "🇦🇺", Germany: "🇩🇪", Canada: "🇨🇦",
+  Brazil: "🇧🇷", Russia: "🇷🇺", UAE: "🇦🇪",
+} as Record<string,string>;
+function getFlag(c: string | null): string {
+  if (!c) return "";
+  return countryFlag[c] || "🌍";
+}
+
+function formatPhone(p: string): string {
+  const clean = p.replace(/\D/g, '');
+  if (clean.startsWith('62') && clean.length >= 10) {
+    return '+' + clean.slice(0,2) + ' ' + clean.slice(2,5) + '-' + clean.slice(5,9) + '-' + clean.slice(9);
+  }
+  return p;
+}
+
 const STAGES: Record<KanbanStatus, string> = {
   'NEW': 'Fresh',
   'CONTACTED': 'Contacted',
   'QUALIFIED': 'Qualified',
   'CONVERTED': 'Converted',
+  'ARCHIVED': 'Archived',
 };
 
 export default function StudentsView({ students, freshLeads = [] }: { students: any[], freshLeads?: any[] }) {
@@ -149,71 +171,97 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                 animate={{ opacity: 1, y: 0 }}
                                 className={`${s.card} ${dragSnapshot.isDragging ? s.cardDragging : ''}`}
                               >
+                                {/* Section 1: Header — Type + Country */}
                                 <div className={s.cardHeader}>
                                   <div className={`${s.cardType} ${card.type === 'LEAD' ? s.leadType : s.studentType}`}>
                                     {card.type}
                                   </div>
                                   {card.country && (
                                     <div className={s.regionBadge}>
-                                      {card.country}
+                                      {getFlag(card.country)} {card.country}
                                     </div>
                                   )}
                                 </div>
 
-                                <div className={s.cardName}>{card.name}</div>
-                                <div className={s.cardEmail}>{card.email}</div>
-                                
-                                <div className={s.metadataGrid}>
-                                  <div className={s.metaItem} title="Source">
-                                    <Globe size={10} />
-                                    {card.utmSource || card.source || 'Direct'}
-                                  </div>
-                                  <div className={s.metaItem} title="Campaign">
-                                    <Tag size={10} />
-                                    {card.utmCampaign || 'Organic'}
-                                  </div>
+                                {/* Section 2: Contact Info — Primary Focus */}
+                                <div className={s.contactSection}>
+                                  <div className={s.cardName}>{card.name}</div>
+                                  {card.phone && (
+                                    <a
+                                      href={`https://wa.me/${card.phone.replace(/\D/g, '')}`}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className={s.phoneRow}
+                                      onClick={e => e.stopPropagation()}
+                                    >
+                                      <Phone size={13} />
+                                      <span>{formatPhone(card.phone)}</span>
+                                    </a>
+                                  )}
+                                  {card.email && !card.email.includes('@noemail.gdi') && (
+                                    <div className={s.emailRow}>
+                                      <Mail size={11} />
+                                      <span>{card.email}</span>
+                                    </div>
+                                  )}
                                 </div>
 
+                                {/* Section 3: Course Info */}
                                 {card.details?.course && (
-                                  <div className={s.leadIntent}>
-                                    <div className={s.intentGoal}>{card.details.course}</div>
-                                    {(card.details.dates || card.details.times) && (
-                                      <div className={s.intentSchedule}>
-                                        {card.details.dates} • {card.details.times}
-                                      </div>
-                                    )}
+                                  <div className={s.courseCard}>
+                                    <div className={s.courseIcon}>📚</div>
+                                    <div className={s.courseInfo}>
+                                      <div className={s.courseName}>{card.details.course}</div>
+                                      {(card.details.dates || card.details.times) && (
+                                        <div className={s.courseSchedule}>
+                                          {card.details.dates}{card.details.dates && card.details.times ? ' · ' : ''}{card.details.times}
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
                                 )}
 
-                                <div className={s.registrationTime}>
-                                  <Clock size={10} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
-                                  {new Date(card.createdAt).toLocaleString('en-GB', { 
-                                    day: '2-digit', month: 'short', 
-                                    hour: '2-digit', minute: '2-digit' 
-                                  })}
+                                {/* Section 4: Metadata */}
+                                <div className={s.metaRow}>
+                                  <span className={s.metaSource}>{card.utmSource || card.source || 'Direct'}</span>
+                                  <span className={s.metaDot}>·</span>
+                                  <span className={s.metaCampaign}>{card.utmCampaign || 'Organic'}</span>
+                                  <span className={s.metaDot}>·</span>
+                                  <span className={s.metaTime}>
+                                    {new Date(card.createdAt).toLocaleString('en-GB', {
+                                      day: '2-digit', month: 'short',
+                                      hour: '2-digit', minute: '2-digit'
+                                    })}
+                                  </span>
                                 </div>
 
-                                <div className={s.cardFooter}>
+                                {/* Actions */}
+                                <div className={s.cardActions}>
                                   {card.phone && (
-                                    <a 
-                                      href={`https://wa.me/${card.phone.replace(/\D/g, '')}`} 
-                                      target="_blank" 
+                                    <a
+                                      href={`https://wa.me/${card.phone.replace(/\D/g, '')}`}
+                                      target="_blank"
                                       rel="noreferrer"
-                                      className={`${s.actionIcon} ${s.waLink}`}
+                                      className={`${s.actionBtn} ${s.waBtn}`}
                                       onClick={e => e.stopPropagation()}
                                       title="WhatsApp"
                                     >
-                                      <MessageCircle size={14} />
+                                      <MessageCircle size={13} />
+                                      <span>Chat</span>
                                     </a>
                                   )}
-                                  <button className={s.actionIcon} title="Call">
-                                    <Phone size={14} />
-                                  </button>
-                                  <button className={s.actionIcon} title="Schedule">
-                                    <Calendar size={14} />
-                                  </button>
-                                  <button className={s.actionIcon} title="Edit">
-                                    <Edit2 size={14} />
+                                  {card.phone && (
+                                    <a
+                                      href={`tel:${card.phone}`}
+                                      className={`${s.actionBtn} ${s.callBtn}`}
+                                      onClick={e => e.stopPropagation()}
+                                      title="Call"
+                                    >
+                                      <Phone size={13} />
+                                    </a>
+                                  )}
+                                  <button className={s.actionBtn} title="Edit">
+                                    <Edit2 size={13} />
                                   </button>
                                 </div>
                               </motion.div>

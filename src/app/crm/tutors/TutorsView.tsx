@@ -307,8 +307,8 @@ function TutorCard({ t, isArchived = false }: { t: Tutor; isArchived?: boolean }
           <div className={s.dayGrid}>
             {DAYS_SHORT.map((day, i) => (
               <div key={day} className={s.dayCol}>
-                <span className={s.dayLabel} style={{ color: hasDay(i) ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.15)' }}>{day}</span>
-                <div className={s.dayDot} style={{ background: hasDay(i) ? '#10b981' : 'rgba(255,255,255,0.08)' }} />
+                <span className={s.dayLabel} style={{ color: hasDay(i) ? 'var(--crm-text-muted)' : 'var(--crm-text-faint)' }}>{day}</span>
+                <div className={s.dayDot} style={{ background: hasDay(i) ? '#10b981' : 'var(--crm-border)' }} />
               </div>
             ))}
           </div>
@@ -481,7 +481,7 @@ function AvailabilityGrid({ raw }: { raw: string }) {
               const isEmpty = times.length === 0;
               return (
                 <div key={day} className={isEmpty ? `${s.availDay} ${s.availDayEmpty}` : `${s.availDay} ${s.availDayFilled}`}>
-                  <span className={s.availDayLabel} style={{ color: isEmpty ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.6)' }}>
+                  <span className={s.availDayLabel} style={{ color: isEmpty ? 'var(--crm-text-faint)' : 'var(--crm-text)' }}>
                     {day}
                   </span>
                   {isEmpty ? (

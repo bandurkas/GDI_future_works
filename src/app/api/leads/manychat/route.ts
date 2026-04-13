@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
           phone: phone || null,
           source,
           status: 'NEW',
+          country: 'Indonesia',
         },
       });
       leadId = lead.id;

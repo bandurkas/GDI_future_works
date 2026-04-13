@@ -50,7 +50,7 @@ export async function POST(req: Request) {
                 leadId = existing.id;
                 await prisma.lead.update({
                     where: { id: leadId },
-                    data: { status: 'NEW', updatedAt: now },
+                    data: { status: 'NEW', country: country.trim(), updatedAt: now },
                 });
             } else {
                 const lead = await prisma.lead.create({
@@ -59,6 +59,7 @@ export async function POST(req: Request) {
                         name: name.trim(),
                         email: normalizedEmail,
                         source: 'Interest Form',
+                        country: country.trim(),
                         status: 'NEW',
                         utmSource: utmSource || null,
                         utmMedium: utmMedium || null,
