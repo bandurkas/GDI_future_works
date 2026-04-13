@@ -1,5 +1,5 @@
 #!/usr/bin/expect -f
-# Deploy to the CORRECT production directory: /var/www/gdi-futureworks
+# Full production deploy to /var/www/gdi-futureworks
 set timeout 600
 set vps_pass "B@nd73610421"
 
@@ -15,15 +15,6 @@ expect "# "
 send "git pull origin main 2>&1 | tail -10\r"
 
 expect "# "
-send "ls .env* 2>/dev/null && echo '---env check done'\r"
-
-expect "# "
-send "cat /root/production.env | grep DATABASE_URL\r"
-
-expect "# "
-send "cp /root/production.env .env.local && echo 'env copied'\r"
-
-expect "# "
 send "npm install --legacy-peer-deps 2>&1 | tail -5\r"
 
 expect "# "
@@ -36,10 +27,7 @@ expect "# "
 send "pm2 restart gdi --update-env && sleep 3 && pm2 status\r"
 
 expect "# "
-send "curl -s http://localhost:3000 | grep -c 'advisor'\r"
-
-expect "# "
 send "exit\r"
 
 expect eof
-puts "\n=== CORRECT DEPLOYMENT DONE ==="
+puts "\n=== DEPLOYMENT COMPLETE ==="
