@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
             phone, courseSlug, courseTitle, 
             dateLabel, timeLabel,
             utmSource, utmMedium, utmCampaign, utmContent, utmTerm,
-            gaClientId
+            gaClientId, fbClientId, fbBrowserId
         } = await req.json();
 
         if (!phone) {
@@ -27,14 +27,17 @@ export async function POST(req: NextRequest) {
             leadId = existingLeads[0].id;
             await prisma.$executeRaw`
                 UPDATE "Lead" 
-                SET phone = ${phone}, status = 'NEW', source = ${`Digital Advisor: Maya`}, "updatedAt" = NOW()
+                SET phone = ${phone}, status = 'NEW', source = ${`Digital Advisor: Maya`}, 
+                    "gaClientId" = ${gaClientId}, "fbClientId" = ${fbClientId}, "fbBrowserId" = ${fbBrowserId},
+                    "utmSource" = ${utmSource}, "utmMedium" = ${utmMedium}, "utmCampaign" = ${utmCampaign},
+                    "updatedAt" = NOW()
                 WHERE id = ${leadId}
             `;
         } else {
             leadId = crypto.randomUUID();
             await prisma.$executeRaw`
-                INSERT INTO "Lead" (id, email, name, phone, type, status, source, "createdAt", "updatedAt")
-                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', NOW(), NOW())
+                INSERT INTO "Lead" (id, email, name, phone, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "createdAt", "updatedAt")
+                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, NOW(), NOW())
             `;
         }
 

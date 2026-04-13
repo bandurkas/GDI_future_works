@@ -5,9 +5,7 @@ import { getCourseBySlug, type Schedule } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
-import { trackConversion } from '@/lib/analytics';
-import { getStoredUTMs } from '@/lib/utm';
-import { getGAClientId } from '@/lib/analytics';
+import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -116,8 +114,11 @@ export default function SchedulePage({ params }: Props) {
         
         // Sync to CRM Lead table
         try {
-            const utms = getStoredUTMs() || {};
-            const cid = await getGAClientId();
+            const [gaClientId, fbClientId, fbBrowserId] = await Promise.all([
+                getGAClientId(),
+                Promise.resolve(getFbc()),
+                Promise.resolve(getFbp())
+            ]);
             
             fetch('/api/leads/schedule', {
                 method: 'POST',
@@ -133,7 +134,9 @@ export default function SchedulePage({ params }: Props) {
                     utmCampaign: utms.utmCampaign,
                     utmContent: utms.utmContent,
                     utmTerm: utms.utmTerm,
-                    gaClientId: cid,
+                    gaClientId,
+                    fbClientId,
+                    fbBrowserId,
                 })
             }).catch(e => console.error('Failed to sync lead:', e));
         } catch (e) {}

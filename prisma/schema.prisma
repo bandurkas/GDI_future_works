@@ -282,6 +282,8 @@ model Lead {
   utmContent  String?
   utmTerm     String?
   gaClientId  String?
+  fbClientId  String?
+  fbBrowserId String?
 
   @@index([email, status])
 }
@@ -352,6 +354,8 @@ model TutorApplication {
   utmContent     String?
   utmTerm       String?
   gaClientId    String?
+  fbClientId    String?
+  fbBrowserId   String?
 }
 
 enum UserRole {

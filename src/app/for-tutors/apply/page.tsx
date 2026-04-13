@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { useLanguage } from '@/components/LanguageContext';
-import { trackConversion, trackEvent, getGAClientId } from '@/lib/analytics';
+import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import { getStoredUTMs } from '@/lib/utm';
 
 const EXPERTISE_OPTIONS = [
@@ -200,7 +200,9 @@ export default function TutorApplyPage() {
                 lessonPlan:    formData.lessonPlan.trim(),
                 // Include captured attribution data
                 ...getStoredUTMs(),
-                gaClientId: await getGAClientId()
+                gaClientId: await getGAClientId(),
+                fbClientId: getFbc(),
+                fbBrowserId: getFbp()
             };
 
             const res = await fetch('/api/tutor-apply', {

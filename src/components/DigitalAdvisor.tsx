@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './DigitalAdvisor.module.css';
 import { X, MessageCircle, Calendar } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import { trackConversion } from '@/lib/analytics';
+import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 
 export default function DigitalAdvisor() {
     const { t } = useLanguage();
@@ -39,6 +39,12 @@ export default function DigitalAdvisor() {
 
         setIsSubmitting(true);
         try {
+            const [gaClientId, fbClientId, fbBrowserId] = await Promise.all([
+                getGAClientId(),
+                Promise.resolve(getFbc()),
+                Promise.resolve(getFbp())
+            ]);
+
             const res = await fetch('/api/leads/schedule', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -46,7 +52,10 @@ export default function DigitalAdvisor() {
                     phone,
                     courseTitle: 'General Consultation',
                     courseSlug: 'consultation',
-                    source: 'Digital Advisor: Maya'
+                    source: 'Digital Advisor: Maya',
+                    gaClientId,
+                    fbClientId,
+                    fbBrowserId
                 }),
             });
 

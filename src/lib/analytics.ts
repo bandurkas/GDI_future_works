@@ -27,6 +27,23 @@ export const getGAClientId = (): Promise<string | null> => {
 };
 
 /**
+ * Utility to get cookie value by name.
+ */
+const getCookie = (name: string): string | null => {
+    if (typeof document === 'undefined') return null;
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
+};
+
+/**
+ * Retrieves Meta/Facebook Click ID (fbc) and Browser ID (fbp) from cookies.
+ */
+export const getFbc = () => getCookie('_fbc');
+export const getFbp = () => getCookie('_fbp');
+
+/**
  * Tracks a 'Lead' or 'Conversion' event across all platforms.
  * @param eventName The type of conversion (e.g., 'whatsapp_click', 'tutor_application')
  * @param source Optional detail about where the lead occurred
