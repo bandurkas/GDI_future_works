@@ -1,0 +1,20 @@
+#!/usr/bin/expect -f
+# GDI FutureWorks — VPS Deployment (Find + Deploy)
+set timeout 120
+set vps_pass "B@nd73610421"
+
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+
+expect "password:"
+send "$vps_pass\r"
+
+expect "# "
+send "ls /root/ && pm2 list\r"
+
+expect "# "
+send "cat /root/.pm2/dump.pm2 2>/dev/null | python3 -c \"import json,sys; d=json.load(sys.stdin); [print(p.get('pm_cwd','?'), p.get('name','?')) for p in d.get('apps',\[\])]\"\r"
+
+expect "# "
+send "exit\r"
+
+expect eof

@@ -1,0 +1,17 @@
+#!/usr/bin/expect -f
+# GDI FutureWorks — Find production env and sync schema
+set timeout 60
+set vps_pass "B@nd73610421"
+
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+
+expect "# "
+send "ls /root/GDI_future_works/.env* /root/production.env 2>/dev/null\r"
+
+expect "# "
+send "cat /root/production.env | grep DATABASE_URL\r"
+
+expect "# "
+send "exit\r"
+
+expect eof
