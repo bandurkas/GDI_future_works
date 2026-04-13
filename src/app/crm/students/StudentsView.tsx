@@ -6,27 +6,47 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 import { motion, AnimatePresence } from 'framer-motion';
 import { KanbanCard, KanbanStatus, normalizeCrmData } from '@/lib/crm-normalize';
 import { fmt } from '@/lib/utils';
+import AIGlow from '@/components/AIGlow/AIGlow';
 import s from './PipelineView.module.css';
 
 const COLUMNS: { id: KanbanStatus; label: string; icon: string }[] = [
-  { id: 'NEW',       label: '🔥 Fresh',      icon: '⚡' },
-  { id: 'CONTACTED', label: '📞 Contacted',  icon: '🗣️' },
-  { id: 'QUALIFIED', label: '💬 Qualified',  icon: '✨' },
-  { id: 'CONVERTED', label: '🎓 Converted',  icon: '✅' },
+  { id: 'NEW',       label: '⚡ Fresh',      icon: '🔥' },
+  { id: 'CONTACTED', label: '🗣️ Contacted',  icon: '📞' },
+  { id: 'QUALIFIED', label: '✨ Qualified',  icon: '💬' },
+  { id: 'CONVERTED', label: '✅ Converted',  icon: '🎓' },
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+} as const;
+
+const columnVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: 'spring', damping: 20, stiffness: 100 }
+  }
+} as const;
 
 export default function StudentsView({ students, freshLeads = [] }: { students: any[], freshLeads?: any[] }) {
   const router = useRouter();
   const [cards, setCards] = useState<KanbanCard[]>([]);
   const [search, setSearch] = useState('');
-  const [isReady, setIsReady] = useState(false); // DnD needs client-side only mount
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     setCards(normalizeCrmData(students, freshLeads));
     setIsReady(true);
   }, [students, freshLeads]);
 
-  // Group cards by column
   const columnsData = useMemo(() => {
     const q = search.toLowerCase().trim();
     const filtered = q
@@ -52,7 +72,6 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
     const newStatus = destination.droppableId as KanbanStatus;
     const cardId = draggableId;
 
-    // Optimistic Update
     const updatedCards = [...cards];
     const cardIdx = updatedCards.findIndex(c => c.id === cardId);
     if (cardIdx === -1) return;
@@ -60,15 +79,11 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
     const targetCard = { ...updatedCards[cardIdx], status: newStatus };
     updatedCards.splice(cardIdx, 1);
     
-    // Logic to insert into correct position if we want to preserve order
-    // For now, we just add it to the list and memo will resort
     setCards([...updatedCards, targetCard]);
 
-    // API Call
     try {
       let bodyStatus = newStatus;
       
-      // Map KanbanStatus to DB StudentStatus if needed
       if (targetCard.type === 'STUDENT') {
         const studentMap: Record<KanbanStatus, string> = {
           'NEW': 'LEAD',
@@ -94,15 +109,14 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
       router.refresh();
     } catch (err) {
       console.error('Pipeline update failed:', err);
-      // Revert if error? Maybe too jarring. 
-      // User can refresh.
     }
   };
 
-  if (!isReady) return <div className={s.pipelineContainer}>Loading Pipeline...</div>;
+  if (!isReady) return <div className={s.pipelineContainer}><AIGlow /></div>;
 
   return (
     <div className={s.pipelineContainer}>
+      <AIGlow />
       <header className={s.header}>
         <div className={s.titleArea}>
           <h1>SALES PIPELINE</h1>
@@ -123,9 +137,18 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
       </header>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className={s.board}>
+        <motion.div 
+          className={s.board}
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
           {COLUMNS.map(col => (
-            <div key={col.id} className={col.id === 'CONVERTED' ? `${s.column} ${s.columnConverted}` : s.column}>
+            <motion.div 
+              key={col.id} 
+              variants={columnVariants}
+              className={col.id === 'CONVERTED' ? `${s.column} ${s.columnConverted}` : s.column}
+            >
               <div className={s.columnHeader}>
                 <div className={s.columnTitle}>
                   <span>{col.icon}</span> {col.label}
@@ -139,9 +162,12 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className={s.cardList}
-                    style={{ background: snapshot.isDraggingOver ? 'rgba(255,255,255,0.05)' : 'transparent' }}
+                    style={{ 
+                      background: snapshot.isDraggingOver ? 'rgba(255,255,255,0.03)' : 'transparent',
+                      transition: 'background 0.2s ease'
+                    }}
                   >
-                    <AnimatePresence>
+                    <AnimatePresence mode="popLayout">
                       {columnsData[col.id].map((card, index) => (
                         <Draggable key={card.id} draggableId={card.id} index={index}>
                           {(dragProvided, dragSnapshot) => (
@@ -152,9 +178,9 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                               style={{ ...dragProvided.draggableProps.style }}
                             >
                               <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
+                                initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.8, x: -20 }}
                                 layout
                                 className={`${s.card} ${dragSnapshot.isDragging ? s.cardDragging : ''} ${s.glassEffect}`}
                               >
@@ -199,9 +225,9 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                   </div>
                 )}
               </Droppable>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </DragDropContext>
     </div>
   );

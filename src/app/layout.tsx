@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, Poppins } from 'next/font/google';
+import { Plus_Jakarta_Sans, DM_Sans, Syne } from 'next/font/google';
 import './globals.css';
 import PublicLayoutWrapper from '@/components/PublicLayoutWrapper';
 import ThemeProvider from '@/components/ThemeProvider';
@@ -14,25 +14,22 @@ import TrackingInitializer from '@/components/TrackingInitializer';
 import { jwtVerify } from 'jose';
 
 // Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
-
-// Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
-// Next.js downloads fonts at build time, serves from same origin, adds <link rel="preload">
 const jakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['400', '600', '800'],
-  style: ['normal'],
-  display: 'swap',
-  variable: '--font-display',
-  preload: true,
+  variable: '--font-jakarta',
 });
 
-const poppins = Poppins({
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  style: ['normal'],
-  display: 'swap',
+  weight: ['400', '500', '700'],
   variable: '--font-body',
-  preload: true,
+});
+
+const syne = Syne({
+  subsets: ['latin'],
+  weight: ['700', '800'],
+  variable: '--font-display',
 });
 
 export const metadata: Metadata = {
@@ -116,7 +113,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang={initialLang}
       suppressHydrationWarning
-      className={`${jakartaSans.variable} ${poppins.variable}`}
+      className={`${jakartaSans.variable} ${dmSans.variable} ${syne.variable}`}
     >
       <head>
         {/* Preconnect to critical origins */}
