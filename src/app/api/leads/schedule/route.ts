@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { notifyNewLead } from '@/lib/sales-notifications';
 
 export async function POST(req: NextRequest) {
     // Sync fix: ensured DB schema matches Prisma model
@@ -53,6 +54,13 @@ export async function POST(req: NextRequest) {
                 }),
             },
         });
+
+        // Notify sales team (non-blocking)
+        notifyNewLead({
+            source: 'Digital Advisor: Maya',
+            phone,
+            course: courseTitle || courseSlug,
+        }).catch(err => console.error('[Schedule] Notification failed:', err));
 
         return NextResponse.json({ ok: true });
     } catch (error) {

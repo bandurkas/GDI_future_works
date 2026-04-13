@@ -1,11 +1,28 @@
 'use client';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './CrmShell.module.css';
 import nav from './crm-nav.module.css';
 
 type Theme = 'dark' | 'light';
+
+function playNotificationSound() {
+  try {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(880, ctx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.4);
+  } catch {}
+}
 
 export default function CrmShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -14,9 +31,13 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   const isTutors = pathname.startsWith('/crm/tutors');
   const isPayments = pathname.startsWith('/crm/payments');
   const isAdsReports = pathname.startsWith('/crm/ads-reports');
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
   const [pendingCount, setPendingCount] = useState(0);
+  const [newLeadCount, setNewLeadCount] = useState(0);
+  const [toast, setToast] = useState<string | null>(null);
+  const lastLeadCount = useRef<number | null>(null);
 
   // Load saved theme preference
   useEffect(() => {
@@ -31,6 +52,47 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
       .then((d) => setPendingCount(d.count ?? 0))
       .catch(() => {});
   }, [pathname]);
+
+  // Request browser notification permission
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  // SSE: real-time lead notifications
+  useEffect(() => {
+    let es: EventSource | null = null;
+    try {
+      es = new EventSource('/api/admin/notifications/sse');
+      es.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          const current = data.newLeads ?? 0;
+          setNewLeadCount(current);
+
+          if (lastLeadCount.current !== null && current > lastLeadCount.current) {
+            const diff = current - lastLeadCount.current;
+            playNotificationSound();
+            setToast(`🔥 ${diff} new lead${diff > 1 ? 's' : ''}!`);
+            setTimeout(() => setToast(null), 5000);
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification('GDI CRM — New Lead', {
+                body: `${diff} new lead${diff > 1 ? 's' : ''} waiting in Fresh Leads`,
+                icon: '/LOGO_FW.svg',
+              });
+            }
+
+            router.refresh();
+          }
+          lastLeadCount.current = current;
+        } catch {}
+      };
+      es.onerror = () => { es?.close(); };
+    } catch {}
+    return () => { es?.close(); };
+  }, [router]);
 
   function toggleTheme() {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';
@@ -84,7 +146,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
-          }>Students & Leads</NavItem>
+          } badge={newLeadCount}>Students & Leads</NavItem>
 
           <NavItem href="/crm/tutors" active={isTutors} collapsed={collapsed} icon={
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -183,6 +245,24 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </main>
+
+      {/* Toast notification */}
+      {toast && (
+        <div style={{
+          position: 'fixed', bottom: '24px', right: '24px', zIndex: 10000,
+          background: 'linear-gradient(135deg, #e43a3d, #c0292c)',
+          color: '#fff', padding: '14px 22px', borderRadius: '12px',
+          fontSize: '14px', fontWeight: 700, fontFamily: "'DM Sans', sans-serif",
+          boxShadow: '0 8px 32px rgba(228,58,61,0.35)',
+          animation: 'slideInRight 0.3s ease-out',
+          cursor: 'pointer',
+        }} onClick={() => { setToast(null); window.location.href = '/crm/students'; }}>
+          {toast}
+          <div style={{ fontSize: '11px', fontWeight: 500, opacity: 0.85, marginTop: '2px' }}>
+            Click to view →
+          </div>
+        </div>
+      )}
     </div>
   );
 }

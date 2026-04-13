@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { appendToInterestSheet } from '@/lib/googleSheets';
 import { prisma } from '@/lib/prisma';
+import { notifyNewLead } from '@/lib/sales-notifications';
 
 export async function POST(req: Request) {
     try {
@@ -84,6 +85,15 @@ export async function POST(req: Request) {
         if (!sheetsOk && !dbOk) {
             return NextResponse.json({ error: 'Failed to submit' }, { status: 500 });
         }
+
+        // Notify sales team (non-blocking)
+        notifyNewLead({
+            source: 'Interest Form',
+            name: name.trim(),
+            email: normalizedEmail,
+            interest,
+            country: country.trim(),
+        }).catch(err => console.error('[Interest] Notification failed:', err));
 
         return NextResponse.json({ ok: true });
     } catch (error) {

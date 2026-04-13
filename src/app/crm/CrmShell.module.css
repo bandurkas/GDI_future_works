@@ -362,3 +362,9 @@
   padding: 32px;
   flex: 1;
 }
+
+/* Toast animation (global, not module-scoped) */
+@keyframes slideInRight {
+  from { transform: translateX(100px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
