@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+set timeout 30
+set vps_pass "B@nd73610421"
+
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+
+expect "password:"
+send "$vps_pass\r"
+
+expect "# "
+send "cd /var/www/gdi-futureworks\r"
+
+expect "# "
+send "cat .env | grep DATABASE_URL\r"
+
+expect "# "
+send "cat .env.local | grep DATABASE_URL\r"
+
+expect "# "
+send "pm2 logs gdi --lines 30 --nostream 2>&1 | tail -40\r"
+
+expect "# "
+send "exit\r"
+
+expect eof

@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+set timeout 30
+set vps_pass "B@nd73610421"
+
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+
+expect "password:"
+send "$vps_pass\r"
+
+expect "# "
+send "cd /var/www/gdi-futureworks\r"
+
+# Delete the wrong .env.local I created
+expect "# "
+send "rm -f .env.local && echo 'REMOVED .env.local'\r"
+
+# Verify only correct .env remains
+expect "# "
+send "cat .env | grep DATABASE_URL\r"
+
+# Restart PM2
+expect "# "
+send "pm2 restart gdi --update-env && sleep 3 && pm2 status\r"
+
+expect "# "
+send "exit\r"
+
+expect eof
+puts "\n=== CRM FIXED ==="

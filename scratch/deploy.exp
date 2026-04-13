@@ -1,0 +1,45 @@
+#!/usr/bin/expect -f
+# Deploy to the CORRECT production directory: /var/www/gdi-futureworks
+set timeout 600
+set vps_pass "B@nd73610421"
+
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+
+expect "password:"
+send "$vps_pass\r"
+
+expect "# "
+send "cd /var/www/gdi-futureworks\r"
+
+expect "# "
+send "git pull origin main 2>&1 | tail -10\r"
+
+expect "# "
+send "ls .env* 2>/dev/null && echo '---env check done'\r"
+
+expect "# "
+send "cat /root/production.env | grep DATABASE_URL\r"
+
+expect "# "
+send "cp /root/production.env .env.local && echo 'env copied'\r"
+
+expect "# "
+send "npm install --legacy-peer-deps 2>&1 | tail -5\r"
+
+expect "# "
+send "npx -y prisma@5.22.0 generate 2>&1 | tail -3\r"
+
+expect "# "
+send "npm run build 2>&1 | tail -20\r"
+
+expect "# "
+send "pm2 restart gdi --update-env && sleep 3 && pm2 status\r"
+
+expect "# "
+send "curl -s http://localhost:3000 | grep -c 'advisor'\r"
+
+expect "# "
+send "exit\r"
+
+expect eof
+puts "\n=== CORRECT DEPLOYMENT DONE ==="

@@ -1,0 +1,16 @@
+#!/usr/bin/expect -f
+set timeout 30
+set vps_pass "B@nd73610421"
+
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+
+expect "password:"
+send "$vps_pass\r"
+
+expect "# "
+send "rm -rf /root/GDI_future_works && echo 'DELETED OK' && ls /root/\r"
+
+expect "# "
+send "exit\r"
+
+expect eof
