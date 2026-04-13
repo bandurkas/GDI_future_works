@@ -21,6 +21,9 @@ expect "# "
 send "npx -y prisma@5.22.0 generate 2>&1 | tail -3\r"
 
 expect "# "
+send "npx -y prisma@5.22.0 db push --accept-data-loss 2>&1 | tail -5\r"
+
+expect "# "
 send "npm run build 2>&1 | tail -20\r"
 
 expect "# "
