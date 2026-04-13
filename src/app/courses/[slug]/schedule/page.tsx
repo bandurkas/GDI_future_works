@@ -6,6 +6,7 @@ import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
 import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
+import { getStoredUTMs } from '@/lib/utm';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -114,6 +115,7 @@ export default function SchedulePage({ params }: Props) {
         
         // Sync to CRM Lead table
         try {
+            const utms = getStoredUTMs() || {};
             const [gaClientId, fbClientId, fbBrowserId] = await Promise.all([
                 getGAClientId(),
                 Promise.resolve(getFbc()),
