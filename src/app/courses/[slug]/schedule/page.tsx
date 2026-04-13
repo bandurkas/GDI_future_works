@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
 import { trackConversion } from '@/lib/analytics';
 import { getStoredUTMs } from '@/lib/utm';
+import { getGAClientId } from '@/lib/analytics';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -116,6 +117,8 @@ export default function SchedulePage({ params }: Props) {
         // Sync to CRM Lead table
         try {
             const utms = getStoredUTMs() || {};
+            const cid = await getGAClientId();
+            
             fetch('/api/leads/schedule', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -130,6 +133,7 @@ export default function SchedulePage({ params }: Props) {
                     utmCampaign: utms.utmCampaign,
                     utmContent: utms.utmContent,
                     utmTerm: utms.utmTerm,
+                    gaClientId: cid,
                 })
             }).catch(e => console.error('Failed to sync lead:', e));
         } catch (e) {}

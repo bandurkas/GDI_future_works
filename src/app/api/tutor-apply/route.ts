@@ -35,6 +35,7 @@ const schema = z.object({
     utmCampaign: z.string().max(200).optional(),
     utmContent: z.string().max(200).optional(),
     utmTerm: z.string().max(200).optional(),
+    gaClientId: z.string().max(200).optional(),
 });
 
 export async function POST(req: Request) {
@@ -83,7 +84,8 @@ export async function POST(req: Request) {
                 utmMedium: data.utmMedium,
                 utmCampaign: data.utmCampaign,
                 utmContent: data.utmContent,
-                utmTerm: data.utmTerm
+                utmTerm: data.utmTerm,
+                gaClientId: data.gaClientId
             },
             create: {
                 name: data.name,
@@ -103,7 +105,8 @@ export async function POST(req: Request) {
                 utmMedium: data.utmMedium,
                 utmCampaign: data.utmCampaign,
                 utmContent: data.utmContent,
-                utmTerm: data.utmTerm
+                utmTerm: data.utmTerm,
+                gaClientId: data.gaClientId
             }
         });
 

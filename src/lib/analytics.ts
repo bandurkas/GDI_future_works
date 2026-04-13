@@ -1,9 +1,30 @@
-/**
- * Unified Analytics Engine
- * Connects GA4 and Meta Pixel for consistent event tracking.
- */
-
 import { getStoredUTMs } from './utm';
+
+/**
+ * Retrieves the GA4 Client ID asynchronously.
+ * Returns a promise that resolves to the CID or null if not available.
+ */
+export const getGAClientId = (): Promise<string | null> => {
+    return new Promise((resolve) => {
+        if (typeof window === 'undefined') return resolve(null);
+        
+        const gaId = 'G-HJ7BSBB2SF';
+        const timeout = setTimeout(() => resolve(null), 3000); // 3s safety timeout
+
+        const tryGet = () => {
+            if ((window as any).gtag) {
+                (window as any).gtag('get', gaId, 'client_id', (clientId: string) => {
+                    clearTimeout(timeout);
+                    resolve(clientId);
+                });
+            } else {
+                setTimeout(tryGet, 200);
+            }
+        };
+
+        tryGet();
+    });
+};
 
 /**
  * Tracks a 'Lead' or 'Conversion' event across all platforms.
@@ -15,20 +36,27 @@ export const trackConversion = (eventName: string, source?: string) => {
 
     const utms = getStoredUTMs() || {};
     
+    // Remap events for GA4 parity as requested
+    let gaEventName = 'generate_lead';
+    if (eventName === 'whatsapp_click' || eventName === 'contact_whatsapp') {
+        gaEventName = 'contact_whatsapp';
+    }
+
     const eventParams = {
         event_category: 'conversion',
         event_label: source || eventName,
         value: 1,
+        transport_type: 'beacon', // Hardened for mobile/redirects
         ...utms,
     };
 
     // 1. GA4 Event
     if ((window as any).gtag) {
-        (window as any).gtag('event', 'generate_lead', {
+        (window as any).gtag('event', gaEventName, {
             ...eventParams,
             method: eventName,
         });
-        console.log(`[Analytics] GA4: generate_lead (${eventName})`, eventParams);
+        console.log(`[Analytics] GA4: ${gaEventName} (${eventName})`, eventParams);
     }
 
     // 2. Meta Pixel Event
@@ -51,6 +79,10 @@ export const trackEvent = (name: string, params?: any) => {
     const utms = getStoredUTMs() || {};
 
     if ((window as any).gtag) {
-        (window as any).gtag('event', name, { ...params, ...utms });
+        (window as any).gtag('event', name, { 
+            ...params, 
+            ...utms,
+            transport_type: 'beacon' 
+        });
     }
 };

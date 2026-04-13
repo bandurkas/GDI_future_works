@@ -22,7 +22,7 @@ export default function WhatsAppTrackedLink({
   rel = 'noopener noreferrer',
 }: WhatsAppTrackedLinkProps) {
   const handleClick = () => {
-    trackConversion('whatsapp_click', eventSource);
+    trackConversion('contact_whatsapp', eventSource);
   };
 
   return (

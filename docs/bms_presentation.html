@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMS 2.0 - Digital Blueprint for Labor Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --primary-dark: #00a8b3;
+            --bg: #0a0e14;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #e0e6ed;
+            --text-muted: #94a3b8;
+            --accent: #7000ff;
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        @media print {
+            body { background: white; color: black; }
+            .slide { 
+                page-break-after: always; 
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                background: white !important;
+                border: none !important;
+                color: black !important;
+            }
+            .glass { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; color: black !important; }
+            h1, h2, .accent-text { color: #0f172a !important; }
+            .logo-header { filter: invert(1); }
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        h1 { font-size: 3.5rem; color: var(--primary); margin-bottom: 1rem; }
+        h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 2rem; border-left: 4px solid var(--primary); padding-left: 1.5rem; }
+        
+        .accent-text {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Hero Slide */
+        .hero {
+            background: radial-gradient(circle at top right, rgba(112, 0, 255, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(0, 242, 255, 0.1), transparent);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo-header img {
+            width: 180px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Grid Layouts */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .module-card {
+            transition: transform 0.3s ease;
+        }
+
+        .module-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .module-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 242, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .feature-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Ecosystem Slide */
+        .ecosystem-viz {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            padding: 4rem 0;
+        }
+
+        .core-node {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 242, 255, 0.05);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+        }
+
+        /* Comparison Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        td {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide > * {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Title -->
+    <section class="slide hero">
+        <div class="logo-header">
+            <img src="../logo/LOGO_FW.svg" alt="GDI FutureWorks">
+        </div>
+        <h1>BMS 2.0</h1>
+        <p class="hero-tagline">
+            Digital Blueprint for <span class="accent-text">Manual Labor Management</span><br>
+            Единая цифровая экосистема для автоматизации найма и управления персоналом
+        </p>
+        <div class="glass">
+            <p>Уникальное решение для строительства, производства и ЖКХ</p>
+        </div>
+    </section>
+
+    <!-- Slide 2: Value Prop -->
+    <section class="slide">
+        <div class="container">
+            <h2>Стратегическая ценность</h2>
+            <div class="module-grid">
+                <div class="glass">
+                    <h3 style="color: var(--primary);">01. СКОРОСТЬ</h3>
+                    <p>AI-алгоритмы подбора сокращают цикл найма с дней до минут. Мгновенная фильтрация по опыту, региону и допускам.</p>
+                </div>
+                <div class="glass">
+                    <h3 style="color: var(--primary);">02. ПРОЗРАЧНОСТЬ</h3>
+                    <p>100% цифровой след каждой сделки. Полный финансовый контроль и автоматизация выплат реферальных вознаграждений.</p>
+                </div>
+                <div class="glass">
+                    <h3 style="color: var(--primary);">03. БЕЗОПАСНОСТЬ</h3>
+                    <p>Верификация квалификаций в Academy модуле до выхода на объект. Автоматический контроль сроков действия сертификатов.</p>
+                </div>
+            </div>
+            <footer>
+                <span>BMS PLATFORM 2024</span>
+                <span>PARTNER PRESENTATION</span>
+            </footer>
+        </div>
+    </section>
+
+    <!-- Slide 3: Ecosystem Modules Part 1 -->
+    <section class="slide">
+        <div class="container">
+            <h2>Экосистема: Основные модули</h2>
+            <div class="module-grid">
+                <div class="glass module-card">
+                    <h3><div class="module-icon">EX</div> EXCHANGE</h3>
+                    <p>Маркетплейс труда с AI-метриками. Автоматический расчет Match % между вакансией и рабочим.</p>
+                    <ul class="feature-list">
+                        <li>Фильтры по ТБ и ОТ</li>
+                        <li>Статусы "В процессе / Занят"</li>
+                        <li>История отзывов</li>
+                    </ul>
+                </div>
+                <div class="glass module-card">
+                    <h3><div class="module-icon">AC</div> ACADEMY</h3>
+                    <p>LMS-система для обучения и сертификации. Верифицированные допуски ТБ.</p>
+                    <ul class="feature-list">
+                        <li>Онлайн-тестирование</li>
+                        <li>Авто-генерация сертификатов</li>
+                        <li>Трекинг сроков годности</li>
+                    </ul>
+                </div>
+                <div class="glass module-card">
+                    <h3><div class="module-icon">AR</div> ARCHIVE</h3>
+                    <p>Цифровой документооборот (ЭДО). Полный отказ от бумаги и курьеров.</p>
+                    <ul class="feature-list">
+                        <li>E-Signature (со смартфона)</li>
+                        <li>Шаблоны актов и NDA</li>
+                        <li>История версий документов</li>
+                    </ul>
+                </div>
+            </div>
+            <footer>
+                <span>PART 1/2</span>
+                <span>EVALUATING MODULES</span>
+            </footer>
+        </div>
+    </section>
+
+    <!-- Slide 4: Ecosystem Modules Part 2 -->
+    <section class="slide">
+        <div class="container">
+            <h2>Экосистема: Управление и Финансы</h2>
+            <div class="module-grid">
+                <div class="glass module-card">
+                    <h3><div class="module-icon">BI</div> BILLING</h3>
+                    <p>Финансовый движок платформы. Автоматизация реферальных выплат агентствам.</p>
+                    <ul class="feature-list">
+                        <li>Пожизненный доход агентства</li>
+                        <li>Экспорт данных для бухгалтерии</li>
+                        <li>Контроль дебиторской задолженности</li>
+                    </ul>
+                </div>
+                <div class="glass module-card">
+                    <h3><div class="module-icon">IM</div> IAM</h3>
+                    <p>Система ролей и доступов. Защита конфиденциальных данных персонала.</p>
+                    <ul class="feature-list">
+                        <li>Multi-org поддержка</li>
+                        <li>Action Log (кто, что, когда)</li>
+                        <li>Кастомные права доступа</li>
+                    </ul>
+                </div>
+                <div class="glass module-card">
+                    <h3><div class="module-icon">MS</div> MESSENGER</h3>
+                    <p>Защищенные коммуникации. Весь контекст сделки в одном чате.</p>
+                    <ul class="feature-list">
+                        <li>Мобильная версия для полей</li>
+                        <li>Обмен файлами и фото</li>
+                        <li>Групповые чаты по объектам</li>
+                    </ul>
+                </div>
+            </div>
+            <footer>
+                <span>PART 2/2</span>
+                <span>FINANCIAL INTEGRITY</span>
+            </footer>
+        </div>
+    </section>
+
+    <!-- Slide 5: Strategic Partner Benefits -->
+    <section class="slide">
+        <div class="container">
+            <h2>Преимущества для партнеров</h2>
+            <div class="glass">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ДЛЯ КАДРОВЫХ АГЕНТСТВ</th>
+                            <th>ДЛЯ РАБОТОДАТЕЛЕЙ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ul class="feature-list">
+                                    <li><b>Passive Income</b>: Автоматические реферальные выплаты от каждого последующего найма.</li>
+                                    <li><b>Scalability</b>: Удобное ведение огромных баз рабочих без рутины.</li>
+                                    <li><b>Training</b>: Инструмент для повышения квалификации и стоимости кадров.</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul class="feature-list">
+                                    <li><b>Risk Management</b>: Исполнители приходят с уже проверенными допусками ТБ.</li>
+                                    <li><b>Efficiency</b>: Экономия на HR-процессах и юристах за счет автоматизации ЭДО.</li>
+                                    <li><b>Flexibility</b>: Быстрый набор бригад под краткосрочные проекты.</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 3rem; text-align: center;">
+                <p style="font-size: 1.2rem; color: var(--text-muted);">BMS Platform — это новый стандарт индустрии физического труда.</p>
+                <p style="color: var(--primary); font-family: 'Orbitron'; margin-top: 1rem;">ГОТОВЫ К ЦИФРОВОЙ ТРАНСФОРМАЦИИ?</p>
+            </div>
+            <footer>
+                <span>WWW.GDI.PARTNERS</span>
+                <span>CONTACT@GDI.PARTNERS</span>
+            </footer>
+        </div>
+    </section>
+
+</body>
+</html>

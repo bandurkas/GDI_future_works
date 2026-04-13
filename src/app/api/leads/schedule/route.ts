@@ -6,7 +6,8 @@ export async function POST(req: NextRequest) {
         const { 
             phone, courseSlug, courseTitle, 
             dateLabel, timeLabel,
-            utmSource, utmMedium, utmCampaign, utmContent, utmTerm
+            utmSource, utmMedium, utmCampaign, utmContent, utmTerm,
+            gaClientId
         } = await req.json();
 
         if (!phone) {
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
                     utmCampaign,
                     utmContent,
                     utmTerm,
+                    gaClientId,
                     updatedAt: new Date(),
                 }
             });
@@ -51,6 +53,7 @@ export async function POST(req: NextRequest) {
                     utmCampaign,
                     utmContent,
                     utmTerm,
+                    gaClientId,
                 }
             });
         }

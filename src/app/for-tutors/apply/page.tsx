@@ -199,7 +199,8 @@ export default function TutorApplyPage() {
                 curriculum:    formData.curriculum.trim(),
                 lessonPlan:    formData.lessonPlan.trim(),
                 // Include captured attribution data
-                ...getStoredUTMs()
+                ...getStoredUTMs(),
+                gaClientId: await getGAClientId()
             };
 
             const res = await fetch('/api/tutor-apply', {
