@@ -160,12 +160,26 @@
   z-index: 100;
 }
 
-.cardType {
+.regionBadge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
   font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.cardType {
+  font-size: 9px;
   font-weight: 800;
   text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
   width: fit-content;
   margin-bottom: 12px;
   letter-spacing: 0.05em;
@@ -175,27 +189,73 @@
 .studentType { background: rgba(59,130,246,0.15); color: #60a5fa; }
 
 .cardName {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
-.cardSource {
+.cardEmail {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.35);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  color: rgba(255, 255, 255, 0.4);
   margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metadataGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.metaItem {
+  font-size: 10px;
+  font-family: var(--font-body), sans-serif;
+  color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leadIntent {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 14px;
+  border-left: 2px solid rgba(255, 59, 59, 0.3);
+}
+
+.intentGoal {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 4px;
+}
+
+.intentSchedule {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.registrationTime {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
+  font-family: 'DM Mono', monospace;
+  margin-top: 8px;
 }
 
 .cardFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
-  padding-top: 14px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -203,27 +263,23 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #25D366;
   text-decoration: none;
-  padding: 6px 14px;
+  padding: 5px 12px;
   background: rgba(37, 211, 102, 0.08);
   border: 1px solid rgba(37, 211, 102, 0.1);
-  border-radius: 10px;
+  border-radius: 8px;
   transition: all 0.2s;
+  width: 100%;
+  justify-content: center;
 }
 
 .waLink:hover {
   background: rgba(37, 211, 102, 0.15);
   border-color: rgba(37, 211, 102, 0.3);
-  transform: scale(1.05);
-}
-
-.cardTime {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.2);
-  font-family: 'DM Mono', monospace;
+  transform: scale(1.02);
 }
 
 /* ── Effects ──────────────────────────────────── */
@@ -240,7 +296,7 @@
   width: 100%;
   height: 100%;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.03;
+  opacity: 0.02;
   pointer-events: none;
   mix-blend-mode: overlay;
 }
@@ -251,7 +307,7 @@
   right: -30%;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(255, 59, 59, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 59, 59, 0.12) 0%, transparent 70%);
   filter: blur(40px);
   pointer-events: none;
   opacity: 0;

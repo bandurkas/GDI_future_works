@@ -16,6 +16,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
         }
 
+        const country = req.headers.get('cf-ipcountry') || 'XX';
+
         // Find existing or create new lead using raw SQL to ensure field compatibility
         const cleanPhone = phone.replace(/\D/g, '');
         const pseudoEmail = `lead_${cleanPhone}@noemail.gdi`;
@@ -27,7 +29,7 @@ export async function POST(req: NextRequest) {
             leadId = existingLeads[0].id;
             await prisma.$executeRaw`
                 UPDATE "Lead" 
-                SET phone = ${phone}, status = 'NEW', source = ${`Digital Advisor: Maya`}, 
+                SET phone = ${phone}, status = 'NEW', source = ${`Digital Advisor: Maya`}, country = ${country},
                     "gaClientId" = ${gaClientId}, "fbClientId" = ${fbClientId}, "fbBrowserId" = ${fbBrowserId},
                     "utmSource" = ${utmSource}, "utmMedium" = ${utmMedium}, "utmCampaign" = ${utmCampaign},
                     "updatedAt" = NOW()
@@ -36,8 +38,8 @@ export async function POST(req: NextRequest) {
         } else {
             leadId = crypto.randomUUID();
             await prisma.$executeRaw`
-                INSERT INTO "Lead" (id, email, name, phone, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "createdAt", "updatedAt")
-                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, NOW(), NOW())
+                INSERT INTO "Lead" (id, email, name, phone, country, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "createdAt", "updatedAt")
+                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, NOW(), NOW())
             `;
         }
 

@@ -185,19 +185,43 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                 className={`${s.card} ${dragSnapshot.isDragging ? s.cardDragging : ''} ${s.glassEffect}`}
                               >
                                 <div className={s.accentGlow} />
+                                {card.country && (
+                                  <div className={s.regionBadge}>
+                                    {card.country === 'ID' ? '🇮🇩 ID' : card.country === 'MY' ? '🇲🇾 MY' : `🌍 ${card.country}`}
+                                  </div>
+                                )}
                                 <div className={`${s.cardType} ${card.type === 'LEAD' ? s.leadType : s.studentType}`}>
                                   {card.type}
                                 </div>
                                 <div className={s.cardName}>{card.name}</div>
-                                <div className={s.cardSource}>
-                                  {card.source} • {fmt(new Date(card.createdAt))}
+                                <div className={s.cardEmail}>{card.email}</div>
+                                
+                                <div className={s.metadataGrid}>
+                                  <div className={s.metaItem} title="Source">
+                                    🌐 {card.utmSource || card.source || 'Direct'}
+                                  </div>
+                                  <div className={s.metaItem} title="Campaign">
+                                    📣 {card.utmCampaign || 'Organic'}
+                                  </div>
                                 </div>
 
                                 {card.details?.course && (
                                   <div className={s.leadIntent}>
-                                    📚 {card.details.course}
+                                    <div className={s.intentGoal}>📚 {card.details.course}</div>
+                                    {(card.details.dates || card.details.times) && (
+                                      <div className={s.intentSchedule}>
+                                        🗓️ {card.details.dates} {card.details.times}
+                                      </div>
+                                    )}
                                   </div>
                                 )}
+
+                                <div className={s.registrationTime}>
+                                  🕒 {new Date(card.createdAt).toLocaleString('en-GB', { 
+                                    day: '2-digit', month: 'short', 
+                                    hour: '2-digit', minute: '2-digit' 
+                                  })}
+                                </div>
 
                                 <div className={s.cardFooter}>
                                   {card.phone ? (
@@ -211,9 +235,6 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                       💬 WhatsApp
                                     </a>
                                   ) : <div />}
-                                  <div className={s.cardTime}>
-                                    {card.originalId.slice(0, 4)}
-                                  </div>
                                 </div>
                               </motion.div>
                             </div>

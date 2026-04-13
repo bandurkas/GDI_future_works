@@ -8,6 +8,7 @@ export interface KanbanCard {
   name: string;
   email: string;
   phone: string | null;
+  country: string | null;
   source: string;
   createdAt: Date | string;
   utmSource: string | null;
@@ -45,6 +46,7 @@ export function normalizeCrmData(students: any[], leads: any[]): KanbanCard[] {
       name: st.user?.name || 'Unknown Student',
       email: st.user?.email || '',
       phone: st.user?.phone || null,
+      country: st.country || null,
       source: 'Direct Registration',
       createdAt: st.createdAt,
       utmSource: st.utmSource,
@@ -82,6 +84,7 @@ export function normalizeCrmData(students: any[], leads: any[]): KanbanCard[] {
       name: ld.name || 'Unknown Lead',
       email: ld.email || '',
       phone: ld.phone || null,
+      country: ld.country || null,
       source: ld.source || 'Unknown',
       createdAt: ld.createdAt,
       utmSource: ld.utmSource,
