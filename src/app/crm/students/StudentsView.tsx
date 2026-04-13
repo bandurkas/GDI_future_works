@@ -10,9 +10,10 @@ type Student = {
   id: string; status: string; createdAt: Date | string; country: string | null;
   user: { name: string | null; email: string; phone: string | null };
   payments: Payment[];
+  utmSource: string | null; utmMedium: string | null; utmCampaign: string | null;
 };
 type CRMLead = {
-  id: string; email: string; phone: string | null; source: string | null; status: string;
+  id: string; name: string; email: string; phone: string | null; source: string | null; status: string;
   createdAt: Date | string;
   utmSource: string | null; utmMedium: string | null; utmCampaign: string | null;
   activities: { type: string; notes: string | null; createdAt: Date | string }[];
@@ -337,6 +338,11 @@ function StudentCard({ st }: { st: Student }) {
                 </a>
               )}
               {st.country && <span className={s.chipCountry}><span>🌍</span>{st.country}</span>}
+              {st.utmSource && (
+                <span className={s.chipSource}>
+                  📢 {st.utmSource}{st.utmMedium ? ` · ${st.utmMedium}` : ''}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -448,22 +454,39 @@ function StudentCard({ st }: { st: Student }) {
 /* ── Lead Card ─────────────────────────────────── */
 function LeadCard({ ld }: { ld: CRMLead }) {
   const router = useRouter();
-  const initials = 'L';
   const sc = { bg: 'rgba(236,72,153,0.12)', text: '#ec4899', border: '#ec4899' };
-  
-  // Parse the latest note if it's JSON
+
+  const isMaya    = ld.source === 'Digital Advisor: Maya';
+  const isInterest = ld.source === 'Interest Form';
+  const isFakeEmail = ld.email.includes('@noemail.gdi');
+
+  const displayName = isMaya
+    ? (ld.phone || ld.name || 'Maya Lead')
+    : (ld.name && ld.name !== 'Maya Lead' ? ld.name : ld.email.split('@')[0]);
+
+  const initials = displayName.slice(0, 2).toUpperCase();
+
+  const sourceLabel = isMaya ? '🤖 Maya' : isInterest ? '📋 Interest Form' : `📢 ${ld.source || 'Unknown'}`;
+
+  // Parse activity notes
   let details: any = null;
-  const latestActivity = ld.activities[0];
-  if (latestActivity?.notes) {
-    try {
-      details = JSON.parse(latestActivity.notes);
-    } catch (e) {
-      details = { course: ld.source || 'Unknown Course' };
-    }
+  if (ld.activities[0]?.notes) {
+    try { details = JSON.parse(ld.activities[0].notes); } catch { details = null; }
   }
 
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  async function handleContacted() {
+    setSaving(true);
+    const res = await fetch(`/api/admin/leads/${ld.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'CONTACTED' }),
+    });
+    if (res.ok) router.refresh();
+    setSaving(false);
+  }
 
   async function handleDelete() {
     setSaving(true);
@@ -479,15 +502,19 @@ function LeadCard({ ld }: { ld: CRMLead }) {
         <div className={s.cardLeft}>
           <div className={s.cardAvatar} style={{ background: sc.bg, color: sc.text }}>{initials}</div>
           <div className={s.cardNameWrap}>
-            <div className={s.cardName}>Fresh Lead</div>
+            <div className={s.cardName}>{displayName}</div>
             <div className={s.chips}>
-              <a href={`mailto:${ld.email}`} className={`${s.chip} ${s.chipEmail}`}>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                {ld.email}
-              </a>
+              <span className={s.chipSource}>{sourceLabel}</span>
+
+              {!isFakeEmail && (
+                <a href={`mailto:${ld.email}`} className={`${s.chip} ${s.chipEmail}`}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                  {ld.email}
+                </a>
+              )}
               {ld.phone && (
                 <a href={`tel:${ld.phone}`} className={`${s.chip} ${s.chipPhone}`}>
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -496,7 +523,11 @@ function LeadCard({ ld }: { ld: CRMLead }) {
                   {ld.phone}
                 </a>
               )}
-              {ld.utmSource && <span className={s.chipCountry} title={`UTM: ${ld.utmMedium}/${ld.utmCampaign}`}><span>📢</span>{ld.utmSource}</span>}
+              {ld.utmSource && (
+                <span className={s.chipCountry} title={`UTM: ${ld.utmMedium || ''}/${ld.utmCampaign || ''}`}>
+                  <span>📊</span>{ld.utmSource}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -505,21 +536,27 @@ function LeadCard({ ld }: { ld: CRMLead }) {
           <span className={s.statusBadge} style={{ background: sc.bg, color: sc.text }}>FRESH</span>
           <span className={s.cardDate}>{fmt(new Date(ld.createdAt))}</span>
           <div className={s.menuWrap}>
-             <button className={s.menuBtn} onClick={() => setConfirmDelete(true)} disabled={saving}>✕</button>
+            <button className={s.menuBtn} onClick={() => setConfirmDelete(true)} disabled={saving} title="Delete lead">✕</button>
           </div>
         </div>
       </div>
 
+      {/* Context block */}
       {details && (
         <div className={s.cartSection}>
-          <div className={s.cartLabel}>Intent Context</div>
+          <div className={s.cartLabel}>{isMaya ? 'Course Intent' : 'Interest Details'}</div>
           <div className={s.cartList}>
             <div className={s.cartItem}>
               <div>
-                <div className={s.cartItemTitle}>{details.course}</div>
+                {(details.course || details.interest) && (
+                  <div className={s.cartItemTitle}>{details.course || details.interest}</div>
+                )}
                 <div className={s.cartItemMeta}>
-                  {details.dates && <span className={s.cartItemDetail}>📅 {details.dates}</span>}
-                  {details.times && <span className={s.cartItemDetail}>🕐 {details.times}</span>}
+                  {details.dates    && <span className={s.cartItemDetail}>📅 {details.dates}</span>}
+                  {details.times    && <span className={s.cartItemDetail}>🕐 {details.times}</span>}
+                  {details.country  && <span className={s.cartItemDetail}>🌍 {details.country}</span>}
+                  {details.goal     && <span className={s.cartItemDetail}>🎯 {details.goal}</span>}
+                  {details.budget   && <span className={s.cartItemDetail}>💰 {details.budget}</span>}
                 </div>
               </div>
             </div>
@@ -527,13 +564,22 @@ function LeadCard({ ld }: { ld: CRMLead }) {
         </div>
       )}
 
+      {/* Actions */}
+      <div className={s.leadActions}>
+        <button className={s.contactedBtn} onClick={handleContacted} disabled={saving}>
+          ✓ {saving ? 'Saving…' : 'Mark as Contacted'}
+        </button>
+      </div>
+
       {confirmDelete && (
         <div className={s.confirmBox}>
           <div className={s.confirmInner}>
-            <p className={s.confirmText}>Remove this lead permanentely?</p>
+            <p className={s.confirmText}>Remove this lead permanently?</p>
             <div className={s.confirmBtns}>
-              <button className={s.confirmCancel} onClick={() => setConfirmDelete(false)}>Cancel</button>
-              <button className={s.confirmDelete} onClick={handleDelete} disabled={saving}>Delete</button>
+              <button className={s.confirmCancel} onClick={() => setConfirmDelete(false)} disabled={saving}>Cancel</button>
+              <button className={s.confirmDelete} onClick={handleDelete} disabled={saving}>
+                {saving ? 'Deleting…' : 'Delete'}
+              </button>
             </div>
           </div>
         </div>

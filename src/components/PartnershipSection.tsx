@@ -6,6 +6,7 @@ import { X, CheckCircle2 } from 'lucide-react';
 import PathCard from '@/components/PathCard';
 import { useLanguage } from '@/components/LanguageContext';
 import { trackConversion } from '@/lib/analytics';
+import { getStoredUTMs } from '@/lib/utm';
 import pageStyles from '@/app/page.module.css';
 import styles from './PartnershipSection.module.css';
 
@@ -31,10 +32,11 @@ function InterestDrawer({ onClose }: { onClose: () => void }) {
         setSubmitting(true);
         setError('');
         try {
+            const utms = getStoredUTMs();
             const res = await fetch('/api/interest', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, ...utms }),
             });
             if (!res.ok) {
                 const data = await res.json();
