@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { useLanguage } from '@/components/LanguageContext';
-import { trackConversion, trackEvent } from '@/lib/analytics';
+import { trackConversion, trackEvent, getGAClientId } from '@/lib/analytics';
 import { getStoredUTMs } from '@/lib/utm';
 
 const EXPERTISE_OPTIONS = [
