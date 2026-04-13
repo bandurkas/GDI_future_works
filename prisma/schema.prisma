@@ -281,6 +281,7 @@ model Lead {
   utmCampaign String?
   utmContent  String?
   utmTerm     String?
+  gaClientId  String?
 
   @@index([email, status])
 }
@@ -348,8 +349,9 @@ model TutorApplication {
   utmSource     String?
   utmMedium     String?
   utmCampaign   String?
-  utmContent    String?
+  utmContent     String?
   utmTerm       String?
+  gaClientId    String?
 }
 
 enum UserRole {
