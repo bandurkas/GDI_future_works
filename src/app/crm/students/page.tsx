@@ -27,11 +27,11 @@ export default async function CrmStudentsPage() {
     return st;
   });
 
-  // Fetch high-intent leads from the schedule flow
+  // Fetch all leads for the pipeline
   const leads = await prisma.lead.findMany({
     where: { 
-      status: 'NEW',
-      type: 'STUDENT'
+      type: 'STUDENT',
+      // No status filter — we want all leads in the pipeline
     },
     include: {
       activities: {

@@ -22,34 +22,32 @@ model User {
   isActive      Boolean        @default(true)
   lastLogin     DateTime?
   permissions   Json?          @default("{}")
+  auditLogs     AuditLog[]
   notifications Notification[]
   student       Student?
   tutor         Tutor?
-  auditLogs     AuditLog[]
 
   @@index([email])
   @@index([role])
 }
 
 model Student {
-  id        String        @id @default(uuid())
-  userId    String        @unique
-  status    StudentStatus @default(LEAD)
-  country   String?
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  deletedAt DateTime?
-  bookings  Booking[]
-  payments  Payment[]
-  reviews   Review[]
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // Marketing Attribution
-  utmSource   String?
-  utmMedium   String?
+  id          String        @id @default(uuid())
+  userId      String        @unique
+  status      StudentStatus @default(LEAD)
+  country     String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
   utmCampaign String?
   utmContent  String?
+  utmMedium   String?
+  utmSource   String?
   utmTerm     String?
+  bookings    Booking[]
+  payments    Payment[]
+  reviews     Review[]
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Tutor {
@@ -263,27 +261,25 @@ model Review {
 }
 
 model Lead {
-  id         String         @id @default(uuid())
-  type       LeadType
-  name       String
-  email      String
-  phone      String?
-  source     String?
-  status     LeadStatus     @default(NEW)
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  deletedAt  DateTime?
-  activities LeadActivity[]
-
-  // Marketing Attribution
-  utmSource   String?
-  utmMedium   String?
+  id          String         @id @default(uuid())
+  type        LeadType
+  name        String
+  email       String
+  phone       String?
+  source      String?
+  status      LeadStatus     @default(NEW)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
   utmCampaign String?
   utmContent  String?
+  utmMedium   String?
+  utmSource   String?
   utmTerm     String?
   gaClientId  String?
-  fbClientId  String?
   fbBrowserId String?
+  fbClientId  String?
+  activities  LeadActivity[]
 
   @@index([email, status])
 }
@@ -346,16 +342,28 @@ model TutorApplication {
   timezone      String?
   status        ApplicationStatus @default(PENDING)
   phone         String?
-
-  // Marketing Attribution
-  utmSource     String?
-  utmMedium     String?
   utmCampaign   String?
-  utmContent     String?
+  utmContent    String?
+  utmMedium     String?
+  utmSource     String?
   utmTerm       String?
   gaClientId    String?
-  fbClientId    String?
   fbBrowserId   String?
+  fbClientId    String?
+}
+
+model MarketingPerformance {
+  id          String   @id @default(uuid())
+  date        DateTime @default(now())
+  channel     String
+  spend       Decimal  @db.Decimal(12, 2)
+  impressions Int
+  lpv         Int?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date, channel])
 }
 
 enum UserRole {
@@ -459,18 +467,4 @@ enum ApplicationStatus {
   APPROVED
   REJECTED
   ARCHIVED
-}
-
-model MarketingPerformance {
-  id          String   @id @default(uuid())
-  date        DateTime @default(now())
-  channel     String   // e.g. "WA Indonesia", "Site", "Malaysia WA"
-  spend       Decimal  @db.Decimal(12, 2)
-  impressions Int
-  lpv         Int?     // Landing Page Views
-  notes       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([date, channel])
 }
