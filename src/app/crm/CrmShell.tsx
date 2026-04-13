@@ -1,9 +1,22 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './CrmShell.module.css';
 import nav from './crm-nav.module.css';
+import { 
+  Users, 
+  GraduationCap, 
+  CreditCard, 
+  BarChart3, 
+  Plus, 
+  Search, 
+  Menu, 
+  LogOut, 
+  Sun, 
+  Moon, 
+  ChevronRight
+} from 'lucide-react';
 
 type Theme = 'dark' | 'light';
 
@@ -116,11 +129,9 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
       {/* ── Sidebar ── */}
       <aside className={collapsed ? `${styles.sidebar} ${styles.sidebarCollapsed}` : styles.sidebar}>
         {/* Logo row */}
-        <div className={collapsed ? `${styles.logo} ${styles.logoCenter}` : styles.logo}>
+        <div className={styles.logo}>
           <div className={styles.logoLeft}>
-            <div className={styles.logoMark}>
-              <span className={styles.logoMarkLetter}>G</span>
-            </div>
+            <div className={styles.logoMark}>G</div>
             {!collapsed && (
               <div className={styles.logoTexts}>
                 <div className={styles.logoName}>GDI CRM</div>
@@ -130,58 +141,39 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
           </div>
           {!collapsed && (
             <button className={styles.toggleBtn} onClick={() => setCollapsed(true)}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/>
-              </svg>
+              <Menu size={16} />
             </button>
           )}
         </div>
 
         {/* Nav */}
         <nav className={styles.nav}>
-          {!collapsed && <div className={styles.navSection}>Manage</div>}
+          {!collapsed && <div className={styles.navSection}>Main</div>}
 
-          <NavItem href="/crm/students" active={isStudents} collapsed={collapsed} icon={
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <line x1="3" y1="9" x2="21" y2="9"/>
-              <line x1="9" y1="21" x2="9" y2="9"/>
-            </svg>
-          } badge={newLeadCount}>Sales Pipeline</NavItem>
+          <NavItem href="/crm/students" active={isStudents} collapsed={collapsed} icon={<Users size={18} />} badge={newLeadCount}>
+            Sales Pipeline
+          </NavItem>
 
-          <NavItem href="/crm/tutors" active={isTutors} collapsed={collapsed} icon={
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-            </svg>
-          }>Tutor Pipeline</NavItem>
+          <NavItem href="/crm/tutors" active={isTutors} collapsed={collapsed} icon={<GraduationCap size={18} />}>
+            Tutor Pipeline
+          </NavItem>
 
-          <NavItem href="/crm/payments" active={isPayments} collapsed={collapsed} badge={pendingCount} icon={
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-          }>Payments</NavItem>
+          <NavItem href="/crm/payments" active={isPayments} collapsed={collapsed} badge={pendingCount} icon={<CreditCard size={18} />}>
+            Payments
+          </NavItem>
 
-          {!collapsed && <div className={styles.navSection} style={{ marginTop: '1.5rem' }}>Insights</div>}
+          {!collapsed && <div className={styles.navSection} style={{ marginTop: '1.5rem' }}>Analytics</div>}
 
-          <NavItem href="/crm/ads-reports" active={isAdsReports} collapsed={collapsed} icon={
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>
-            </svg>
-          }>Ads Reports</NavItem>
+          <NavItem href="/crm/ads-reports" active={isAdsReports} collapsed={collapsed} icon={<BarChart3 size={18} />}>
+            Ads Reports
+          </NavItem>
         </nav>
 
         {/* Bottom: user + logout */}
         <div className={styles.userSection}>
           {collapsed ? (
-            <button
-              className={`${styles.toggleBtn} ${styles.toggleBtnFull}`}
-              onClick={() => setCollapsed(false)}
-              title="Expand sidebar"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-              </svg>
+            <button className={styles.toggleBtn} onClick={() => setCollapsed(false)} style={{ width: '100%', justifyContent: 'center' }}>
+              <ChevronRight size={18} />
             </button>
           ) : (
             <>
@@ -194,9 +186,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
               </div>
               <form action="/api/crm/logout" method="POST">
                 <button type="submit" className={styles.logoutBtn}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                  </svg>
+                  <LogOut size={14} />
                   Sign out
                 </button>
               </form>
@@ -210,35 +200,37 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
         {/* Top bar */}
         <div className={styles.topbar}>
           {collapsed && (
-            <button className={styles.toggleBtn} onClick={() => setCollapsed(false)} style={{ marginRight: '4px' }}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-              </svg>
+            <button className={styles.toggleBtn} onClick={() => setCollapsed(false)}>
+              <Menu size={18} />
             </button>
           )}
-          <span className={styles.topbarCrumb}>GDI FutureWorks</span>
-          <span className={styles.topbarSep}>/</span>
-          <span className={styles.topbarPage}>{pageLabel}</span>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className={styles.topbarCrumb}>GDI FutureWorks</span>
+            <span className={styles.topbarSep}>/</span>
+            <span className={styles.topbarPage}>{pageLabel}</span>
+          </div>
 
-          {/* Theme toggle */}
-          <button className={styles.themeBtn} onClick={toggleTheme} title={`Switch to ${isLight ? 'dark' : 'light'} mode`}>
-            {isLight ? (
-              /* Moon icon */
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-              </svg>
-            ) : (
-              /* Sun icon */
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-              </svg>
-            )}
-            {isLight ? 'Dark' : 'Light'}
-          </button>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button className={styles.themeBtn} onClick={() => {}}>
+              <Search size={14} />
+              Search...
+            </button>
+
+            <button 
+              className={styles.themeBtn} 
+              style={{ background: 'var(--crm-brand)', color: 'white', borderColor: 'transparent' }}
+              onClick={() => {}}
+            >
+              <Plus size={14} />
+              New Lead
+            </button>
+
+            <button className={styles.themeBtn} onClick={toggleTheme}>
+              {isLight ? <Moon size={14} /> : <Sun size={14} />}
+              {isLight ? 'Dark' : 'Light'}
+            </button>
+          </div>
         </div>
 
         {/* Content */}

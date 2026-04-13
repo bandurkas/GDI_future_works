@@ -1,5 +1,4 @@
-import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, DM_Sans, Syne } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import PublicLayoutWrapper from '@/components/PublicLayoutWrapper';
 import ThemeProvider from '@/components/ThemeProvider';
@@ -12,24 +11,12 @@ import { CurrencyProvider } from '@/components/CurrencyContext';
 import { auth } from '@/auth';
 import TrackingInitializer from '@/components/TrackingInitializer';
 import { jwtVerify } from 'jose';
+import { Metadata, Viewport } from 'next';
 
-// Fix #1 — Self-hosted fonts via next/font (eliminates render-blocking @import)
-const jakartaSans = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '600', '800'],
-  variable: '--font-jakarta',
-});
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-body',
-});
-
-const syne = Syne({
-  subsets: ['latin'],
-  weight: ['700', '800'],
-  variable: '--font-display',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
 });
 
 export const metadata: Metadata = {
@@ -113,7 +100,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang={initialLang}
       suppressHydrationWarning
-      className={`${jakartaSans.variable} ${dmSans.variable} ${syne.variable}`}
+      className={inter.variable}
     >
       <head>
         {/* Preconnect to critical origins */}

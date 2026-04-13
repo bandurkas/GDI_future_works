@@ -1,334 +1,235 @@
 /* ══════════════════════════════════════════════
-   SaaS 2026 Pipeline Synergy Upgrade
+   SaaS 2026 Pipeline — Linear/Stripe Aesthetic
    ══════════════════════════════════════════════ */
 
 .pipelineContainer {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px);
-  max-width: 100%;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
-  font-family: var(--font-body), sans-serif;
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Header ───────────────────────────────────── */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 32px;
-  background: rgba(13, 13, 18, 0.7);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  gap: 16px;
-  flex-wrap: wrap;
-  z-index: 10;
-}
-
-.titleArea h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 800;
-  font-family: var(--font-display), sans-serif;
-  letter-spacing: -0.02em;
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.titleArea p {
-  margin: 6px 0 0;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 500;
-}
-
-/* ── Search ───────────────────────────────────── */
-.searchInput {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  padding: 10px 20px;
-  color: #fff;
-  font-size: 14px;
-  width: 320px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.searchInput:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.06);
-  border-color: #ff3b3b;
-  box-shadow: 0 0 0 4px rgba(255, 59, 59, 0.15), inset 0 2px 4px rgba(0,0,0,0.2);
-  width: 360px;
 }
 
 /* ── Board Layout ─────────────────────────────── */
 .board {
   display: flex;
-  gap: 24px;
-  padding: 24px 32px;
+  gap: 20px;
+  padding: 24px;
   overflow-x: auto;
   overflow-y: hidden;
   height: 100%;
   align-items: flex-start;
-  mask-image: linear-gradient(to right, black 96%, transparent 100%);
 }
 
 .column {
-  flex: 0 0 340px;
+  flex: 0 0 300px;
   display: flex;
   flex-direction: column;
-  height: 100%;
   max-height: 100%;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  backdrop-filter: blur(16px);
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  transition: all 0.2s ease;
 }
 
 .columnHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 12px 14px;
+  margin-bottom: 8px;
 }
 
 .columnTitle {
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--crm-text);
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--font-display), sans-serif;
+  gap: 8px;
 }
 
 .cardCount {
   font-size: 11px;
-  font-weight: 700;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px 10px;
-  border-radius: 30px;
-  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  background: var(--crm-nav-active);
+  color: var(--crm-accent);
+  padding: 2px 8px;
+  border-radius: 100px;
 }
 
 .cardList {
   flex: 1;
-  padding: 16px;
+  padding: 4px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-height: 120px;
+  gap: 12px;
+  min-height: 200px;
+  scrollbar-width: none;
+}
+
+.cardList::-webkit-scrollbar {
+  display: none;
 }
 
 /* ── Kanban Card ──────────────────────────────── */
 .card {
-  background: rgba(25, 25, 30, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 18px;
+  background: var(--crm-card);
+  border: 1px solid var(--crm-border);
+  border-radius: 12px;
+  padding: 16px;
   cursor: grab;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: var(--crm-shadow-sm);
 }
 
 .card:hover {
-  border-color: rgba(255, 59, 59, 0.4);
-  background: rgba(30, 30, 35, 0.6);
-  box-shadow: 
-    0 20px 40px rgba(0,0,0,0.3),
-    0 0 0 1px rgba(255, 59, 59, 0.2);
-  transform: translateY(-4px) scale(1.01);
+  border-color: var(--crm-border-hover);
+  box-shadow: var(--crm-shadow);
+  transform: translateY(-2px);
 }
 
 .cardDragging {
-  background: rgba(40, 40, 45, 0.8) !important;
-  border-color: #ff3b3b !important;
-  box-shadow: 0 32px 64px rgba(0,0,0,0.5) !important;
-  transform: rotate(1.5deg) scale(1.04) !important;
-  cursor: grabbing;
+  box-shadow: var(--crm-shadow-md) !important;
+  transform: scale(1.02) rotate(1deg) !important;
   z-index: 100;
+  cursor: grabbing;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 .regionBadge {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2px 8px;
-  border-radius: 6px;
   font-size: 10px;
-  font-weight: 700;
-  color: #fff;
-  backdrop-filter: blur(4px);
+  font-weight: 600;
+  color: var(--crm-text-muted);
+  background: var(--crm-nav-hover);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .cardType {
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   padding: 2px 6px;
   border-radius: 4px;
+  margin-bottom: 8px;
   width: fit-content;
-  margin-bottom: 12px;
-  letter-spacing: 0.05em;
 }
 
-.leadType { background: rgba(236,72,153,0.15); color: #ec4899; }
-.studentType { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.leadType { background: #fef2f2; color: #ef4444; }
+.studentType { background: #eff6ff; color: #3b82f6; }
 
 .cardName {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--crm-heading);
+  margin-bottom: 2px;
 }
 
 .cardEmail {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--crm-text-muted);
+  margin-bottom: 12px;
+  word-break: break-all;
 }
 
 .metadataGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 
 .metaItem {
   font-size: 10px;
-  font-family: var(--font-body), sans-serif;
-  color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.03);
-  padding: 4px 8px;
-  border-radius: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
+  color: var(--crm-text-dim);
+  background: var(--crm-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .leadIntent {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 14px;
-  border-left: 2px solid rgba(255, 59, 59, 0.3);
+  background: var(--crm-bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--crm-border);
 }
 
 .intentGoal {
   font-size: 12px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 4px;
+  font-weight: 600;
+  color: var(--crm-text);
+  margin-bottom: 2px;
 }
 
 .intentSchedule {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--crm-text-muted);
 }
 
 .registrationTime {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.2);
-  font-family: 'DM Mono', monospace;
+  color: var(--crm-text-dim);
   margin-top: 8px;
 }
 
 .cardFooter {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 14px;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--crm-border);
+}
+
+.actionIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--crm-text-muted);
+  background: transparent;
+  border: 1px solid var(--crm-border);
+  transition: all 0.2s;
+}
+
+.actionIcon:hover {
+  background: var(--crm-nav-hover);
+  color: var(--crm-accent);
+  border-color: var(--crm-accent-dim);
 }
 
 .waLink {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #25D366;
-  text-decoration: none;
-  padding: 5px 12px;
-  background: rgba(37, 211, 102, 0.08);
-  border: 1px solid rgba(37, 211, 102, 0.1);
-  border-radius: 8px;
-  transition: all 0.2s;
-  width: 100%;
-  justify-content: center;
+  color: #22c55e !important;
 }
 
 .waLink:hover {
-  background: rgba(37, 211, 102, 0.15);
-  border-color: rgba(37, 211, 102, 0.3);
-  transform: scale(1.02);
+  background: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
 }
 
-/* ── Effects ──────────────────────────────────── */
-.glassEffect {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.02;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-.accentGlow {
-  position: absolute;
-  top: -30%;
-  right: -30%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255, 59, 59, 0.12) 0%, transparent 70%);
-  filter: blur(40px);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-
-.card:hover .accentGlow {
-  opacity: 1;
-}
-
-/* ── Mobile Adaptation ────────────────────────── */
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .board {
-    padding: 16px;
-    gap: 16px;
-    mask-image: none;
+    padding: 12px;
+    gap: 12px;
   }
   .column {
-    flex: 0 0 88%;
-  }
-  .header {
-    padding: 16px 20px;
+    flex: 0 0 calc(100vw - 48px);
   }
 }

@@ -4,37 +4,18 @@ import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MessageCircle, Phone, Calendar, Edit2, Plus, Mail, Clock, Globe, Tag } from 'lucide-react';
 import { KanbanCard, KanbanStatus, normalizeCrmData } from '@/lib/crm-normalize';
 import { fmt } from '@/lib/utils';
 import AIGlow from '@/components/AIGlow/AIGlow';
 import s from './PipelineView.module.css';
 
-const COLUMNS: { id: KanbanStatus; label: string; icon: string }[] = [
-  { id: 'NEW',       label: '⚡ Fresh',      icon: '🔥' },
-  { id: 'CONTACTED', label: '🗣️ Contacted',  icon: '📞' },
-  { id: 'QUALIFIED', label: '✨ Qualified',  icon: '💬' },
-  { id: 'CONVERTED', label: '✅ Converted',  icon: '🎓' },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-} as const;
-
-const columnVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { type: 'spring', damping: 20, stiffness: 100 }
-  }
-} as const;
+const STAGES: Record<KanbanStatus, string> = {
+  'NEW': 'Fresh',
+  'CONTACTED': 'Contacted',
+  'QUALIFIED': 'Qualified',
+  'CONVERTED': 'Converted',
+};
 
 export default function StudentsView({ students, freshLeads = [] }: { students: any[], freshLeads?: any[] }) {
   const router = useRouter();
@@ -47,20 +28,15 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
     setIsReady(true);
   }, [students, freshLeads]);
 
-  const columnsData = useMemo(() => {
+  const filteredCards = useMemo(() => {
     const q = search.toLowerCase().trim();
-    const filtered = q
+    return q
       ? cards.filter(c => 
           c.name.toLowerCase().includes(q) || 
           c.email.toLowerCase().includes(q) || 
           c.phone?.toLowerCase().includes(q)
         )
       : cards;
-
-    return COLUMNS.reduce((acc, col) => {
-      acc[col.id] = filtered.filter(c => c.status === col.id);
-      return acc;
-    }, {} as Record<KanbanStatus, KanbanCard[]>);
   }, [cards, search]);
 
   const onDragEnd = async (result: DropResult) => {
@@ -137,118 +113,122 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
       </header>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <motion.div 
-          className={s.board}
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-        >
-          {COLUMNS.map(col => (
-            <motion.div 
-              key={col.id} 
-              variants={columnVariants}
-              className={col.id === 'CONVERTED' ? `${s.column} ${s.columnConverted}` : s.column}
-            >
-              <div className={s.columnHeader}>
-                <div className={s.columnTitle}>
-                  <span>{col.icon}</span> {col.label}
+        <div className={s.board}>
+          {Object.entries(STAGES).map(([key, label]) => {
+            const columnCards = filteredCards.filter(c => c.status === key);
+            return (
+              <div key={key} className={s.column}>
+                <div className={s.columnHeader}>
+                  <div className={s.columnTitle}>
+                    {label}
+                    <span className={s.cardCount}>{columnCards.length}</span>
+                  </div>
+                  <button className={s.actionIcon} style={{ border: 'none' }}>
+                    <Plus size={14} />
+                  </button>
                 </div>
-                <span className={s.cardCount}>{columnsData[col.id]?.length || 0}</span>
-              </div>
 
-              <Droppable droppableId={col.id}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className={s.cardList}
-                    style={{ 
-                      background: snapshot.isDraggingOver ? 'rgba(255,255,255,0.03)' : 'transparent',
-                      transition: 'background 0.2s ease'
-                    }}
-                  >
-                    <AnimatePresence mode="popLayout">
-                      {columnsData[col.id].map((card, index) => (
+                <Droppable droppableId={key}>
+                  {(provided, snapshot) => (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      className={s.cardList}
+                    >
+                      {columnCards.map((card, index) => (
                         <Draggable key={card.id} draggableId={card.id} index={index}>
                           {(dragProvided, dragSnapshot) => (
                             <div
                               ref={dragProvided.innerRef}
                               {...dragProvided.draggableProps}
                               {...dragProvided.dragHandleProps}
-                              style={{ ...dragProvided.draggableProps.style }}
                             >
                               <motion.div
-                                initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.8, x: -20 }}
                                 layout
-                                className={`${s.card} ${dragSnapshot.isDragging ? s.cardDragging : ''} ${s.glassEffect}`}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className={`${s.card} ${dragSnapshot.isDragging ? s.cardDragging : ''}`}
                               >
-                                <div className={s.accentGlow} />
-                                {card.country && (
-                                  <div className={s.regionBadge}>
-                                    {card.country === 'ID' ? '🇮🇩 ID' : card.country === 'MY' ? '🇲🇾 MY' : `🌍 ${card.country}`}
+                                <div className={s.cardHeader}>
+                                  <div className={`${s.cardType} ${card.type === 'LEAD' ? s.leadType : s.studentType}`}>
+                                    {card.type}
                                   </div>
-                                )}
-                                <div className={`${s.cardType} ${card.type === 'LEAD' ? s.leadType : s.studentType}`}>
-                                  {card.type}
+                                  {card.country && (
+                                    <div className={s.regionBadge}>
+                                      {card.country}
+                                    </div>
+                                  )}
                                 </div>
+
                                 <div className={s.cardName}>{card.name}</div>
                                 <div className={s.cardEmail}>{card.email}</div>
                                 
                                 <div className={s.metadataGrid}>
                                   <div className={s.metaItem} title="Source">
-                                    🌐 {card.utmSource || card.source || 'Direct'}
+                                    <Globe size={10} />
+                                    {card.utmSource || card.source || 'Direct'}
                                   </div>
                                   <div className={s.metaItem} title="Campaign">
-                                    📣 {card.utmCampaign || 'Organic'}
+                                    <Tag size={10} />
+                                    {card.utmCampaign || 'Organic'}
                                   </div>
                                 </div>
 
                                 {card.details?.course && (
                                   <div className={s.leadIntent}>
-                                    <div className={s.intentGoal}>📚 {card.details.course}</div>
+                                    <div className={s.intentGoal}>{card.details.course}</div>
                                     {(card.details.dates || card.details.times) && (
                                       <div className={s.intentSchedule}>
-                                        🗓️ {card.details.dates} {card.details.times}
+                                        {card.details.dates} • {card.details.times}
                                       </div>
                                     )}
                                   </div>
                                 )}
 
                                 <div className={s.registrationTime}>
-                                  🕒 {new Date(card.createdAt).toLocaleString('en-GB', { 
+                                  <Clock size={10} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+                                  {new Date(card.createdAt).toLocaleString('en-GB', { 
                                     day: '2-digit', month: 'short', 
                                     hour: '2-digit', minute: '2-digit' 
                                   })}
                                 </div>
 
                                 <div className={s.cardFooter}>
-                                  {card.phone ? (
+                                  {card.phone && (
                                     <a 
                                       href={`https://wa.me/${card.phone.replace(/\D/g, '')}`} 
                                       target="_blank" 
                                       rel="noreferrer"
-                                      className={s.waLink}
+                                      className={`${s.actionIcon} ${s.waLink}`}
                                       onClick={e => e.stopPropagation()}
+                                      title="WhatsApp"
                                     >
-                                      💬 WhatsApp
+                                      <MessageCircle size={14} />
                                     </a>
-                                  ) : <div />}
+                                  )}
+                                  <button className={s.actionIcon} title="Call">
+                                    <Phone size={14} />
+                                  </button>
+                                  <button className={s.actionIcon} title="Schedule">
+                                    <Calendar size={14} />
+                                  </button>
+                                  <button className={s.actionIcon} title="Edit">
+                                    <Edit2 size={14} />
+                                  </button>
                                 </div>
                               </motion.div>
                             </div>
                           )}
                         </Draggable>
                       ))}
-                    </AnimatePresence>
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </motion.div>
-          ))}
-        </motion.div>
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
+            );
+          })}
+        </div>
       </DragDropContext>
     </div>
   );
