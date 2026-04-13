@@ -1,0 +1,302 @@
+.container {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 1000;
+    font-family: var(--font-body);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    pointer-events: none;
+}
+
+.widget {
+    pointer-events: auto;
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 16px;
+    width: 280px;
+    box-shadow: var(--shadow-xl), var(--glass-glow);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeInUp 0.6s var(--ease-spring);
+    position: relative;
+    overflow: hidden;
+}
+
+.widget::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatarWrapper {
+    position: relative;
+    width: 52px;
+    height: 52px;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: var(--shadow-sm);
+    animation: float 4s ease-in-out infinite;
+}
+
+.onlineDot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: var(--success);
+    border: 2px solid white;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.role {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.message {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 10px 12px;
+    border-radius: 12px;
+    border-bottom-left-radius: 2px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.btnPrimary {
+    background: var(--whatsapp);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.btnSecondary {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btnSecondary:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* Lead Form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.input {
+    width: 100%;
+    background: white;
+    border: 1.5px solid var(--border);
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--accent);
+}
+
+.btnSubmit {
+    background: var(--accent);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btnSubmit:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.btnSubmit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.successState {
+    text-align: center;
+    padding: 20px 0;
+    animation: scaleIn 0.4s var(--ease-spring);
+}
+
+.successIcon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.successTitle {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.successSub {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.closeBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: background 0.2s;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.closeBtn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Mobile HUD */
+@media (max-width: 768px) {
+    .container {
+        bottom: 16px;
+        left: 16px;
+    }
+    
+    .widget {
+        width: 240px;
+        padding: 12px;
+    }
+    
+    .message {
+        font-size: 0.8125rem;
+        padding: 8px 10px;
+    }
+}
+
+.minimizedBubble {
+    pointer-events: auto;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: scaleIn 0.4s var(--ease-spring);
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.minimizedBubble:hover {
+    transform: scale(1.05);
+}
+
+.minimizedAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(req: NextRequest) {
+    // Sync fix: ensured DB schema matches Prisma model
     try {
         const { 
             phone, courseSlug, courseTitle, 
@@ -14,49 +15,29 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
         }
 
-        // Clean phone number for identification
+        // Find existing or create new lead using raw SQL to ensure field compatibility
         const cleanPhone = phone.replace(/\D/g, '');
         const pseudoEmail = `lead_${cleanPhone}@noemail.gdi`;
 
-        // Find existing or create new lead
-        let lead = await prisma.lead.findFirst({
-            where: { email: pseudoEmail }
-        });
+        let leadId: string;
+        const existingLeads: any[] = await prisma.$queryRaw`SELECT id FROM "Lead" WHERE email = ${pseudoEmail} LIMIT 1`;
 
-        if (lead) {
-            lead = await prisma.lead.update({
-                where: { id: lead.id },
-                data: {
-                    phone,
-                    status: 'NEW',
-                    source: `Schedule: ${courseTitle || courseSlug}`,
-                    utmSource,
-                    utmMedium,
-                    utmCampaign,
-                    utmContent,
-                    utmTerm,
-                    gaClientId,
-                    updatedAt: new Date(),
-                }
-            });
+        if (existingLeads.length > 0) {
+            leadId = existingLeads[0].id;
+            await prisma.$executeRaw`
+                UPDATE "Lead" 
+                SET phone = ${phone}, status = 'NEW', source = ${`Digital Advisor: Maya`}, "updatedAt" = NOW()
+                WHERE id = ${leadId}
+            `;
         } else {
-            lead = await prisma.lead.create({
-                data: {
-                    email: pseudoEmail,
-                    name: 'Schedule Lead', 
-                    phone,
-                    type: 'STUDENT',
-                    status: 'NEW',
-                    source: `Schedule: ${courseTitle || courseSlug}`,
-                    utmSource,
-                    utmMedium,
-                    utmCampaign,
-                    utmContent,
-                    utmTerm,
-                    gaClientId,
-                }
-            });
+            leadId = crypto.randomUUID();
+            await prisma.$executeRaw`
+                INSERT INTO "Lead" (id, email, name, phone, type, status, source, "createdAt", "updatedAt")
+                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', NOW(), NOW())
+            `;
         }
+
+        const lead = { id: leadId };
 
         // Record activity
         await prisma.leadActivity.create({

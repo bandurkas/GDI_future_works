@@ -1,0 +1,164 @@
+'use client';
+import { useState, useEffect } from 'react';
+import styles from './DigitalAdvisor.module.css';
+import { X, MessageCircle, Calendar } from 'lucide-react';
+import { trackConversion } from '@/lib/analytics';
+
+export default function DigitalAdvisor() {
+    const [isVisible, setIsVisible] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isDismissed, setIsDismissed] = useState(false);
+    const [step, setStep] = useState<'intro' | 'form' | 'success'>('intro');
+    const [phone, setPhone] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        // Delay appearance by 4 seconds
+        const timer = setTimeout(() => {
+            if (!isDismissed) {
+                setIsVisible(true);
+                setIsExpanded(true);
+            }
+        }, 4000);
+
+        return () => clearTimeout(timer);
+    }, [isDismissed]);
+
+    if (!isVisible || isDismissed) return null;
+
+    const handleWhatsApp = () => {
+        trackConversion('whatsapp_click', 'digital_advisor_maya');
+        window.open('https://api.whatsapp.com/send/?phone=628211704707&text=Hi%20Maya%2C%20I%20need%20help%20choosing%20an%20IT%20course.', '_blank');
+    };
+
+    const handleLeadSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!phone || phone.length < 7) return;
+
+        setIsSubmitting(true);
+        try {
+            const res = await fetch('/api/leads/schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone,
+                    courseTitle: 'General Consultation',
+                    courseSlug: 'consultation',
+                    source: 'Digital Advisor: Maya'
+                }),
+            });
+
+            if (res.ok) {
+                trackConversion('lead_capture_maya', 'consultation_form');
+                setStep('success');
+            }
+        } catch (err) {
+            console.error('Lead submission failed', err);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleClose = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsExpanded(false);
+        // If it was already small, dismiss completely
+        if (!isExpanded) {
+            setIsDismissed(true);
+        }
+    };
+
+    if (!isExpanded) {
+        return (
+            <div className={styles.container}>
+                <button 
+                    className={styles.minimizedBubble}
+                    onClick={() => {
+                        setIsExpanded(true);
+                        setStep('intro');
+                    }}
+                    aria-label="Open Advisor"
+                >
+                    <img 
+                        src="/assets/advisor_premium.png" 
+                        alt="Maya" 
+                        className={styles.minimizedAvatar} 
+                    />
+                    <div className={styles.onlineDot} />
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className={styles.container}>
+            <div className={styles.widget}>
+                <button className={styles.closeBtn} onClick={handleClose} aria-label="Minimize">
+                    <X size={14} />
+                </button>
+                
+                <div className={styles.header}>
+                    <div className={styles.avatarWrapper}>
+                        <img 
+                            src="/assets/advisor_premium.png" 
+                            alt="Maya" 
+                            className={styles.avatar} 
+                        />
+                        <div className={styles.onlineDot} />
+                    </div>
+                    <div className={styles.info}>
+                        <span className={styles.name}>Maya</span>
+                        <span className={styles.role}>Digital Course Advisor</span>
+                    </div>
+                </div>
+
+                {step === 'intro' && (
+                    <>
+                        <div className={styles.message}>
+                            Hi! I'm Maya. 👋 Need help choosing the right IT course for your career? Let's chat!
+                        </div>
+
+                        <div className={styles.actions}>
+                            <button className={styles.btnPrimary} onClick={handleWhatsApp}>
+                                <MessageCircle size={18} />
+                                Chat with Maya
+                            </button>
+                            <button className={styles.btnSecondary} onClick={() => setStep('form')}>
+                                <Calendar size={18} />
+                                Book consultation
+                            </button>
+                        </div>
+                    </>
+                )}
+
+                {step === 'form' && (
+                    <form className={styles.form} onSubmit={handleLeadSubmit}>
+                        <div className={styles.message}>
+                            Sure! Leave your WhatsApp/Phone number and I'll call you back soon.
+                        </div>
+                        <input 
+                            type="tel" 
+                            placeholder="Your Phone Number" 
+                            className={styles.input}
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            autoFocus
+                            required
+                        />
+                        <button className={styles.btnSubmit} disabled={isSubmitting}>
+                            {isSubmitting ? 'Sending...' : 'Call me back'}
+                        </button>
+                    </form>
+                )}
+
+                {step === 'success' && (
+                    <div className={styles.successState}>
+                        <span className={styles.successIcon}>✨</span>
+                        <div className={styles.successTitle}>Perfect!</div>
+                        <div className={styles.successSub}>Thank you, I'll call you back shortly.</div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}

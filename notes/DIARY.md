@@ -1,3 +1,15 @@
+# GDI FutureWorks — Project Diary & MemPalace 🛡️🎯🏾
+
+> [!IMPORTANT]
+> **SYSTEM ACCESS & HANDOFF (April 13, 2026)**
+> - **GitHub Repo**: [bandurkas/GDI_future_works](https://github.com/bandurkas/GDI_future_works)
+> - **Production VPS**: `168.231.118.173` (root) / `B@nd73610421`
+> - **Local PATH**: `/Users/styserg/.gemini/antigravity/playground/void-chromosphere`
+> - **Project Stack**: Next.js 16.2 (Turbopack), Prisma (PostgreSQL), PM2.
+> - **Deployment**: `scratch/deploy.exp` (Expect) in the current context.
+
+---
+
 # MemPalace Session Diary: 2026-04-09
 
 ## 🛡️ Wing: void_chromosphere
