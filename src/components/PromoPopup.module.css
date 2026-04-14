@@ -197,28 +197,53 @@
 @media (max-width: 768px) {
   .modal {
     flex-direction: column;
-    max-height: 90vh;
+    max-height: calc(100vh - 30px);
     overflow-y: auto;
+    margin: auto;
   }
   
   .imageArea {
-    min-height: 200px;
-    height: 250px;
+    min-height: 180px;
+    height: 220px;
     flex: none;
+    padding: 16px;
   }
 
   .contentArea {
-    padding: 32px 24px;
+    padding: 24px 20px 32px 20px;
     flex: none;
   }
 
   .title {
-    font-size: 2rem;
+    font-size: 1.7rem;
+    margin-bottom: 12px;
+  }
+
+  .description {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  .bullets {
+    margin-bottom: 24px;
+    gap: 8px;
+  }
+
+  .bullets li {
+    font-size: 0.9rem;
   }
   
+  .enrollButton {
+    padding: 14px 20px;
+    font-size: 1rem;
+    margin-bottom: 10px; /* Extra space to ensure bottom visibility */
+  }
+
   .closeButton {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(4px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    top: 12px;
+    right: 12px;
   }
 }
