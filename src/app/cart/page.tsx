@@ -584,12 +584,20 @@ export default function CartPage() {
         </div>
       </div>
 
-      {/* Success toast */}
+      {/* Success toast modal */}
       {successToast && (
-        <div className={styles.removeToast} style={{ background: 'var(--success)', color: '#fff' }} role="status" aria-live="polite">
-          <Check size={16} />
-          <span>{successToast}</span>
-        </div>
+        <>
+          <div className={styles.successModalOverlay} aria-hidden="true" onClick={() => setSuccessToast(null)} />
+          <div className={styles.successModal} role="alert" aria-live="assertive">
+            <div className={styles.successModalIcon}>
+              <Check size={32} strokeWidth={2.5} />
+            </div>
+            <h3 className={styles.successModalTitle}>
+              {language === 'id' ? 'Slot Berhasil Dipesan!' : 'Slot Reserved!'}
+            </h3>
+            <p className={styles.successModalDesc}>{successToast}</p>
+          </div>
+        </>
       )}
 
       {/* Remove toast */}
