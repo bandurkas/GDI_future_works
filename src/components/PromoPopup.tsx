@@ -79,7 +79,6 @@ export default function PromoPopup() {
         </button>
 
         <div className={s.imageArea}>
-          {/* Ensure this image path is accessible */}
           <Image 
             src="/assets/banners/python-promo.jpg" 
             alt="Python 2-Day Mini Course Intensive & Practical" 
@@ -87,7 +86,7 @@ export default function PromoPopup() {
             sizes="(max-width: 768px) 100vw, 50vw"
             quality={90}
             priority
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'contain' }}
           />
         </div>
 
