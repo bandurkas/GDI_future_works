@@ -251,7 +251,6 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                       <span>Chat</span>
                                     </a>
                                   )}
-<<<<<<< HEAD
                                   {card.phone && (
                                     <a
                                       href={`tel:${card.phone}`}
@@ -262,18 +261,8 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                       <Phone size={13} />
                                     </a>
                                   )}
-                                  <button className={s.actionBtn} title="Edit">
+                                  <button className={s.actionBtn} title="Edit" onClick={(e) => { e.stopPropagation(); openEditLeadDialog(card); }}>
                                     <Edit2 size={13} />
-=======
-                                  <button className={s.actionIcon} title="Call">
-                                    <Phone size={14} />
-                                  </button>
-                                  <button className={s.actionIcon} title="Schedule">
-                                    <Calendar size={14} />
-                                  </button>
-                                  <button className={s.actionIcon} title="Edit" onClick={(e) => { e.stopPropagation(); openEditLeadDialog(card); }}>
-                                    <Edit2 size={14} />
->>>>>>> f30a571 (feat(crm): Add manual lead creation and full CRUD for CRM pipeline)
                                   </button>
                                 </div>
                               </motion.div>
