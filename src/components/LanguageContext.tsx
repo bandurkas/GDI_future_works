@@ -117,9 +117,9 @@ const translations: Record<Language, Record<string, string>> = {
 
         // Hero
         'hero.badge': 'Trusted by 500+ Professionals in Southeast Asia',
-        'hero.title1': 'Master Python & Data Science',
-        'hero.title2': 'Built for Professionals',
-        'hero.subhead': 'Learn from Lead Analysts at Google, Meta, and Microsoft. Live training. Real-world projects.',
+        'hero.title1': 'Start Your Career in IT',
+        'hero.title2': 'From Zero',
+        'hero.subhead': 'Choose your path: Python, Data, Design or AI. Learn step by step with a mentor.',
         'hero.cta1': 'Explore Courses',
         'hero.cta2': 'Explore Courses',
         'hero.teachWithUs': 'Teach With Us',
@@ -655,9 +655,9 @@ const translations: Record<Language, Record<string, string>> = {
         // Hero
         'hero.badge': 'Dipercaya oleh 500+ Profesional di Asia Tenggara',
 
-        'hero.title1': 'Keterampilan Masa Depan',
-        'hero.title2': 'Untuk Dunia Modern',
-        'hero.subhead': 'Jalur Anda Menuju Kesuksesan',
+        'hero.title1': 'Mulai Kariermu di IT',
+        'hero.title2': 'Dari Nol',
+        'hero.subhead': 'Pilih jalurmu: Python, Data, Desain, atau AI. Belajar step-by-step dengan mentor.',
         'hero.cta1': 'Lihat Kursus',
         'hero.cta2': 'Lihat Kursus',
         'hero.teachWithUs': 'Mengajar Bersama Kami',

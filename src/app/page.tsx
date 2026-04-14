@@ -40,7 +40,7 @@ const instructors = [
         initials: 'DP',
         gradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
         tools: ['Python', 'Django', 'AWS'],
-        course: 'Python for Professionals',
+        course: 'Python for beginners',
     },
     {
         name: 'Siti Nurhaliza',
@@ -80,7 +80,7 @@ const testimonials = [
         after: 'Python Automation Specialist — same company, 40% pay rise',
         quote: 'Python finally clicked. I automated half my monthly reporting. My boss noticed immediately.',
         outcome: '💰 40% salary increase',
-        course: 'Python for Professionals',
+        course: 'Python for beginners',
         initials: 'MR',
         gradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
         flag: '🇲🇾',
@@ -136,7 +136,7 @@ const getNextWeekend = (staggerWeeks = 0) => {
 
 const cohorts = [
     { course: 'Basic Data Analyst', date: getNextWeekend(0), seatsLeft: 3, slug: 'data-analytics', color: '#667eea' },
-    { course: 'Python for Professionals', date: getNextWeekend(0), seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
+    { course: 'Python for beginners', date: getNextWeekend(0), seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
     { course: 'Graphic Design with AI', date: getNextWeekend(1), seatsLeft: 6, slug: 'graphic-design-ai', color: '#f093fb' },
     { course: 'LLM & AI Engineering', date: getNextWeekend(1), seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
 ];
