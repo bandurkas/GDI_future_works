@@ -708,6 +708,7 @@
     justify-content: center;
     flex-shrink: 0;
     position: relative;
+    overflow: hidden;
 }
 
 .videoCtaInitials {
@@ -1051,6 +1052,8 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 

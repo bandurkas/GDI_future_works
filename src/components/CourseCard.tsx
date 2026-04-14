@@ -286,10 +286,16 @@ export default function CourseCard({ course, featured }: Props) {
                                     aria-label={`Watch ${activeInstructor.name} intro video`}
                                 >
                                     <div className={styles.videoCtaAvatar} style={{ background: activeInstructor.bgGradient }}>
-                                        <span className={styles.videoCtaInitials}>{activeInstructor.initials}</span>
-                                        <div className={styles.videoCtaPlayRing}>
-                                            <Play size={18} fill="white" color="white" />
-                                        </div>
+                                        {activeInstructor.photoUrl ? (
+                                            <Image src={activeInstructor.photoUrl} alt={activeInstructor.name} fill style={{ objectFit: 'cover' }} sizes="60px" />
+                                        ) : (
+                                            <>
+                                                <span className={styles.videoCtaInitials}>{activeInstructor.initials}</span>
+                                                <div className={styles.videoCtaPlayRing}>
+                                                    <Play size={18} fill="white" color="white" />
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                     <div className={styles.videoCtaInfo}>
                                         <div className={styles.videoCtaLabel}>▶ {isID ? 'KENALI INSTRUKTUR ANDA' : 'MEET YOUR INSTRUCTOR'}</div>
@@ -395,7 +401,11 @@ export default function CourseCard({ course, featured }: Props) {
                             <div className={styles.instructorCard}>
                                 <div className={styles.instructorCardTop}>
                                     <div className={styles.avatar} style={{ background: activeInstructor.bgGradient }}>
-                                        {activeInstructor.initials}
+                                        {activeInstructor.photoUrl ? (
+                                            <Image src={activeInstructor.photoUrl} alt={activeInstructor.name} fill style={{ objectFit: 'cover' }} sizes="48px" />
+                                        ) : (
+                                            activeInstructor.initials
+                                        )}
                                     </div>
                                     <div className={styles.instructorInfo}>
                                         <div className={styles.instructorName}>{t('card.ledBy')} {activeInstructor.name}</div>
