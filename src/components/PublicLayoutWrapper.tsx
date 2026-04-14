@@ -6,6 +6,7 @@ import Footer from './Footer';
 import ScrollReveal from './ScrollReveal';
 import WhatsAppButton from './WhatsAppButton';
 import DigitalAdvisor from './DigitalAdvisor';
+import PromoPopup from './PromoPopup';
 
 export default function PublicLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -23,6 +24,7 @@ export default function PublicLayoutWrapper({ children }: { children: React.Reac
       <ScrollReveal />
       <WhatsAppButton />
       <DigitalAdvisor />
+      <PromoPopup />
     </>
   );
 }
