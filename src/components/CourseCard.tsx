@@ -84,6 +84,9 @@ export default function CourseCard({ course, featured }: Props) {
     const testimonialQuote = isID ? (course.testimonialQuoteID || course.testimonialQuote) : course.testimonialQuote;
     const syllabusDetails = isID ? (course.syllabusDetailsID || course.syllabusDetails) : course.syllabusDetails;
     
+    // Dynamic instructor for regional overrides (e.g. ID instructor vs Global instructor)
+    const activeInstructor = isID && course.instructorID ? course.instructorID : course.instructor;
+    
     // Use localized prices from the course object
     const currentPrice = currency === 'IDR' ? course.priceIDR : course.priceMYR;
     const originalPrice = currency === 'IDR' ? course.originalPriceIDR : course.originalPriceMYR;
@@ -273,25 +276,25 @@ export default function CourseCard({ course, featured }: Props) {
                             </div>
 
                             {/* ── VIDEO CTA — HIGH CONVERSION ── */}
-                            {course.instructor.loom && (
+                            {activeInstructor.loom && (
                                 <a
-                                    href={course.instructor.loom}
+                                    href={activeInstructor.loom}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.videoCtaCard}
                                     onClick={(e) => e.stopPropagation()}
-                                    aria-label={`Watch ${course.instructor.name} intro video`}
+                                    aria-label={`Watch ${activeInstructor.name} intro video`}
                                 >
-                                    <div className={styles.videoCtaAvatar} style={{ background: course.instructor.bgGradient }}>
-                                        <span className={styles.videoCtaInitials}>{course.instructor.initials}</span>
+                                    <div className={styles.videoCtaAvatar} style={{ background: activeInstructor.bgGradient }}>
+                                        <span className={styles.videoCtaInitials}>{activeInstructor.initials}</span>
                                         <div className={styles.videoCtaPlayRing}>
                                             <Play size={18} fill="white" color="white" />
                                         </div>
                                     </div>
                                     <div className={styles.videoCtaInfo}>
                                         <div className={styles.videoCtaLabel}>▶ {isID ? 'KENALI INSTRUKTUR ANDA' : 'MEET YOUR INSTRUCTOR'}</div>
-                                        <div className={styles.videoCtaName}>{course.instructor.name}</div>
-                                        <div className={styles.videoCtaRole}>{course.instructor.role}</div>
+                                        <div className={styles.videoCtaName}>{activeInstructor.name}</div>
+                                        <div className={styles.videoCtaRole}>{activeInstructor.role}</div>
                                     </div>
                                     <div className={styles.videoCtaArrow}>→</div>
                                 </a>
@@ -391,17 +394,17 @@ export default function CourseCard({ course, featured }: Props) {
                             {/* Instructor card */}
                             <div className={styles.instructorCard}>
                                 <div className={styles.instructorCardTop}>
-                                    <div className={styles.avatar} style={{ background: course.instructor.bgGradient }}>
-                                        {course.instructor.initials}
+                                    <div className={styles.avatar} style={{ background: activeInstructor.bgGradient }}>
+                                        {activeInstructor.initials}
                                     </div>
                                     <div className={styles.instructorInfo}>
-                                        <div className={styles.instructorName}>{t('card.ledBy')} {course.instructor.name}</div>
-                                        <div className={styles.instructorRole}>{course.instructor.role}</div>
+                                        <div className={styles.instructorName}>{t('card.ledBy')} {activeInstructor.name}</div>
+                                        <div className={styles.instructorRole}>{activeInstructor.role}</div>
                                     </div>
                                 </div>
-                                {course.instructor.credentials && course.instructor.credentials.length > 0 && (
+                                {activeInstructor.credentials && activeInstructor.credentials.length > 0 && (
                                     <div className={styles.credentialPills}>
-                                        {course.instructor.credentials.slice(0, 2).map((cred, i) => (
+                                        {activeInstructor.credentials.slice(0, 2).map((cred, i) => (
                                             <span key={i} className={styles.credentialPill}>{cred}</span>
                                         ))}
                                     </div>

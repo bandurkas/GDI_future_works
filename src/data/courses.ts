@@ -84,6 +84,7 @@ export interface Course {
     durationID?: string;
     testimonialQuoteID?: string;
     syllabusDetailsID?: SyllabusDetails;
+    instructorID?: Instructor;
 }
 
 export const courses: Course[] = [
@@ -418,6 +419,24 @@ export const courses: Course[] = [
                     'Kenaikan gaji 40%+ dilaporkan oleh siswa terdahulu.'
                 ]
             }
+        },
+        instructorID: {
+            name: 'Bayu Sedana',
+            role: 'Senior Data Analyst & IT Trainer',
+            company: 'IT Consultant',
+            experience: '6 years in software engineering, data analysis & QA',
+            credentials: [
+                'Backend developer with 6 years experience (Python, Node.js, Flask, FastAPI)',
+                'Certified instructor at 2 Indonesian institutions',
+                'Advanced SQL certified — proficient in MySQL, PostgreSQL, SQLite',
+                '23+ GitHub projects covering Python automation, QA, and full-stack',
+            ],
+            initials: 'BS',
+            accentColor: '#667eea',
+            bgGradient: 'linear-gradient(135deg, #667eea, #764ba2)',
+            linkedin: 'https://www.linkedin.com/in/bayusedana/',
+            github: 'https://github.com/bayusedana26',
+            loom: 'https://www.loom.com/share/02fd0509dbd24954a22d67c1a7c94d6d',
         },
     },
     {
