@@ -9,7 +9,7 @@ import { KanbanCard, KanbanStatus, normalizeCrmData } from '@/lib/crm-normalize'
 import { fmt } from '@/lib/utils';
 import AIGlow from '@/components/AIGlow/AIGlow';
 import s from './PipelineView.module.css';
-
+import { useManagement } from '../ManagementContext';
 
 const countryFlag = {
   Indonesia: "🇮🇩", India: "🇮🇳", Singapore: "🇸🇬", Malaysia: "🇲🇾",
@@ -31,7 +31,7 @@ function formatPhone(p: string): string {
   return p;
 }
 
-const STAGES: Record<KanbanStatus, string> = {
+const STAGES: Partial<Record<KanbanStatus, string>> = {
   'NEW': 'Fresh',
   'CONTACTED': 'Contacted',
   'QUALIFIED': 'Qualified',
@@ -41,6 +41,7 @@ const STAGES: Record<KanbanStatus, string> = {
 
 export default function StudentsView({ students, freshLeads = [] }: { students: any[], freshLeads?: any[] }) {
   const router = useRouter();
+  const { openEditLeadDialog, openAddLeadDialog, refreshKey } = useManagement();
   const [cards, setCards] = useState<KanbanCard[]>([]);
   const [search, setSearch] = useState('');
   const [isReady, setIsReady] = useState(false);
@@ -48,7 +49,7 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
   useEffect(() => {
     setCards(normalizeCrmData(students, freshLeads));
     setIsReady(true);
-  }, [students, freshLeads]);
+  }, [students, freshLeads, refreshKey]);
 
   const filteredCards = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -145,7 +146,7 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                     {label}
                     <span className={s.cardCount}>{columnCards.length}</span>
                   </div>
-                  <button className={s.actionIcon} style={{ border: 'none' }}>
+                  <button className={s.actionIcon} style={{ border: 'none' }} onClick={openAddLeadDialog}>
                     <Plus size={14} />
                   </button>
                 </div>
@@ -250,6 +251,7 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                       <span>Chat</span>
                                     </a>
                                   )}
+<<<<<<< HEAD
                                   {card.phone && (
                                     <a
                                       href={`tel:${card.phone}`}
@@ -262,6 +264,16 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                   )}
                                   <button className={s.actionBtn} title="Edit">
                                     <Edit2 size={13} />
+=======
+                                  <button className={s.actionIcon} title="Call">
+                                    <Phone size={14} />
+                                  </button>
+                                  <button className={s.actionIcon} title="Schedule">
+                                    <Calendar size={14} />
+                                  </button>
+                                  <button className={s.actionIcon} title="Edit" onClick={(e) => { e.stopPropagation(); openEditLeadDialog(card); }}>
+                                    <Edit2 size={14} />
+>>>>>>> f30a571 (feat(crm): Add manual lead creation and full CRUD for CRM pipeline)
                                   </button>
                                 </div>
                               </motion.div>

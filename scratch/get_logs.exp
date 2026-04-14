@@ -1,0 +1,13 @@
+#!/usr/bin/expect -f
+set timeout 300
+set password "B@nd73610421"
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+expect "password: "
+send "$password\r"
+expect "# "
+send "cd /var/www/gdi-futureworks\r"
+expect "# "
+send "pm2 logs gdi --lines 100 --err --nostream\r"
+expect "# "
+send "exit\r"
+expect eof

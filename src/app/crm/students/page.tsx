@@ -3,6 +3,9 @@ import StudentsView from './StudentsView';
 
 export default async function CrmStudentsPage() {
   const students = await prisma.student.findMany({
+    where: {
+      deletedAt: null,
+    },
     include: {
       user: { select: { name: true, email: true, phone: true } },
       payments: {
@@ -31,6 +34,7 @@ export default async function CrmStudentsPage() {
   const leads = await prisma.lead.findMany({
     where: { 
       type: 'STUDENT',
+      deletedAt: null,
       // No status filter — we want all leads in the pipeline
     },
     include: {

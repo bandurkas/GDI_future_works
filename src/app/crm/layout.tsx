@@ -2,6 +2,7 @@ import { getCrmSession } from '@/lib/crm-session';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import CrmShell from './CrmShell';
+import { ManagementProvider } from './ManagementContext';
 
 export const metadata = { title: 'GDI CRM' };
 
@@ -20,7 +21,9 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
-      <CrmShell>{children}</CrmShell>
+      <ManagementProvider>
+        <CrmShell>{children}</CrmShell>
+      </ManagementProvider>
     </>
   );
 }

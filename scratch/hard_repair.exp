@@ -1,0 +1,28 @@
+#!/usr/bin/expect -f
+set timeout 1200
+set password "B@nd73610421"
+spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+expect "password: "
+send "$password\r"
+expect "# "
+send "cd /var/www/gdi-futureworks\r"
+expect "# "
+send "pkill -f 'next build' || true\r"
+expect "# "
+send "rm -rf .next node_modules/.cache\r"
+expect "# "
+send "npm run build\r"
+expect {
+    "Compiled successfully" { 
+        send "pm2 restart gdi --update-env\r"
+        expect "# "
+        send "echo 'HARD REPAIR SUCCESSFUL'\r"
+    }
+    timeout {
+        send "\x03"
+        send "echo 'HARD REPAIR TIMED OUT'\r"
+    }
+}
+expect "# "
+send "exit\r"
+expect eof

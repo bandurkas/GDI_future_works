@@ -17,6 +17,8 @@ import {
   Moon, 
   ChevronRight
 } from 'lucide-react';
+import { useManagement } from './ManagementContext';
+import LeadDialog from './components/LeadDialog';
 
 type Theme = 'dark' | 'light';
 
@@ -44,6 +46,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   const isTutors = pathname.startsWith('/crm/tutors');
   const isPayments = pathname.startsWith('/crm/payments');
   const isAdsReports = pathname.startsWith('/crm/ads-reports');
+  const { openAddLeadDialog } = useManagement();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
@@ -220,7 +223,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
             <button 
               className={styles.themeBtn} 
               style={{ background: 'var(--crm-brand)', color: 'white', borderColor: 'transparent' }}
-              onClick={() => {}}
+              onClick={openAddLeadDialog}
             >
               <Plus size={14} />
               New Lead
@@ -256,6 +259,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       )}
+      <LeadDialog />
     </div>
   );
 }
