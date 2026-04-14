@@ -10,8 +10,7 @@ export default function HeroSection() {
   const { t } = useLanguage();
   const { currency } = useCurrency();
 
-  const accentAmount = currency === 'MYR' ? 'RM 1,400' : 'Rp 4,800,000';
-  const accentLabel = `${accentAmount}/${t('tutor.hero.month')}`;
+  const accentLabel = t('tutor.hero.titleAccent');
 
   const BULLETS = [
     t('tutor.hero.bullet1'),

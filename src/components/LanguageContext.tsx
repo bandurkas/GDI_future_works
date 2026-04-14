@@ -303,7 +303,7 @@ const translations: Record<Language, Record<string, string>> = {
         // ── FOR TUTORS PAGE ──
         'tutor.hero.eyebrow': 'Now accepting tutors across SEA',
         'tutor.hero.title1': 'Turn Your Expertise Into',
-        'tutor.hero.month': 'Month',
+        'tutor.hero.titleAccent': 'a Stable Monthly Income',
         'tutor.hero.subtitle': 'Teach what you know online. Set your own schedule and rate — we bring the students, handle payments, and take care of everything else.',
         'tutor.hero.bullet1': 'Set your own hourly rate',
         'tutor.hero.bullet2': 'Fully flexible schedule',
@@ -841,7 +841,7 @@ const translations: Record<Language, Record<string, string>> = {
         // ── FOR TUTORS PAGE ──
         'tutor.hero.eyebrow': 'Buka slot tutor baru',
         'tutor.hero.title1': 'Ubah Keahlianmu Menjadi',
-        'tutor.hero.month': 'Bulan',
+        'tutor.hero.titleAccent': 'Penghasilan Bulanan Stabil',
         'tutor.hero.subtitle': 'Ajarkan apa yang kamu tahu secara online. Atur jadwal & tarifmu — kami cari siswa, urus pembayaran, dan semua hal lainnya.',
         'tutor.hero.bullet1': 'Atur tarif per jam sendiri',
         'tutor.hero.bullet2': 'Jadwal bebas & fleksibel',
