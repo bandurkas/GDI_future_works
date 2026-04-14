@@ -12,6 +12,7 @@ const TIERS_IDR = [
     featured: false,
     lessons: 2, hours: 2, rateLabel: 'Rp 150,000 / jam',
     income: 'Rp 2,400,000',
+    usdEq: '(~$150 USD)',
   },
   {
     badgeKey: 'tutor.earn.tier2.badge',
@@ -19,6 +20,7 @@ const TIERS_IDR = [
     featured: true,
     lessons: 4, hours: 2, rateLabel: 'Rp 150,000 / jam',
     income: 'Rp 4,800,000',
+    usdEq: '(~$300 USD)',
   },
   {
     badgeKey: 'tutor.earn.tier3.badge',
@@ -26,6 +28,7 @@ const TIERS_IDR = [
     featured: false,
     lessons: 10, hours: 2, rateLabel: 'Rp 150,000+ / jam',
     income: 'Rp 12,000,000+',
+    usdEq: '(~$750+ USD)',
   },
 ];
 
@@ -36,6 +39,7 @@ const TIERS_MYR = [
     featured: false,
     lessons: 2, hours: 2, rateLabel: 'RM 45 / hr',
     income: 'RM 700',
+    usdEq: '(~$150 USD)',
   },
   {
     badgeKey: 'tutor.earn.tier2.badge',
@@ -43,6 +47,7 @@ const TIERS_MYR = [
     featured: true,
     lessons: 4, hours: 2, rateLabel: 'RM 45 / hr',
     income: 'RM 1,400',
+    usdEq: '(~$300 USD)',
   },
   {
     badgeKey: 'tutor.earn.tier3.badge',
@@ -50,14 +55,15 @@ const TIERS_MYR = [
     featured: false,
     lessons: 10, hours: 2, rateLabel: 'RM 45+ / hr',
     income: 'RM 3,500+',
+    usdEq: '(~$775+ USD)',
   },
 ];
 
 export default function EarningsSection() {
-  const { t } = useLanguage();
-  const { currency } = useCurrency();
+  const { t, language } = useLanguage();
 
-  const TIERS = currency === 'MYR' ? TIERS_MYR : TIERS_IDR;
+  const isMYR = language !== 'id';
+  const TIERS = isMYR ? TIERS_MYR : TIERS_IDR;
   const permonth = t('tutor.earn.permonth');
   const monthlyLabel = t('tutor.earn.monthly');
 
@@ -85,11 +91,11 @@ export default function EarningsSection() {
               <div className={styles.tierDetails}>
                 <div className={styles.tierDetail}>
                   <BookOpen size={14} className={styles.tierDetailIcon} />
-                  {tier.lessons} {currency === 'MYR' ? 'lessons/week' : 'pelajaran/minggu'}
+                  {tier.lessons} {isMYR ? 'lessons/week' : 'pelajaran/minggu'}
                 </div>
                 <div className={styles.tierDetail}>
                   <Clock size={14} className={styles.tierDetailIcon} />
-                  {tier.hours} {currency === 'MYR' ? 'hrs/lesson' : 'jam/sesi'}
+                  {tier.hours} {isMYR ? 'hrs/lesson' : 'jam/sesi'}
                 </div>
                 <div className={styles.tierDetail}>
                   <TrendingUp size={14} className={styles.tierDetailIcon} />
@@ -101,7 +107,7 @@ export default function EarningsSection() {
                 <div className={styles.tierIncomeLabel}>{monthlyLabel}</div>
                 <div className={styles.tierIncomeAmount}>{tier.income}</div>
                 <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  {permonth}
+                  {tier.usdEq} • {permonth}
                 </div>
               </div>
             </div>

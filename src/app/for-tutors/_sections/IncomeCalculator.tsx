@@ -11,6 +11,13 @@ const formatIDR = (n: number) =>
 const formatMYR = (n: number) =>
   new Intl.NumberFormat('ms-MY', { style: 'currency', currency: 'MYR', maximumFractionDigits: 0 }).format(n);
 
+const formatUSD = (n: number) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+
+const getUsdEquivalent = (localAmount: number, isMYR: boolean) => {
+  return formatUSD(localAmount / (isMYR ? 4.5 : 16000));
+};
+
 const RATE_IDR_MIN = 50_000;
 const RATE_IDR_MAX = 500_000;
 const RATE_IDR_STEP = 10_000;
@@ -30,10 +37,9 @@ function pct(val: number, min: number, max: number) {
 }
 
 export default function IncomeCalculator() {
-  const { t } = useLanguage();
-  const { currency } = useCurrency();
+  const { t, language } = useLanguage();
 
-  const isMYR = currency === 'MYR';
+  const isMYR = language !== 'id';
   const rateMin = isMYR ? RATE_MYR_MIN : RATE_IDR_MIN;
   const rateMax = isMYR ? RATE_MYR_MAX : RATE_IDR_MAX;
   const rateStep = isMYR ? RATE_MYR_STEP : RATE_IDR_STEP;
@@ -149,19 +155,28 @@ export default function IncomeCalculator() {
 
             <div className={styles.calcOutputRow}>
               <span className={styles.calcOutputLabel}>{t('tutor.calc.weekly')}</span>
-              <span className={styles.calcOutputAmount}>{formatCurrency(weekly)}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <span className={styles.calcOutputAmount}>{formatCurrency(weekly)}</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>(~{getUsdEquivalent(weekly, isMYR)} USD)</span>
+              </div>
             </div>
 
             <div className={`${styles.calcOutputRow} ${styles.calcOutputRowHighlight}`}>
               <span className={styles.calcOutputLabel}>{t('tutor.calc.monthly')}</span>
-              <span className={`${styles.calcOutputAmount} ${styles.calcOutputAmountHighlight}`}>
-                {formatCurrency(monthly)}
-              </span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <span className={`${styles.calcOutputAmount} ${styles.calcOutputAmountHighlight}`}>
+                  {formatCurrency(monthly)}
+                </span>
+                <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>(~{getUsdEquivalent(monthly, isMYR)} USD)</span>
+              </div>
             </div>
 
             <div className={styles.calcOutputRow}>
               <span className={styles.calcOutputLabel}>{t('tutor.calc.yearly')}</span>
-              <span className={styles.calcOutputAmount}>{formatCurrency(yearly)}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <span className={styles.calcOutputAmount}>{formatCurrency(yearly)}</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>(~{getUsdEquivalent(yearly, isMYR)} USD)</span>
+              </div>
             </div>
 
             <p className={styles.calcDisclaimer}>{t('tutor.calc.disclaimer')}</p>
