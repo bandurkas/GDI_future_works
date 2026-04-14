@@ -1,0 +1,61 @@
+{
+  "agents": {
+    "agent-1776199243889-ffc35e": {
+      "agentId": "agent-1776199243889-ffc35e",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "review src/app/courses/[slug]/schedule/page.tsx src/app/cart/page.tsx src/lib/analytics.ts for infinite loops, react state issues, and logic errors"
+      },
+      "createdAt": "2026-04-14T20:40:43.894Z",
+      "model": "opus",
+      "modelRoutedBy": "router"
+    },
+    "agent-1776199458930-j1sldx": {
+      "agentId": "agent-1776199458930-j1sldx",
+      "agentType": "tester",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "generate regression tests and verify the multi-step enrollment flow in src/app/courses/[slug]/schedule/page.tsx and src/app/cart/page.tsx"
+      },
+      "createdAt": "2026-04-14T20:44:18.936Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1776199459889-bu2num": {
+      "agentId": "agent-1776199459889-bu2num",
+      "agentType": "performance-engineer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "verify the effectiveness of the infinite loop fix in src/lib/analytics.ts and analyze cart page performance"
+      },
+      "createdAt": "2026-04-14T20:44:19.895Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1776199460848-ad101l": {
+      "agentId": "agent-1776199460848-ad101l",
+      "agentType": "optimizer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "identify and suggest removal of any redundant code or translation keys in LanguageContext.tsx and cart/page.tsx"
+      },
+      "createdAt": "2026-04-14T20:44:20.852Z",
+      "model": "haiku",
+      "modelRoutedBy": "router"
+    }
+  },
+  "version": "3.0.0"
+}

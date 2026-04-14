@@ -256,7 +256,7 @@ export const courses: Course[] = [
         id: 'python-programming',
         slug: 'python-programming',
         category: 'Python Programming',
-        title: 'Python for Professionals',
+        title: 'Python for beginners',
         subtitle: 'Automate Tasks & Build Smart Tools',
         description: 'Stop doing repetitive work by hand. In 4 hours, you\u2019ll learn Python basics and immediately apply them to automate real-world tasks\u2014from renaming hundreds of files to pulling data from websites.',
         icon: '\ud83d\udc0d',
@@ -307,7 +307,7 @@ export const courses: Course[] = [
             'Skills that apply in any industry, any company',
         ],
         // Indonesian
-        titleID: 'Python untuk Profesional',
+        titleID: 'Python untuk pemula',
         subtitleID: 'Otomatiskan Tugas & Bangun Alat Cerdas',
         descriptionID: 'Berhenti mengerjakan pekerjaan berulang secara manual. Dalam 4 jam, kamu akan mempelajari dasar-dasar Python dan langsung menerapkannya untuk mengotomatiskan tugas dunia nyata\u2014dari mengganti nama ratusan file hingga mengambil data dari website.',
         outcomesID: [
