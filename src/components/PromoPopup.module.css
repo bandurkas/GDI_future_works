@@ -156,16 +156,31 @@
   font-family: 'Syne', sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(228, 58, 61, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px -6px rgba(228, 58, 61, 0.5);
   border: none;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+.enrollButton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  animation: shine 4s infinite 1s;
 }
 
 .enrollButton:hover {
   background: #c0292c;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(228, 58, 61, 0.35);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 32px -8px rgba(228, 58, 61, 0.6);
 }
 
 .price {
@@ -175,6 +190,18 @@
   color: #111827;
   margin-top: 16px;
   text-align: center;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(228, 58, 61, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(228, 58, 61, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(228, 58, 61, 0); }
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
 }
 
 @keyframes fadeIn {
@@ -197,16 +224,17 @@
 @media (max-width: 768px) {
   .modal {
     flex-direction: column;
-    max-height: calc(100vh - 30px);
+    /* Use svh to account for mobile browser UI (e.g. Safari bottom bar) */
+    max-height: calc(100svh - 40px);
     overflow-y: auto;
     margin: auto;
   }
   
   .imageArea {
-    min-height: 180px;
-    height: 220px;
+    min-height: 200px;
+    height: auto;
     flex: none;
-    padding: 16px;
+    padding: 40px 16px 16px 16px; /* Added more top padding */
   }
 
   .contentArea {
