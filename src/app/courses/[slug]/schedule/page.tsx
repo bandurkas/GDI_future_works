@@ -41,6 +41,7 @@ export default function SchedulePage({ params }: Props) {
     const [day1Slot, setDay1Slot] = useState<Schedule | null>(null);
     const [day2Date, setDay2Date] = useState<string | null>(null);
     const [day2Slot, setDay2Slot] = useState<Schedule | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { addItem, customerInfo, updateCustomerInfo } = useCart();
 
@@ -113,6 +114,7 @@ export default function SchedulePage({ params }: Props) {
         if (!canContinue || !day1Slot || !day2Slot || !course) return;
         const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
         
+        setIsSubmitting(true);
         // Sync to CRM Lead table
         try {
             const utms = getStoredUTMs() || {};
@@ -450,12 +452,12 @@ export default function SchedulePage({ params }: Props) {
 
                     <button
                         onClick={handleNext}
-                        disabled={!canContinue}
+                        disabled={!canContinue || isSubmitting}
                         className={`btn btn-primary btn-xl btn-full ${!canContinue ? styles.ctaDisabled : ''}`}
                         id="schedule-next-cta"
-                        aria-disabled={!canContinue}
+                        aria-disabled={!canContinue || isSubmitting}
                     >
-                        {ctaLabel()}
+                        {isSubmitting ? (isID ? 'Tunggu Sebentar...' : 'Please Wait...') : ctaLabel()}
                     </button>
 
                     <button onClick={() => router.back()} className={styles.back}>{t('schedule.backFull')}</button>

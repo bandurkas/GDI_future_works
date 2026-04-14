@@ -9,11 +9,20 @@ export const getGAClientId = (): Promise<string | null> => {
         if (typeof window === 'undefined') return resolve(null);
         
         const gaId = 'G-HJ7BSBB2SF';
-        const timeout = setTimeout(() => resolve(null), 3000); // 3s safety timeout
+        let isResolved = false;
+
+        const timeout = setTimeout(() => {
+            isResolved = true;
+            resolve(null);
+        }, 3000); // 3s safety timeout
 
         const tryGet = () => {
+            if (isResolved) return;
+            
             if ((window as any).gtag) {
                 (window as any).gtag('get', gaId, 'client_id', (clientId: string) => {
+                    if (isResolved) return;
+                    isResolved = true;
                     clearTimeout(timeout);
                     resolve(clientId);
                 });
