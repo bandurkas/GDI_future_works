@@ -68,6 +68,21 @@ export default function CartPage() {
   const removeToastTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('reserved') === 'true') {
+        setTimeout(() => {
+          setSuccessToast(language === 'id' 
+            ? 'Tanggal & waktu kamu sudah dipesan. Kami akan menghubungimu untuk konfirmasi.'
+            : 'Your date & time are reserved. We’ll contact you to confirm.');
+        }, 150); // Small delay to let the page settle before animating in
+        setTimeout(() => setSuccessToast(null), 5500);
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    }
+  }, [language]);
+
   const handleRemoveItem = (courseId: string, dateId: string, title: string) => {
     removeItem(courseId, dateId);
     if (removeToastTimer.current) clearTimeout(removeToastTimer.current);
@@ -151,11 +166,6 @@ export default function CartPage() {
     const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
     updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone });
     
-    setSuccessToast(language === 'id' 
-      ? 'Tanggal & waktu kamu sudah dipesan. Kami akan menghubungimu untuk konfirmasi.'
-      : 'Your date & time are reserved. We’ll contact you to confirm.');
-    setTimeout(() => setSuccessToast(null), 5000);
-
     setDirection('forward');
     setStep('method');
   };

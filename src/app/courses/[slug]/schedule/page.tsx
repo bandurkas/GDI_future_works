@@ -158,7 +158,7 @@ export default function SchedulePage({ params }: Props) {
             priceMYR: course.priceMYR,
             icon: course.icon,
         });
-        router.push('/cart');
+        router.push('/cart?reserved=true');
     };
 
     // Dynamic CTA label
