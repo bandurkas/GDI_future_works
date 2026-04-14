@@ -66,6 +66,7 @@ export default function CartPage() {
   const [paidSlug, setPaidSlug] = useState<string>('');
   const [removeToast, setRemoveToast] = useState<string | null>(null);
   const removeToastTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [successToast, setSuccessToast] = useState<string | null>(null);
 
   const handleRemoveItem = (courseId: string, dateId: string, title: string) => {
     removeItem(courseId, dateId);
@@ -149,6 +150,12 @@ export default function CartPage() {
     if (!validateDetails()) return;
     const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
     updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone });
+    
+    setSuccessToast(language === 'id' 
+      ? 'Tanggal & waktu kamu sudah dipesan. Kami akan menghubungimu untuk konfirmasi.'
+      : 'Your date & time are reserved. We’ll contact you to confirm.');
+    setTimeout(() => setSuccessToast(null), 5000);
+
     setDirection('forward');
     setStep('method');
   };
@@ -321,7 +328,7 @@ export default function CartPage() {
                     style={{ marginTop: '8px' }}
                     onClick={() => { setDirection('forward'); setStep('details'); }}
                   >
-                    Continue to Details <ArrowRight size={18} />
+                    {language === 'id' ? 'Konfirmasi & Lanjutkan' : 'Confirm & Continue'} <ArrowRight size={18} />
                   </button>
                 </div>
               )}
@@ -461,7 +468,7 @@ export default function CartPage() {
                     style={{ marginTop: '8px' }}
                     onClick={handleContinueDetails}
                   >
-                    {language === 'id' ? 'Lanjut ke Pembayaran' : 'Continue to Payment'} <ArrowRight size={18} />
+                    {language === 'id' ? 'Bayar Sekarang' : 'Pay Now'} <ArrowRight size={18} />
                   </button>
                 </div>
               )}
@@ -577,6 +584,14 @@ export default function CartPage() {
         </div>
       </div>
 
+      {/* Success toast */}
+      {successToast && (
+        <div className={styles.removeToast} style={{ background: 'var(--success)', color: '#fff' }} role="status" aria-live="polite">
+          <Check size={16} />
+          <span>{successToast}</span>
+        </div>
+      )}
+
       {/* Remove toast */}
       {removeToast && (
         <div className={styles.removeToast} role="status" aria-live="polite">
@@ -603,7 +618,10 @@ export default function CartPage() {
               }}
               disabled={step === 'method' && (!method || createOrderLoading)}
             >
-              {step === 'method' && createOrderLoading ? '...' : language === 'id' ? 'Lanjut' : 'Continue'}
+              {step === 'method' && createOrderLoading ? '...' : 
+               step === 'summary' ? (language === 'id' ? 'Konfirmasi & Lanjutkan' : 'Confirm & Continue') :
+               step === 'details' ? (language === 'id' ? 'Bayar Sekarang' : 'Pay Now') :
+               language === 'id' ? 'Lanjut' : 'Continue'}
             </button>
           </div>
         </div>

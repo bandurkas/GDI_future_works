@@ -203,7 +203,7 @@ const translations: Record<Language, Record<string, string>> = {
         'schedule.step3': 'Payment',
         'schedule.back': 'Back',
         'schedule.backFull': '← Back to previous page',
-        'schedule.title': 'Choose a time that works for you.',
+        'schedule.title': 'Choose Your 2 Learning Days & Time',
         'schedule.sessionFor': 'Session for',
         'schedule.availableDates': '📅 Available Dates',
         'schedule.noSchedule': 'No upcoming schedules available.',
@@ -220,7 +220,7 @@ const translations: Record<Language, Record<string, string>> = {
         'schedule.validationMsg': 'Please enter your email or phone number to continue.',
         'schedule.contactNote': '* We need at least an email or phone number to send your joining link.',
         'schedule.bottomNote': '💬 Need a different date? WhatsApp us — we open new sessions based on demand.',
-        'schedule.next': 'Next →',
+        'schedule.next': 'Reserve & Pay Later →',
         'schedule.selectDate': 'Select a date to continue',
 
         // Differentiators
@@ -741,7 +741,7 @@ const translations: Record<Language, Record<string, string>> = {
         'schedule.step3': 'Pembayaran',
         'schedule.back': 'Kembali',
         'schedule.backFull': '← Kembali ke halaman sebelumnya',
-        'schedule.title': 'Pilih waktu yang cocok untukmu.',
+        'schedule.title': 'Pilih 2 Hari Belajar & Waktu yang Nyaman',
         'schedule.sessionFor': 'Sesi untuk',
         'schedule.availableDates': '📅 Tanggal Tersedia',
         'schedule.noSchedule': 'Belum ada jadwal tersedia.',
@@ -758,7 +758,7 @@ const translations: Record<Language, Record<string, string>> = {
         'schedule.validationMsg': 'Masukkan email atau nomor telepon untuk melanjutkan.',
         'schedule.contactNote': '* Kami membutuhkan setidaknya email atau nomor telepon untuk mengirim link bergabung.',
         'schedule.bottomNote': '💬 Butuh tanggal lain? WhatsApp kami — kami membuka sesi baru berdasarkan permintaan.',
-        'schedule.next': 'Lanjut →',
+        'schedule.next': 'Pesan & Bayar Nanti →',
         'schedule.selectDate': 'Pilih tanggal untuk melanjutkan',
 
         // Differentiators

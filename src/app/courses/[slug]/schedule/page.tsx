@@ -165,7 +165,7 @@ export default function SchedulePage({ params }: Props) {
         if (!day1Slot) return isID ? 'Pilih Waktu untuk Hari ke-1' : 'Select a Time for Day 1';
         if (!day2Date) return isID ? 'Pilih Tanggal Hari ke-2' : 'Select Day 2 Date';
         if (!day2Slot) return isID ? 'Pilih Waktu untuk Hari ke-2' : 'Select a Time for Day 2';
-        if (!contactOk) return isID ? 'Masukkan Detail Kamu' : 'Enter Your Details';
+        if (!contactOk) return isID ? 'Pesan Slot Saya' : 'Book My Slot';
         return t('schedule.next');
     };
 
