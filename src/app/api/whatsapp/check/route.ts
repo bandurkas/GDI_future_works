@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ exists: true });
     }
 
-    const res = await fetch(`${apiUrl}/contacts/check`, {
+    const res = await fetch(`${apiUrl}/contacts`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -37,16 +37,10 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await res.json();
+    const contact = Array.isArray(data?.contacts) ? data.contacts[0] : null;
+    const exists = contact?.status === 'valid';
 
-    let exists: boolean | undefined;
-    if (typeof data.exists === 'boolean') {
-      exists = data.exists;
-    } else if (Array.isArray(data.contacts) && data.contacts.length > 0) {
-      const c = data.contacts[0];
-      exists = Boolean(c?.status === 'valid' || c?.exists || c?.in_whatsapp);
-    }
-
-    return NextResponse.json({ exists: exists ?? true });
+    return NextResponse.json({ exists, status: contact?.status ?? 'unknown' });
   } catch (error) {
     console.error('WA check error:', error);
     return NextResponse.json({ exists: true });
