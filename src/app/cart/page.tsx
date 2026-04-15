@@ -19,6 +19,8 @@ import {
   ShieldCheck,
   Check,
 } from 'lucide-react';
+import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
+import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
 import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import QRISPaymentBlock from '@/components/payment/QRISPaymentBlock';
 import PayPalPaymentBlock from '@/components/payment/PayPalPaymentBlock';
@@ -99,6 +101,12 @@ export default function CartPage() {
   const [touched, setTouched] = useState({ name: false, email: false, phone: false });
 
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const { check: checkWA } = useWhatsAppCheck();
+  const [showWAPopup, setShowWAPopup] = useState(false);
+  const [waConfirmed, setWaConfirmed] = useState(false);
+  const waCheckInFlightRef = useRef(false);
+  const shouldResubmitDetailsRef = useRef(false);
 
   useEffect(() => {
     if (step === 'details') {
@@ -161,14 +169,46 @@ export default function CartPage() {
     return true;
   };
 
-  const handleContinueDetails = () => {
+  const handleWAFix = () => {
+    setShowWAPopup(false);
+    setTimeout(() => phoneInputRef.current?.focus(), 50);
+  };
+
+  const handleWAContinue = () => {
+    setWaConfirmed(true);
+    setShowWAPopup(false);
+    shouldResubmitDetailsRef.current = true;
+  };
+
+  const handleContinueDetails = async () => {
     if (!validateDetails()) return;
     const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+
+    if (!waConfirmed && fullPhone.replace(/\D/g, '').length >= 8 && !waCheckInFlightRef.current) {
+      waCheckInFlightRef.current = true;
+      try {
+        const waOk = await checkWA(fullPhone);
+        if (waOk === false) {
+          setShowWAPopup(true);
+          return;
+        }
+      } finally {
+        waCheckInFlightRef.current = false;
+      }
+    }
+
     updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone });
-    
     setDirection('forward');
     setStep('method');
   };
+
+  useEffect(() => {
+    if (waConfirmed && shouldResubmitDetailsRef.current) {
+      shouldResubmitDetailsRef.current = false;
+      handleContinueDetails();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [waConfirmed]);
 
   const handleContinueMethod = async () => {
     if (!method) return;
@@ -396,7 +436,10 @@ export default function CartPage() {
                         <select
                           className={styles.countrySelect}
                           value={countryCode}
-                          onChange={(e) => setCountryCode(e.target.value)}
+                          onChange={(e) => {
+                            setCountryCode(e.target.value);
+                            if (waConfirmed) setWaConfirmed(false);
+                          }}
                           aria-label="Country code"
                         >
                           <option value="+62">🇮🇩 +62</option>
@@ -406,6 +449,7 @@ export default function CartPage() {
                         </select>
                         <input
                           id="cart-phone"
+                          ref={phoneInputRef}
                           className={styles.phoneInput}
                           type="tel"
                           inputMode="numeric"
@@ -414,6 +458,7 @@ export default function CartPage() {
                           onChange={(e) => {
                             const digits = e.target.value.replace(/[^\d\s]/g, '');
                             setPhone(digits);
+                            if (waConfirmed) setWaConfirmed(false);
                           }}
                           onBlur={() => setTouched(t => ({ ...t, phone: true }))}
                           autoComplete="tel"
@@ -608,6 +653,15 @@ export default function CartPage() {
             <p className={styles.successModalDesc}>{successToast}</p>
           </div>
         </>
+      )}
+
+      {/* WhatsApp warning popup */}
+      {showWAPopup && (
+        <WhatsAppWarningPopup
+          onClose={() => setShowWAPopup(false)}
+          onFix={handleWAFix}
+          onContinue={handleWAContinue}
+        />
       )}
 
       {/* Remove toast */}

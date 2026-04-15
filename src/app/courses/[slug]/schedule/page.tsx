@@ -1,5 +1,5 @@
 'use client';
-import { useState, use, useEffect } from 'react';
+import { useState, use, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCourseBySlug, type Schedule } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
@@ -55,14 +55,36 @@ export default function SchedulePage({ params }: Props) {
     const [phoneTouched, setPhoneTouched] = useState(false);
     const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
     const [showWAPopup, setShowWAPopup] = useState(false);
+    const [waConfirmed, setWaConfirmed] = useState(false);
+    const phoneInputRef = useRef<HTMLInputElement>(null);
+    const submitInFlightRef = useRef(false);
+    const shouldResubmitRef = useRef(false);
 
     const runWACheck = async () => {
         setPhoneTouched(true);
         const full = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
         if (full.replace(/\D/g, '').length < 8) return;
-        const ok = await checkWA(full);
-        if (ok === false) setShowWAPopup(true);
+        await checkWA(full);
     };
+
+    const handleWAFix = () => {
+        setShowWAPopup(false);
+        setTimeout(() => phoneInputRef.current?.focus(), 50);
+    };
+
+    const handleWAContinue = () => {
+        setWaConfirmed(true);
+        setShowWAPopup(false);
+        shouldResubmitRef.current = true;
+    };
+
+    useEffect(() => {
+        if (waConfirmed && shouldResubmitRef.current) {
+            shouldResubmitRef.current = false;
+            handleNext();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [waConfirmed]);
 
     useEffect(() => {
         if (!course || !(course as any).tutorEmail) return;
@@ -124,8 +146,22 @@ export default function SchedulePage({ params }: Props) {
 
     const handleNext = async () => {
         if (!canContinue || !day1Slot || !day2Slot || !course) return;
+        if (submitInFlightRef.current) return;
         const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
-        
+
+        if (!isAuthenticated && fullPhone.replace(/\D/g, '').length >= 8) {
+            submitInFlightRef.current = true;
+            try {
+                const waOk = await checkWA(fullPhone);
+                if (waOk === false && !waConfirmed) {
+                    setShowWAPopup(true);
+                    return;
+                }
+            } finally {
+                submitInFlightRef.current = false;
+            }
+        }
+
         setIsSubmitting(true);
         // Sync to CRM Lead table
         try {
@@ -436,13 +472,17 @@ export default function SchedulePage({ params }: Props) {
                                     </select>
                                     <input
                                         id="schedule-phone"
+                                        ref={phoneInputRef}
                                         className={styles.phoneInput}
                                         type="tel"
                                         inputMode="numeric"
                                         autoComplete="tel"
                                         placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
                                         value={phone}
-                                        onChange={e => setPhone(e.target.value.replace(/[^\d\s]/g, ''))}
+                                        onChange={e => {
+                                            setPhone(e.target.value.replace(/[^\d\s]/g, ''));
+                                            if (waConfirmed) setWaConfirmed(false);
+                                        }}
                                         onBlur={runWACheck}
                                         data-error={phoneTouched && !phoneValid ? 'true' : undefined}
                                         data-valid={phoneValid ? 'true' : undefined}
@@ -484,7 +524,13 @@ export default function SchedulePage({ params }: Props) {
                     <button onClick={() => router.back()} className={styles.back}>{t('schedule.backFull')}</button>
                 </div>
             </div>
-            {showWAPopup && <WhatsAppWarningPopup onClose={() => setShowWAPopup(false)} />}
+            {showWAPopup && (
+                <WhatsAppWarningPopup
+                    onClose={() => setShowWAPopup(false)}
+                    onFix={handleWAFix}
+                    onContinue={handleWAContinue}
+                />
+            )}
         </div>
     );
 }
