@@ -64,18 +64,22 @@ export default function DigitalAdvisor() {
         window.open('https://api.whatsapp.com/send/?phone=628211704707&text=Hi%20Maya%2C%20I%20need%20help%20choosing%20an%20IT%20course.', '_blank');
     };
 
+    const submitInFlightRef = useRef(false);
+
     const handleLeadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!phone || phone.length < 7) return;
+        if (submitInFlightRef.current) return;
+        submitInFlightRef.current = true;
 
-        const waOk = await checkWA(phone);
-        if (waOk === false && !waConfirmed) {
-            setShowWAPopup(true);
-            return;
-        }
-
-        setIsSubmitting(true);
         try {
+            const waOk = await checkWA(phone);
+            if (waOk === false && !waConfirmed) {
+                setShowWAPopup(true);
+                return;
+            }
+
+            setIsSubmitting(true);
             const [gaClientId, fbClientId, fbBrowserId] = await Promise.all([
                 getGAClientId(),
                 Promise.resolve(getFbc()),
@@ -104,6 +108,7 @@ export default function DigitalAdvisor() {
             console.error('Lead submission failed', err);
         } finally {
             setIsSubmitting(false);
+            submitInFlightRef.current = false;
         }
     };
 
