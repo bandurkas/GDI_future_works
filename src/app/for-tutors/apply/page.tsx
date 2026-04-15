@@ -220,7 +220,7 @@ export default function TutorApplyPage() {
             }
 
             const data = await res.json().catch(() => ({}));
-            setError(data.error ?? 'Something went wrong. Please try again.');
+            setError(data.message || (typeof data.error === 'string' ? data.error : '') || 'Something went wrong. Please try again.');
         } catch {
             setError('Network error. Please check your connection and try again.');
         } finally {

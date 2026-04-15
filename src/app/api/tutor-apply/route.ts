@@ -7,8 +7,14 @@ import { rateLimit, getIP } from '@/lib/rateLimit';
 
 // Helper: treats empty string as undefined so .optional() URL fields don't fail on ""
 const optionalUrl = z.preprocess(
-    val => (val === '' ? undefined : val),
+    val => (val === '' || val === null ? undefined : val),
     z.string().url().optional()
+);
+
+// Helper: accepts null/empty string as undefined for optional string fields
+const optionalString = (max: number) => z.preprocess(
+    val => (val === '' || val === null ? undefined : val),
+    z.string().max(max).optional()
 );
 
 const schema = z.object({
@@ -30,14 +36,14 @@ const schema = z.object({
         .optional(),
     timezone: z.string().max(100).optional(),
     // UTM fields
-    utmSource: z.string().max(200).optional(),
-    utmMedium: z.string().max(200).optional(),
-    utmCampaign: z.string().max(200).optional(),
-    utmContent: z.string().max(200).optional(),
-    utmTerm: z.string().max(200).optional(),
-    gaClientId: z.string().max(200).optional(),
-    fbClientId: z.string().max(200).optional(),
-    fbBrowserId: z.string().max(200).optional(),
+    utmSource: optionalString(200),
+    utmMedium: optionalString(200),
+    utmCampaign: optionalString(200),
+    utmContent: optionalString(200),
+    utmTerm: optionalString(200),
+    gaClientId: optionalString(200),
+    fbClientId: optionalString(200),
+    fbBrowserId: optionalString(200),
 });
 
 export async function POST(req: Request) {
