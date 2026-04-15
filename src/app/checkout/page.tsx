@@ -5,6 +5,8 @@ import { useCart } from '@/components/CartContext';
 import { useLanguage } from '@/components/LanguageContext';
 import { useCurrency } from '@/components/CurrencyContext';
 import { formatPrice } from '@/lib/currency';
+import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
+import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
 import styles from './page.module.css';
 
 export default function GlobalCheckoutPage() {
@@ -12,6 +14,15 @@ export default function GlobalCheckoutPage() {
     const [form, setForm] = useState({ name: '', whatsapp: '', email: '' });
     const { language } = useLanguage();
     const { currency } = useCurrency();
+    const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
+    const [showWAPopup, setShowWAPopup] = useState(false);
+
+    const handleWhatsAppBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (!value || value.replace(/\D/g, '').length < 8) return;
+        const ok = await checkWA(value);
+        if (ok === false) setShowWAPopup(true);
+    };
 
     const totalAmount = items.reduce((sum, item) => 
         sum + (currency === 'IDR' ? item.priceIDR : item.priceMYR), 0
@@ -94,8 +105,18 @@ export default function GlobalCheckoutPage() {
                                     className="form-input"
                                     placeholder="+62 812 3456 7890"
                                     value={form.whatsapp} onChange={onChange}
+                                    onBlur={handleWhatsAppBlur}
                                     autoComplete="tel"
                                 />
+                                <div style={{ marginTop: 6, fontSize: 12, minHeight: 18 }}>
+                                    {waLoading && <span style={{ color: '#888' }}>Checking WhatsApp…</span>}
+                                    {!waLoading && waExists === true && (
+                                        <span style={{ color: '#16a34a' }}>✓ WhatsApp OK</span>
+                                    )}
+                                    {!waLoading && waExists === false && (
+                                        <span style={{ color: '#dc2626' }}>⚠ Nomor tidak terdaftar di WhatsApp</span>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="form-group">
@@ -159,6 +180,7 @@ export default function GlobalCheckoutPage() {
                     </div>
                 </div>
             </div>
+            {showWAPopup && <WhatsAppWarningPopup onClose={() => setShowWAPopup(false)} />}
         </div>
     );
 }
