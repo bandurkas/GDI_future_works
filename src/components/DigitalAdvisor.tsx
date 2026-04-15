@@ -68,10 +68,7 @@ export default function DigitalAdvisor() {
         e.preventDefault();
         if (!phone || phone.length < 7) return;
 
-        let waOk: boolean | null = waExists;
-        if (waOk === null) {
-            waOk = await checkWA(phone);
-        }
+        const waOk = await checkWA(phone);
         if (waOk === false && !waConfirmed) {
             setShowWAPopup(true);
             return;

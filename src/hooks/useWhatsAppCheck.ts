@@ -5,6 +5,8 @@ export const useWhatsAppCheck = (debounceMs: number = 400) => {
   const [exists, setExists] = useState<boolean | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastPhoneRef = useRef<string>('');
+  const cacheRef = useRef<Map<string, boolean>>(new Map());
+  const pendingResolversRef = useRef<Array<(v: boolean) => void>>([]);
 
   const runCheck = async (phone: string): Promise<boolean> => {
     setLoading(true);
@@ -15,7 +17,8 @@ export const useWhatsAppCheck = (debounceMs: number = 400) => {
         body: JSON.stringify({ phone }),
       });
       const data = await res.json();
-      const result = data.exists !== false;
+      const result = data.exists === true;
+      cacheRef.current.set(phone, result);
       setExists(result);
       return result;
     } catch (e) {
@@ -32,17 +35,26 @@ export const useWhatsAppCheck = (debounceMs: number = 400) => {
       setExists(null);
       return Promise.resolve(true);
     }
-    if (clean === lastPhoneRef.current && exists !== null) {
-      return Promise.resolve(exists);
+    if (cacheRef.current.has(clean)) {
+      const cached = cacheRef.current.get(clean)!;
+      setExists(cached);
+      lastPhoneRef.current = clean;
+      return Promise.resolve(cached);
+    }
+    if (clean !== lastPhoneRef.current) {
+      setExists(null);
     }
     lastPhoneRef.current = clean;
 
     if (timerRef.current) clearTimeout(timerRef.current);
 
     return new Promise((resolve) => {
+      pendingResolversRef.current.push(resolve);
       timerRef.current = setTimeout(async () => {
         const result = await runCheck(clean);
-        resolve(result);
+        const resolvers = pendingResolversRef.current;
+        pendingResolversRef.current = [];
+        resolvers.forEach((r) => r(result));
       }, debounceMs);
     });
   };
@@ -50,6 +62,7 @@ export const useWhatsAppCheck = (debounceMs: number = 400) => {
   const reset = () => {
     setExists(null);
     lastPhoneRef.current = '';
+    cacheRef.current.clear();
   };
 
   return { check, loading, exists, reset };
