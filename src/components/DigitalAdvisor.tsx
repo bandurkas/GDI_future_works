@@ -21,6 +21,7 @@ export default function DigitalAdvisor() {
     const phoneInputRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
     const shouldResubmitRef = useRef(false);
+    const submitInFlightRef = useRef(false);
 
     const handlePhoneBlur = async () => {
         if (!phone || phone.replace(/\D/g, '').length < 8) return;
@@ -63,8 +64,6 @@ export default function DigitalAdvisor() {
         trackConversion('whatsapp_click', 'digital_advisor_maya');
         window.open('https://api.whatsapp.com/send/?phone=628211704707&text=Hi%20Maya%2C%20I%20need%20help%20choosing%20an%20IT%20course.', '_blank');
     };
-
-    const submitInFlightRef = useRef(false);
 
     const handleLeadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
