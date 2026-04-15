@@ -1,25 +1,25 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void }) {
-  const [mounted, setMounted] = useState(false);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
-    setMounted(true);
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const onEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') onCloseRef.current();
     };
     window.addEventListener('keydown', onEsc);
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener('keydown', onEsc);
     };
-  }, [onClose]);
+  }, []);
 
-  if (!mounted) return null;
+  if (typeof document === 'undefined') return null;
 
   const content = (
     <div
