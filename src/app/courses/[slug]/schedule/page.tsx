@@ -9,6 +9,7 @@ import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics'
 import { getStoredUTMs } from '@/lib/utm';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
+import { validatePhone, buildFullPhone, phoneErrorText } from '@/lib/phone';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -119,7 +120,8 @@ export default function SchedulePage({ params }: Props) {
     const day2DateSlots = day2Date ? (slotsByDate.get(day2Date) ?? []) : [];
     const bothSelected = !!day1Slot && !!day2Slot;
 
-    const phoneValid = phone.trim().length >= 6;
+    const phoneValidation = validatePhone(countryCode, phone);
+    const phoneValid = phoneValidation.valid;
     const contactOk = isAuthenticated || phoneValid;
     const canContinue = bothSelected && contactOk;
 
@@ -147,9 +149,14 @@ export default function SchedulePage({ params }: Props) {
     const handleNext = async () => {
         if (!canContinue || !day1Slot || !day2Slot || !course) return;
         if (submitInFlightRef.current) return;
-        const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+        if (!phoneValid) {
+            setPhoneTouched(true);
+            return;
+        }
+        const fullPhone = buildFullPhone(countryCode, phone);
 
-        if (!isAuthenticated && fullPhone.replace(/\D/g, '').length >= 8) {
+        let waVerified = waConfirmed;
+        if (fullPhone.replace(/\D/g, '').length >= 8) {
             submitInFlightRef.current = true;
             try {
                 const waOk = await checkWA(fullPhone);
@@ -157,6 +164,7 @@ export default function SchedulePage({ params }: Props) {
                     setShowWAPopup(true);
                     return;
                 }
+                if (waOk === true) waVerified = true;
             } finally {
                 submitInFlightRef.current = false;
             }
@@ -194,7 +202,7 @@ export default function SchedulePage({ params }: Props) {
         } catch (e) {}
 
         trackConversion('course_booking_start');
-        updateCustomerInfo({ email: '', phone: fullPhone });
+        updateCustomerInfo({ email: '', phone: fullPhone, phoneVerified: waVerified });
         addItem({
             courseId: course.id,
             courseTitle: course.title,
@@ -490,7 +498,7 @@ export default function SchedulePage({ params }: Props) {
                                 </div>
                                 {phoneTouched && !phoneValid && (
                                     <span className={styles.fieldError} role="alert">
-                                        ⚠ {isID ? 'Nomor telepon diperlukan untuk konfirmasi kelas' : 'Phone number is required to confirm your class'}
+                                        ⚠ {phoneErrorText(phoneValidation.errorId, isID ? 'id' : 'en') || (isID ? 'Nomor telepon diperlukan untuk konfirmasi kelas' : 'Phone number is required to confirm your class')}
                                     </span>
                                 )}
                                 <div style={{ marginTop: 6, fontSize: 12, minHeight: 18 }}>

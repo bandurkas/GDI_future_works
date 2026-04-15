@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
+import { validatePhone, buildFullPhone, phoneErrorText } from '@/lib/phone';
 import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import QRISPaymentBlock from '@/components/payment/QRISPaymentBlock';
 import PayPalPaymentBlock from '@/components/payment/PayPalPaymentBlock';
@@ -114,9 +115,10 @@ export default function CartPage() {
     }
   }, [step]);
 
+  const phoneValidation = validatePhone(countryCode, phone);
   const nameInvalid  = touched.name  && name.trim().length < 2;
   const emailInvalid = touched.email && (!email.trim() || !email.includes('@'));
-  const phoneInvalid = touched.phone && phone.trim().length < 6;
+  const phoneInvalid = touched.phone && !phoneValidation.valid;
   const phoneEmpty   = touched.phone && !phone.trim();
   const [createOrderLoading, setCreateOrderLoading] = useState(false);
   const [createOrderError, setCreateOrderError] = useState<string | null>(null);
@@ -127,9 +129,27 @@ export default function CartPage() {
     if (session?.user?.email && !email) setEmail(session.user.email);
     if (customerInfo.name && !name) setName(customerInfo.name);
     if (customerInfo.email && !email) setEmail(customerInfo.email);
-    if (customerInfo.phone && !phone) setPhone(customerInfo.phone);
+    if (customerInfo.phone && !phone) {
+      // Split stored full phone (e.g. "+6281219010408") into countryCode + local digits
+      const stored = customerInfo.phone.trim();
+      const match = stored.match(/^\+(\d{1,3})(.*)$/);
+      if (match) {
+        const cc = `+${match[1]}`;
+        const local = match[2].replace(/\D/g, '');
+        const knownCodes = ['+62', '+60', '+65', '+1'];
+        if (knownCodes.includes(cc)) {
+          setCountryCode(cc);
+          setPhone(local);
+        } else {
+          setPhone(stored.replace(/[^\d\s]/g, ''));
+        }
+      } else {
+        setPhone(stored.replace(/[^\d\s]/g, ''));
+      }
+      if (customerInfo.phoneVerified) setWaConfirmed(true);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  }, [session, customerInfo]);
 
   const totalIDR = items.reduce((sum, item) => sum + item.priceIDR, 0);
   const totalMYR = items.reduce((sum, item) => sum + item.priceMYR, 0);
@@ -155,8 +175,8 @@ export default function CartPage() {
       setTimeout(() => document.querySelector('[data-error="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
       return false;
     }
-    if (!phone.trim() || phone.trim().length < 6) {
-      setDetailsError(language === 'id' ? 'Nomor telepon diperlukan untuk konfirmasi kelas.' : 'Phone number is required to confirm your class.');
+    if (!phoneValidation.valid) {
+      setDetailsError(phoneErrorText(phoneValidation.errorId, language === 'id' ? 'id' : 'en') || (language === 'id' ? 'Nomor telepon diperlukan untuk konfirmasi kelas.' : 'Phone number is required to confirm your class.'));
       setTimeout(() => document.querySelector('[data-error="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
       return false;
     }
@@ -182,7 +202,7 @@ export default function CartPage() {
 
   const handleContinueDetails = async () => {
     if (!validateDetails()) return;
-    const fullPhone = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+    const fullPhone = buildFullPhone(countryCode, phone);
 
     if (!waConfirmed && fullPhone.replace(/\D/g, '').length >= 8 && !waCheckInFlightRef.current) {
       waCheckInFlightRef.current = true;
@@ -197,7 +217,7 @@ export default function CartPage() {
       }
     }
 
-    updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone });
+    updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone, phoneVerified: true });
     setDirection('forward');
     setStep('method');
   };
@@ -468,9 +488,9 @@ export default function CartPage() {
                       </div>
                       {(phoneInvalid || phoneEmpty) && (
                         <p className={styles.fieldError} role="alert">
-                          ⚠ {language === 'id'
+                          ⚠ {phoneErrorText(phoneValidation.errorId, language === 'id' ? 'id' : 'en') || (language === 'id'
                             ? 'Nomor telepon diperlukan untuk konfirmasi kelas'
-                            : 'Phone number is required to confirm your class'}
+                            : 'Phone number is required to confirm your class')}
                         </p>
                       )}
                       <p className={styles.fieldHelper}>

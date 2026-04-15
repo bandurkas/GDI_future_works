@@ -5,6 +5,7 @@ import { X, MessageCircle, Calendar } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
+import { validatePhone, buildFullPhone, phoneErrorText } from '@/lib/phone';
 import WhatsAppWarningPopup from './WhatsAppWarningPopup';
 
 export default function DigitalAdvisor() {
@@ -15,7 +16,9 @@ export default function DigitalAdvisor() {
     const [step, setStep] = useState<'intro' | 'form' | 'success'>('intro');
     const [countryCode, setCountryCode] = useState('+62');
     const [phone, setPhone] = useState('');
-    const fullPhone = `${countryCode}${phone.replace(/\D/g, '')}`;
+    const [phoneTouched, setPhoneTouched] = useState(false);
+    const fullPhone = buildFullPhone(countryCode, phone);
+    const phoneValidation = validatePhone(countryCode, phone);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
     const [showWAPopup, setShowWAPopup] = useState(false);
@@ -26,7 +29,8 @@ export default function DigitalAdvisor() {
     const submitInFlightRef = useRef(false);
 
     const handlePhoneBlur = async () => {
-        if (!phone || phone.replace(/\D/g, '').length < 7) return;
+        setPhoneTouched(true);
+        if (!phoneValidation.valid) return;
         await checkWA(fullPhone);
     };
 
@@ -69,7 +73,8 @@ export default function DigitalAdvisor() {
 
     const handleLeadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!phone || phone.replace(/\D/g, '').length < 7) return;
+        setPhoneTouched(true);
+        if (!phoneValidation.valid) return;
         if (submitInFlightRef.current) return;
         submitInFlightRef.current = true;
 
@@ -223,9 +228,12 @@ export default function DigitalAdvisor() {
                             />
                         </div>
                         <div style={{ fontSize: 11, minHeight: 16, marginTop: -4 }}>
-                            {waLoading && <span style={{ color: '#888' }}>Checking WhatsApp…</span>}
-                            {!waLoading && waExists === true && <span style={{ color: '#16a34a' }}>✓ WhatsApp OK</span>}
-                            {!waLoading && waExists === false && <span style={{ color: '#dc2626' }}>⚠ Not on WhatsApp</span>}
+                            {phoneTouched && !phoneValidation.valid && phoneValidation.errorId && phoneValidation.errorId !== 'empty' && (
+                                <span style={{ color: '#dc2626' }}>⚠ {phoneErrorText(phoneValidation.errorId, 'id')}</span>
+                            )}
+                            {phoneValidation.valid && waLoading && <span style={{ color: '#888' }}>Checking WhatsApp…</span>}
+                            {phoneValidation.valid && !waLoading && waExists === true && <span style={{ color: '#16a34a' }}>✓ WhatsApp OK</span>}
+                            {phoneValidation.valid && !waLoading && waExists === false && <span style={{ color: '#dc2626' }}>⚠ Not on WhatsApp</span>}
                         </div>
                         <button className={styles.btnSubmit} disabled={isSubmitting}>
                             {isSubmitting ? t('maya.submitting') : t('maya.submitBtn')}

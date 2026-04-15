@@ -18,6 +18,7 @@ export interface CustomerInfo {
   name: string;
   email: string;
   phone: string;
+  phoneVerified?: boolean;
 }
 
 interface CartContextType {
