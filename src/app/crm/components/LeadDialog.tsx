@@ -1,9 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { X, Loader2, Trash2 } from 'lucide-react';
 import { useManagement } from '../ManagementContext';
 
 export default function LeadDialog() {
+  const router = useRouter();
   const { isLeadDialogOpen, closeLeadDialog, leadToEdit, triggerRefresh } = useManagement();
   
   const [loading, setLoading] = useState(false);
@@ -58,6 +60,7 @@ export default function LeadDialog() {
       }
       
       triggerRefresh();
+      router.refresh();
       closeLeadDialog();
     } catch (err: any) {
       setError(err.message || 'Failed to save lead');
@@ -80,6 +83,7 @@ export default function LeadDialog() {
       if (!res.ok) throw new Error(await res.text());
       
       triggerRefresh();
+      router.refresh();
       closeLeadDialog();
     } catch (err: any) {
       setError(err.message || 'Failed to archive lead');
