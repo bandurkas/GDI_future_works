@@ -2,7 +2,17 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void }) {
+export default function WhatsAppWarningPopup({
+  onClose,
+  onFix,
+  onContinue,
+}: {
+  onClose: () => void;
+  onFix?: () => void;
+  onContinue?: () => void;
+}) {
+  const handleFix = onFix ?? onClose;
+  const handleContinue = onContinue ?? onClose;
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
 
@@ -66,7 +76,7 @@ export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void 
           <button
             type="button"
             autoFocus
-            onClick={onClose}
+            onClick={handleFix}
             style={{
               flex: 1,
               border: '1px solid #111',
@@ -84,7 +94,7 @@ export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void 
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleContinue}
             style={{
               flex: 1,
               background: '#111',

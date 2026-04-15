@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './DigitalAdvisor.module.css';
 import { X, MessageCircle, Calendar } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
@@ -17,12 +17,33 @@ export default function DigitalAdvisor() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
     const [showWAPopup, setShowWAPopup] = useState(false);
+    const [waConfirmed, setWaConfirmed] = useState(false);
+    const phoneInputRef = useRef<HTMLInputElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
+    const shouldResubmitRef = useRef(false);
 
     const handlePhoneBlur = async () => {
         if (!phone || phone.replace(/\D/g, '').length < 8) return;
-        const ok = await checkWA(phone);
-        if (ok === false) setShowWAPopup(true);
+        await checkWA(phone);
     };
+
+    const handleWAFix = () => {
+        setShowWAPopup(false);
+        setTimeout(() => phoneInputRef.current?.focus(), 50);
+    };
+
+    const handleWAContinue = () => {
+        setWaConfirmed(true);
+        setShowWAPopup(false);
+        shouldResubmitRef.current = true;
+    };
+
+    useEffect(() => {
+        if (waConfirmed && shouldResubmitRef.current && formRef.current) {
+            shouldResubmitRef.current = false;
+            formRef.current.requestSubmit();
+        }
+    }, [waConfirmed]);
 
     useEffect(() => {
         // Delay appearance by 4 seconds
@@ -46,6 +67,15 @@ export default function DigitalAdvisor() {
     const handleLeadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!phone || phone.length < 7) return;
+
+        let waOk: boolean | null = waExists;
+        if (waOk === null) {
+            waOk = await checkWA(phone);
+        }
+        if (waOk === false && !waConfirmed) {
+            setShowWAPopup(true);
+            return;
+        }
 
         setIsSubmitting(true);
         try {
@@ -153,16 +183,20 @@ export default function DigitalAdvisor() {
                 )}
 
                 {step === 'form' && (
-                    <form className={styles.form} onSubmit={handleLeadSubmit}>
+                    <form className={styles.form} onSubmit={handleLeadSubmit} ref={formRef}>
                         <div className={styles.message}>
                             Sure! Leave your WhatsApp/Phone number and I'll call you back soon.
                         </div>
                         <input
+                            ref={phoneInputRef}
                             type="tel"
                             placeholder={t('maya.phonePlaceholder')}
                             className={styles.input}
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={(e) => {
+                                setPhone(e.target.value);
+                                if (waConfirmed) setWaConfirmed(false);
+                            }}
                             onBlur={handlePhoneBlur}
                             autoFocus
                             required
@@ -186,7 +220,13 @@ export default function DigitalAdvisor() {
                     </div>
                 )}
             </div>
-            {showWAPopup && <WhatsAppWarningPopup onClose={() => setShowWAPopup(false)} />}
+            {showWAPopup && (
+                <WhatsAppWarningPopup
+                    onClose={() => setShowWAPopup(false)}
+                    onFix={handleWAFix}
+                    onContinue={handleWAContinue}
+                />
+            )}
         </div>
     );
 }
