@@ -7,6 +7,8 @@ import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
 import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import { getStoredUTMs } from '@/lib/utm';
+import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
+import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -51,6 +53,16 @@ export default function SchedulePage({ params }: Props) {
     const [phone, setPhone] = useState(customerInfo.phone || '');
     const [countryCode, setCountryCode] = useState('+62');
     const [phoneTouched, setPhoneTouched] = useState(false);
+    const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
+    const [showWAPopup, setShowWAPopup] = useState(false);
+
+    const runWACheck = async () => {
+        setPhoneTouched(true);
+        const full = phone.trim() ? `${countryCode}${phone.trim().replace(/^0/, '')}` : '';
+        if (full.replace(/\D/g, '').length < 8) return;
+        const ok = await checkWA(full);
+        if (ok === false) setShowWAPopup(true);
+    };
 
     useEffect(() => {
         if (!course || !(course as any).tutorEmail) return;
@@ -431,7 +443,7 @@ export default function SchedulePage({ params }: Props) {
                                         placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
                                         value={phone}
                                         onChange={e => setPhone(e.target.value.replace(/[^\d\s]/g, ''))}
-                                        onBlur={() => setPhoneTouched(true)}
+                                        onBlur={runWACheck}
                                         data-error={phoneTouched && !phoneValid ? 'true' : undefined}
                                         data-valid={phoneValid ? 'true' : undefined}
                                     />
@@ -441,6 +453,15 @@ export default function SchedulePage({ params }: Props) {
                                         ⚠ {isID ? 'Nomor telepon diperlukan untuk konfirmasi kelas' : 'Phone number is required to confirm your class'}
                                     </span>
                                 )}
+                                <div style={{ marginTop: 6, fontSize: 12, minHeight: 18 }}>
+                                    {waLoading && <span style={{ color: '#888' }}>{isID ? 'Memeriksa WhatsApp…' : 'Checking WhatsApp…'}</span>}
+                                    {!waLoading && waExists === true && (
+                                        <span style={{ color: '#16a34a' }}>✓ {isID ? 'Nomor terdaftar di WhatsApp' : 'WhatsApp OK'}</span>
+                                    )}
+                                    {!waLoading && waExists === false && (
+                                        <span style={{ color: '#dc2626' }}>⚠ {isID ? 'Nomor tidak terdaftar di WhatsApp' : 'Not registered on WhatsApp'}</span>
+                                    )}
+                                </div>
                                 <p className={styles.fieldHelper}>
                                     📲 {isID ? 'Kami akan menghubungi Anda untuk konfirmasi jadwal kelas' : 'We will contact you to confirm your class schedule'}
                                 </p>
@@ -463,6 +484,7 @@ export default function SchedulePage({ params }: Props) {
                     <button onClick={() => router.back()} className={styles.back}>{t('schedule.backFull')}</button>
                 </div>
             </div>
+            {showWAPopup && <WhatsAppWarningPopup onClose={() => setShowWAPopup(false)} />}
         </div>
     );
 }

@@ -4,6 +4,8 @@ import styles from './DigitalAdvisor.module.css';
 import { X, MessageCircle, Calendar } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
+import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
+import WhatsAppWarningPopup from './WhatsAppWarningPopup';
 
 export default function DigitalAdvisor() {
     const { t } = useLanguage();
@@ -13,6 +15,14 @@ export default function DigitalAdvisor() {
     const [step, setStep] = useState<'intro' | 'form' | 'success'>('intro');
     const [phone, setPhone] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
+    const [showWAPopup, setShowWAPopup] = useState(false);
+
+    const handlePhoneBlur = async () => {
+        if (!phone || phone.replace(/\D/g, '').length < 8) return;
+        const ok = await checkWA(phone);
+        if (ok === false) setShowWAPopup(true);
+    };
 
     useEffect(() => {
         // Delay appearance by 4 seconds
@@ -147,15 +157,21 @@ export default function DigitalAdvisor() {
                         <div className={styles.message}>
                             Sure! Leave your WhatsApp/Phone number and I'll call you back soon.
                         </div>
-                        <input 
-                            type="tel" 
+                        <input
+                            type="tel"
                             placeholder={t('maya.phonePlaceholder')}
                             className={styles.input}
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
+                            onBlur={handlePhoneBlur}
                             autoFocus
                             required
                         />
+                        <div style={{ fontSize: 11, minHeight: 16, marginTop: -4 }}>
+                            {waLoading && <span style={{ color: '#888' }}>Checking WhatsApp…</span>}
+                            {!waLoading && waExists === true && <span style={{ color: '#16a34a' }}>✓ WhatsApp OK</span>}
+                            {!waLoading && waExists === false && <span style={{ color: '#dc2626' }}>⚠ Not on WhatsApp</span>}
+                        </div>
                         <button className={styles.btnSubmit} disabled={isSubmitting}>
                             {isSubmitting ? t('maya.submitting') : t('maya.submitBtn')}
                         </button>
@@ -170,6 +186,7 @@ export default function DigitalAdvisor() {
                     </div>
                 )}
             </div>
+            {showWAPopup && <WhatsAppWarningPopup onClose={() => setShowWAPopup(false)} />}
         </div>
     );
 }
