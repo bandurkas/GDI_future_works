@@ -8,11 +8,13 @@ export async function POST(req: NextRequest) {
         const {
             phone, courseSlug, courseTitle,
             dateLabel, timeLabel,
+            source: srcInput,
             utmSource, utmMedium, utmCampaign, utmContent, utmTerm,
             gaClientId, fbClientId, fbBrowserId,
             waStatus
         } = await req.json();
         const waStatusNorm = waStatus === 'VERIFIED' || waStatus === 'BYPASSED' ? waStatus : null;
+        const sourceNorm = typeof srcInput === 'string' && srcInput.trim() ? srcInput.trim() : 'Schedule Form';
 
         if (!phone) {
             return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
@@ -31,7 +33,7 @@ export async function POST(req: NextRequest) {
             leadId = existingLeads[0].id;
             await prisma.$executeRaw`
                 UPDATE "Lead"
-                SET phone = ${phone}, status = 'NEW', source = ${`Digital Advisor: Maya`}, country = ${country},
+                SET phone = ${phone}, status = 'NEW', source = ${sourceNorm}, country = ${country},
                     "gaClientId" = ${gaClientId}, "fbClientId" = ${fbClientId}, "fbBrowserId" = ${fbBrowserId},
                     "utmSource" = ${utmSource}, "utmMedium" = ${utmMedium}, "utmCampaign" = ${utmCampaign},
                     "waStatus" = COALESCE(${waStatusNorm}, "waStatus"),
@@ -42,7 +44,7 @@ export async function POST(req: NextRequest) {
             leadId = crypto.randomUUID();
             await prisma.$executeRaw`
                 INSERT INTO "Lead" (id, email, name, phone, country, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "waStatus", "createdAt", "updatedAt")
-                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, ${waStatusNorm}, NOW(), NOW())
+                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', ${sourceNorm}, ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, ${waStatusNorm}, NOW(), NOW())
             `;
         }
 

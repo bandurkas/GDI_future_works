@@ -155,7 +155,7 @@ export default function SchedulePage({ params }: Props) {
         }
         const fullPhone = buildFullPhone(countryCode, phone);
 
-        let waVerified = waConfirmed;
+        let waVerified = false;
         if (fullPhone.replace(/\D/g, '').length >= 8) {
             submitInFlightRef.current = true;
             try {
