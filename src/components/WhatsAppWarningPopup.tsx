@@ -1,8 +1,30 @@
 'use client';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void }) {
-  return (
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onEsc);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onEsc);
+    };
+  }, [onClose]);
+
+  if (!mounted) return null;
+
+  const content = (
     <div
+      role="dialog"
+      aria-modal="true"
       style={{
         position: 'fixed',
         inset: 0,
@@ -10,8 +32,9 @@ export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void 
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 9999,
+        zIndex: 2147483647,
         padding: 16,
+        pointerEvents: 'auto',
       }}
       onClick={onClose}
     >
@@ -23,10 +46,11 @@ export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void 
           maxWidth: 420,
           width: '100%',
           boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+          pointerEvents: 'auto',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>
+        <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12, margin: '0 0 12px' }}>
           Nomor tidak terdeteksi di WhatsApp
         </h3>
 
@@ -40,6 +64,7 @@ export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void 
 
         <div style={{ display: 'flex', gap: 8 }}>
           <button
+            type="button"
             autoFocus
             onClick={onClose}
             style={{
@@ -58,6 +83,7 @@ export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void 
           </button>
 
           <button
+            type="button"
             onClick={onClose}
             style={{
               flex: 1,
@@ -77,10 +103,12 @@ export default function WhatsAppWarningPopup({ onClose }: { onClose: () => void 
           </button>
         </div>
 
-        <p style={{ fontSize: 12, color: '#888', marginTop: 14, textAlign: 'center' }}>
+        <p style={{ fontSize: 12, color: '#888', marginTop: 14, textAlign: 'center', marginBottom: 0 }}>
           ⚡ Biasanya kami merespon dalam beberapa menit di WhatsApp
         </p>
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 }
