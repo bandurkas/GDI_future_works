@@ -13,7 +13,9 @@ export default function DigitalAdvisor() {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isDismissed, setIsDismissed] = useState(false);
     const [step, setStep] = useState<'intro' | 'form' | 'success'>('intro');
+    const [countryCode, setCountryCode] = useState('+62');
     const [phone, setPhone] = useState('');
+    const fullPhone = `${countryCode}${phone.replace(/\D/g, '')}`;
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
     const [showWAPopup, setShowWAPopup] = useState(false);
@@ -24,8 +26,8 @@ export default function DigitalAdvisor() {
     const submitInFlightRef = useRef(false);
 
     const handlePhoneBlur = async () => {
-        if (!phone || phone.replace(/\D/g, '').length < 8) return;
-        await checkWA(phone);
+        if (!phone || phone.replace(/\D/g, '').length < 7) return;
+        await checkWA(fullPhone);
     };
 
     const handleWAFix = () => {
@@ -67,12 +69,12 @@ export default function DigitalAdvisor() {
 
     const handleLeadSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!phone || phone.length < 7) return;
+        if (!phone || phone.replace(/\D/g, '').length < 7) return;
         if (submitInFlightRef.current) return;
         submitInFlightRef.current = true;
 
         try {
-            const waOk = await checkWA(phone);
+            const waOk = await checkWA(fullPhone);
             if (waOk === false && !waConfirmed) {
                 setShowWAPopup(true);
                 return;
@@ -89,7 +91,7 @@ export default function DigitalAdvisor() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    phone,
+                    phone: fullPhone,
                     courseTitle: 'General Consultation',
                     courseSlug: 'consultation',
                     source: 'Digital Advisor: Maya',
@@ -188,20 +190,38 @@ export default function DigitalAdvisor() {
                         <div className={styles.message}>
                             Sure! Leave your WhatsApp/Phone number and I'll call you back soon.
                         </div>
-                        <input
-                            ref={phoneInputRef}
-                            type="tel"
-                            placeholder={t('maya.phonePlaceholder')}
-                            className={styles.input}
-                            value={phone}
-                            onChange={(e) => {
-                                setPhone(e.target.value);
-                                if (waConfirmed) setWaConfirmed(false);
-                            }}
-                            onBlur={handlePhoneBlur}
-                            autoFocus
-                            required
-                        />
+                        <div className={styles.phoneInputGroup}>
+                            <select
+                                className={styles.countrySelect}
+                                value={countryCode}
+                                onChange={(e) => {
+                                    setCountryCode(e.target.value);
+                                    if (waConfirmed) setWaConfirmed(false);
+                                }}
+                                aria-label="Country code"
+                            >
+                                <option value="+62">🇮🇩 +62</option>
+                                <option value="+60">🇲🇾 +60</option>
+                                <option value="+65">🇸🇬 +65</option>
+                                <option value="+1">🇺🇸 +1</option>
+                            </select>
+                            <input
+                                ref={phoneInputRef}
+                                type="tel"
+                                inputMode="numeric"
+                                autoComplete="tel"
+                                placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
+                                className={styles.phoneInput}
+                                value={phone}
+                                onChange={(e) => {
+                                    setPhone(e.target.value.replace(/[^\d\s]/g, ''));
+                                    if (waConfirmed) setWaConfirmed(false);
+                                }}
+                                onBlur={handlePhoneBlur}
+                                autoFocus
+                                required
+                            />
+                        </div>
                         <div style={{ fontSize: 11, minHeight: 16, marginTop: -4 }}>
                             {waLoading && <span style={{ color: '#888' }}>Checking WhatsApp…</span>}
                             {!waLoading && waExists === true && <span style={{ color: '#16a34a' }}>✓ WhatsApp OK</span>}

@@ -43,7 +43,7 @@ export default function WhatsAppWarningPopup({
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 2147483647,
-        padding: 16,
+        padding: 'max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom))',
         pointerEvents: 'auto',
       }}
       onClick={onClose}
@@ -55,8 +55,12 @@ export default function WhatsAppWarningPopup({
           padding: 24,
           maxWidth: 420,
           width: '100%',
+          maxHeight: 'calc(100dvh - 48px)',
+          overflowY: 'auto',
+          margin: 'auto',
           boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
           pointerEvents: 'auto',
+          boxSizing: 'border-box',
         }}
         onClick={(e) => e.stopPropagation()}
       >
