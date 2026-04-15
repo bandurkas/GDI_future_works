@@ -18,9 +18,17 @@ const countryFlag = {
   Australia: "🇦🇺", Germany: "🇩🇪", Canada: "🇨🇦",
   Brazil: "🇧🇷", Russia: "🇷🇺", UAE: "🇦🇪",
 } as Record<string,string>;
+function isoToFlagEmoji(iso: string): string {
+  const code = iso.toUpperCase();
+  if (code.length !== 2 || !/^[A-Z]{2}$/.test(code)) return "";
+  const A = 0x1F1E6;
+  return String.fromCodePoint(A + (code.charCodeAt(0) - 65), A + (code.charCodeAt(1) - 65));
+}
 function getFlag(c: string | null): string {
   if (!c) return "";
-  return countryFlag[c] || "🌍";
+  if (countryFlag[c]) return countryFlag[c];
+  const flag = isoToFlagEmoji(c);
+  return flag || "🌍";
 }
 
 function formatPhone(p: string): string {
@@ -197,6 +205,46 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                     >
                                       <Phone size={13} />
                                       <span>{formatPhone(card.phone)}</span>
+                                      {card.waStatus === 'VERIFIED' && (
+                                        <span
+                                          title="WhatsApp verified"
+                                          style={{
+                                            marginLeft: 6,
+                                            padding: '2px 6px',
+                                            fontSize: 10,
+                                            fontWeight: 600,
+                                            background: '#dcfce7',
+                                            color: '#166534',
+                                            border: '1px solid #86efac',
+                                            borderRadius: 6,
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: 3,
+                                          }}
+                                        >
+                                          ✓ WA
+                                        </span>
+                                      )}
+                                      {card.waStatus === 'BYPASSED' && (
+                                        <span
+                                          title="WhatsApp check bypassed by user"
+                                          style={{
+                                            marginLeft: 6,
+                                            padding: '2px 6px',
+                                            fontSize: 10,
+                                            fontWeight: 600,
+                                            background: '#fef9c3',
+                                            color: '#854d0e',
+                                            border: '1px solid #fde047',
+                                            borderRadius: 6,
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: 3,
+                                          }}
+                                        >
+                                          ⚠ WA?
+                                        </span>
+                                      )}
                                     </a>
                                   )}
                                   {card.email && !card.email.includes('@noemail.gdi') && (

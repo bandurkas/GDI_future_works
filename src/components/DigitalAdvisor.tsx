@@ -84,6 +84,7 @@ export default function DigitalAdvisor() {
                 setShowWAPopup(true);
                 return;
             }
+            const waStatus = waOk === true ? 'VERIFIED' : waConfirmed ? 'BYPASSED' : null;
 
             setIsSubmitting(true);
             const [gaClientId, fbClientId, fbBrowserId] = await Promise.all([
@@ -97,6 +98,7 @@ export default function DigitalAdvisor() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     phone: fullPhone,
+                    waStatus,
                     courseTitle: 'General Consultation',
                     courseSlug: 'consultation',
                     source: 'Digital Advisor: Maya',

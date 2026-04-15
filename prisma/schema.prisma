@@ -280,6 +280,7 @@ model Lead {
   gaClientId  String?
   fbBrowserId String?
   fbClientId  String?
+  waStatus    String?        // 'VERIFIED' | 'BYPASSED' | null — WhatsApp validation result at capture
   activities  LeadActivity[]
 
   @@index([email, status])

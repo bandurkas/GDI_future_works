@@ -5,12 +5,14 @@ import { notifyNewLead } from '@/lib/sales-notifications';
 export async function POST(req: NextRequest) {
     // Sync fix: ensured DB schema matches Prisma model
     try {
-        const { 
-            phone, courseSlug, courseTitle, 
+        const {
+            phone, courseSlug, courseTitle,
             dateLabel, timeLabel,
             utmSource, utmMedium, utmCampaign, utmContent, utmTerm,
-            gaClientId, fbClientId, fbBrowserId
+            gaClientId, fbClientId, fbBrowserId,
+            waStatus
         } = await req.json();
+        const waStatusNorm = waStatus === 'VERIFIED' || waStatus === 'BYPASSED' ? waStatus : null;
 
         if (!phone) {
             return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
@@ -28,18 +30,19 @@ export async function POST(req: NextRequest) {
         if (existingLeads.length > 0) {
             leadId = existingLeads[0].id;
             await prisma.$executeRaw`
-                UPDATE "Lead" 
+                UPDATE "Lead"
                 SET phone = ${phone}, status = 'NEW', source = ${`Digital Advisor: Maya`}, country = ${country},
                     "gaClientId" = ${gaClientId}, "fbClientId" = ${fbClientId}, "fbBrowserId" = ${fbBrowserId},
                     "utmSource" = ${utmSource}, "utmMedium" = ${utmMedium}, "utmCampaign" = ${utmCampaign},
+                    "waStatus" = COALESCE(${waStatusNorm}, "waStatus"),
                     "updatedAt" = NOW()
                 WHERE id = ${leadId}
             `;
         } else {
             leadId = crypto.randomUUID();
             await prisma.$executeRaw`
-                INSERT INTO "Lead" (id, email, name, phone, country, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "createdAt", "updatedAt")
-                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, NOW(), NOW())
+                INSERT INTO "Lead" (id, email, name, phone, country, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "waStatus", "createdAt", "updatedAt")
+                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', 'Digital Advisor: Maya', ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, ${waStatusNorm}, NOW(), NOW())
             `;
         }
 

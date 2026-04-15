@@ -180,11 +180,13 @@ export default function SchedulePage({ params }: Props) {
                 Promise.resolve(getFbp())
             ]);
             
+            const waStatus = waVerified ? 'VERIFIED' : waConfirmed ? 'BYPASSED' : null;
             fetch('/api/leads/schedule', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     phone: fullPhone,
+                    waStatus,
                     courseSlug: slug,
                     courseTitle: course.title,
                     dateLabel: `${day1Slot.date} & ${day2Slot.date}`,
