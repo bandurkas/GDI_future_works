@@ -6,12 +6,12 @@ import { notifyNewLead } from '@/lib/sales-notifications';
 export async function POST(req: Request) {
     try {
         const {
-            name, email, country, interest, goal, budget,
+            name, email, phone, country, interest, goal, budget,
             utmSource, utmMedium, utmCampaign, utmContent, utmTerm,
         } = await req.json();
 
-        if (!name?.trim() || !email?.trim() || !country?.trim() || !interest?.trim()) {
-            return NextResponse.json({ error: 'Name, email, country and interest are required' }, { status: 400 });
+        if (!name?.trim() || !email?.trim() || !phone?.trim() || !country?.trim() || !interest?.trim()) {
+            return NextResponse.json({ error: 'Name, email, phone, country and interest are required' }, { status: 400 });
         }
 
         if (!email.includes('@')) {
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         try {
             await appendToInterestSheet([[
                 dateStr, timeStr,
-                name.trim(), normalizedEmail, country.trim(),
+                name.trim(), normalizedEmail, phone.trim(), country.trim(),
                 interest, goal || '', budget || '',
             ]]);
             sheetsOk = true;
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
                 leadId = existing.id;
                 await prisma.lead.update({
                     where: { id: leadId },
-                    data: { status: 'NEW', country: country.trim(), updatedAt: now },
+                    data: { status: 'NEW', phone: phone.trim(), country: country.trim(), updatedAt: now },
                 });
             } else {
                 const lead = await prisma.lead.create({
@@ -58,6 +58,7 @@ export async function POST(req: Request) {
                         type: 'STUDENT',
                         name: name.trim(),
                         email: normalizedEmail,
+                        phone: phone.trim(),
                         source: 'Interest Form',
                         country: country.trim(),
                         status: 'NEW',
@@ -92,6 +93,7 @@ export async function POST(req: Request) {
             source: 'Interest Form',
             name: name.trim(),
             email: normalizedEmail,
+            phone: phone.trim(),
             interest,
             country: country.trim(),
         }).catch(err => console.error('[Interest] Notification failed:', err));

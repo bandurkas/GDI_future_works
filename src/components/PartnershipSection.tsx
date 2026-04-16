@@ -14,6 +14,7 @@ function InterestDrawer({ onClose }: { onClose: () => void }) {
     const [form, setForm] = useState({
         name: '',
         email: '',
+        phone: '',
         country: '',
         interest: '',
         goal: '',
@@ -105,6 +106,20 @@ function InterestDrawer({ onClose }: { onClose: () => void }) {
                                     value={form.email}
                                     onChange={handleChange}
                                     placeholder="your@email.com"
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.field}>
+                                <label className={styles.label} htmlFor="interest-phone">WhatsApp / Phone Number</label>
+                                <input
+                                    id="interest-phone"
+                                    className={styles.input}
+                                    type="tel"
+                                    name="phone"
+                                    value={form.phone}
+                                    onChange={handleChange}
+                                    placeholder="e.g. +62 812..."
                                     required
                                 />
                             </div>

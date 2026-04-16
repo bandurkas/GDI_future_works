@@ -68,7 +68,7 @@ export async function appendToInterestSheet(rows: string[][]) {
             range: `${sheetName}!A1`,
             valueInputOption: 'RAW',
             requestBody: {
-                values: [['Date', 'Time', 'Name', 'Email', 'Country', 'Interest', 'Goal', 'Budget']],
+                values: [['Date', 'Time', 'Name', 'Email', 'Phone', 'Country', 'Interest', 'Goal', 'Budget']],
             },
         });
     }

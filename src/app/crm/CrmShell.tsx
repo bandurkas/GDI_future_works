@@ -165,7 +165,9 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
             Payments
           </NavItem>
 
-          {!collapsed && <div className={styles.navSection} style={{ marginTop: '1.5rem' }}>Analytics</div>}
+          <NavItem href="/crm/interests" active={pathname.startsWith('/crm/interests')} collapsed={collapsed} icon={<Search size={18} />}>
+            Interests
+          </NavItem>
 
           <NavItem href="/crm/ads-reports" active={isAdsReports} collapsed={collapsed} icon={<BarChart3 size={18} />}>
             Ads Reports
