@@ -16,7 +16,7 @@ interface LeadInfo {
 
 /**
  * Notify sales team about a new lead.
- * Email via Resend + extensible WhatsApp Business API hook.
+ * Email via Resend + Telegram Bot API + WhatsApp + Make.com backup.
  */
 export async function notifyNewLead(lead: LeadInfo) {
   const waLink = lead.phone
@@ -49,7 +49,7 @@ export async function notifyNewLead(lead: LeadInfo) {
         },
         body: JSON.stringify({
           target: process.env.SALES_NOTIFY_WHATSAPP || '628211704707',
-          message: buildWhatsAppText(lead, crmLink),
+          message: buildTelegramText(lead, crmLink),
         }),
       });
     } catch (err) {
@@ -57,10 +57,10 @@ export async function notifyNewLead(lead: LeadInfo) {
     }
   }
 
-  // 3. Telegram Interactive Notification (Direct via Bot API)
+  // 3. Telegram Direct Bot API (inline buttons)
   if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
     try {
-      const text = buildWhatsAppText(lead, crmLink);
+      const text = buildTelegramText(lead, crmLink);
       const keyboard = {
         inline_keyboard: [
           [
@@ -77,7 +77,7 @@ export async function notifyNewLead(lead: LeadInfo) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: process.env.TELEGRAM_CHAT_ID,
-          text: text,
+          text,
           parse_mode: 'HTML',
           reply_markup: keyboard
         }),
@@ -92,7 +92,7 @@ export async function notifyNewLead(lead: LeadInfo) {
     }
   }
 
-  // 4. Legacy Make.com Hook (Keep as backup for now)
+  // 4. Make.com Webhook backup (Webhooks -> Make.com -> Telegram)
   if (process.env.MAKE_WEBHOOK_URL) {
     try {
       await fetch(process.env.MAKE_WEBHOOK_URL, {
@@ -113,12 +113,12 @@ export async function notifyNewLead(lead: LeadInfo) {
   }
 }
 
-function buildWhatsAppText(lead: LeadInfo, crmLink: string): string {
+function buildTelegramText(lead: LeadInfo, crmLink: string): string {
   const lines = [`<b>🔥 NEW LEAD</b>`, ''];
   if (lead.name) lines.push(`<b>Name:</b> ${esc(lead.name)}`);
   if (lead.phone) lines.push(`<b>Phone:</b> ${esc(lead.phone)}`);
   if (lead.email && !lead.email.includes('@noemail.gdi')) lines.push(`<b>Email:</b> ${esc(lead.email)}`);
-  if (lead.course || lead.interest) lines.push(`<b>Interest:</b> ${esc(lead.course || lead.interest)}`);
+  if (lead.course || lead.interest) lines.push(`<b>Interest:</b> ${esc(lead.course || lead.interest || '')}`);
   lines.push(`<b>Source:</b> ${esc(lead.source)}`, '', `<a href="${crmLink}">📊 Open CRM</a>`);
   return lines.join('\n');
 }
