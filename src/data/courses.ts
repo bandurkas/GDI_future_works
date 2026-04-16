@@ -85,6 +85,7 @@ export interface Course {
     testimonialQuoteID?: string;
     syllabusDetailsID?: SyllabusDetails;
     instructorID?: Instructor;
+    nextSessionID?: string;
 }
 
 export const courses: Course[] = [
@@ -173,6 +174,23 @@ export const courses: Course[] = [
         durationID: '4 jam',
         testimonialQuoteID: 'Setelah kursus ini saya membangun dashboard pertama saya dan mendapat posisi analis data dalam 3 minggu.',
         instructor: {
+            name: 'Mehreen Farooq',
+            role: 'Data Analysis Senior Expert',
+            company: 'Tech Specialist & Educator',
+            experience: 'Senior Expert in Business Intelligence & Data Analytics',
+            credentials: [
+                'Advanced Data Analysis & Business Intelligence Specialist',
+                'Certified Professional Data Analyst',
+                'Expert in Python, SQL, and Data Visualization',
+                'Experience leading data-driven digital transformation for enterprise clients',
+            ],
+            initials: 'MF',
+            accentColor: '#667eea',
+            bgGradient: 'linear-gradient(135deg, #667eea, #764ba2)',
+            photoUrl: '/assets/tutors/mehreen.png',
+            loom: 'https://drive.google.com/file/d/11jirkkD1DDBF7zfgYDFLzZiClCiFGQDE/view',
+        },
+        instructorID: {
             name: 'Bayu Sedana',
             role: 'Senior Data Analyst & IT Trainer',
             company: 'IT Consultant',

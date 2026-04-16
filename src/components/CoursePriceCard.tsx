@@ -32,14 +32,18 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
         (1 - (currentPrice / originalPrice)) * 100
     );
 
-    const inclusions = variant === 'hero'
-        ? ['Live interactive training', 'Real-time Q&A', 'Portfolio project', 'Certificate of completion', 'Community access']
-        : ['Live interactive training', 'Real-time Q&A', 'Portfolio project', 'Certificate', 'Community access'];
+    const inclusions = isID 
+        ? (variant === 'hero'
+            ? ['Pelatihan interaktif langsung', 'Tanya Jawab Real-time', 'Proyek portofolio', 'Sertifikat kelulusan', 'Akses komunitas']
+            : ['Pelatihan interaktif langsung', 'Tanya Jawab Real-time', 'Proyek portofolio', 'Sertifikat', 'Akses komunitas'])
+        : (variant === 'hero'
+            ? ['Live interactive training', 'Real-time Q&A', 'Portfolio project', 'Certificate of completion', 'Community access']
+            : ['Live interactive training', 'Real-time Q&A', 'Portfolio project', 'Certificate', 'Community access']);
 
     const ctaId = variant === 'hero' ? 'course-hero-cta' : 'sidebar-cta';
     const ctaNote = variant === 'hero'
-        ? '🔒 Secure checkout · Confirmed in <2 min via WhatsApp'
-        : '🔒 Secure · Confirmed via WhatsApp';
+        ? (isID ? '🔒 Checkout aman · Dikonfirmasi dalam <2 mnt via WhatsApp' : '🔒 Secure checkout · Confirmed in <2 min via WhatsApp')
+        : (isID ? '🔒 Aman · Dikonfirmasi via WhatsApp' : '🔒 Secure · Confirmed via WhatsApp');
 
     return (
         <>
@@ -48,7 +52,7 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
                 <div className={styles.priceAmount}>{displayPrice}</div>
                 <div className={styles.priceRight}>
                     <span className={styles.priceOrig}>{displayOriginal}</span>
-                    <span className={`${styles.badge} ${styles.badgeAccent}`}>{discount}% off</span>
+                    <span className={`${styles.badge} ${styles.badgeAccent}`}>{discount}% {isID ? 'diskon' : 'off'}</span>
                 </div>
             </div>
 
@@ -68,7 +72,7 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
                 className="btn btn-primary btn-lg btn-full"
                 id={ctaId}
             >
-                Choose Date & Time →
+                {isID ? 'Pilih Tanggal & Waktu →' : 'Choose Date & Time →'}
             </Link>
 
             {/* Footnote */}

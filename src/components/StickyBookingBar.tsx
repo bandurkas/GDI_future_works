@@ -19,6 +19,9 @@ export default function StickyBookingBar({ course }: Props) {
     const displayPrice = formatPrice(currentPrice, currency);
     const displayOriginal = formatPrice(originalPrice, currency);
 
+    const isID = language === 'id';
+    const nextSession = isID && course.nextSessionID ? course.nextSessionID : course.nextSession;
+
     return (
         <div className={styles.bar}>
             <div className={styles.inner}>
@@ -29,10 +32,10 @@ export default function StickyBookingBar({ course }: Props) {
                     <div className={styles.meta}>
                         <span aria-hidden="true">📅</span>
                         <span className="sr-only">Next session:</span>
-                        {course.nextSession}
+                        {nextSession}
                         {course.seatsLeft <= 5 && (
                             <span className={styles.urgent} role="status" aria-live="polite">
-                                {' · '}{course.seatsLeft} seats left
+                                {' · '}{course.seatsLeft} {isID ? 'kursi tersisa' : 'seats left'}
                             </span>
                         )}
                     </div>
@@ -42,7 +45,7 @@ export default function StickyBookingBar({ course }: Props) {
                     className={`btn btn-primary btn-lg ${styles.cta}`}
                     id="sticky-booking-cta"
                 >
-                    Choose Date & Time
+                    {isID ? 'Pilih Tanggal & Waktu' : 'Choose Date & Time'}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
