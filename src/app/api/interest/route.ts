@@ -90,6 +90,7 @@ export async function POST(req: Request) {
 
         // Notify sales team (non-blocking)
         notifyNewLead({
+            id: leadId,
             source: 'Interest Form',
             name: name.trim(),
             email: normalizedEmail,
