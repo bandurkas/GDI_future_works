@@ -60,13 +60,6 @@ export async function notifyNewLead(lead: LeadInfo) {
   // 3. Make.com Telegram Hook (Webhooks -> Make.com -> Telegram)
   if (process.env.MAKE_WEBHOOK_URL) {
     try {
-      const now = new Date();
-      const timestamp = new Intl.DateTimeFormat('en-GB', {
-        day: '2-digit', month: '2-digit', year: '2-digit',
-        hour: '2-digit', minute: '2-digit',
-        hour12: false, timeZone: 'Asia/Jakarta'
-      }).format(now).replace(',', ' -');
-
       await fetch(process.env.MAKE_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -76,7 +69,6 @@ export async function notifyNewLead(lead: LeadInfo) {
           phone: lead.phone || 'Unknown',
           course: lead.course || lead.interest || 'Not specified',
           wa_link: waLink || `https://wa.me/${lead.phone?.replace(/\D/g, '') || ''}`,
-          timestamp,
           take_url: lead.id ? `${BASE_URL}/api/leads/take?id=${lead.id}` : null,
         }),
       });
