@@ -54,7 +54,7 @@ export default function CoursesPage() {
                 <div className="container">
                     <p className={styles.count}>{courses.length} courses available</p>
                     <div className="grid-2" style={{ marginTop: 'var(--space-6)' }}>
-                        {courses.map((course) => <CourseCard key={course.id} course={course} />)}
+                        {courses.map((course, idx) => <CourseCard key={course.id} course={course} index={idx} />)}
                     </div>
                 </div>
             </section>

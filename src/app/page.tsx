@@ -280,7 +280,7 @@ export default function HomePage() {
                         <h2 className={styles.sectionH2}><Translate tKey="courses.h2" /></h2>
                     </div>
                     <CourseCarousel>
-                        {courses.map((course) => <CourseCard key={course.id} course={course} />)}
+                        {courses.map((course, idx) => <CourseCard key={course.id} course={course} index={idx} />)}
                     </CourseCarousel>
                     <div className={styles.coursesFooter}>
                         <p><Translate tKey="courses.notSure" /></p>

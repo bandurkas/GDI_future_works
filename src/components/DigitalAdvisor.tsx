@@ -57,7 +57,11 @@ export default function DigitalAdvisor() {
         const timer = setTimeout(() => {
             if (!isDismissed) {
                 setIsVisible(true);
-                setIsExpanded(true);
+                // Only auto-expand on desktop (> 768px)
+                const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+                if (!isMobile) {
+                    setIsExpanded(true);
+                }
             }
         }, 4000);
 

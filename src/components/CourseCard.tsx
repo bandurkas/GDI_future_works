@@ -33,6 +33,7 @@ import {
 interface Props {
     course: Course;
     featured?: boolean;
+    index?: number;
 }
 
 const getFeatureIcon = (text: string) => {
@@ -60,7 +61,7 @@ const getValueIcon = (idx: number) => {
     return icons[idx % icons.length];
 };
 
-export default function CourseCard({ course, featured }: Props) {
+export default function CourseCard({ course, featured, index = 0 }: Props) {
     const [outcomesOpen, setOutcomesOpen] = useState(false);
     const [showSyllabusDetails, setShowSyllabusDetails] = useState(false);
     const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -155,6 +156,7 @@ export default function CourseCard({ course, featured }: Props) {
                 tabIndex={0}
                 aria-label={`View details for ${title}`}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openOutcomes(e as any); } }}
+                style={{ animationDelay: `${index * 0.1}s` }}
             >
                 <div className={styles.cardContent}>
                     <h3 className={styles.title}>{title}</h3>

@@ -233,7 +233,7 @@ a,
 
 @media (max-width: 1024px) {
   :root {
-    --nav-height: 56px;
+    --nav-height: 60px; /* Reduced from 72px for mobile */
   }
 }
 
@@ -252,23 +252,23 @@ h6 {
 }
 
 .text-display {
-  font-size: clamp(2.25rem, 5.5vw, 4rem);
+  font-size: clamp(2rem, 5.5vw, 4rem);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
 
 .text-h1 {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
   font-weight: 800;
-  letter-spacing: -2px;
+  letter-spacing: -1.5px;
   line-height: 1.1;
 }
 
 .text-h2 {
-  font-size: clamp(1.875rem, 4vw, 2.25rem);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
 .text-h3 {
@@ -282,6 +282,12 @@ h6 {
   line-height: 1.7;
   color: var(--text-secondary);
   font-weight: 400;
+}
+
+@media (max-width: 640px) {
+  .text-body-lg {
+    line-height: 1.8; /* More breathability on mobile */
+  }
 }
 
 .text-label {
@@ -302,15 +308,15 @@ h6 {
 }
 
 .section {
-  padding: var(--space-24) 0;
+  padding: var(--space-20) 0; /* Reduced from 24 */
 }
 
 .section-sm {
-  padding: var(--space-16) 0;
+  padding: var(--space-12) 0; /* Reduced from 16 */
 }
 
 .section-xs {
-  padding: var(--space-10) 0;
+  padding: var(--space-8) 0; /* Reduced from 10 */
 }
 
 .grid-2 {
@@ -347,6 +353,7 @@ h6 {
   .grid-3,
   .grid-2 {
     grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 
   .container {
@@ -354,11 +361,11 @@ h6 {
   }
 
   .section {
-    padding: var(--space-16) 0;
+    padding: var(--space-12) 0;
   }
 
   .section-sm {
-    padding: var(--space-10) 0;
+    padding: var(--space-8) 0;
   }
 }
 
