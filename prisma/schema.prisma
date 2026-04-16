@@ -281,6 +281,7 @@ model Lead {
   fbBrowserId String?
   fbClientId  String?
   waStatus    String?        // 'VERIFIED' | 'BYPASSED' | null — WhatsApp validation result at capture
+  manager     String?        // Telegram username or name of assigned manager
   activities  LeadActivity[]
 
   @@index([email, status])
@@ -456,6 +457,9 @@ enum ActivityType {
   CALL
   WHATSAPP
   EMAIL
+  COMMENT
+  VOICE
+  CLAIM
 }
 
 enum NotificationType {

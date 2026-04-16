@@ -57,7 +57,37 @@ export async function notifyNewLead(lead: LeadInfo) {
     }
   }
 
-  // 3. Make.com Telegram Hook (Webhooks -> Make.com -> Telegram)
+  // 3. Telegram Interactive Notification (Direct via Bot API)
+  if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
+    try {
+      const text = buildWhatsAppText(lead, crmLink);
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: '🔥 Взять лид', callback_data: `take:${lead.id}` }
+          ],
+          [
+            { text: '📱 WhatsApp', url: waLink || `https://wa.me/${lead.phone?.replace(/\D/g, '') || ''}` }
+          ]
+        ]
+      };
+
+      await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: process.env.TELEGRAM_CHAT_ID,
+          text: text,
+          parse_mode: 'Markdown',
+          reply_markup: keyboard
+        }),
+      });
+    } catch (err) {
+      console.error('[SalesNotify] Telegram Direct failed:', err);
+    }
+  }
+
+  // 4. Legacy Make.com Hook (Keep as backup for now)
   if (process.env.MAKE_WEBHOOK_URL) {
     try {
       await fetch(process.env.MAKE_WEBHOOK_URL, {
