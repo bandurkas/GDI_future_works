@@ -4,6 +4,7 @@ const SALES_EMAIL = process.env.SALES_NOTIFY_EMAIL || process.env.CRM_EMAIL || '
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://gdifuture.works';
 
 interface LeadInfo {
+  id?: string;
   source: string;
   name?: string;
   email?: string;
@@ -59,14 +60,24 @@ export async function notifyNewLead(lead: LeadInfo) {
   // 3. Make.com Telegram Hook (Webhooks -> Make.com -> Telegram)
   if (process.env.MAKE_WEBHOOK_URL) {
     try {
+      const now = new Date();
+      const timestamp = new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit', month: '2-digit', year: '2-digit',
+        hour: '2-digit', minute: '2-digit',
+        hour12: false, timeZone: 'Asia/Jakarta'
+      }).format(now).replace(',', ' -');
+
       await fetch(process.env.MAKE_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          id: lead.id,
           name: lead.name || 'Unknown',
           phone: lead.phone || 'Unknown',
           course: lead.course || lead.interest || 'Not specified',
           wa_link: waLink || `https://wa.me/${lead.phone?.replace(/\D/g, '') || ''}`,
+          timestamp,
+          take_url: lead.id ? `${BASE_URL}/api/leads/take?id=${lead.id}` : null,
         }),
       });
     } catch (err) {
