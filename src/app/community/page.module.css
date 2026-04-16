@@ -17,15 +17,16 @@
 .hero::before {
   content: "";
   position: absolute;
-  top: -10%;
+  top: -20%;
   left: 50%;
   transform: translateX(-50%);
-  width: 120%;
-  height: 100%;
+  width: 140%;
+  height: 120%;
   background: radial-gradient(circle at 50% 0%, 
-    rgba(224, 30, 44, 0.08) 0%, 
-    rgba(224, 30, 44, 0.03) 30%, 
-    transparent 70%);
+    rgba(224, 30, 44, 0.12) 0%, 
+    rgba(224, 30, 44, 0.05) 35%, 
+    transparent 75%);
+  filter: blur(40px);
   pointer-events: none;
 }
 
@@ -76,19 +77,41 @@
 }
 
 .heroVisual {
-  margin-top: 48px;
+  margin-top: 56px;
   position: relative;
-  z-index: 1;
+  index-z: 1;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  animation: fadeUp 0.8s ease backwards;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  
+  /* Glassmorphic Frame */
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  backdrop-filter: blur(8px);
+  box-shadow: 
+    0 24px 64px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
 .heroVisual img {
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1));
+  display: block;
+  border-radius: 12px;
+  
+  /* Premium Edge Integration */
+  mask-image: radial-gradient(circle at center, black 60%, transparent 98%);
+  -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 98%);
+  
+  filter: saturate(1.1) contrast(1.05);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.heroVisual:hover img {
+    transform: scale(1.02);
 }
 
 /* ── BENEFITS SECTION ────────────────────────────────────────────────────── */
