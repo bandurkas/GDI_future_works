@@ -178,7 +178,7 @@ export default function HomePage() {
             <Suspense fallback={null}><CourseAutoOpener /></Suspense>
 
             {/* ── HERO ── */}
-            <section className={styles.heroSection}>
+            <section className={styles.heroSection} data-theme="light">
                 <div className={styles.heroLayout}>
                     {/* Left Illustration */}
                     <div className={`${styles.heroIllustration} ${styles.heroIllustrationLeft} ${styles.hideMobile}`}>
