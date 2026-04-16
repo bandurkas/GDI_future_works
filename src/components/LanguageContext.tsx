@@ -946,9 +946,9 @@ const translations: Record<Language, Record<string, string>> = {
 
         // ── TUTOR APPLY PAGE ──
         'apply.eyebrow': 'Daftar Tutor',
-        'apply.title.pre': 'Jadilah Tutor di ',
-        'apply.title.brand': 'GDI',
-        'apply.title.post': '',
+        'apply.title.pre': 'Ubah Keahlianmu Menjadi ',
+        'apply.title.brand': 'Penghasilan Bulanan',
+        'apply.title.post': ' Stabil',
         'apply.subtitle': 'Bergabunglah sebagai tutor ahli dan mulai menghasilkan dari keahlianmu.',
         'apply.step.badge': 'Langkah',
         'apply.step.of': 'dari',
@@ -1119,7 +1119,7 @@ export const LanguageProvider = ({ children, initialLanguage = 'en' }: { childre
     };
 
     const t = (key: string) => {
-        return translations[language][key] || key;
+        return translations[language][key] !== undefined ? translations[language][key] : key;
     };
 
     return (
