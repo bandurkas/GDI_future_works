@@ -18,6 +18,7 @@ const CourseCard = dynamic(() => import('./CourseCard'), {
 interface Props {
     course: Course;
     featured?: boolean;
+    index?: number;
 }
 
 export default function CourseCardLazy(props: Props) {
