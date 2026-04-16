@@ -66,6 +66,7 @@ export async function notifyNewLead(lead: LeadInfo) {
           name: lead.name || 'Unknown',
           phone: lead.phone || 'Unknown',
           course: lead.course || lead.interest || 'Not specified',
+          wa_link: waLink || `https://wa.me/${lead.phone?.replace(/\D/g, '') || ''}`,
         }),
       });
     } catch (err) {
