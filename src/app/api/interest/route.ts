@@ -25,6 +25,7 @@ export async function POST(req: Request) {
 
         let sheetsOk = false;
         let dbOk = false;
+        let leadId: string | undefined;
 
         // 1. Google Sheets
         try {
@@ -45,7 +46,6 @@ export async function POST(req: Request) {
                 select: { id: true },
             });
 
-            let leadId: string;
             if (existing) {
                 leadId = existing.id;
                 await prisma.lead.update({
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
 
         // Notify sales team (non-blocking)
         notifyNewLead({
-            id: leadId,
+            id: leadId || '',
             source: 'Interest Form',
             name: name.trim(),
             email: normalizedEmail,
