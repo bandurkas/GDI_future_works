@@ -72,16 +72,21 @@ export async function notifyNewLead(lead: LeadInfo) {
         ]
       };
 
-      await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: process.env.TELEGRAM_CHAT_ID,
           text: text,
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           reply_markup: keyboard
         }),
       });
+
+      if (!response.ok) {
+        const errBody = await response.text();
+        console.error(`[SalesNotify] Telegram Direct failed (${response.status}):`, errBody);
+      }
     } catch (err) {
       console.error('[SalesNotify] Telegram Direct failed:', err);
     }
@@ -109,12 +114,12 @@ export async function notifyNewLead(lead: LeadInfo) {
 }
 
 function buildWhatsAppText(lead: LeadInfo, crmLink: string): string {
-  const lines = [`*NEW LEAD*`, ''];
-  if (lead.name) lines.push(`Name: ${lead.name}`);
-  if (lead.phone) lines.push(`Phone: ${lead.phone}`);
-  if (lead.email && !lead.email.includes('@noemail.gdi')) lines.push(`Email: ${lead.email}`);
-  if (lead.course || lead.interest) lines.push(`Interest: ${lead.course || lead.interest}`);
-  lines.push(`Source: ${lead.source}`, '', `CRM: ${crmLink}`);
+  const lines = [`<b>🔥 NEW LEAD</b>`, ''];
+  if (lead.name) lines.push(`<b>Name:</b> ${esc(lead.name)}`);
+  if (lead.phone) lines.push(`<b>Phone:</b> ${esc(lead.phone)}`);
+  if (lead.email && !lead.email.includes('@noemail.gdi')) lines.push(`<b>Email:</b> ${esc(lead.email)}`);
+  if (lead.course || lead.interest) lines.push(`<b>Interest:</b> ${esc(lead.course || lead.interest)}`);
+  lines.push(`<b>Source:</b> ${esc(lead.source)}`, '', `<a href="${crmLink}">📊 Open CRM</a>`);
   return lines.join('\n');
 }
 
