@@ -11,6 +11,10 @@ send "$vps_pass\r"
 expect "# "
 send "cd /var/www/gdi-futureworks\r"
 
+# ── ENV SAFETY CHECK ──
+expect "# "
+send "bash scratch/check-env.sh .env || exit 1\r"
+
 expect "# "
 send "git pull origin main 2>&1 | tail -10\r"
 
