@@ -55,6 +55,23 @@ export async function notifyNewLead(lead: LeadInfo) {
       console.error('[SalesNotify] WhatsApp API failed:', err);
     }
   }
+
+  // 3. Make.com Telegram Hook (Webhooks -> Make.com -> Telegram)
+  if (process.env.MAKE_WEBHOOK_URL) {
+    try {
+      await fetch(process.env.MAKE_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: lead.name || 'Unknown',
+          phone: lead.phone || 'Unknown',
+          course: lead.course || lead.interest || 'Not specified',
+        }),
+      });
+    } catch (err) {
+      console.error('[SalesNotify] Make.com Webhook failed:', err);
+    }
+  }
 }
 
 function buildWhatsAppText(lead: LeadInfo, crmLink: string): string {
