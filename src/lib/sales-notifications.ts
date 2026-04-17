@@ -1,4 +1,5 @@
 import { sendEmail } from './email';
+import { prisma } from './prisma';
 
 const SALES_EMAIL = process.env.SALES_NOTIFY_EMAIL || process.env.CRM_EMAIL || 'bandurkas@gmail.com';
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://gdifuture.works';
@@ -57,19 +58,15 @@ export async function notifyNewLead(lead: LeadInfo) {
     }
   }
 
-  // 3. Telegram Direct Bot API (inline buttons)
+  // 3. Telegram Direct Bot API (inline buttons + save message_id for CRM editing)
   if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
     try {
       const text = buildTelegramText(lead, crmLink);
       const keyboard = {
         inline_keyboard: [
-          [
-            { text: '🔥 Взять лид', callback_data: `take:${lead.id}` }
-          ],
-          [
-            { text: '📱 WhatsApp', url: waLink || `https://wa.me/${lead.phone?.replace(/\D/g, '') || ''}` }
-          ]
-        ]
+          [{ text: '✅ Ambil Lead', callback_data: `take:${lead.id}` }],
+          [{ text: '📱 WhatsApp', url: waLink || `https://wa.me/${lead.phone?.replace(/\D/g, '') || ''}` }],
+        ],
       };
 
       const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -79,11 +76,18 @@ export async function notifyNewLead(lead: LeadInfo) {
           chat_id: process.env.TELEGRAM_CHAT_ID,
           text,
           parse_mode: 'HTML',
-          reply_markup: keyboard
+          reply_markup: keyboard,
         }),
       });
 
-      if (!response.ok) {
+      if (response.ok) {
+        const json = await response.json();
+        const msgId = json?.result?.message_id;
+        if (msgId && lead.id) {
+          prisma.lead.update({ where: { id: lead.id }, data: { tgMessageId: String(msgId) } })
+            .catch(e => console.error('[SalesNotify] tgMessageId save failed:', e));
+        }
+      } else {
         const errBody = await response.text();
         console.error(`[SalesNotify] Telegram Direct failed (${response.status}):`, errBody);
       }
