@@ -211,7 +211,7 @@
 
 .content {
   flex: 1;
-  overflow-y: auto;
+  overflow: auto;
   background: var(--crm-bg);
 }
 

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { appendToInterestSheet } from '@/lib/googleSheets';
 import { prisma } from '@/lib/prisma';
 import { notifyNewLead } from '@/lib/sales-notifications';
 
@@ -20,26 +19,11 @@ export async function POST(req: Request) {
 
         const normalizedEmail = email.trim().toLowerCase();
         const now = new Date();
-        const dateStr = now.toISOString().split('T')[0];
-        const timeStr = now.toTimeString().split(' ')[0];
 
-        let sheetsOk = false;
         let dbOk = false;
         let leadId: string | undefined;
 
-        // 1. Google Sheets
-        try {
-            await appendToInterestSheet([[
-                dateStr, timeStr,
-                name.trim(), normalizedEmail, phone.trim(), country.trim(),
-                interest, goal || '', budget || '',
-            ]]);
-            sheetsOk = true;
-        } catch (sheetsErr) {
-            console.error('[Interest] Sheets save failed:', sheetsErr);
-        }
-
-        // 2. Save to CRM Lead table (non-blocking)
+        // Save to CRM Lead table
         try {
             const existing = await prisma.lead.findFirst({
                 where: { email: normalizedEmail, source: 'Interest Form' },
@@ -84,7 +68,7 @@ export async function POST(req: Request) {
             console.error('[Interest] DB save failed (non-critical):', dbErr);
         }
 
-        if (!sheetsOk && !dbOk) {
+        if (!dbOk) {
             return NextResponse.json({ error: 'Failed to submit' }, { status: 500 });
         }
 

@@ -68,8 +68,12 @@ export function normalizeCrmData(students: any[], leads: any[]): KanbanCard[] {
 
   // 2. Process Leads
   leads.forEach(ld => {
-    // Lead statuses: NEW, CONTACTED, QUALIFIED, CONVERTED
-    const status = ld.status as KanbanStatus;
+    // Map Telegram CRM statuses to visible Kanban columns
+    const tgStatusMap: Record<string, KanbanStatus> = {
+      IN_PROGRESS: 'CONTACTED',
+      DONE: 'CONVERTED',
+    };
+    const status = (tgStatusMap[ld.status] ?? ld.status) as KanbanStatus;
 
     // Parse details from activities if available
     let details: any = null;
