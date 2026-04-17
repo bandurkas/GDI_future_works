@@ -563,6 +563,8 @@ export const courses: Course[] = [
             initials: 'SN',
             accentColor: '#f093fb',
             bgGradient: 'linear-gradient(135deg, #f093fb, #f5576c)',
+            photoUrl: '/assets/tutors/siti.png',
+            loom: 'https://www.loom.com/share/88dd67bfb249471d93c0804bac84a9d7',
         },
         schedules: [
             { id: 's1', date: 'Apr 18\u201319', dayOfWeek: 'Sat\u2013Sun', month: 'Apr', day: 18, time: '10:00', timeEnd: '12:00', seatsLeft: 4 },
