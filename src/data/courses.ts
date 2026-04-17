@@ -550,7 +550,7 @@ export const courses: Course[] = [
         durationID: '4 jam',
         testimonialQuoteID: 'Pada hari ke-2 saya sudah membuat aset yang digunakan di proyek klien nyata. Tidak ada yang menandingi format ini.',
         instructor: {
-            name: 'Siti Nurhaliza',
+            name: 'Anum Naz',
             role: 'Creative Director & AI Design Lead',
             company: 'Top Regional Creative Agency',
             experience: '10+ years in brand design and AI-augmented workflows',
