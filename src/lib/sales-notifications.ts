@@ -96,8 +96,8 @@ export async function notifyNewLead(lead: LeadInfo) {
     }
   }
 
-  // 4. Make.com Webhook backup (Webhooks -> Make.com -> Telegram)
-  if (process.env.MAKE_WEBHOOK_URL) {
+  // 4. Make.com Webhook — disabled (set MAKE_WEBHOOK_ENABLED=true in .env to re-enable)
+  if (process.env.MAKE_WEBHOOK_ENABLED === 'true' && process.env.MAKE_WEBHOOK_URL) {
     try {
       await fetch(process.env.MAKE_WEBHOOK_URL, {
         method: 'POST',
