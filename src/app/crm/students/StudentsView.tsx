@@ -31,6 +31,15 @@ function getFlag(c: string | null): string {
   return flag || "🌍";
 }
 
+function relativeTime(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 60) return `${m}м назад`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}ч назад`;
+  return `${Math.floor(h / 24)}д назад`;
+}
+
 function formatPhone(p: string): string {
   const clean = p.replace(/\D/g, '');
   if (clean.startsWith('62') && clean.length >= 10) {
@@ -313,6 +322,20 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
                                     <Edit2 size={13} />
                                   </button>
                                 </div>
+                                {card.comments && card.comments.length > 0 && (
+                                  <div className={s.comments}>
+                                    <div className={s.commentsHeader}>
+                                      <MessageCircle size={11} />
+                                      <span>Komentar ({card.comments.length})</span>
+                                    </div>
+                                    {card.comments.slice(0, 3).map(c => (
+                                      <div key={c.id} className={`${s.commentItem} ${c.type === 'CLAIM' ? s.commentClaim : ''}`}>
+                                        <div className={s.commentText}>{c.text}</div>
+                                        <div className={s.commentMeta}>{relativeTime(c.createdAt)}</div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
                               </motion.div>
                             </div>
                           )}

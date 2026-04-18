@@ -1,5 +1,12 @@
 export type KanbanStatus = 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'CONVERTED' | 'ARCHIVED';
 
+export interface ActivityComment {
+  id: string;
+  type: 'COMMENT' | 'VOICE' | 'CLAIM';
+  text: string;
+  createdAt: string;
+}
+
 export interface KanbanCard {
   id: string; // Unique ID (e.g., student:abc or lead:xyz)
   originalId: string;
@@ -17,6 +24,7 @@ export interface KanbanCard {
   utmContent: string | null;
   utmTerm: string | null;
   details: any; // Activity notes for leads, Payment info for students
+  comments?: ActivityComment[];
   gaClientId?: string | null;
   fbClientId?: string | null;
   fbBrowserId?: string | null;
@@ -75,11 +83,26 @@ export function normalizeCrmData(students: any[], leads: any[]): KanbanCard[] {
     };
     const status = (tgStatusMap[ld.status] ?? ld.status) as KanbanStatus;
 
-    // Parse details from activities if available
-    let details: any = null;
-    if (ld.activities && ld.activities[0]?.notes) {
-      try { details = JSON.parse(ld.activities[0].notes); } catch { details = null; }
-    }
+    // Map activities to comments
+    const comments: ActivityComment[] = (ld.activities ?? []).map((a: any) => {
+      let text = '';
+      if (a.type === 'VOICE') {
+        text = '🎙️ Голосовое сообщение';
+      } else {
+        try {
+          const parsed = JSON.parse(a.notes ?? '');
+          text = parsed.text || parsed.message || a.notes || '';
+        } catch {
+          text = a.notes || '';
+        }
+      }
+      return {
+        id: a.id,
+        type: a.type as ActivityComment['type'],
+        text,
+        createdAt: a.createdAt,
+      };
+    });
 
     cards.push({
       id: `lead:${ld.id}`,
@@ -98,9 +121,9 @@ export function normalizeCrmData(students: any[], leads: any[]): KanbanCard[] {
       utmContent: ld.utmContent,
       utmTerm: ld.utmTerm,
       details: {
-        ...details,
-        activitiesCount: ld.activities?.length || 0
+        activitiesCount: ld._count?.activities ?? ld.activities?.length ?? 0
       },
+      comments,
       gaClientId: ld.gaClientId,
       fbClientId: ld.fbClientId,
       fbBrowserId: ld.fbBrowserId,

@@ -327,6 +327,51 @@
   font-weight: 400;
 }
 
+/* ── Comments Section ─────────────────────────── */
+.comments {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--crm-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.commentsHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--crm-text-muted);
+  margin-bottom: 2px;
+}
+
+.commentItem {
+  background: rgba(79, 70, 229, 0.05);
+  border-left: 2px solid var(--crm-accent);
+  border-radius: 4px;
+  padding: 5px 8px;
+}
+
+.commentClaim {
+  background: rgba(156, 163, 175, 0.08);
+  border-left-color: var(--crm-text-dim);
+}
+
+.commentText {
+  font-size: 11px;
+  color: var(--crm-text);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.commentMeta {
+  font-size: 10px;
+  color: var(--crm-text-dim);
+  margin-top: 3px;
+}
+
 .metaDot {
   opacity: 0.4;
 }

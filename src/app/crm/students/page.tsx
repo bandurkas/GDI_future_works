@@ -39,8 +39,9 @@ export default async function CrmStudentsPage() {
     },
     include: {
       activities: {
+        where: { type: { in: ['COMMENT', 'VOICE', 'CLAIM'] } },
         orderBy: { createdAt: 'desc' },
-        take: 5
+        take: 20
       }
     },
     orderBy: { createdAt: 'desc' }
