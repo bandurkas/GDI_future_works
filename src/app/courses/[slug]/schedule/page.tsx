@@ -5,7 +5,7 @@ import { getCourseBySlug, type Schedule } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
-import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
+import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import { getStoredUTMs } from '@/lib/utm';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
@@ -60,6 +60,13 @@ export default function SchedulePage({ params }: Props) {
     const phoneInputRef = useRef<HTMLInputElement>(null);
     const submitInFlightRef = useRef(false);
     const shouldResubmitRef = useRef(false);
+    const formStartFiredRef = useRef(false);
+
+    const handleFormStart = () => {
+        if (formStartFiredRef.current) return;
+        formStartFiredRef.current = true;
+        trackEvent('form_start', { form_name: 'schedule_form' });
+    };
 
     const runWACheck = async () => {
         setPhoneTouched(true);
@@ -493,6 +500,7 @@ export default function SchedulePage({ params }: Props) {
                                             setPhone(e.target.value.replace(/[^\d\s]/g, ''));
                                             if (waConfirmed) setWaConfirmed(false);
                                         }}
+                                        onFocus={handleFormStart}
                                         onBlur={runWACheck}
                                         data-error={phoneTouched && !phoneValid ? 'true' : undefined}
                                         data-valid={phoneValid ? 'true' : undefined}

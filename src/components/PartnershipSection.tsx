@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X, CheckCircle2, User, Mail, Globe, MessageCircle, Target, Briefcase, TrendingUp } from 'lucide-react';
 import PathCard from '@/components/PathCard';
 import { useLanguage } from '@/components/LanguageContext';
-import { trackConversion } from '@/lib/analytics';
+import { trackConversion, trackEvent } from '@/lib/analytics';
 import { getStoredUTMs } from '@/lib/utm';
 import pageStyles from '@/app/page.module.css';
 import styles from './PartnershipSection.module.css';
@@ -23,6 +23,13 @@ function InterestDrawer({ onClose }: { onClose: () => void }) {
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState('');
+    const formStartFiredRef = useRef(false);
+
+    const handleFormStart = () => {
+        if (formStartFiredRef.current) return;
+        formStartFiredRef.current = true;
+        trackEvent('form_start', { form_name: 'interest_form' });
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -91,6 +98,7 @@ function InterestDrawer({ onClose }: { onClose: () => void }) {
                                             name="name"
                                             value={form.name}
                                             onChange={handleChange}
+                                            onFocus={handleFormStart}
                                             placeholder="Your full name"
                                             required
                                         />

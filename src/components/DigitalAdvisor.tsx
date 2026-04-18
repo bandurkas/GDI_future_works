@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './DigitalAdvisor.module.css';
 import { X, MessageCircle, Calendar } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
+import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import { validatePhone, buildFullPhone, phoneErrorText } from '@/lib/phone';
 import WhatsAppWarningPopup from './WhatsAppWarningPopup';
@@ -27,6 +27,13 @@ export default function DigitalAdvisor() {
     const formRef = useRef<HTMLFormElement>(null);
     const shouldResubmitRef = useRef(false);
     const submitInFlightRef = useRef(false);
+    const formStartFiredRef = useRef(false);
+
+    const handleFormStart = () => {
+        if (formStartFiredRef.current) return;
+        formStartFiredRef.current = true;
+        trackEvent('form_start', { form_name: 'digital_advisor_maya' });
+    };
 
     const handlePhoneBlur = async () => {
         setPhoneTouched(true);
@@ -228,6 +235,7 @@ export default function DigitalAdvisor() {
                                     setPhone(e.target.value.replace(/[^\d\s]/g, ''));
                                     if (waConfirmed) setWaConfirmed(false);
                                 }}
+                                onFocus={handleFormStart}
                                 onBlur={handlePhoneBlur}
                                 autoFocus
                                 required
