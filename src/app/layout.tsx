@@ -12,6 +12,7 @@ import { auth } from '@/auth';
 import TrackingInitializer from '@/components/TrackingInitializer';
 import { jwtVerify } from 'jose';
 import { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -118,6 +119,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* Non-critical CSS loaded async — cards, forms, animations, utilities */}
         <script dangerouslySetInnerHTML={{ __html: "var l=document.createElement('link');l.rel='stylesheet';l.href='/deferred.css';document.head.appendChild(l);" }} />
         <noscript><link rel="stylesheet" href="/deferred.css" /></noscript>
+        {/* Microsoft Clarity — session recordings + heatmaps */}
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "wdhsnq3gas");`}
+        </Script>
       </head>
       <body>
         <GoogleAuthProvider session={effectiveSession}>
