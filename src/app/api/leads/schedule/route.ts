@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
             leadId = existingLeads[0].id;
             await prisma.$executeRaw`
                 UPDATE "Lead"
-                SET phone = ${phone}, status = 'NEW', source = ${sourceNorm}, country = ${country},
+                SET phone = ${phone}, name = ${phone}, status = 'NEW', "deletedAt" = NULL, source = ${sourceNorm}, country = ${country},
                     "gaClientId" = ${gaClientId}, "fbClientId" = ${fbClientId}, "fbBrowserId" = ${fbBrowserId},
                     "utmSource" = ${utm.utmSource}, "utmMedium" = ${utm.utmMedium}, "utmCampaign" = ${utm.utmCampaign},
                     "waStatus" = COALESCE(${waStatusNorm}, "waStatus"),
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
             leadId = crypto.randomUUID();
             await prisma.$executeRaw`
                 INSERT INTO "Lead" (id, email, name, phone, country, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "waStatus", "createdAt", "updatedAt")
-                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', ${sourceNorm}, ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utm.utmSource}, ${utm.utmMedium}, ${utm.utmCampaign}, ${waStatusNorm}, NOW(), NOW())
+                VALUES (${leadId}, ${pseudoEmail}, ${phone}, ${phone}, ${country}, 'STUDENT', 'NEW', ${sourceNorm}, ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utm.utmSource}, ${utm.utmMedium}, ${utm.utmCampaign}, ${waStatusNorm}, NOW(), NOW())
             `;
         }
 

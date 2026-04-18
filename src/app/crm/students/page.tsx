@@ -1,7 +1,14 @@
 import { prisma } from '@/lib/prisma';
 import StudentsView from './StudentsView';
 
+export const dynamic = 'force-dynamic';
+
 export default async function CrmStudentsPage() {
+  const tutorEmails = await prisma.tutorApplication.findMany({
+    select: { email: true },
+  });
+  const tutorEmailSet = new Set(tutorEmails.map((t: { email: string }) => t.email));
+
   const students = await prisma.student.findMany({
     where: {
       deletedAt: null,
@@ -16,26 +23,24 @@ export default async function CrmStudentsPage() {
     orderBy: { createdAt: 'desc' },
   });
 
-  // Backfill phone from payment metadata for students where user.phone is null
-  const studentsWithPhone = students.map(st => {
-    if (st.user.phone) return st;
-    // Try to find phone stored in any payment's metadata
-    for (const p of st.payments) {
-      const meta = p.metadata as any;
-      const phone = meta?.customerPhone || meta?.customer_details?.phone;
-      if (phone) {
-        return { ...st, user: { ...st.user, phone } };
+  const studentsWithPhone = students
+    .filter((st: any) => !tutorEmailSet.has(st.user.email))
+    .map((st: any) => {
+      if (st.user.phone) return st;
+      for (const p of st.payments) {
+        const meta = p.metadata as any;
+        const phone = meta?.customerPhone || meta?.customer_details?.phone;
+        if (phone) {
+          return { ...st, user: { ...st.user, phone } };
+        }
       }
-    }
-    return st;
-  });
+      return st;
+    });
 
-  // Fetch all leads for the pipeline
   const leads = await prisma.lead.findMany({
     where: { 
       type: 'STUDENT',
       deletedAt: null,
-      // No status filter — we want all leads in the pipeline
     },
     include: {
       activities: {

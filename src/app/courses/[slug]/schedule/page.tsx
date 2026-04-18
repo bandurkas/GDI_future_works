@@ -188,7 +188,7 @@ export default function SchedulePage({ params }: Props) {
             ]);
             
             const waStatus = waVerified ? 'VERIFIED' : waConfirmed ? 'BYPASSED' : null;
-            fetch('/api/leads/schedule', {
+            await fetch('/api/leads/schedule', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
