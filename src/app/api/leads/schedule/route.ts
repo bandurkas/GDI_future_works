@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { notifyNewLead } from '@/lib/sales-notifications';
+import { normalizeUtm } from '@/lib/utm-normalize';
 
 export async function POST(req: NextRequest) {
     // Sync fix: ensured DB schema matches Prisma model
@@ -15,6 +16,7 @@ export async function POST(req: NextRequest) {
         } = await req.json();
         const waStatusNorm = waStatus === 'VERIFIED' || waStatus === 'BYPASSED' ? waStatus : null;
         const sourceNorm = typeof srcInput === 'string' && srcInput.trim() ? srcInput.trim() : 'Schedule Form';
+        const utm = normalizeUtm({ utmSource, utmMedium, utmCampaign, utmContent, utmTerm });
 
         if (!phone) {
             return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
@@ -35,7 +37,7 @@ export async function POST(req: NextRequest) {
                 UPDATE "Lead"
                 SET phone = ${phone}, status = 'NEW', source = ${sourceNorm}, country = ${country},
                     "gaClientId" = ${gaClientId}, "fbClientId" = ${fbClientId}, "fbBrowserId" = ${fbBrowserId},
-                    "utmSource" = ${utmSource}, "utmMedium" = ${utmMedium}, "utmCampaign" = ${utmCampaign},
+                    "utmSource" = ${utm.utmSource}, "utmMedium" = ${utm.utmMedium}, "utmCampaign" = ${utm.utmCampaign},
                     "waStatus" = COALESCE(${waStatusNorm}, "waStatus"),
                     "updatedAt" = NOW()
                 WHERE id = ${leadId}
@@ -44,7 +46,7 @@ export async function POST(req: NextRequest) {
             leadId = crypto.randomUUID();
             await prisma.$executeRaw`
                 INSERT INTO "Lead" (id, email, name, phone, country, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "waStatus", "createdAt", "updatedAt")
-                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', ${sourceNorm}, ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utmSource}, ${utmMedium}, ${utmCampaign}, ${waStatusNorm}, NOW(), NOW())
+                VALUES (${leadId}, ${pseudoEmail}, 'Maya Lead', ${phone}, ${country}, 'STUDENT', 'NEW', ${sourceNorm}, ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utm.utmSource}, ${utm.utmMedium}, ${utm.utmCampaign}, ${waStatusNorm}, NOW(), NOW())
             `;
         }
 

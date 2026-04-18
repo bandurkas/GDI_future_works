@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { notifyNewLead } from '@/lib/sales-notifications';
+import { normalizeUtm } from '@/lib/utm-normalize';
 
 export async function POST(req: Request) {
     try {
@@ -46,11 +47,7 @@ export async function POST(req: Request) {
                         source: 'Interest Form',
                         country: country.trim(),
                         status: 'NEW',
-                        utmSource: utmSource || null,
-                        utmMedium: utmMedium || null,
-                        utmCampaign: utmCampaign || null,
-                        utmContent: utmContent || null,
-                        utmTerm: utmTerm || null,
+                        ...normalizeUtm({ utmSource, utmMedium, utmCampaign, utmContent, utmTerm }),
                     },
                 });
                 leadId = lead.id;
