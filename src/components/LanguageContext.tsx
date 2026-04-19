@@ -21,6 +21,7 @@ const translations: Record<Language, Record<string, string>> = {
         'nav.community': 'Community',
         'nav.contact': 'Contact',
         'nav.logout': 'Log out',
+        'nav.studyEnglish': 'Study English',
 
         // BUTTONS
         'btn.enroll': 'Enroll Now',
@@ -556,6 +557,7 @@ const translations: Record<Language, Record<string, string>> = {
         'nav.community': 'Komunitas',
         'nav.contact': 'Kontak',
         'nav.logout': 'Keluar',
+        'nav.studyEnglish': 'Belajar Bahasa Inggris',
 
         // BUTTONS
         'btn.enroll': 'Daftar Sekarang',

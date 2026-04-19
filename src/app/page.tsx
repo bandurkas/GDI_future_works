@@ -8,7 +8,6 @@ import { Translate } from '@/components/LanguageContext';
 import CourseCardLazy from '@/components/CourseCardLazy';
 import CourseCarousel from '@/components/CourseCarousel';
 import PathCard from '@/components/PathCard';
-import PartnershipSection from '@/components/PartnershipSection';
 import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
 import { Sparkles, ArrowRight, Calendar } from 'lucide-react';
@@ -288,10 +287,6 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
-
-            {/* ── SMART PARTNERSHIP ── */}
-            <PartnershipSection />
-
 
             {/* ── COHORT URGENCY ── */}
             <section className={styles.cohortSection} id="cohort">

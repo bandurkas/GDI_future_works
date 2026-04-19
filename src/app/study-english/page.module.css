@@ -1,0 +1,6 @@
+.page {
+    padding-top: var(--nav-height);
+    background: var(--bg-primary);
+    min-height: 100vh;
+    padding-bottom: var(--space-20);
+}
