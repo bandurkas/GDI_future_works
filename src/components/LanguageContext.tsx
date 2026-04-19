@@ -241,7 +241,7 @@ const translations: Record<Language, Record<string, string>> = {
 
         // Enroll steps
         'enroll.h2': 'Start Your Journey Today',
-        'enroll.sub': 'No long forms. Instant access. Enroll in just 3 minutes.',
+        'enroll.sub': 'No long forms. Instant access. Enrol in just 3 minutes.',
         'step1.h3': 'Choose',
         'step1.p': 'Select the path that matches your career goals or let our advisors guide you.',
         'step2.h3': 'Commit',
@@ -264,7 +264,7 @@ const translations: Record<Language, Record<string, string>> = {
         'cta.h2': 'The future will not slow down.',
         'cta.h2b': 'But you can move ahead of it.',
         'cta.p': 'Join hundreds of professionals across Southeast Asia who are transforming their careers today.',
-        'cta.btn': 'Enrol in 3 Minutes →',
+        'cta.btn': 'Enrol Now →',
         'cta.guarantee': '100% satisfaction guarantee',
 
         // ── COMMUNITY PAGE ──
@@ -803,7 +803,7 @@ const translations: Record<Language, Record<string, string>> = {
         'cta.h2': 'Masa depan tidak akan melambat.',
         'cta.h2b': 'Tapi kamu bisa melangkah lebih maju.',
         'cta.p': 'Bergabunglah dengan ratusan profesional di Asia Tenggara yang sedang mengubah karier mereka hari ini.',
-        'cta.btn': 'Daftar dalam 3 Menit →',
+        'cta.btn': 'Daftar Sekarang →',
         'cta.guarantee': 'Garansi kepuasan 100%',
 
         // ── COMMUNITY PAGE (ID) ──
