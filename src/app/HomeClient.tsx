@@ -184,7 +184,7 @@ export default function HomeClient() {
                     <div className={`${styles.heroIllustration} ${styles.heroIllustrationLeft} ${styles.hideMobile}`}>
                         <Image 
                             src="/assets/notion_hero_left.webp" 
-                            alt="Collaborating Talent" 
+                            alt="Profesional belajar IT online bersama GDI FutureWorks — bootcamp data analytics dan Python" 
                             className={styles.heroImage}
                             width={500}
                             height={500}
@@ -222,7 +222,7 @@ export default function HomeClient() {
                         <div className={styles.heroIllustrationMobile}>
                             <Image
                                 src="/assets/notion_hero_left.webp"
-                                alt="Collaborating Talent"
+                                alt="Belajar kursus IT online di Indonesia bersama GDI FutureWorks"
                                 className={styles.heroImage}
                                 width={360}
                                 height={360}
@@ -248,7 +248,7 @@ export default function HomeClient() {
                     <div className={`${styles.heroIllustration} ${styles.heroIllustrationRight} ${styles.hideMobile}`}>
                         <Image 
                             src="/assets/notion_hero_right.webp" 
-                            alt="Innovating Talent" 
+                            alt="Alumni GDI FutureWorks berhasil mendapatkan karier IT impian — bootcamp live online terbaik" 
                             className={styles.heroImage}
                             width={500}
                             height={500}
@@ -385,6 +385,9 @@ export default function HomeClient() {
                     </div>
                 </div>
             </section>
+
+            {/* ── FAQ ── */}
+            <HomeFAQ />
 
             {/* ── FINAL CTA ── */}
             <section className={styles.finalCta}>

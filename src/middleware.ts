@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { jwtVerify } from 'jose';
-import { verifyCrmToken } from './lib/crm-session';
+import { ALL_ADMIN_ROLES } from '@/lib/roles';
 
 function getJwtSecret() {
   const secret = process.env.JWT_SECRET;
@@ -14,22 +14,37 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const hostname = req.headers.get('host') || '';
   const isCrmSubdomain = hostname.startsWith('crm.');
+
+  // ── CRM Subdomain & Path Normalization ──────────────────────────────────────
   
-  // ── Subdomain Isolation ─────────────────────────────────────────────────────
-  
-  // 1. If hitting the crm subdomain, ensure we are serving crm content
   if (isCrmSubdomain) {
+    const isInternalRewrite = req.headers.get('x-internal-rewrite') === 'true';
+
+    // 1. Enforce clean URLs for EXTERNAL requests only
+    if (pathname.startsWith('/crm') && !isInternalRewrite) {
+      const cleanPath = pathname.replace(/^\/crm/, '') || '/';
+      return NextResponse.redirect(new URL(cleanPath, req.url), 301);
+    }
+    
+    // 2. Internal rewrite: map all requests to the /crm directory
     if (!pathname.startsWith('/crm') && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
-       return NextResponse.rewrite(new URL(`/crm${pathname === '/' ? '' : pathname}`, req.url));
+       // Deterministic rewrite for CRM pages
+       const rewriteUrl = new URL(`/crm${pathname === '/' ? '' : pathname}`, req.url);
+       const response = NextResponse.rewrite(rewriteUrl);
+       response.headers.set('x-pathname', pathname); 
+       response.headers.set('x-internal-rewrite', 'true');
+       response.headers.set('x-crm-view', 'true'); // Hint for layouts
+       return response;
     }
   }
 
-  // 2. If hitting the main domain but trying to access /crm, redirect to subdomain
+  // 3. If hitting the main domain but trying to access /crm, redirect to subdomain clean URL
   if (!isCrmSubdomain && pathname.startsWith('/crm')) {
-    return NextResponse.redirect(new URL(`https://crm.gdifuture.works${pathname}`, req.url));
+    const cleanPath = pathname.replace(/^\/crm/, '') || '/';
+    return NextResponse.redirect(new URL(`https://crm.gdifuture.works${cleanPath}`, req.url));
   }
 
-  // NextAuth v5 changed the cookie name...
+  // ── Auth & Cookies ──────────────────────────────────────────────────────────
   // On HTTPS (production) it is prefixed with '__Secure-'
   const secureCookies = process.env.NEXTAUTH_URL?.startsWith('https://') ?? process.env.NODE_ENV === 'production';
   const cookieName = secureCookies ? '__Secure-authjs.session-token' : 'authjs.session-token';
@@ -41,19 +56,23 @@ export async function middleware(req: NextRequest) {
 
   // ─── CRM routes ─────────────────────────────────────────────────────────────
   if (pathname.startsWith('/crm')) {
+    // If not authenticated via NextAuth, check for legacy or redirect to login
+    const hasNextAuth = !!token;
+    const isAdmin = ALL_ADMIN_ROLES.includes(token?.role as string);
+
     if (pathname === '/crm/login') {
-      const crmToken = req.cookies.get('crm_session')?.value;
-      if (crmToken && await verifyCrmToken(crmToken)) {
+      if (hasNextAuth && isAdmin) {
         return NextResponse.redirect(new URL('/crm/students', req.url));
       }
       return NextResponse.next({ request: { headers: requestHeaders } });
     }
-    const crmToken = req.cookies.get('crm_session')?.value;
-    if (!crmToken || !(await verifyCrmToken(crmToken))) {
+
+    if (!hasNextAuth || !isAdmin) {
+      // If student or guest hits CRM, redirect away
       const res = NextResponse.redirect(new URL('/crm/login', req.url));
-      res.cookies.delete('crm_session');
       return res;
     }
+    
     return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
@@ -99,7 +118,6 @@ export async function middleware(req: NextRequest) {
     const text = req.nextUrl.searchParams.get('text');
     const debugParam = req.nextUrl.searchParams.get('debug_country');
     
-    // Detection priority: Debug > Cookie > Cloudflare Header > Accept-Language
     let country: string | null = null;
     let signal = 'default';
 
@@ -152,15 +170,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - assets (public assets)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico|assets).*)',
-    '/api/whatsapp', // Explicitly match this since it's in the exclusion list above
+    '/api/whatsapp',
   ],
 };

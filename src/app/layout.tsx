@@ -38,13 +38,28 @@ export const metadata: Metadata = {
     template: '%s | GDI FutureWorks',
   },
   description: 'Live online IT courses led by industry professionals. Learn data analytics, Python, AI, and more. Build real projects. Start your tech career faster.',
-  keywords: ['IT courses', 'data analytics', 'Python', 'AI', 'online learning', 'tech career', 'Indonesia', 'Southeast Asia'],
+  keywords: [
+    // English
+    'IT courses', 'data analytics', 'Python', 'AI', 'online learning', 'tech career', 'Indonesia', 'Southeast Asia',
+    'bootcamp online', 'live training', 'certificate course',
+    // Indonesian / Bahasa Indonesia
+    'Kursus IT online Indonesia', 'Bootcamp coding Indonesia', 'Belajar Python online',
+    'Kursus data analytics bersertifikat', 'Pelatihan AI untuk pemula',
+    'Kursus desain grafis AI', 'Bootcamp live interaktif', 'Kursus programming dari nol',
+    'Upskilling IT profesional', 'GDI FutureWorks',
+  ],
   authors: [{ name: 'Global Digital Informasi' }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
+  },
   openGraph: {
     type: 'website',
     siteName: 'GDI FutureWorks',
     title: 'GDI FutureWorks — IT Courses That Get You Hired',
     description: 'Live online IT courses led by industry professionals. Build real projects and join the tech workforce faster.',
+    images: [{ url: 'https://gdifuture.works/assets/og-courses-premium.png', width: 1200, height: 630 }],
   },
 };
 

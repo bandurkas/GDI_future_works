@@ -37,6 +37,11 @@ export interface SyllabusDetails {
     };
 }
 
+export interface FAQ {
+    question: string;
+    answer: string;
+}
+
 export interface Course {
     id: string;
     slug: string;
@@ -86,6 +91,8 @@ export interface Course {
     syllabusDetailsID?: SyllabusDetails;
     instructorID?: Instructor;
     nextSessionID?: string;
+    faqsID?: FAQ[];
+    seoKeywordsID?: string[];
 }
 
 export const courses: Course[] = [
@@ -270,6 +277,36 @@ export const courses: Course[] = [
                 ]
             }
         },
+        faqsID: [
+            {
+                question: "Apa itu bootcamp Data Analytics di GDI FutureWorks?",
+                answer: "GDI FutureWorks menawarkan bootcamp Data Analytics live interaktif yang dirancang untuk pemula dan profesional. Kamu akan belajar menguasai Python, SQL, dan visualisasi data dalam waktu singkat dengan bimbingan praktis dari ahli industri."
+            },
+            {
+                question: "Apakah saya akan mendapatkan sertifikat?",
+                answer: "Ya, setelah menyelesaikan kursus, kamu akan menerima sertifikat resmi yang memvalidasi keahlianmu dalam analisis data, yang dapat kamu gunakan untuk meningkatkan profil profesional di LinkedIn atau saat melamar kerja."
+            },
+            {
+                question: "Apakah kursus ini cocok untuk non-IT?",
+                answer: "Tentu saja. Kurikulum kami disusun secara bertahap, mulai dari dasar-dasar, sehingga sangat ramah bagi mereka yang tidak memiliki latar belakang IT atau coding sebelumnya."
+            },
+            {
+                question: "Berapa proyeksi gaji Data Analyst di Indonesia?",
+                answer: "Permintaan akan tenaga ahli data di Indonesia sangat tinggi. Seorang Data Analyst junior dapat mengharapkan gaji kompetitif antara Rp 7 hingga Rp 12 juta per bulan, tergantung pada skala perusahaan dan portofolio yang dimiliki."
+            },
+            {
+                question: "Mengapa harus belajar Data Analytics dengan Python?",
+                answer: "Python adalah bahasa pemrograman paling populer di dunia untuk data science. Kemudahannya dipelajari dan dukungannya terhadap library kuat seperti Pandas menjadikannya alat wajib bagi setiap analis data modern."
+            }
+        ],
+        seoKeywordsID: [
+            "Bootcamp Data Analytics Indonesia",
+            "Kursus Data Science Terbaik",
+            "Belajar Python untuk Data Science",
+            "Pelatihan Data Analyst Bersertifikat",
+            "Gaji Data Analyst Indonesia",
+            "Data Analytics untuk Non-IT"
+        ]
     },
     {
         id: 'python-programming',

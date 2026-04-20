@@ -10,7 +10,10 @@ import PromoPopup from './PromoPopup';
 
 export default function PublicLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdminRoute = pathname.startsWith('/admin');
+  
+  // Host-based isolation for CRM
+  const isCrmSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('crm.');
+  const isAdminRoute = pathname.startsWith('/admin') || isCrmSubdomain;
 
   if (isAdminRoute) {
     return <>{children}</>;

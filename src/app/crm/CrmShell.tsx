@@ -2,6 +2,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import { signOut } from 'next-auth/react';
 import styles from './CrmShell.module.css';
 import nav from './crm-nav.module.css';
 import { 
@@ -41,15 +42,26 @@ function playNotificationSound() {
 
 export default function CrmShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === '/crm/login';
-  const isStudents = pathname.startsWith('/crm/students');
-  const isTutors = pathname.startsWith('/crm/tutors');
-  const isPayments = pathname.startsWith('/crm/payments');
-  const isAdsReports = pathname.startsWith('/crm/ads-reports');
+  // On CRM subdomain, middleware rewrites '/login' → '/crm/login' internally,
+  // but client-side pathname stays as '/login'. Match both.
+  const isLoginPage = pathname === '/crm/login' || pathname === '/login';
+  const isStudents = pathname.startsWith('/crm/students') || pathname.startsWith('/students');
+  const isTutors = pathname.startsWith('/crm/tutors') || pathname.startsWith('/tutors');
+  const isPayments = pathname.startsWith('/crm/payments') || pathname.startsWith('/payments');
+  const isAdsReports = pathname.startsWith('/crm/ads-reports') || pathname.startsWith('/ads-reports');
   const { openAddLeadDialog } = useManagement();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
+  const [isCrmSubdomain, setIsCrmSubdomain] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsCrmSubdomain(window.location.hostname.startsWith('crm.'));
+    }
+  }, []);
+
+  const isLight = theme === 'light';
   const [pendingCount, setPendingCount] = useState(0);
   const [newLeadCount, setNewLeadCount] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
@@ -125,54 +137,58 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   }
 
   const pageLabel = isStudents ? 'Students' : isTutors ? 'Tutors' : isPayments ? 'Payments' : isAdsReports ? 'Ads Reports' : 'Dashboard';
-  const isLight = theme === 'light';
+    // ── CRM Navigation Helpers ──
+    const formatLink = (path: string) => {
+        if (!isCrmSubdomain) return path;
+        return path.replace(/^\/crm/, '') || '/';
+    };
 
-  return (
-    <div className={styles.wrap} data-crm-theme={theme}>
-      {/* ── Sidebar ── */}
-      <aside className={collapsed ? `${styles.sidebar} ${styles.sidebarCollapsed}` : styles.sidebar}>
-        {/* Logo row */}
-        <div className={styles.logo}>
-          <div className={styles.logoLeft}>
-            <div className={styles.logoMark}>G</div>
-            {!collapsed && (
-              <div className={styles.logoTexts}>
-                <div className={styles.logoName}>GDI CRM</div>
-                <div className={styles.logoVersion}>V3.0 ENTERPRISE</div>
-              </div>
-            )}
-          </div>
-          {!collapsed && (
-            <button className={styles.toggleBtn} onClick={() => setCollapsed(true)}>
-              <Menu size={16} />
-            </button>
-          )}
-        </div>
+    return (
+        <div className={styles.wrap} data-crm-theme={theme}>
+            {/* ── Sidebar ── */}
+            <aside className={collapsed ? `${styles.sidebar} ${styles.sidebarCollapsed}` : styles.sidebar}>
+                {/* Logo row */}
+                <div className={styles.logo}>
+                    <div className={styles.logoLeft}>
+                        <div className={styles.logoMark}>G</div>
+                        {!collapsed && (
+                            <div className={styles.logoTexts}>
+                                <div className={styles.logoName}>GDI CRM</div>
+                                <div className={styles.logoVersion}>V3.0 ENTERPRISE</div>
+                            </div>
+                        )}
+                    </div>
+                    {!collapsed && (
+                        <button className={styles.toggleBtn} onClick={() => setCollapsed(true)}>
+                            <Menu size={16} />
+                        </button>
+                    )}
+                </div>
 
-        {/* Nav */}
-        <nav className={styles.nav}>
-          {!collapsed && <div className={styles.navSection}>Main</div>}
+                {/* Nav */}
+                <nav className={styles.nav}>
+                    {!collapsed && <div className={styles.navSection}>Main</div>}
 
-          <NavItem href="/crm/students" active={isStudents} collapsed={collapsed} icon={<Users size={18} />} badge={newLeadCount}>
-            Sales Pipeline
-          </NavItem>
+                    <NavItem href={formatLink('/crm/students')} active={isStudents} collapsed={collapsed} icon={<Users size={18} />} badge={newLeadCount}>
+                        Sales Pipeline
+                    </NavItem>
 
-          <NavItem href="/crm/tutors" active={isTutors} collapsed={collapsed} icon={<GraduationCap size={18} />}>
-            Tutor Pipeline
-          </NavItem>
+                    <NavItem href={formatLink('/crm/tutors')} active={isTutors} collapsed={collapsed} icon={<GraduationCap size={18} />}>
+                        Tutor Pipeline
+                    </NavItem>
 
-          <NavItem href="/crm/payments" active={isPayments} collapsed={collapsed} badge={pendingCount} icon={<CreditCard size={18} />}>
-            Payments
-          </NavItem>
+                    <NavItem href={formatLink('/crm/payments')} active={isPayments} collapsed={collapsed} badge={pendingCount} icon={<CreditCard size={18} />}>
+                        Payments
+                    </NavItem>
 
-          <NavItem href="/crm/interests" active={pathname.startsWith('/crm/interests')} collapsed={collapsed} icon={<Search size={18} />}>
-            Interests
-          </NavItem>
+                    <NavItem href={formatLink('/crm/interests')} active={pathname.includes('/interests')} collapsed={collapsed} icon={<Search size={18} />}>
+                        Interests
+                    </NavItem>
 
-          <NavItem href="/crm/ads-reports" active={isAdsReports} collapsed={collapsed} icon={<BarChart3 size={18} />}>
-            Ads Reports
-          </NavItem>
-        </nav>
+                    <NavItem href={formatLink('/crm/ads-reports')} active={isAdsReports} collapsed={collapsed} icon={<BarChart3 size={18} />}>
+                        Ads Reports
+                    </NavItem>
+                </nav>
 
         {/* Bottom: user + logout */}
         <div className={styles.userSection}>
@@ -189,12 +205,14 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
                   <div className={styles.userRole}>CRM Access</div>
                 </div>
               </div>
-              <form action="/api/crm/logout" method="POST">
-                <button type="submit" className={styles.logoutBtn}>
-                  <LogOut size={14} />
-                  Sign out
-                </button>
-              </form>
+              <button
+                type="button"
+                className={styles.logoutBtn}
+                onClick={() => signOut({ callbackUrl: '/login', redirect: true })}
+              >
+                <LogOut size={14} />
+                Sign out
+              </button>
             </>
           )}
         </div>
