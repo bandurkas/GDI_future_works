@@ -111,6 +111,20 @@
       "createdAt": "2026-04-20T17:48:25.816Z",
       "model": "sonnet",
       "modelRoutedBy": "router"
+    },
+    "agent-1776707441331-wj61c0": {
+      "agentId": "agent-1776707441331-wj61c0",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Review Lead Resilience layer in src/app/api/leads/schedule/route.ts. Ensure fs operations are safe in a Next.js environment and error handling is robust."
+      },
+      "createdAt": "2026-04-20T17:50:41.335Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
     }
   },
   "version": "3.0.0"

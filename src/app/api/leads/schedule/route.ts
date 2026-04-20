@@ -2,9 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { notifyNewLead } from '@/lib/sales-notifications';
 import { normalizeUtm } from '@/lib/utm-normalize';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(req: NextRequest) {
-    // Sync fix: ensured DB schema matches Prisma model
+    let bodyData: any = {};
+    try {
+        bodyData = await req.json();
+    } catch (e) {
+        return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    }
+
     try {
         const {
             phone, courseSlug, courseTitle,
@@ -13,7 +21,8 @@ export async function POST(req: NextRequest) {
             utmSource, utmMedium, utmCampaign, utmContent, utmTerm,
             gaClientId, fbClientId, fbBrowserId,
             waStatus
-        } = await req.json();
+        } = bodyData;
+
         const waStatusNorm = waStatus === 'VERIFIED' || waStatus === 'BYPASSED' ? waStatus : null;
         const sourceNorm = typeof srcInput === 'string' && srcInput.trim() ? srcInput.trim() : 'Schedule Form';
         const utm = normalizeUtm({ utmSource, utmMedium, utmCampaign, utmContent, utmTerm });
@@ -50,12 +59,10 @@ export async function POST(req: NextRequest) {
             `;
         }
 
-        const lead = { id: leadId };
-
         // Record activity
         await prisma.leadActivity.create({
             data: {
-                leadId: lead.id,
+                leadId: leadId,
                 type: 'WHATSAPP',
                 notes: JSON.stringify({
                     action: 'started_schedule_selection',
@@ -77,7 +84,27 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ ok: true });
     } catch (error) {
-        console.error('Lead sync error:', error);
-        return NextResponse.json({ ok: false, error: 'Failed to sync lead' }, { status: 500 });
+        console.error('CRITICAL: Lead sync failed. Activating Fallback Store.', error);
+        
+        try {
+            const logDir = path.join(process.cwd(), 'logs');
+            if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
+            
+            const logFile = path.join(logDir, 'failed-leads.jsonl');
+            const logEntry = JSON.stringify({
+                timestamp: new Date().toISOString(),
+                error: (error as Error).message,
+                data: bodyData
+            });
+            
+            fs.appendFileSync(logFile, logEntry + '\n');
+            console.log('Lead data preserved in failed-leads.jsonl');
+            
+            // Return 202 Accepted - we have the data, but it's not in the main DB yet
+            return NextResponse.json({ ok: true, fallback: true }, { status: 202 });
+        } catch (logError) {
+            console.error('ULTIMATE FAILURE: Could not even log lead to file!', logError);
+            return NextResponse.json({ ok: false, error: 'System failure' }, { status: 500 });
+        }
     }
 }
