@@ -1,7 +1,8 @@
 .container {
     position: fixed;
-    bottom: 24px;
+    bottom: calc(var(--sticky-bar-height) + 24px);
     left: 24px;
+    right: auto; /* Force left alignment */
     z-index: 1000;
     font-family: var(--font-body);
     display: flex;
@@ -309,7 +310,7 @@
 /* Mobile HUD */
 @media (max-width: 1024px) {
     .container {
-        bottom: calc(var(--thumb-zone) + 16px);
+        bottom: calc(var(--sticky-bar-height) + 12px);
         left: 16px;
     }
 }

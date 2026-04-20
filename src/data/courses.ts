@@ -204,6 +204,7 @@ export const courses: Course[] = [
             initials: 'BS',
             accentColor: '#667eea',
             bgGradient: 'linear-gradient(135deg, #667eea, #764ba2)',
+            photoUrl: '/assets/tutors/bayu.jpg',
             linkedin: 'https://www.linkedin.com/in/bayusedana/',
             github: 'https://github.com/bayusedana26',
             loom: 'https://www.loom.com/share/02fd0509dbd24954a22d67c1a7c94d6d',

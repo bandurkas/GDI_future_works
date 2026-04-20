@@ -1,7 +1,7 @@
 .btn {
     position: fixed;
-    bottom: 24px;
-    right: 20px;
+    bottom: calc(var(--sticky-bar-height) + 24px); /* Synchronized with Maya for symmetry */
+    right: 24px;
     z-index: 50;
     display: flex;
     align-items: center;
@@ -13,7 +13,7 @@
     box-shadow: 0 6px 24px rgba(37, 211, 102, 0.35);
     transition: all var(--transition-base);
     text-decoration: none;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 0.875rem;
     font-weight: 600;
 }
@@ -32,10 +32,10 @@
     font-weight: 600;
 }
 
-/* On mobile with sticky bottom bar, move up */
+/* Sync for all mobile/desktop scenarios where sticky bar might be present */
 @media (max-width: 1024px) {
     .btn {
-        bottom: calc(var(--thumb-zone) + 16px);
+        bottom: calc(var(--sticky-bar-height) + 12px);
         right: 16px;
         padding: 11px 16px;
     }

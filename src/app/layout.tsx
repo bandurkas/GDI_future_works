@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google';
+import { Inter, Fira_Code, Fira_Sans } from 'next/font/google';
 import './globals.css';
 import PublicLayoutWrapper from '@/components/PublicLayoutWrapper';
 import ThemeProvider from '@/components/ThemeProvider';
@@ -18,6 +18,18 @@ const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
   variable: '--font-sans',
+});
+
+const firaCode = Fira_Code({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700'],
+    variable: '--font-mono',
+});
+
+const firaSans = Fira_Sans({
+    subsets: ['latin'],
+    weight: ['300', '400', '500', '600', '700'],
+    variable: '--font-sans-alt',
 });
 
 export const metadata: Metadata = {
@@ -101,7 +113,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang={initialLang}
       suppressHydrationWarning
-      className={inter.variable}
+      className={`${inter.variable} ${firaCode.variable} ${firaSans.variable}`}
     >
       <head>
         {/* Preconnect to critical origins */}

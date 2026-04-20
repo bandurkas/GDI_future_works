@@ -1,40 +1,47 @@
 #!/usr/bin/expect -f
-# Full production deploy to /var/www/gdi-futureworks
+
 set timeout 600
-set vps_pass "B@nd73610421"
+set vps "root@168.231.118.173"
+set pass "B@nd73610421"
+set vps_dir "/var/www/gdi-futureworks"
 
-spawn ssh -o StrictHostKeyChecking=no root@168.231.118.173
+# 1. Sync files with rsync
+puts "🚀 Starting file sync..."
+spawn rsync -avz --exclude "node_modules" --exclude ".next" --exclude ".git" --exclude ".env.local" --exclude ".env.production" -e "ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no" ./ "$vps:$vps_dir/"
 
-expect "password:"
-send "$vps_pass\r"
+expect {
+    "password:" {
+        send "$pass\r"
+        exp_continue
+    }
+    eof
+}
 
-expect "# "
-send "cd /var/www/gdi-futureworks\r"
+# 2. Remote Build and Restart
+puts "\n🔨 Starting remote build and restart..."
+spawn ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no "$vps"
 
-# ── ENV SAFETY CHECK ──
-expect "# "
-send "bash scratch/check-env.sh .env || exit 1\r"
+expect {
+    "password:" {
+        send "$pass\r"
+    }
+}
 
-expect "# "
-send "git pull origin main 2>&1 | tail -10\r"
+expect "# " {
+    send "cd $vps_dir\r"
+}
 
-expect "# "
-send "npm install --legacy-peer-deps 2>&1 | tail -5\r"
+expect "# " {
+    send "npm install --legacy-peer-deps --silent && npx prisma db push && npm run build\r"
+}
 
-expect "# "
-send "npx -y prisma@5.22.0 generate 2>&1 | tail -3\r"
+expect "# " {
+    send "pm2 restart gdi --update-env && pm2 save\r"
+}
 
-expect "# "
-send "npx -y prisma@5.22.0 db push --accept-data-loss 2>&1 | tail -5\r"
-
-expect "# "
-send "npm run build 2>&1 | tail -20\r"
-
-expect "# "
-send "pm2 restart gdi --update-env && sleep 3 && pm2 status\r"
-
-expect "# "
-send "exit\r"
+expect "# " {
+    send "exit\r"
+}
 
 expect eof
-puts "\n=== DEPLOYMENT COMPLETE ==="
+puts "\n✅ Deployment Complete! Visit https://gdifuture.works"

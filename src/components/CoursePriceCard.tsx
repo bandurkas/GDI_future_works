@@ -1,9 +1,12 @@
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Course } from '@/data/courses';
 import { useLanguage } from '@/components/LanguageContext';
 import { useCurrency } from '@/components/CurrencyContext';
 import { formatPrice } from '@/lib/currency';
+import LeadConversionWidget from '@/components/LeadConversionWidget';
+import { Download } from 'lucide-react';
 
 interface Props {
     course: Course;
@@ -20,6 +23,7 @@ interface Props {
 export default function CoursePriceCard({ course, slug, variant, styles }: Props) {
     const { language } = useLanguage();
     const { currency } = useCurrency();
+    const [isWidgetOpen, setIsWidgetOpen] = useState(false);
     const isID = language === 'id';
 
     const currentPrice = currency === 'IDR' ? course.priceIDR : course.priceMYR;
@@ -52,7 +56,7 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
                 <div className={styles.priceAmount}>{displayPrice}</div>
                 <div className={styles.priceRight}>
                     <span className={styles.priceOrig}>{displayOriginal}</span>
-                    <span className={`${styles.badge} ${styles.badgeAccent}`}>{discount}% {isID ? 'diskon' : 'off'}</span>
+                    <span className={`${styles.badge} ${styles.badgeAccent}`}>{discount}% {isID ? 'disкон' : 'off'}</span>
                 </div>
             </div>
 
@@ -66,17 +70,45 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
                 ))}
             </ul>
 
-            {/* CTA button */}
-            <Link
-                href={`/courses/${slug}/schedule`}
-                className="btn btn-primary btn-lg btn-full"
-                id={ctaId}
-            >
-                {isID ? 'Pilih Tanggal & Waktu →' : 'Choose Date & Time →'}
-            </Link>
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <Link
+                    href={`/courses/${slug}/schedule`}
+                    className="btn btn-primary btn-lg btn-full"
+                    id={ctaId}
+                    style={{ marginBottom: 0 }}
+                >
+                    {isID ? 'Pilih Tanggal & Waktu →' : 'Choose Date & Time →'}
+                </Link>
+
+                <button 
+                    onClick={() => setIsWidgetOpen(true)}
+                    className="btn btn-outline btn-lg btn-full"
+                    style={{ 
+                        background: 'transparent', 
+                        border: '1.5px solid #eee',
+                        color: '#444',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px'
+                    }}
+                >
+                    <Download size={18} />
+                    {isID ? 'Unduh Program (PDF)' : 'Get Full Syllabus'}
+                </button>
+            </div>
 
             {/* Footnote */}
             <p className={styles.priceNote}>{ctaNote}</p>
+
+            {/* Global Lead Widget */}
+            <LeadConversionWidget 
+                courseId={course.id}
+                courseTitle={isID && course.titleID ? course.titleID : course.title}
+                isOpen={isWidgetOpen}
+                onClose={() => setIsWidgetOpen(false)}
+            />
         </>
     );
 }

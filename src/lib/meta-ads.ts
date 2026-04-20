@@ -77,3 +77,74 @@ export async function syncMetaAdsPerformance(days = 14) {
 
   return syncResults;
 }
+
+/**
+ * Sends a server-side Conversion Event to Meta Ads API (CAPI).
+ * Improves attribution and ad algorithm performance by bypassing ad blockers.
+ */
+export async function sendMetaConversionEvent({
+    eventName,
+    userData,
+    customData = {},
+    sourceUrl
+}: {
+    eventName: 'Lead' | 'Contact' | 'CompleteRegistration';
+    userData: {
+        email?: string;
+        phone?: string;
+        fbc?: string;
+        fbp?: string;
+        externalId?: string;
+        clientIpAddress?: string;
+        clientUserAgent?: string;
+    };
+    customData?: Record<string, any>;
+    sourceUrl?: string;
+}) {
+    if (!META_ACCESS_TOKEN || !process.env.META_PIXEL_ID) {
+        console.warn('Meta Ads credentials missing - skipping CAPI event');
+        return;
+    }
+
+    const endpoint = `https://graph.facebook.com/${META_API_VERSION}/${process.env.META_PIXEL_ID}/events`;
+
+    // Process user data (Meta requires hashing for PII like email/phone, but we can send raw and they hash it if using Business SDK)
+    // Here we use standard Graph API payload
+    const payload = {
+        data: [{
+            event_name: eventName,
+            event_time: Math.floor(Date.now() / 1000),
+            action_source: 'website',
+            event_source_url: sourceUrl || 'https://gdifuture.works',
+            user_data: {
+                em: userData.email ? [userData.email.toLowerCase().trim()] : undefined,
+                ph: userData.phone ? [userData.phone.replace(/\D/g, '')] : undefined,
+                fbc: userData.fbc,
+                fbp: userData.fbp,
+                external_id: userData.externalId,
+                client_ip_address: userData.clientIpAddress,
+                client_user_agent: userData.clientUserAgent
+            },
+            custom_data: customData
+        }],
+        access_token: META_ACCESS_TOKEN
+    };
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+        if (result.error) {
+            console.error('Meta CAPI Error:', result.error);
+        } else {
+            console.log(`Meta CAPI Success: Sent ${eventName} event`);
+        }
+        return result;
+    } catch (error) {
+        console.error('Meta CAPI Network Error:', error);
+    }
+}

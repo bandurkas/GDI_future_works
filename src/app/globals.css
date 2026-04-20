@@ -95,8 +95,14 @@
   --space-3xl: var(--space-24);
 
   /* Typography — references next/font variables injected by layout.tsx */
-  --font-display: var(--font-bebas, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
-  --font-body: var(--font-dm, 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-display: var(--font-sans, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-body: var(--font-sans-alt, -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Swiss Style Precision */
+  --swiss-border: 1px solid rgba(0, 0, 0, 0.08);
+  --swiss-grid-color: rgba(0, 0, 0, 0.03);
+  --noise-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 
   /* Easing */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -119,7 +125,13 @@
   --nav-height: 72px; /* Slightly taller for more elegance */
   --max-width: 1200px; /* Wider for more breathing room */
   --thumb-zone: 88px;
-  /* sticky bottom CTA height */
+  --sticky-bar-height: 80px;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --sticky-bar-height: 70px;
+  }
 }
 
 /* ===== LIGHT OVERRIDE (force light inside a dark-themed page) ===== */
