@@ -110,13 +110,13 @@ export default function LeadDialog() {
           {error && <div style={{ background: '#fef2f2', color: '#ef4444', padding: '10px 14px', borderRadius: '8px', fontSize: '13px' }}>{error}</div>}
           
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--crm-text-dim)', marginBottom: '6px' }}>Full Name *</label>
-            <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} style={{ width: '100%', padding: '10px 12px', background: 'var(--crm-bg)', border: '1px solid var(--crm-border)', borderRadius: '8px', color: 'var(--crm-text)', fontSize: '13px', outline: 'none' }} placeholder="E.g. John Doe" />
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--crm-text-dim)', marginBottom: '6px' }}>Full Name <span style={{ fontWeight: 400, opacity: 0.6 }}>(optional — defaults to "WA Lead")</span></label>
+            <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} style={{ width: '100%', padding: '10px 12px', background: 'var(--crm-bg)', border: '1px solid var(--crm-border)', borderRadius: '8px', color: 'var(--crm-text)', fontSize: '13px', outline: 'none' }} placeholder="E.g. John Doe" />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--crm-text-dim)', marginBottom: '6px' }}>Email Address *</label>
-            <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} style={{ width: '100%', padding: '10px 12px', background: 'var(--crm-bg)', border: '1px solid var(--crm-border)', borderRadius: '8px', color: 'var(--crm-text)', fontSize: '13px', outline: 'none' }} placeholder="E.g. john@example.com" />
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--crm-text-dim)', marginBottom: '6px' }}>Email Address <span style={{ fontWeight: 400, opacity: 0.6 }}>(optional — auto-filled from phone)</span></label>
+            <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} style={{ width: '100%', padding: '10px 12px', background: 'var(--crm-bg)', border: '1px solid var(--crm-border)', borderRadius: '8px', color: 'var(--crm-text)', fontSize: '13px', outline: 'none' }} placeholder="E.g. john@example.com" />
           </div>
 
           <div>
