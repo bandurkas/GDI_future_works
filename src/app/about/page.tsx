@@ -6,6 +6,8 @@ export const metadata: Metadata = {
     description: 'GDI FutureWorks was built by Feonna Watford and Sergei Bandurka — two industry veterans with over 40 years of combined experience — to deliver real-world tech skills that accelerate careers across Southeast Asia.'
 };
 
+export const revalidate = 60;
+
 export default function AboutPage() {
     return <AboutPageClient />;
 }

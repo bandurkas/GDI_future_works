@@ -16,6 +16,8 @@ export async function generateStaticParams() {
     return courses.map((c) => ({ slug: c.slug }));
 }
 
+export const revalidate = 60;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const course = getCourseBySlug(slug);

@@ -7,6 +7,8 @@ export const metadata: Metadata = {
     description: 'Explore English learning & teaching pathways. Build academic English, prepare for IELTS, or become a certified English teacher with GDI FutureWorks.',
 };
 
+export const revalidate = 60;
+
 export default function StudyEnglishPage() {
     return (
         <div className={styles.page}>

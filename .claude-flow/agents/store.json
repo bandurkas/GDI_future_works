@@ -83,6 +83,34 @@
       "createdAt": "2026-04-20T17:44:16.135Z",
       "model": "sonnet",
       "modelRoutedBy": "router"
+    },
+    "agent-1776707237503-2c5nd0": {
+      "agentId": "agent-1776707237503-2c5nd0",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Review ISR implementation across multiple pages: /, /courses, /courses/[slug], /study-english, /about. Confirm that export const revalidate = 60 is present and valid."
+      },
+      "createdAt": "2026-04-20T17:47:17.507Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1776707305812-1l1t8m": {
+      "agentId": "agent-1776707305812-1l1t8m",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Review the Server/Client split of page.tsx and HomeClient.tsx. Verify that ISR (revalidate=60) is now correctly handled. Also check ISR on courses/ and about/ pages."
+      },
+      "createdAt": "2026-04-20T17:48:25.816Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
     }
   },
   "version": "3.0.0"
