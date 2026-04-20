@@ -12,7 +12,24 @@ function getJwtSecret() {
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  // NextAuth v5 changed the cookie name from 'next-auth.session-token' to 'authjs.session-token'
+  const hostname = req.headers.get('host') || '';
+  const isCrmSubdomain = hostname.startsWith('crm.');
+  
+  // ── Subdomain Isolation ─────────────────────────────────────────────────────
+  
+  // 1. If hitting the crm subdomain, ensure we are serving crm content
+  if (isCrmSubdomain) {
+    if (!pathname.startsWith('/crm') && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
+       return NextResponse.rewrite(new URL(`/crm${pathname === '/' ? '' : pathname}`, req.url));
+    }
+  }
+
+  // 2. If hitting the main domain but trying to access /crm, redirect to subdomain
+  if (!isCrmSubdomain && pathname.startsWith('/crm')) {
+    return NextResponse.redirect(new URL(`https://crm.gdifuture.works${pathname}`, req.url));
+  }
+
+  // NextAuth v5 changed the cookie name...
   // On HTTPS (production) it is prefixed with '__Secure-'
   const secureCookies = process.env.NEXTAUTH_URL?.startsWith('https://') ?? process.env.NODE_ENV === 'production';
   const cookieName = secureCookies ? '__Secure-authjs.session-token' : 'authjs.session-token';
@@ -134,5 +151,16 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/crm/:path*', '/login', '/signup', '/dashboard', '/dashboard/:path*', '/profile', '/profile/:path*', '/api/whatsapp'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - assets (public assets)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|assets).*)',
+    '/api/whatsapp', // Explicitly match this since it's in the exclusion list above
+  ],
 };

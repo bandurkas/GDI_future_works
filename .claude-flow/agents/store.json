@@ -125,6 +125,20 @@
       "createdAt": "2026-04-20T17:50:41.335Z",
       "model": "sonnet",
       "modelRoutedBy": "router"
+    },
+    "agent-1776707498949-cwx73c": {
+      "agentId": "agent-1776707498949-cwx73c",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Review the subdomain isolation logic in src/middleware.ts. Ensure that rewriting crm subdomain to /crm is safe and redirects from main domain /crm to subdomain are correct."
+      },
+      "createdAt": "2026-04-20T17:51:38.952Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
     }
   },
   "version": "3.0.0"
