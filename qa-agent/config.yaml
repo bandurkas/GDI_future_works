@@ -1,7 +1,8 @@
 name: AI QA Agent
 description: Full automated QA testing agent for website https://gdifuture.works/
 
-model: gpt-4o
+ai_provider: dashscope
+model: qwen-plus
 temperature: 0.1
 
 memory:

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
     title: 'All Courses — GDI FutureWorks',
     description: 'Browse live IT courses: Data Analytics, Python, AI Design, LLM Engineering.',

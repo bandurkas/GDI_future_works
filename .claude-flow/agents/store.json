@@ -55,6 +55,34 @@
       "createdAt": "2026-04-14T20:44:20.852Z",
       "model": "haiku",
       "modelRoutedBy": "router"
+    },
+    "agent-1776707020047-gxckp0": {
+      "agentId": "agent-1776707020047-gxckp0",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Review CSP changes in next.config.mjs for Microsoft Clarity. Ensure syntax is correct and security is maintained."
+      },
+      "createdAt": "2026-04-20T17:43:40.051Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1776707056130-vj6iz4": {
+      "agentId": "agent-1776707056130-vj6iz4",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Review CSP changes in next.config.mjs for Microsoft Clarity and confirm that the build fix in AdReportDashboard.tsx is correct."
+      },
+      "createdAt": "2026-04-20T17:44:16.135Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
     }
   },
   "version": "3.0.0"

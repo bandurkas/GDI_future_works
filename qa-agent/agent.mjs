@@ -18,9 +18,18 @@ const SCREENSHOTS_DIR = path.join(OUTPUT_DIR, 'screenshots');
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 if (!fs.existsSync(SCREENSHOTS_DIR)) fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
 
-// OpenAI Setup
+// AI Provider Setup
+const provider = config.ai_provider || 'openai';
+const apiKey = provider === 'dashscope' ? process.env.DASHSCOPE_API_KEY : process.env.OPENAI_API_KEY;
+const baseURL = provider === 'dashscope' ? (process.env.DASHSCOPE_BASE_URL || 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1') : undefined;
+
+if (!apiKey) {
+    console.warn(chalk.yellow(`Warning: API key for provider '${provider}' is missing in .env`));
+}
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: apiKey,
+  baseURL: baseURL,
 });
 
 class QA_Agent {
@@ -179,7 +188,7 @@ class QA_Agent {
     
     try {
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: config.model || "gpt-4o",
         messages: [
           { 
             role: "system", 
