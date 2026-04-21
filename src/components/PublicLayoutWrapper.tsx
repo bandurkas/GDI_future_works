@@ -4,9 +4,11 @@ import { usePathname } from 'next/navigation';
 import Navbar from './NavbarPremium';
 import Footer from './Footer';
 import ScrollReveal from './ScrollReveal';
-import WhatsAppButton from './WhatsAppButton';
-import DigitalAdvisor from './DigitalAdvisor';
-import PromoPopup from './PromoPopup';
+import dynamic from 'next/dynamic';
+
+const WhatsAppButton = dynamic(() => import('./WhatsAppButton'), { ssr: false });
+const DigitalAdvisor = dynamic(() => import('./DigitalAdvisor'), { ssr: false });
+const PromoPopup = dynamic(() => import('./PromoPopup'), { ssr: false });
 
 export default function PublicLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
