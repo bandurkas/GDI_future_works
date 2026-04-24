@@ -37,7 +37,7 @@ echo "📦 Syncing files (skipping .env.local)..."
 rsync_cmd
 
 echo "🔨 Building on VPS..."
-ssh_cmd "cd $VPS_DIR && npm install --legacy-peer-deps --silent && npx prisma db push && npm run build"
+ssh_cmd "cd $VPS_DIR && npm install --legacy-peer-deps --silent && npx prisma db push && export NODE_OPTIONS=--max-old-space-size=4096 && npm run build"
 
 echo "♻️  Restarting PM2..."
 ssh_cmd "pm2 restart gdi --update-env && pm2 save"

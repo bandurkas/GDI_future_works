@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+set timeout 60
+set password "B@nd73610421"
+set user "root"
+set host "168.231.118.173"
+
+# Search for the earliest hit on the VPS across all accessible logs
+spawn ssh -o StrictHostKeyChecking=no $user@$host "zgrep '172.69.166.110' /var/log/nginx/access.log* | sort -k 4 | head -n 20"
+expect "password:"
+send "$password\r"
+expect eof

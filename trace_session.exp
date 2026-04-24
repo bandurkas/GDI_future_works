@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+set timeout 60
+set password "B@nd73610421"
+set user "root"
+set host "168.231.118.173"
+
+# Search for all requests from this IP (and related ones) to trace the session
+spawn ssh -o StrictHostKeyChecking=no $user@$host "grep '172.69.166.110' /var/log/nginx/access.log | grep '21/Apr/2026:04:'"
+expect "password:"
+send "$password\r"
+expect eof

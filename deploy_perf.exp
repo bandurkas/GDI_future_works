@@ -1,0 +1,12 @@
+#!/usr/bin/expect -f
+set timeout 300
+set password "B@nd73610421"
+set user "root"
+set host "168.231.118.173"
+set vps_dir "/var/www/gdi-futureworks"
+
+spawn ssh -o StrictHostKeyChecking=no $user@$host "cd $vps_dir && git pull origin main && npm install --legacy-peer-deps --silent && npm run build && pm2 restart gdi --update-env && echo '=== DEPLOY OK ==='"
+expect "password:"
+send "$password\r"
+expect "=== DEPLOY OK ===" { puts "\nSUCCESS" }
+expect eof
