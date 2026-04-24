@@ -1,0 +1,45 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+set host "31.97.105.238"
+set user "root"
+set pass "w7XBiu++Ph4t4dlB1nWRMwzznowtt6k5"
+set target_dir "/root/SM_Agent"
+set local_dir "/Users/styserg/Desktop/SmartMoney"
+
+# 1. Создаем папку на сервере
+spawn ssh $user@$host
+expect "password:" { send "$pass\r" }
+expect "#"
+send "mkdir -p $target_dir\r"
+send "exit\r"
+expect eof
+
+# 2. Копируем файлы (main, requirements, .env, backtest, agents, notifier)
+foreach file {main.py requirements.txt .env backtest.py .gitignore} {
+    spawn scp $local_dir/$file $user@$host:$target_dir/
+    expect "password:" { send "$pass\r" }
+    expect eof
+}
+
+# 3. Копируем папки
+foreach dir {agents notifier} {
+    spawn scp -r $local_dir/$dir $user@$host:$target_dir/
+    expect "password:" { send "$pass\r" }
+    expect eof
+}
+
+# 4. Финальная настройка и запуск на сервере
+spawn ssh $user@$host
+expect "password:" { send "$pass\r" }
+expect "#"
+send "cd $target_dir\r"
+send "python3 -m venv venv\r"
+send "source venv/bin/activate\r"
+send "pip3 install -r requirements.txt\r"
+send "pm2 delete sm-agent || true\r"
+send "pm2 start main.py --name sm-agent --interpreter ./venv/bin/python3\r"
+send "pm2 save\r"
+send "pm2 status\r"
+send "exit\r"
+expect eof

@@ -28,5 +28,7 @@ rooms:
   description: Files from assets/
 - name: frontend
   description: Files from components/
+- name: sm_agent
+  description: Files from sm-playground/ (SmartMoney Trading Bot)
 - name: general
   description: Files that don't fit other rooms

@@ -1,0 +1,801 @@
+2026-04-24 14:11:20,913 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:21,075 INFO Pending short @ 2945.32 | expiry bar 263 | placed=1 filled=0 expired=0
+2026-04-24 14:11:21,075 INFO Pending short filled @ 2945.32 qty=0.8600 | fill_rate=100% (1/1)
+2026-04-24 14:11:21,075 INFO DCA L1 set at 2954.74
+2026-04-24 14:11:21,080 INFO TP1 partial close 0.26 @ ~2939.41 | remaining=0.6
+2026-04-24 14:11:21,080 INFO Stop moved 2957.14 → 2945.3200000000006 (BE)
+2026-04-24 14:11:21,081 INFO SHORT stopped out @ 2945.3200000000006
+2026-04-24 14:11:21,081 INFO Trade closed — reason: stop_hit | side: short | entry: 2945.32 | stop: 2945.3200000000006
+2026-04-24 14:11:21,102 INFO Pending short @ 2929.42 | expiry bar 312 | placed=2 filled=1 expired=0
+2026-04-24 14:11:21,102 INFO Pending short filled @ 2929.42 qty=0.7600 | fill_rate=100% (2/2)
+2026-04-24 14:11:21,102 INFO DCA L1 set at 2941.49
+2026-04-24 14:11:21,109 INFO TP1 partial close 0.23 @ ~2921.19 | remaining=0.53
+2026-04-24 14:11:21,109 INFO Stop moved 2945.89 → 2929.4199999999996 (BE)
+2026-04-24 14:11:21,109 INFO SHORT stopped out @ 2929.4199999999996
+2026-04-24 14:11:21,109 INFO Trade closed — reason: stop_hit | side: short | entry: 2929.42 | stop: 2929.4199999999996
+2026-04-24 14:11:21,135 INFO Pending long @ 2987.89 | expiry bar 387 | placed=3 filled=2 expired=0
+2026-04-24 14:11:21,138 INFO Pending long expired at bar 388 | fill_rate=67% (2/3)
+2026-04-24 14:11:21,285 INFO Pending long @ 2289.52 | expiry bar 798 | placed=4 filled=2 expired=1
+2026-04-24 14:11:21,287 INFO Pending long expired at bar 799 | fill_rate=50% (2/4)
+2026-04-24 14:11:21,308 INFO Pending short @ 2230.26 | expiry bar 860 | placed=5 filled=2 expired=2
+2026-04-24 14:11:21,309 INFO Pending short filled @ 2230.26 qty=0.2800 | fill_rate=60% (3/5)
+2026-04-24 14:11:21,309 INFO DCA L1 set at 2259.14
+2026-04-24 14:11:21,311 INFO DCA Level 1 triggered! Qty=0.28 Price=2280.35
+2026-04-24 14:11:21,311 INFO DCA L1 triggered @ 2259.14 | adding 0.28 ETH
+2026-04-24 14:11:21,311 INFO DCA fill complete. New WAP: 2244.70 | Remaining Qty: 0.56
+2026-04-24 14:11:21,311 INFO Range Scalp triggered @ 2248.17 | closing 0.06 ETH
+2026-04-24 14:11:21,312 INFO Dynamic Trail lowered 2322.2 → 2270.06 (from 2228.93)
+2026-04-24 14:11:21,312 INFO DCA Level 2 triggered! Qty=0.28 Price=2290.43
+2026-04-24 14:11:21,312 INFO DCA L2 triggered @ 2289.3 | adding 0.28 ETH
+2026-04-24 14:11:21,312 INFO DCA fill complete. New WAP: 2259.57 | Remaining Qty: 0.78
+2026-04-24 14:11:21,312 INFO Range Scalp triggered @ 2278.2 | closing 0.06 ETH
+2026-04-24 14:11:21,313 INFO Dynamic Trail lowered 2356.15 → 2270.54 (from 2228.93)
+2026-04-24 14:11:21,313 INFO SHORT stopped out @ 2270.54
+2026-04-24 14:11:21,313 INFO Trade closed — reason: stop_hit | side: short | entry: 2259.57 | stop: 2270.54
+2026-04-24 14:11:21,420 INFO Pending short @ 2139.62 | expiry bar 1155 | placed=6 filled=3 expired=2
+2026-04-24 14:11:21,421 INFO Pending short filled @ 2139.62 qty=0.1900 | fill_rate=67% (4/6)
+2026-04-24 14:11:21,421 INFO DCA L1 set at 2158.46
+2026-04-24 14:11:21,422 INFO TP1 partial close 0.06 @ ~2126.89 | remaining=0.13
+2026-04-24 14:11:21,422 INFO Stop moved 2165.08 → 2139.62 (BE)
+2026-04-24 14:11:21,422 INFO SHORT TP3 hit @ 2101.42
+2026-04-24 14:11:21,422 INFO Trade closed — reason: tp3 | side: short | entry: 2139.62 | stop: 2139.62
+2026-04-24 14:11:21,444 INFO Pending long @ 1786.05 | expiry bar 1214 | placed=7 filled=4 expired=2
+2026-04-24 14:11:21,445 INFO Pending long filled @ 1786.05 qty=0.0700 | fill_rate=71% (5/7)
+2026-04-24 14:11:21,445 INFO DCA L1 set at 1739.08
+2026-04-24 14:11:21,445 INFO LONG TP3 hit @ 1862.99
+2026-04-24 14:11:21,445 INFO Trade closed — reason: tp3 | side: long | entry: 1786.05 | stop: 1734.75
+2026-04-24 14:11:21,578 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=8 filled=5 expired=2
+2026-04-24 14:11:21,580 INFO Pending short expired at bar 1499 | fill_rate=62% (5/8)
+2026-04-24 14:11:21,691 INFO Pending short @ 1960.81 | expiry bar 1742 | placed=9 filled=5 expired=3
+2026-04-24 14:11:21,693 INFO Pending short filled @ 1960.81 qty=0.2900 | fill_rate=67% (6/9)
+2026-04-24 14:11:21,693 INFO DCA L1 set at 1971.31
+2026-04-24 14:11:21,694 INFO SHORT TP3 hit @ 1945.3
+2026-04-24 14:11:21,694 INFO Trade closed — reason: tp3 | side: short | entry: 1960.81 | stop: 1971.14
+2026-04-24 14:11:21,905 INFO Pending short @ 1986.12 | expiry bar 2243 | placed=10 filled=6 expired=3
+2026-04-24 14:11:21,909 INFO Pending short expired at bar 2244 | fill_rate=60% (6/10)
+2026-04-24 14:11:22,044 INFO Pending short @ 1965.5 | expiry bar 2587 | placed=11 filled=6 expired=4
+2026-04-24 14:11:22,044 INFO Pending short filled @ 1965.50 qty=0.4100 | fill_rate=64% (7/11)
+2026-04-24 14:11:22,044 INFO DCA L1 set at 1973.17
+2026-04-24 14:11:22,045 INFO TP1 partial close 0.12 @ ~1960.45 | remaining=0.29
+2026-04-24 14:11:22,045 INFO Stop moved 1975.6 → 1965.4999999999998 (BE)
+2026-04-24 14:11:22,046 INFO SHORT stopped out @ 1965.4999999999998
+2026-04-24 14:11:22,046 INFO Trade closed — reason: stop_hit | side: short | entry: 1965.50 | stop: 1965.4999999999998
+2026-04-24 14:11:22,274 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=12 filled=7 expired=4
+2026-04-24 14:11:22,275 INFO Pending long filled @ 2048.05 qty=0.3800 | fill_rate=67% (8/12)
+2026-04-24 14:11:22,275 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:22,279 INFO TP1 partial close 0.11 @ ~2053.59 | remaining=0.27
+2026-04-24 14:11:22,279 INFO Stop moved 2036.97 → 2048.05 (BE)
+2026-04-24 14:11:22,280 INFO LONG TP3 hit @ 2064.68
+2026-04-24 14:11:22,280 INFO Trade closed — reason: tp3 | side: long | entry: 2048.05 | stop: 2048.05
+2026-04-24 14:11:22,292 INFO Pending long @ 2016.46 | expiry bar 3195 | placed=13 filled=8 expired=4
+2026-04-24 14:11:22,293 INFO Pending long filled @ 2016.46 qty=0.2800 | fill_rate=69% (9/13)
+2026-04-24 14:11:22,294 INFO DCA L1 set at 2000.0
+2026-04-24 14:11:22,294 INFO TP1 partial close 0.08 @ ~2024.6 | remaining=0.2
+2026-04-24 14:11:22,294 INFO Stop moved 2000.17 → 2016.46 (BE)
+2026-04-24 14:11:22,294 INFO TP2 level reached @ ~2032.75 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:22,295 INFO DCA Level 1 triggered! Qty=0.28 Price=1983.8
+2026-04-24 14:11:22,295 INFO DCA L1 triggered @ 2000.0 | adding 0.28 ETH
+2026-04-24 14:11:22,295 INFO DCA fill complete. New WAP: 2008.23 | Remaining Qty: 0.48000000000000004
+2026-04-24 14:11:22,295 INFO Range Scalp triggered @ 2007.22 | closing 0.06 ETH
+2026-04-24 14:11:22,296 INFO Dynamic Trail raised 1958.47 → 2007.87 (from 2034.96)
+2026-04-24 14:11:22,296 INFO LONG stopped out @ 2007.87
+2026-04-24 14:11:22,296 INFO Trade closed — reason: stop_hit | side: long | entry: 2008.23 | stop: 2007.87
+2026-04-24 14:11:23,009 INFO Pending long @ 2314.28 | expiry bar 4972 | placed=14 filled=9 expired=4
+2026-04-24 14:11:23,009 INFO Pending long filled @ 2314.28 qty=0.2400 | fill_rate=71% (10/14)
+2026-04-24 14:11:23,009 INFO DCA L1 set at 2298.67
+2026-04-24 14:11:23,010 INFO TP1 partial close 0.07 @ ~2323.68 | remaining=0.17
+2026-04-24 14:11:23,010 INFO Stop moved 2295.48 → 2314.2799999999997 (BE)
+2026-04-24 14:11:23,011 INFO DCA Level 1 triggered! Qty=0.24 Price=2304.78
+2026-04-24 14:11:23,011 INFO DCA L1 triggered @ 2298.67 | adding 0.24 ETH
+2026-04-24 14:11:23,011 INFO DCA fill complete. New WAP: 2306.47 | Remaining Qty: 0.41000000000000003
+2026-04-24 14:11:23,011 INFO Dynamic Trail raised 2263.63 → 2305.64 (from 2328.49)
+2026-04-24 14:11:23,011 INFO LONG stopped out @ 2305.64
+2026-04-24 14:11:23,011 INFO Trade closed — reason: stop_hit | side: long | entry: 2306.47 | stop: 2305.64
+2026-04-24 14:11:23,286 INFO Pending short @ 2166.3 | expiry bar 5660 | placed=15 filled=10 expired=4
+2026-04-24 14:11:23,287 INFO Pending short filled @ 2166.30 qty=0.4700 | fill_rate=73% (11/15)
+2026-04-24 14:11:23,287 INFO DCA L1 set at 2175.26
+2026-04-24 14:11:23,288 INFO TP1 partial close 0.14 @ ~2160.82 | remaining=0.33
+2026-04-24 14:11:23,288 INFO Stop moved 2177.26 → 2166.3 (BE)
+2026-04-24 14:11:23,288 INFO TP2 level reached @ ~2155.34 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:23,289 INFO SHORT TP3 hit @ 2149.86
+2026-04-24 14:11:23,289 INFO Trade closed — reason: tp3 | side: short | entry: 2166.30 | stop: 2166.3
+2026-04-24 14:11:23,612 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=16 filled=11 expired=4
+2026-04-24 14:11:23,613 INFO Pending long filled @ 2143.39 qty=0.2200 | fill_rate=75% (12/16)
+2026-04-24 14:11:23,613 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:23,613 INFO DCA Level 1 triggered! Qty=0.22 Price=2140.74
+2026-04-24 14:11:23,614 INFO DCA L1 triggered @ 2132.74 | adding 0.22 ETH
+2026-04-24 14:11:23,614 INFO DCA fill complete. New WAP: 2138.06 | Remaining Qty: 0.44
+2026-04-24 14:11:23,614 INFO TP1 partial close 0.13 @ ~2152.98 | remaining=0.31
+2026-04-24 14:11:23,614 INFO Stop moved 2108.24 → 2138.0649999999996 (BE)
+2026-04-24 14:11:23,614 INFO DCA Level 2 triggered! Qty=0.22 Price=2112.43
+2026-04-24 14:11:23,614 INFO DCA L2 triggered @ 2121.02 | adding 0.22 ETH
+2026-04-24 14:11:23,615 INFO DCA fill complete. New WAP: 2132.38 | Remaining Qty: 0.53
+2026-04-24 14:11:23,615 INFO Dynamic Trail raised 2091.66 → 2137.88 (from 2156.15)
+2026-04-24 14:11:23,615 INFO DCA Level 3 triggered! Qty=0.22 Price=2092.18
+2026-04-24 14:11:23,615 INFO DCA L3 triggered @ 2106.28 | adding 0.22 ETH
+2026-04-24 14:11:23,616 INFO DCA fill complete. New WAP: 2125.86 | Remaining Qty: 0.75
+2026-04-24 14:11:23,616 INFO LONG stopped out @ 2110.46
+2026-04-24 14:11:23,616 INFO Trade closed — reason: stop_hit | side: long | entry: 2125.86 | stop: 2110.46
+2026-04-24 14:11:23,889 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=17 filled=12 expired=4
+2026-04-24 14:11:23,895 INFO Pending short expired at bar 7209 | fill_rate=71% (12/17)
+2026-04-24 14:11:24,120 INFO Pending long @ 2329.81 | expiry bar 7800 | placed=18 filled=12 expired=5
+2026-04-24 14:11:24,121 INFO Pending long filled @ 2329.81 qty=0.0700 | fill_rate=72% (13/18)
+2026-04-24 14:11:24,121 INFO DCA L1 set at 2318.65
+2026-04-24 14:11:24,122 INFO TP1 partial close 0.02 @ ~2336.92 | remaining=0.05
+2026-04-24 14:11:24,122 INFO Stop moved 2315.6 → 2329.81 (BE)
+2026-04-24 14:11:24,122 INFO LONG stopped out @ 2329.81
+2026-04-24 14:11:24,122 INFO Trade closed — reason: stop_hit | side: long | entry: 2329.81 | stop: 2329.81
+2026-04-24 14:11:24,156 INFO Pending short @ 2353.99 | expiry bar 7892 | placed=19 filled=13 expired=5
+2026-04-24 14:11:24,159 INFO Pending short expired at bar 7893 | fill_rate=68% (13/19)
+2026-04-24 14:11:24,380 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=20 filled=13 expired=6
+2026-04-24 14:11:24,380 INFO Pending short filled @ 2400.22 qty=0.1000 | fill_rate=70% (14/20)
+2026-04-24 14:11:24,380 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:24,381 INFO TP1 partial close 0.03 @ ~2396.64 | remaining=0.07
+2026-04-24 14:11:24,381 INFO Stop moved 2407.37 → 2400.22 (BE)
+2026-04-24 14:11:24,381 INFO DCA Level 1 triggered! Qty=0.1 Price=2404.92
+2026-04-24 14:11:24,381 INFO DCA L1 triggered @ 2406.06 | adding 0.1 ETH
+2026-04-24 14:11:24,382 INFO DCA fill complete. New WAP: 2403.14 | Remaining Qty: 0.17
+2026-04-24 14:11:24,382 INFO Dynamic Trail lowered 2419.82 → 2405.13 (from 2396.16)
+2026-04-24 14:11:24,382 INFO DCA Level 2 triggered! Qty=0.1 Price=2408.9
+2026-04-24 14:11:24,382 INFO DCA L2 triggered @ 2412.64 | adding 0.1 ETH
+2026-04-24 14:11:24,383 INFO DCA fill complete. New WAP: 2406.31 | Remaining Qty: 0.27
+2026-04-24 14:11:24,383 INFO Dynamic Trail lowered 2428.32 → 2405.92 (from 2396.16)
+2026-04-24 14:11:24,383 INFO SHORT stopped out @ 2405.92
+2026-04-24 14:11:24,383 INFO Trade closed — reason: stop_hit | side: short | entry: 2406.31 | stop: 2405.92
+2026-04-24 14:11:24,451 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:24,613 INFO Pending short @ 2945.32 | expiry bar 263 | placed=1 filled=0 expired=0
+2026-04-24 14:11:24,614 INFO Pending short filled @ 2945.32 qty=0.8600 | fill_rate=100% (1/1)
+2026-04-24 14:11:24,614 INFO DCA L1 set at 2954.74
+2026-04-24 14:11:24,615 INFO Dynamic Trail lowered 2957.14 → 2950.72 (from 2936.5)
+2026-04-24 14:11:24,616 WARNING DCA aborted: Total exposure $5077.85 exceeds limit $2000.00
+2026-04-24 14:11:24,616 INFO SHORT stopped out @ 2950.72
+2026-04-24 14:11:24,616 INFO Trade closed — reason: stop_hit | side: short | entry: 2945.32 | stop: 2950.72
+2026-04-24 14:11:24,632 INFO Pending short @ 2929.42 | expiry bar 312 | placed=2 filled=1 expired=0
+2026-04-24 14:11:24,632 INFO Pending short filled @ 2929.42 qty=0.7500 | fill_rate=100% (2/2)
+2026-04-24 14:11:24,632 INFO DCA L1 set at 2941.49
+2026-04-24 14:11:24,633 INFO Dynamic Trail lowered 2945.89 → 2931.13 (from 2913.03)
+2026-04-24 14:11:24,633 INFO SHORT stopped out @ 2931.13
+2026-04-24 14:11:24,633 INFO Trade closed — reason: stop_hit | side: short | entry: 2929.42 | stop: 2931.13
+2026-04-24 14:11:24,662 INFO Pending long @ 2987.89 | expiry bar 387 | placed=3 filled=2 expired=0
+2026-04-24 14:11:24,664 INFO Pending long expired at bar 388 | fill_rate=67% (2/3)
+2026-04-24 14:11:24,816 INFO Pending long @ 2289.52 | expiry bar 798 | placed=4 filled=2 expired=1
+2026-04-24 14:11:24,819 INFO Pending long expired at bar 799 | fill_rate=50% (2/4)
+2026-04-24 14:11:24,841 INFO Pending short @ 2230.26 | expiry bar 860 | placed=5 filled=2 expired=2
+2026-04-24 14:11:24,841 INFO Pending short filled @ 2230.26 qty=0.2600 | fill_rate=60% (3/5)
+2026-04-24 14:11:24,841 INFO DCA L1 set at 2259.14
+2026-04-24 14:11:24,844 INFO DCA Level 1 triggered! Qty=0.26 Price=2280.35
+2026-04-24 14:11:24,844 INFO DCA L1 triggered @ 2259.14 | adding 0.26 ETH
+2026-04-24 14:11:24,844 INFO DCA fill complete. New WAP: 2244.70 | Remaining Qty: 0.52
+2026-04-24 14:11:24,844 INFO Range Scalp triggered @ 2248.17 | closing 0.05 ETH
+2026-04-24 14:11:24,844 INFO Dynamic Trail lowered 2322.2 → 2270.06 (from 2228.93)
+2026-04-24 14:11:24,845 INFO DCA Level 2 triggered! Qty=0.26 Price=2290.43
+2026-04-24 14:11:24,845 INFO DCA L2 triggered @ 2289.3 | adding 0.26 ETH
+2026-04-24 14:11:24,845 INFO DCA fill complete. New WAP: 2259.57 | Remaining Qty: 0.73
+2026-04-24 14:11:24,845 INFO Range Scalp triggered @ 2278.2 | closing 0.05 ETH
+2026-04-24 14:11:24,846 INFO Dynamic Trail lowered 2356.15 → 2270.54 (from 2228.93)
+2026-04-24 14:11:24,846 INFO SHORT stopped out @ 2270.54
+2026-04-24 14:11:24,846 INFO Trade closed — reason: stop_hit | side: short | entry: 2259.57 | stop: 2270.54
+2026-04-24 14:11:24,961 INFO Pending short @ 2139.62 | expiry bar 1155 | placed=6 filled=3 expired=2
+2026-04-24 14:11:24,962 INFO Pending short filled @ 2139.62 qty=0.1800 | fill_rate=67% (4/6)
+2026-04-24 14:11:24,962 INFO DCA L1 set at 2158.46
+2026-04-24 14:11:24,963 INFO Dynamic Trail lowered 2165.08 → 2148.98 (from 2122.88)
+2026-04-24 14:11:24,964 INFO TP1 partial close 0.05 @ ~2114.16 | remaining=0.13
+2026-04-24 14:11:24,964 INFO Stop moved 2148.98 → 2139.62 (BE)
+2026-04-24 14:11:24,964 INFO TP2 level reached @ ~2088.69 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:24,964 INFO Dynamic Trail lowered 2139.62 → 2112.46 (from 2084.95)
+2026-04-24 14:11:24,964 INFO SHORT TP3 hit @ 2063.23
+2026-04-24 14:11:24,964 INFO Trade closed — reason: tp3 | side: short | entry: 2139.62 | stop: 2112.46
+2026-04-24 14:11:24,982 INFO Pending long @ 1786.05 | expiry bar 1214 | placed=7 filled=4 expired=2
+2026-04-24 14:11:24,982 INFO Pending long filled @ 1786.05 qty=0.0700 | fill_rate=71% (5/7)
+2026-04-24 14:11:24,982 INFO DCA L1 set at 1739.08
+2026-04-24 14:11:24,986 INFO TP1 partial close 0.02 @ ~1837.34 | remaining=0.05
+2026-04-24 14:11:24,986 INFO Stop moved 1734.75 → 1786.05 (BE)
+2026-04-24 14:11:24,986 INFO TP2 level reached @ ~1888.64 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:24,986 INFO Dynamic Trail raised 1786.05 → 1822.53 (from 1892.65)
+2026-04-24 14:11:24,987 INFO Dynamic Trail raised 1822.53 → 1859.74 (from 1929.18)
+2026-04-24 14:11:24,987 INFO LONG TP3 hit @ 1939.93
+2026-04-24 14:11:24,987 INFO Trade closed — reason: tp3 | side: long | entry: 1786.05 | stop: 1859.74
+2026-04-24 14:11:25,080 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=8 filled=5 expired=2
+2026-04-24 14:11:25,082 INFO Pending short expired at bar 1499 | fill_rate=62% (5/8)
+2026-04-24 14:11:25,166 INFO Pending short @ 1960.81 | expiry bar 1742 | placed=9 filled=5 expired=3
+2026-04-24 14:11:25,168 INFO Pending short filled @ 1960.81 qty=0.3400 | fill_rate=67% (6/9)
+2026-04-24 14:11:25,168 INFO DCA L1 set at 1971.31
+2026-04-24 14:11:25,169 INFO TP1 partial close 0.1 @ ~1950.47 | remaining=0.24
+2026-04-24 14:11:25,169 INFO Stop moved 1971.14 → 1960.8100000000002 (BE)
+2026-04-24 14:11:25,169 INFO SHORT stopped out @ 1960.8100000000002
+2026-04-24 14:11:25,169 INFO Trade closed — reason: stop_hit | side: short | entry: 1960.81 | stop: 1960.8100000000002
+2026-04-24 14:11:25,338 INFO Pending short @ 1986.12 | expiry bar 2243 | placed=10 filled=6 expired=3
+2026-04-24 14:11:25,340 INFO Pending short expired at bar 2244 | fill_rate=60% (6/10)
+2026-04-24 14:11:25,452 INFO Pending short @ 1965.5 | expiry bar 2587 | placed=11 filled=6 expired=4
+2026-04-24 14:11:25,452 INFO Pending short filled @ 1965.50 qty=0.3800 | fill_rate=64% (7/11)
+2026-04-24 14:11:25,452 INFO DCA L1 set at 1973.17
+2026-04-24 14:11:25,453 INFO Dynamic Trail lowered 1975.6 → 1970.96 (from 1959.45)
+2026-04-24 14:11:25,454 INFO SHORT stopped out @ 1970.96
+2026-04-24 14:11:25,454 INFO Trade closed — reason: stop_hit | side: short | entry: 1965.50 | stop: 1970.96
+2026-04-24 14:11:25,652 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=12 filled=7 expired=4
+2026-04-24 14:11:25,653 INFO Pending long filled @ 2048.05 qty=0.3500 | fill_rate=67% (8/12)
+2026-04-24 14:11:25,653 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:25,654 INFO Dynamic Trail raised 2036.97 → 2045.08 (from 2058.09)
+2026-04-24 14:11:25,654 INFO TP1 partial close 0.1 @ ~2059.14 | remaining=0.25
+2026-04-24 14:11:25,654 INFO Stop moved 2045.08 → 2048.05 (BE)
+2026-04-24 14:11:25,654 INFO TP2 level reached @ ~2070.22 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:25,655 INFO Dynamic Trail raised 2048.05 → 2058.97 (from 2073.33)
+2026-04-24 14:11:25,655 INFO Dynamic Trail raised 2058.97 → 2064.08 (from 2078.24)
+2026-04-24 14:11:25,655 INFO LONG TP3 hit @ 2081.3
+2026-04-24 14:11:25,656 INFO Trade closed — reason: tp3 | side: long | entry: 2048.05 | stop: 2064.08
+2026-04-24 14:11:25,664 INFO Pending long @ 2016.46 | expiry bar 3195 | placed=13 filled=8 expired=4
+2026-04-24 14:11:25,665 INFO Pending long filled @ 2016.46 qty=0.2600 | fill_rate=69% (9/13)
+2026-04-24 14:11:25,665 INFO DCA L1 set at 2000.0
+2026-04-24 14:11:25,666 INFO TP1 partial close 0.08 @ ~2032.75 | remaining=0.18
+2026-04-24 14:11:25,666 INFO Stop moved 2000.17 → 2016.4600000000003 (BE)
+2026-04-24 14:11:25,666 INFO DCA Level 1 triggered! Qty=0.26 Price=1983.8
+2026-04-24 14:11:25,666 INFO DCA L1 triggered @ 2000.0 | adding 0.26 ETH
+2026-04-24 14:11:25,666 INFO DCA fill complete. New WAP: 2008.23 | Remaining Qty: 0.44
+2026-04-24 14:11:25,666 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:25,666 INFO Range Scalp triggered @ 2007.22 | closing 0.05 ETH
+2026-04-24 14:11:25,666 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:25,667 INFO Dynamic Trail raised 1958.47 → 2007.87 (from 2034.96)
+2026-04-24 14:11:25,667 INFO LONG stopped out @ 2007.87
+2026-04-24 14:11:25,667 INFO Trade closed — reason: stop_hit | side: long | entry: 2008.23 | stop: 2007.87
+2026-04-24 14:11:25,668 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:26,303 INFO Pending long @ 2314.28 | expiry bar 4972 | placed=14 filled=9 expired=4
+2026-04-24 14:11:26,304 INFO Pending long filled @ 2314.28 qty=0.2200 | fill_rate=71% (10/14)
+2026-04-24 14:11:26,304 INFO DCA L1 set at 2298.67
+2026-04-24 14:11:26,304 INFO Dynamic Trail raised 2295.48 → 2305.08 (from 2328.49)
+2026-04-24 14:11:26,305 INFO DCA Level 1 triggered! Qty=0.22 Price=2304.78
+2026-04-24 14:11:26,305 INFO DCA L1 triggered @ 2298.67 | adding 0.22 ETH
+2026-04-24 14:11:26,305 INFO DCA fill complete. New WAP: 2306.47 | Remaining Qty: 0.44
+2026-04-24 14:11:26,305 INFO Dynamic Trail raised 2263.63 → 2305.64 (from 2328.49)
+2026-04-24 14:11:26,306 INFO LONG stopped out @ 2305.64
+2026-04-24 14:11:26,306 INFO Trade closed — reason: stop_hit | side: long | entry: 2306.47 | stop: 2305.64
+2026-04-24 14:11:26,306 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:26,565 INFO Pending short @ 2166.3 | expiry bar 5660 | placed=15 filled=10 expired=4
+2026-04-24 14:11:26,566 INFO Pending short filled @ 2166.30 qty=0.6100 | fill_rate=73% (11/15)
+2026-04-24 14:11:26,566 INFO DCA L1 set at 2175.26
+2026-04-24 14:11:26,567 INFO TP1 partial close 0.18 @ ~2155.34 | remaining=0.43
+2026-04-24 14:11:26,567 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:26,567 INFO Stop moved 2177.26 → 2166.3 (BE)
+2026-04-24 14:11:26,569 INFO SHORT stopped out @ 2166.3
+2026-04-24 14:11:26,569 INFO Trade closed — reason: stop_hit | side: short | entry: 2166.30 | stop: 2166.3
+2026-04-24 14:11:26,569 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:26,866 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=16 filled=11 expired=4
+2026-04-24 14:11:26,867 INFO Pending long filled @ 2143.39 qty=0.2900 | fill_rate=75% (12/16)
+2026-04-24 14:11:26,867 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:26,867 INFO DCA Level 1 triggered! Qty=0.29 Price=2140.74
+2026-04-24 14:11:26,867 INFO DCA L1 triggered @ 2132.74 | adding 0.29 ETH
+2026-04-24 14:11:26,868 INFO DCA fill complete. New WAP: 2138.07 | Remaining Qty: 0.58
+2026-04-24 14:11:26,868 INFO Dynamic Trail raised 2108.24 → 2140.17 (from 2156.15)
+2026-04-24 14:11:26,868 INFO DCA Level 2 triggered! Qty=0.29 Price=2112.43
+2026-04-24 14:11:26,868 INFO DCA L2 triggered @ 2121.02 | adding 0.29 ETH
+2026-04-24 14:11:26,869 INFO DCA fill complete. New WAP: 2132.38 | Remaining Qty: 0.8699999999999999
+2026-04-24 14:11:26,869 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:26,869 INFO Dynamic Trail raised 2091.66 → 2137.88 (from 2156.15)
+2026-04-24 14:11:26,869 WARNING DCA aborted: Total exposure $2426.93 exceeds limit $2000.00
+2026-04-24 14:11:26,869 INFO LONG stopped out @ 2137.88
+2026-04-24 14:11:26,869 INFO Trade closed — reason: stop_hit | side: long | entry: 2132.38 | stop: 2137.88
+2026-04-24 14:11:26,869 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:27,133 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=17 filled=12 expired=4
+2026-04-24 14:11:27,135 INFO Pending short expired at bar 7209 | fill_rate=71% (12/17)
+2026-04-24 14:11:27,355 INFO Pending long @ 2329.81 | expiry bar 7800 | placed=18 filled=12 expired=5
+2026-04-24 14:11:27,356 INFO Pending long filled @ 2329.81 qty=0.0600 | fill_rate=72% (13/18)
+2026-04-24 14:11:27,356 INFO DCA L1 set at 2318.65
+2026-04-24 14:11:27,358 INFO Dynamic Trail raised 2315.6 → 2324.26 (from 2341.93)
+2026-04-24 14:11:27,358 INFO TP1 partial close 0.02 @ ~2344.02 | remaining=0.04
+2026-04-24 14:11:27,359 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:27,359 INFO Stop moved 2324.26 → 2329.81 (BE)
+2026-04-24 14:11:27,360 INFO TP2 level reached @ ~2358.23 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:27,360 INFO Dynamic Trail raised 2329.81 → 2339.47 (from 2358.82)
+2026-04-24 14:11:27,362 INFO Dynamic Trail raised 2339.47 → 2353.34 (from 2368.86)
+2026-04-24 14:11:27,363 INFO LONG TP3 hit @ 2372.44
+2026-04-24 14:11:27,363 INFO Trade closed — reason: tp3 | side: long | entry: 2329.81 | stop: 2353.34
+2026-04-24 14:11:27,364 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:27,394 INFO Pending short @ 2353.99 | expiry bar 7892 | placed=19 filled=13 expired=5
+2026-04-24 14:11:27,397 INFO Pending short expired at bar 7893 | fill_rate=68% (13/19)
+2026-04-24 14:11:27,613 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=20 filled=13 expired=6
+2026-04-24 14:11:27,613 INFO Pending short filled @ 2400.22 qty=0.0900 | fill_rate=70% (14/20)
+2026-04-24 14:11:27,613 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:27,614 INFO DCA Level 1 triggered! Qty=0.09 Price=2404.92
+2026-04-24 14:11:27,614 INFO DCA L1 triggered @ 2406.06 | adding 0.09 ETH
+2026-04-24 14:11:27,615 INFO DCA fill complete. New WAP: 2403.14 | Remaining Qty: 0.18
+2026-04-24 14:11:27,615 INFO Dynamic Trail lowered 2419.82 → 2405.13 (from 2396.16)
+2026-04-24 14:11:27,615 INFO DCA Level 2 triggered! Qty=0.09 Price=2408.9
+2026-04-24 14:11:27,615 INFO DCA L2 triggered @ 2412.64 | adding 0.09 ETH
+2026-04-24 14:11:27,616 INFO DCA fill complete. New WAP: 2406.31 | Remaining Qty: 0.27
+2026-04-24 14:11:27,616 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:27,616 INFO Dynamic Trail lowered 2428.32 → 2405.92 (from 2396.16)
+2026-04-24 14:11:27,616 INFO SHORT stopped out @ 2405.92
+2026-04-24 14:11:27,616 INFO Trade closed — reason: stop_hit | side: short | entry: 2406.31 | stop: 2405.92
+2026-04-24 14:11:27,617 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:27,684 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:27,839 INFO Pending short @ 2945.32 | expiry bar 263 | placed=1 filled=0 expired=0
+2026-04-24 14:11:27,840 INFO Pending short filled @ 2945.32 qty=0.8600 | fill_rate=100% (1/1)
+2026-04-24 14:11:27,840 INFO DCA L1 set at 2954.74
+2026-04-24 14:11:27,841 INFO Dynamic Trail lowered 2957.14 → 2950.72 (from 2936.5)
+2026-04-24 14:11:27,842 WARNING DCA aborted: Total exposure $5077.85 exceeds limit $2000.00
+2026-04-24 14:11:27,842 INFO SHORT stopped out @ 2950.72
+2026-04-24 14:11:27,842 INFO Trade closed — reason: stop_hit | side: short | entry: 2945.32 | stop: 2950.72
+2026-04-24 14:11:27,843 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:27,863 INFO Pending short @ 2929.42 | expiry bar 312 | placed=2 filled=1 expired=0
+2026-04-24 14:11:27,863 INFO Pending short filled @ 2929.42 qty=0.7500 | fill_rate=100% (2/2)
+2026-04-24 14:11:27,863 INFO DCA L1 set at 2941.49
+2026-04-24 14:11:27,864 INFO Dynamic Trail lowered 2945.89 → 2931.13 (from 2913.03)
+2026-04-24 14:11:27,864 INFO SHORT stopped out @ 2931.13
+2026-04-24 14:11:27,864 INFO Trade closed — reason: stop_hit | side: short | entry: 2929.42 | stop: 2931.13
+2026-04-24 14:11:27,864 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:27,892 INFO Pending long @ 2987.89 | expiry bar 387 | placed=3 filled=2 expired=0
+2026-04-24 14:11:27,895 INFO Pending long expired at bar 388 | fill_rate=67% (2/3)
+2026-04-24 14:11:28,052 INFO Pending long @ 2289.52 | expiry bar 798 | placed=4 filled=2 expired=1
+2026-04-24 14:11:28,055 INFO Pending long expired at bar 799 | fill_rate=50% (2/4)
+2026-04-24 14:11:28,079 INFO Pending short @ 2230.26 | expiry bar 860 | placed=5 filled=2 expired=2
+2026-04-24 14:11:28,080 INFO Pending short filled @ 2230.26 qty=0.2600 | fill_rate=60% (3/5)
+2026-04-24 14:11:28,080 INFO DCA L1 set at 2259.14
+2026-04-24 14:11:28,082 INFO DCA Level 1 triggered! Qty=0.26 Price=2280.35
+2026-04-24 14:11:28,082 INFO DCA L1 triggered @ 2259.14 | adding 0.26 ETH
+2026-04-24 14:11:28,083 INFO DCA fill complete. New WAP: 2244.70 | Remaining Qty: 0.52
+2026-04-24 14:11:28,083 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,083 INFO Range Scalp triggered @ 2248.17 | closing 0.05 ETH
+2026-04-24 14:11:28,083 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,083 INFO Dynamic Trail lowered 2322.2 → 2270.06 (from 2228.93)
+2026-04-24 14:11:28,084 INFO DCA Level 2 triggered! Qty=0.26 Price=2290.43
+2026-04-24 14:11:28,084 INFO DCA L2 triggered @ 2289.3 | adding 0.26 ETH
+2026-04-24 14:11:28,084 INFO DCA fill complete. New WAP: 2259.57 | Remaining Qty: 0.73
+2026-04-24 14:11:28,084 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,084 INFO Range Scalp triggered @ 2278.2 | closing 0.05 ETH
+2026-04-24 14:11:28,084 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,084 INFO Dynamic Trail lowered 2356.15 → 2270.54 (from 2228.93)
+2026-04-24 14:11:28,085 INFO SHORT stopped out @ 2270.54
+2026-04-24 14:11:28,085 INFO Trade closed — reason: stop_hit | side: short | entry: 2259.57 | stop: 2270.54
+2026-04-24 14:11:28,085 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,205 INFO Pending short @ 2139.62 | expiry bar 1155 | placed=6 filled=3 expired=2
+2026-04-24 14:11:28,206 INFO Pending short filled @ 2139.62 qty=0.1800 | fill_rate=67% (4/6)
+2026-04-24 14:11:28,206 INFO DCA L1 set at 2158.46
+2026-04-24 14:11:28,208 INFO Dynamic Trail lowered 2165.08 → 2148.98 (from 2122.88)
+2026-04-24 14:11:28,208 INFO TP1 partial close 0.05 @ ~2101.42 | remaining=0.13
+2026-04-24 14:11:28,208 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,208 INFO Stop moved 2148.98 → 2139.62 (BE)
+2026-04-24 14:11:28,208 INFO Dynamic Trail lowered 2139.62 → 2114.19 (from 2086.54)
+2026-04-24 14:11:28,209 INFO TP2 level reached @ ~2063.23 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:28,209 INFO Dynamic Trail lowered 2114.19 → 2093.1 (from 2061.96)
+2026-04-24 14:11:28,210 INFO SHORT stopped out @ 2093.1
+2026-04-24 14:11:28,210 INFO Trade closed — reason: stop_hit | side: short | entry: 2139.62 | stop: 2093.1
+2026-04-24 14:11:28,210 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,234 INFO Pending long @ 1786.05 | expiry bar 1214 | placed=7 filled=4 expired=2
+2026-04-24 14:11:28,234 INFO Pending long filled @ 1786.05 qty=0.0700 | fill_rate=71% (5/7)
+2026-04-24 14:11:28,234 INFO DCA L1 set at 1739.08
+2026-04-24 14:11:28,235 INFO TP1 partial close 0.02 @ ~1862.99 | remaining=0.05
+2026-04-24 14:11:28,235 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,235 INFO Stop moved 1734.75 → 1786.05 (BE)
+2026-04-24 14:11:28,235 INFO Dynamic Trail raised 1786.05 → 1819.55 (from 1890.0)
+2026-04-24 14:11:28,236 INFO Dynamic Trail raised 1819.55 → 1844.2 (from 1914.87)
+2026-04-24 14:11:28,237 INFO TP2 level reached @ ~1939.93 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:28,237 INFO Dynamic Trail raised 1844.2 → 1881.45 (from 1947.84)
+2026-04-24 14:11:28,240 INFO LONG stopped out @ 1881.45
+2026-04-24 14:11:28,240 INFO Trade closed — reason: stop_hit | side: long | entry: 1786.05 | stop: 1881.45
+2026-04-24 14:11:28,240 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,364 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=8 filled=5 expired=2
+2026-04-24 14:11:28,367 INFO Pending short expired at bar 1499 | fill_rate=62% (5/8)
+2026-04-24 14:11:28,488 INFO Pending short @ 1960.81 | expiry bar 1742 | placed=9 filled=5 expired=3
+2026-04-24 14:11:28,490 INFO Pending short filled @ 1960.81 qty=0.3300 | fill_rate=67% (6/9)
+2026-04-24 14:11:28,490 INFO DCA L1 set at 1971.31
+2026-04-24 14:11:28,491 INFO TP1 partial close 0.1 @ ~1945.3 | remaining=0.23
+2026-04-24 14:11:28,491 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,491 INFO Stop moved 1971.14 → 1960.81 (BE)
+2026-04-24 14:11:28,491 INFO SHORT stopped out @ 1960.81
+2026-04-24 14:11:28,491 INFO Trade closed — reason: stop_hit | side: short | entry: 1960.81 | stop: 1960.81
+2026-04-24 14:11:28,491 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:28,674 INFO Pending short @ 1986.12 | expiry bar 2243 | placed=10 filled=6 expired=3
+2026-04-24 14:11:28,677 INFO Pending short expired at bar 2244 | fill_rate=60% (6/10)
+2026-04-24 14:11:28,807 INFO Pending short @ 1965.5 | expiry bar 2587 | placed=11 filled=6 expired=4
+2026-04-24 14:11:28,807 INFO Pending short filled @ 1965.50 qty=0.4300 | fill_rate=64% (7/11)
+2026-04-24 14:11:28,807 INFO DCA L1 set at 1973.17
+2026-04-24 14:11:28,808 INFO Dynamic Trail lowered 1975.6 → 1970.96 (from 1959.45)
+2026-04-24 14:11:28,810 INFO SHORT stopped out @ 1970.96
+2026-04-24 14:11:28,810 INFO Trade closed — reason: stop_hit | side: short | entry: 1965.50 | stop: 1970.96
+2026-04-24 14:11:29,018 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=12 filled=7 expired=4
+2026-04-24 14:11:29,018 INFO Pending long filled @ 2048.05 qty=0.3900 | fill_rate=67% (8/12)
+2026-04-24 14:11:29,018 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:29,019 INFO Dynamic Trail raised 2036.97 → 2045.08 (from 2058.09)
+2026-04-24 14:11:29,023 INFO TP1 partial close 0.12 @ ~2064.68 | remaining=0.27
+2026-04-24 14:11:29,023 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:29,023 INFO Stop moved 2045.08 → 2048.05 (BE)
+2026-04-24 14:11:29,023 INFO Dynamic Trail raised 2048.05 → 2058.99 (from 2073.33)
+2026-04-24 14:11:29,023 INFO Dynamic Trail raised 2058.99 → 2064.08 (from 2078.24)
+2026-04-24 14:11:29,024 INFO TP2 level reached @ ~2081.3 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:29,024 INFO Dynamic Trail raised 2064.08 → 2069.16 (from 2083.33)
+2026-04-24 14:11:29,025 INFO LONG stopped out @ 2069.16
+2026-04-24 14:11:29,025 INFO Trade closed — reason: stop_hit | side: long | entry: 2048.05 | stop: 2069.16
+2026-04-24 14:11:29,025 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:29,033 INFO Pending long @ 2016.46 | expiry bar 3195 | placed=13 filled=8 expired=4
+2026-04-24 14:11:29,034 INFO Pending long filled @ 2016.46 qty=0.2900 | fill_rate=69% (9/13)
+2026-04-24 14:11:29,034 INFO DCA L1 set at 2000.0
+2026-04-24 14:11:29,035 INFO Dynamic Trail raised 2000.17 → 2010.27 (from 2034.96)
+2026-04-24 14:11:29,035 INFO DCA Level 1 triggered! Qty=0.29 Price=1983.8
+2026-04-24 14:11:29,035 INFO DCA L1 triggered @ 2000.0 | adding 0.29 ETH
+2026-04-24 14:11:29,035 INFO DCA fill complete. New WAP: 2008.23 | Remaining Qty: 0.58
+2026-04-24 14:11:29,035 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:29,035 INFO Range Scalp triggered @ 2007.22 | closing 0.06 ETH
+2026-04-24 14:11:29,035 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:29,036 INFO Dynamic Trail raised 1958.47 → 2007.87 (from 2034.96)
+2026-04-24 14:11:29,036 INFO LONG stopped out @ 2007.87
+2026-04-24 14:11:29,036 INFO Trade closed — reason: stop_hit | side: long | entry: 2008.23 | stop: 2007.87
+2026-04-24 14:11:29,036 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:29,665 INFO Pending long @ 2314.28 | expiry bar 4972 | placed=14 filled=9 expired=4
+2026-04-24 14:11:29,666 INFO Pending long filled @ 2314.28 qty=0.2200 | fill_rate=71% (10/14)
+2026-04-24 14:11:29,666 INFO DCA L1 set at 2298.67
+2026-04-24 14:11:29,666 INFO Dynamic Trail raised 2295.48 → 2305.08 (from 2328.49)
+2026-04-24 14:11:29,667 INFO DCA Level 1 triggered! Qty=0.22 Price=2304.78
+2026-04-24 14:11:29,667 INFO DCA L1 triggered @ 2298.67 | adding 0.22 ETH
+2026-04-24 14:11:29,667 INFO DCA fill complete. New WAP: 2306.47 | Remaining Qty: 0.44
+2026-04-24 14:11:29,667 INFO Dynamic Trail raised 2263.63 → 2305.64 (from 2328.49)
+2026-04-24 14:11:29,668 INFO LONG stopped out @ 2305.64
+2026-04-24 14:11:29,668 INFO Trade closed — reason: stop_hit | side: long | entry: 2306.47 | stop: 2305.64
+2026-04-24 14:11:29,668 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:29,913 INFO Pending short @ 2166.3 | expiry bar 5660 | placed=15 filled=10 expired=4
+2026-04-24 14:11:29,913 INFO Pending short filled @ 2166.30 qty=0.6100 | fill_rate=73% (11/15)
+2026-04-24 14:11:29,913 INFO DCA L1 set at 2175.26
+2026-04-24 14:11:29,914 INFO Dynamic Trail lowered 2177.26 → 2166.05 (from 2152.17)
+2026-04-24 14:11:29,915 INFO TP1 partial close 0.18 @ ~2149.86 | remaining=0.43
+2026-04-24 14:11:29,915 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:29,916 INFO SHORT stopped out @ 2166.05
+2026-04-24 14:11:29,916 INFO Trade closed — reason: stop_hit | side: short | entry: 2166.30 | stop: 2166.05
+2026-04-24 14:11:29,917 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:30,220 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=16 filled=11 expired=4
+2026-04-24 14:11:30,220 INFO Pending long filled @ 2143.39 qty=0.2800 | fill_rate=75% (12/16)
+2026-04-24 14:11:30,220 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:30,221 INFO DCA Level 1 triggered! Qty=0.28 Price=2140.74
+2026-04-24 14:11:30,221 INFO DCA L1 triggered @ 2132.74 | adding 0.28 ETH
+2026-04-24 14:11:30,221 INFO DCA fill complete. New WAP: 2138.07 | Remaining Qty: 0.56
+2026-04-24 14:11:30,221 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:30,221 INFO Dynamic Trail raised 2108.24 → 2140.17 (from 2156.15)
+2026-04-24 14:11:30,222 INFO DCA Level 2 triggered! Qty=0.28 Price=2112.43
+2026-04-24 14:11:30,222 INFO DCA L2 triggered @ 2121.02 | adding 0.28 ETH
+2026-04-24 14:11:30,222 INFO DCA fill complete. New WAP: 2132.38 | Remaining Qty: 0.8400000000000001
+2026-04-24 14:11:30,222 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:30,222 INFO Dynamic Trail raised 2091.66 → 2137.88 (from 2156.15)
+2026-04-24 14:11:30,223 WARNING DCA aborted: Total exposure $2343.24 exceeds limit $2000.00
+2026-04-24 14:11:30,223 INFO LONG stopped out @ 2137.88
+2026-04-24 14:11:30,223 INFO Trade closed — reason: stop_hit | side: long | entry: 2132.38 | stop: 2137.88
+2026-04-24 14:11:30,223 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:30,481 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=17 filled=12 expired=4
+2026-04-24 14:11:30,487 INFO Pending short expired at bar 7209 | fill_rate=71% (12/17)
+2026-04-24 14:11:30,704 INFO Pending long @ 2329.81 | expiry bar 7800 | placed=18 filled=12 expired=5
+2026-04-24 14:11:30,705 INFO Pending long filled @ 2329.81 qty=0.0600 | fill_rate=72% (13/18)
+2026-04-24 14:11:30,705 INFO DCA L1 set at 2318.65
+2026-04-24 14:11:30,706 INFO Dynamic Trail raised 2315.6 → 2324.26 (from 2341.93)
+2026-04-24 14:11:30,707 INFO Dynamic Trail raised 2324.26 → 2330.99 (from 2349.87)
+2026-04-24 14:11:30,708 INFO TP1 partial close 0.02 @ ~2351.13 | remaining=0.04
+2026-04-24 14:11:30,708 INFO Dynamic Trail raised 2330.99 → 2339.99 (from 2358.82)
+2026-04-24 14:11:30,709 INFO LONG stopped out @ 2339.99
+2026-04-24 14:11:30,709 INFO Trade closed — reason: stop_hit | side: long | entry: 2329.81 | stop: 2339.99
+2026-04-24 14:11:30,709 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:30,738 INFO Pending short @ 2353.99 | expiry bar 7892 | placed=19 filled=13 expired=5
+2026-04-24 14:11:30,741 INFO Pending short expired at bar 7893 | fill_rate=68% (13/19)
+2026-04-24 14:11:30,950 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=20 filled=13 expired=6
+2026-04-24 14:11:30,951 INFO Pending short filled @ 2400.22 qty=0.0900 | fill_rate=70% (14/20)
+2026-04-24 14:11:30,951 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:30,952 INFO DCA Level 1 triggered! Qty=0.09 Price=2404.92
+2026-04-24 14:11:30,952 INFO DCA L1 triggered @ 2406.06 | adding 0.09 ETH
+2026-04-24 14:11:30,952 INFO DCA fill complete. New WAP: 2403.14 | Remaining Qty: 0.18
+2026-04-24 14:11:30,952 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:30,952 INFO Dynamic Trail lowered 2419.82 → 2405.13 (from 2396.16)
+2026-04-24 14:11:30,952 INFO DCA Level 2 triggered! Qty=0.09 Price=2408.9
+2026-04-24 14:11:30,952 INFO DCA L2 triggered @ 2412.64 | adding 0.09 ETH
+2026-04-24 14:11:30,953 INFO DCA fill complete. New WAP: 2406.31 | Remaining Qty: 0.27
+2026-04-24 14:11:30,953 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:30,953 INFO Dynamic Trail lowered 2428.32 → 2405.92 (from 2396.16)
+2026-04-24 14:11:30,953 INFO SHORT stopped out @ 2405.92
+2026-04-24 14:11:30,953 INFO Trade closed — reason: stop_hit | side: short | entry: 2406.31 | stop: 2405.92
+2026-04-24 14:11:30,954 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:31,016 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:31,214 INFO Pending long @ 2987.89 | expiry bar 387 | placed=1 filled=0 expired=0
+2026-04-24 14:11:31,217 INFO Pending long expired at bar 388 | fill_rate=0% (0/1)
+2026-04-24 14:11:31,359 INFO Pending long @ 2289.52 | expiry bar 798 | placed=2 filled=0 expired=1
+2026-04-24 14:11:31,361 INFO Pending long expired at bar 799 | fill_rate=0% (0/2)
+2026-04-24 14:11:31,610 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=3 filled=0 expired=2
+2026-04-24 14:11:31,613 INFO Pending short expired at bar 1499 | fill_rate=0% (0/3)
+2026-04-24 14:11:31,699 INFO Pending short @ 1960.81 | expiry bar 1742 | placed=4 filled=0 expired=3
+2026-04-24 14:11:31,700 INFO Pending short filled @ 1960.81 qty=1.2300 | fill_rate=25% (1/4)
+2026-04-24 14:11:31,700 INFO DCA L1 set at 1971.31
+2026-04-24 14:11:31,701 INFO SHORT TP3 hit @ 1945.3
+2026-04-24 14:11:31,701 INFO Trade closed — reason: tp3 | side: short | entry: 1960.81 | stop: 1971.14
+2026-04-24 14:11:31,898 INFO Pending short @ 1986.12 | expiry bar 2243 | placed=5 filled=1 expired=3
+2026-04-24 14:11:31,901 INFO Pending short expired at bar 2244 | fill_rate=20% (1/5)
+2026-04-24 14:11:32,238 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=6 filled=1 expired=4
+2026-04-24 14:11:32,238 INFO Pending long filled @ 2048.05 qty=1.1500 | fill_rate=33% (2/6)
+2026-04-24 14:11:32,238 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:32,239 INFO TP1 partial close 0.34 @ ~2053.59 | remaining=0.81
+2026-04-24 14:11:32,239 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:32,239 INFO Stop moved 2036.97 → 2048.05 (BE)
+2026-04-24 14:11:32,240 INFO LONG TP3 hit @ 2064.68
+2026-04-24 14:11:32,240 INFO Trade closed — reason: tp3 | side: long | entry: 2048.05 | stop: 2048.05
+2026-04-24 14:11:32,240 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:32,863 INFO Pending long @ 2314.28 | expiry bar 4972 | placed=7 filled=2 expired=4
+2026-04-24 14:11:32,864 INFO Pending long filled @ 2314.28 qty=0.6800 | fill_rate=43% (3/7)
+2026-04-24 14:11:32,864 INFO DCA L1 set at 2298.67
+2026-04-24 14:11:32,865 INFO TP1 partial close 0.2 @ ~2323.68 | remaining=0.48
+2026-04-24 14:11:32,865 INFO Stop moved 2295.48 → 2314.28 (BE)
+2026-04-24 14:11:32,865 WARNING DCA aborted: Total exposure $3134.50 exceeds limit $2000.00
+2026-04-24 14:11:32,865 INFO LONG stopped out @ 2314.28
+2026-04-24 14:11:32,865 INFO Trade closed — reason: stop_hit | side: long | entry: 2314.28 | stop: 2314.28
+2026-04-24 14:11:32,866 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:33,399 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=8 filled=3 expired=4
+2026-04-24 14:11:33,400 INFO Pending long filled @ 2143.39 qty=1.2300 | fill_rate=50% (4/8)
+2026-04-24 14:11:33,400 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:33,400 WARNING DCA aborted: Total exposure $5266.22 exceeds limit $2000.00
+2026-04-24 14:11:33,400 INFO LONG stopped out @ 2133.17
+2026-04-24 14:11:33,400 INFO Trade closed — reason: stop_hit | side: long | entry: 2143.39 | stop: 2133.17
+2026-04-24 14:11:33,661 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=9 filled=4 expired=4
+2026-04-24 14:11:33,666 INFO Pending short expired at bar 7209 | fill_rate=44% (4/9)
+2026-04-24 14:11:34,129 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=10 filled=4 expired=5
+2026-04-24 14:11:34,129 INFO Pending short filled @ 2400.22 qty=0.9400 | fill_rate=50% (5/10)
+2026-04-24 14:11:34,129 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:34,130 INFO TP1 partial close 0.28 @ ~2396.64 | remaining=0.66
+2026-04-24 14:11:34,130 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:34,130 INFO Stop moved 2407.37 → 2400.22 (BE)
+2026-04-24 14:11:34,130 WARNING DCA aborted: Total exposure $4521.25 exceeds limit $2000.00
+2026-04-24 14:11:34,130 INFO SHORT stopped out @ 2400.22
+2026-04-24 14:11:34,130 INFO Trade closed — reason: stop_hit | side: short | entry: 2400.22 | stop: 2400.22
+2026-04-24 14:11:34,131 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:34,199 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:34,403 INFO Pending long @ 2987.89 | expiry bar 387 | placed=1 filled=0 expired=0
+2026-04-24 14:11:34,405 INFO Pending long expired at bar 388 | fill_rate=0% (0/1)
+2026-04-24 14:11:34,555 INFO Pending long @ 2289.52 | expiry bar 798 | placed=2 filled=0 expired=1
+2026-04-24 14:11:34,557 INFO Pending long expired at bar 799 | fill_rate=0% (0/2)
+2026-04-24 14:11:34,817 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=3 filled=0 expired=2
+2026-04-24 14:11:34,819 INFO Pending short expired at bar 1499 | fill_rate=0% (0/3)
+2026-04-24 14:11:34,910 INFO Pending short @ 1960.81 | expiry bar 1742 | placed=4 filled=0 expired=3
+2026-04-24 14:11:34,912 INFO Pending short filled @ 1960.81 qty=1.2300 | fill_rate=25% (1/4)
+2026-04-24 14:11:34,912 INFO DCA L1 set at 1971.31
+2026-04-24 14:11:34,912 INFO TP1 partial close 0.37 @ ~1950.47 | remaining=0.86
+2026-04-24 14:11:34,912 INFO Stop moved 1971.14 → 1960.81 (BE)
+2026-04-24 14:11:34,913 INFO SHORT stopped out @ 1960.81
+2026-04-24 14:11:34,913 INFO Trade closed — reason: stop_hit | side: short | entry: 1960.81 | stop: 1960.81
+2026-04-24 14:11:34,913 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:35,102 INFO Pending short @ 1986.12 | expiry bar 2243 | placed=5 filled=1 expired=3
+2026-04-24 14:11:35,106 INFO Pending short expired at bar 2244 | fill_rate=20% (1/5)
+2026-04-24 14:11:35,453 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=6 filled=1 expired=4
+2026-04-24 14:11:35,453 INFO Pending long filled @ 2048.05 qty=1.1200 | fill_rate=33% (2/6)
+2026-04-24 14:11:35,453 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:35,454 INFO Dynamic Trail raised 2036.97 → 2045.08 (from 2058.09)
+2026-04-24 14:11:35,455 INFO TP1 partial close 0.34 @ ~2059.14 | remaining=0.78
+2026-04-24 14:11:35,455 INFO Stop moved 2045.08 → 2048.05 (BE)
+2026-04-24 14:11:35,455 INFO TP2 level reached @ ~2070.22 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:35,455 INFO Dynamic Trail raised 2048.05 → 2058.97 (from 2073.33)
+2026-04-24 14:11:35,455 INFO Dynamic Trail raised 2058.97 → 2064.08 (from 2078.24)
+2026-04-24 14:11:35,456 INFO LONG TP3 hit @ 2081.3
+2026-04-24 14:11:35,456 INFO Trade closed — reason: tp3 | side: long | entry: 2048.05 | stop: 2064.08
+2026-04-24 14:11:35,457 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:36,110 INFO Pending long @ 2314.28 | expiry bar 4972 | placed=7 filled=2 expired=4
+2026-04-24 14:11:36,110 INFO Pending long filled @ 2314.28 qty=0.6800 | fill_rate=43% (3/7)
+2026-04-24 14:11:36,110 INFO DCA L1 set at 2298.67
+2026-04-24 14:11:36,111 INFO Dynamic Trail raised 2295.48 → 2305.08 (from 2328.49)
+2026-04-24 14:11:36,111 WARNING DCA aborted: Total exposure $3134.50 exceeds limit $2000.00
+2026-04-24 14:11:36,111 INFO LONG stopped out @ 2305.08
+2026-04-24 14:11:36,111 INFO Trade closed — reason: stop_hit | side: long | entry: 2314.28 | stop: 2305.08
+2026-04-24 14:11:36,640 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=8 filled=3 expired=4
+2026-04-24 14:11:36,641 INFO Pending long filled @ 2143.39 qty=1.2400 | fill_rate=50% (4/8)
+2026-04-24 14:11:36,641 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:36,642 WARNING DCA aborted: Total exposure $5309.04 exceeds limit $2000.00
+2026-04-24 14:11:36,642 INFO LONG stopped out @ 2133.17
+2026-04-24 14:11:36,642 INFO Trade closed — reason: stop_hit | side: long | entry: 2143.39 | stop: 2133.17
+2026-04-24 14:11:36,642 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:36,894 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=9 filled=4 expired=4
+2026-04-24 14:11:36,896 INFO Pending short expired at bar 7209 | fill_rate=44% (4/9)
+2026-04-24 14:11:37,371 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=10 filled=4 expired=5
+2026-04-24 14:11:37,371 INFO Pending short filled @ 2400.22 qty=1.2700 | fill_rate=50% (5/10)
+2026-04-24 14:11:37,371 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:37,373 WARNING DCA aborted: Total exposure $6108.50 exceeds limit $2000.00
+2026-04-24 14:11:37,374 WARNING DCA aborted: Total exposure $6118.61 exceeds limit $2000.00
+2026-04-24 14:11:37,374 INFO SHORT stopped out @ 2407.37
+2026-04-24 14:11:37,374 INFO Trade closed — reason: stop_hit | side: short | entry: 2400.22 | stop: 2407.37
+2026-04-24 14:11:37,434 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:37,633 INFO Pending long @ 2987.89 | expiry bar 387 | placed=1 filled=0 expired=0
+2026-04-24 14:11:37,636 INFO Pending long expired at bar 388 | fill_rate=0% (0/1)
+2026-04-24 14:11:37,776 INFO Pending long @ 2289.52 | expiry bar 798 | placed=2 filled=0 expired=1
+2026-04-24 14:11:37,779 INFO Pending long expired at bar 799 | fill_rate=0% (0/2)
+2026-04-24 14:11:38,025 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=3 filled=0 expired=2
+2026-04-24 14:11:38,028 INFO Pending short expired at bar 1499 | fill_rate=0% (0/3)
+2026-04-24 14:11:38,113 INFO Pending short @ 1960.81 | expiry bar 1742 | placed=4 filled=0 expired=3
+2026-04-24 14:11:38,115 INFO Pending short filled @ 1960.81 qty=1.2300 | fill_rate=25% (1/4)
+2026-04-24 14:11:38,115 INFO DCA L1 set at 1971.31
+2026-04-24 14:11:38,116 INFO TP1 partial close 0.37 @ ~1945.3 | remaining=0.86
+2026-04-24 14:11:38,116 INFO Stop moved 1971.14 → 1960.81 (BE)
+2026-04-24 14:11:38,116 INFO SHORT stopped out @ 1960.81
+2026-04-24 14:11:38,116 INFO Trade closed — reason: stop_hit | side: short | entry: 1960.81 | stop: 1960.81
+2026-04-24 14:11:38,116 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:38,296 INFO Pending short @ 1986.12 | expiry bar 2243 | placed=5 filled=1 expired=3
+2026-04-24 14:11:38,299 INFO Pending short expired at bar 2244 | fill_rate=20% (1/5)
+2026-04-24 14:11:38,630 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=6 filled=1 expired=4
+2026-04-24 14:11:38,630 INFO Pending long filled @ 2048.05 qty=1.1200 | fill_rate=33% (2/6)
+2026-04-24 14:11:38,630 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:38,631 INFO Dynamic Trail raised 2036.97 → 2045.08 (from 2058.09)
+2026-04-24 14:11:38,632 INFO TP1 partial close 0.34 @ ~2064.68 | remaining=0.78
+2026-04-24 14:11:38,632 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:38,632 INFO Stop moved 2045.08 → 2048.05 (BE)
+2026-04-24 14:11:38,632 INFO Dynamic Trail raised 2048.05 → 2058.99 (from 2073.33)
+2026-04-24 14:11:38,632 INFO Dynamic Trail raised 2058.99 → 2064.08 (from 2078.24)
+2026-04-24 14:11:38,633 INFO TP2 level reached @ ~2081.3 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:38,633 INFO Dynamic Trail raised 2064.08 → 2069.16 (from 2083.33)
+2026-04-24 14:11:38,634 INFO LONG stopped out @ 2069.16
+2026-04-24 14:11:38,634 INFO Trade closed — reason: stop_hit | side: long | entry: 2048.05 | stop: 2069.16
+2026-04-24 14:11:38,634 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:39,312 INFO Pending long @ 2314.28 | expiry bar 4972 | placed=7 filled=2 expired=4
+2026-04-24 14:11:39,313 INFO Pending long filled @ 2314.28 qty=0.6800 | fill_rate=43% (3/7)
+2026-04-24 14:11:39,313 INFO DCA L1 set at 2298.67
+2026-04-24 14:11:39,313 INFO Dynamic Trail raised 2295.48 → 2305.08 (from 2328.49)
+2026-04-24 14:11:39,314 WARNING DCA aborted: Total exposure $3134.50 exceeds limit $2000.00
+2026-04-24 14:11:39,314 INFO LONG stopped out @ 2305.08
+2026-04-24 14:11:39,314 INFO Trade closed — reason: stop_hit | side: long | entry: 2314.28 | stop: 2305.08
+2026-04-24 14:11:39,859 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=8 filled=3 expired=4
+2026-04-24 14:11:39,860 INFO Pending long filled @ 2143.39 qty=1.2400 | fill_rate=50% (4/8)
+2026-04-24 14:11:39,860 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:39,861 WARNING DCA aborted: Total exposure $5309.04 exceeds limit $2000.00
+2026-04-24 14:11:39,861 INFO LONG stopped out @ 2133.17
+2026-04-24 14:11:39,861 INFO Trade closed — reason: stop_hit | side: long | entry: 2143.39 | stop: 2133.17
+2026-04-24 14:11:40,132 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=9 filled=4 expired=4
+2026-04-24 14:11:40,138 INFO Pending short expired at bar 7209 | fill_rate=44% (4/9)
+2026-04-24 14:11:40,767 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=10 filled=4 expired=5
+2026-04-24 14:11:40,768 INFO Pending short filled @ 2400.22 qty=1.0900 | fill_rate=50% (5/10)
+2026-04-24 14:11:40,768 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:40,769 WARNING DCA aborted: Total exposure $5242.73 exceeds limit $2000.00
+2026-04-24 14:11:40,769 WARNING DCA aborted: Total exposure $5251.40 exceeds limit $2000.00
+2026-04-24 14:11:40,769 INFO SHORT stopped out @ 2407.37
+2026-04-24 14:11:40,769 INFO Trade closed — reason: stop_hit | side: short | entry: 2400.22 | stop: 2407.37
+2026-04-24 14:11:40,829 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:41,154 INFO Pending long @ 2289.52 | expiry bar 798 | placed=1 filled=0 expired=0
+2026-04-24 14:11:41,156 INFO Pending long expired at bar 799 | fill_rate=0% (0/1)
+2026-04-24 14:11:41,392 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=2 filled=0 expired=1
+2026-04-24 14:11:41,395 INFO Pending short expired at bar 1499 | fill_rate=0% (0/2)
+2026-04-24 14:11:42,004 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=3 filled=0 expired=2
+2026-04-24 14:11:42,004 INFO Pending long filled @ 2048.05 qty=1.1500 | fill_rate=33% (1/3)
+2026-04-24 14:11:42,004 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:42,006 INFO TP1 partial close 0.34 @ ~2053.59 | remaining=0.81
+2026-04-24 14:11:42,006 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:42,006 INFO Stop moved 2036.97 → 2048.05 (BE)
+2026-04-24 14:11:42,006 INFO LONG TP3 hit @ 2064.68
+2026-04-24 14:11:42,006 INFO Trade closed — reason: tp3 | side: long | entry: 2048.05 | stop: 2048.05
+2026-04-24 14:11:42,006 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:43,221 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=4 filled=1 expired=2
+2026-04-24 14:11:43,222 INFO Pending long filled @ 2143.39 qty=1.2300 | fill_rate=50% (2/4)
+2026-04-24 14:11:43,222 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:43,223 WARNING DCA aborted: Total exposure $5266.22 exceeds limit $2000.00
+2026-04-24 14:11:43,223 INFO LONG stopped out @ 2133.17
+2026-04-24 14:11:43,223 INFO Trade closed — reason: stop_hit | side: long | entry: 2143.39 | stop: 2133.17
+2026-04-24 14:11:43,509 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=5 filled=2 expired=2
+2026-04-24 14:11:43,512 INFO Pending short expired at bar 7209 | fill_rate=40% (2/5)
+2026-04-24 14:11:44,001 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=6 filled=2 expired=3
+2026-04-24 14:11:44,002 INFO Pending short filled @ 2400.22 qty=1.0700 | fill_rate=50% (3/6)
+2026-04-24 14:11:44,002 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:44,003 INFO TP1 partial close 0.32 @ ~2396.64 | remaining=0.75
+2026-04-24 14:11:44,003 INFO Stop moved 2407.37 → 2400.22 (BE)
+2026-04-24 14:11:44,003 WARNING DCA aborted: Total exposure $5146.53 exceeds limit $2000.00
+2026-04-24 14:11:44,003 INFO SHORT stopped out @ 2400.22
+2026-04-24 14:11:44,003 INFO Trade closed — reason: stop_hit | side: short | entry: 2400.22 | stop: 2400.22
+2026-04-24 14:11:44,004 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:44,067 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:44,412 INFO Pending long @ 2289.52 | expiry bar 798 | placed=1 filled=0 expired=0
+2026-04-24 14:11:44,415 INFO Pending long expired at bar 799 | fill_rate=0% (0/1)
+2026-04-24 14:11:44,658 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=2 filled=0 expired=1
+2026-04-24 14:11:44,660 INFO Pending short expired at bar 1499 | fill_rate=0% (0/2)
+2026-04-24 14:11:45,243 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=3 filled=0 expired=2
+2026-04-24 14:11:45,248 INFO Pending long filled @ 2048.05 qty=1.1500 | fill_rate=33% (1/3)
+2026-04-24 14:11:45,248 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:45,249 INFO Dynamic Trail raised 2036.97 → 2045.08 (from 2058.09)
+2026-04-24 14:11:45,249 INFO TP1 partial close 0.34 @ ~2059.14 | remaining=0.81
+2026-04-24 14:11:45,249 INFO Stop moved 2045.08 → 2048.05 (BE)
+2026-04-24 14:11:45,249 INFO TP2 level reached @ ~2070.22 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:45,250 INFO Dynamic Trail raised 2048.05 → 2058.97 (from 2073.33)
+2026-04-24 14:11:45,250 INFO Dynamic Trail raised 2058.97 → 2064.08 (from 2078.24)
+2026-04-24 14:11:45,251 INFO LONG TP3 hit @ 2081.3
+2026-04-24 14:11:45,251 INFO Trade closed — reason: tp3 | side: long | entry: 2048.05 | stop: 2064.08
+2026-04-24 14:11:46,495 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=4 filled=1 expired=2
+2026-04-24 14:11:46,496 INFO Pending long filled @ 2143.39 qty=1.2200 | fill_rate=50% (2/4)
+2026-04-24 14:11:46,496 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:46,496 WARNING DCA aborted: Total exposure $5223.41 exceeds limit $2000.00
+2026-04-24 14:11:46,496 INFO LONG stopped out @ 2133.17
+2026-04-24 14:11:46,497 INFO Trade closed — reason: stop_hit | side: long | entry: 2143.39 | stop: 2133.17
+2026-04-24 14:11:46,775 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=5 filled=2 expired=2
+2026-04-24 14:11:46,777 INFO Pending short expired at bar 7209 | fill_rate=40% (2/5)
+2026-04-24 14:11:47,268 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=6 filled=2 expired=3
+2026-04-24 14:11:47,269 INFO Pending short filled @ 2400.22 qty=1.0600 | fill_rate=50% (3/6)
+2026-04-24 14:11:47,269 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:47,270 WARNING DCA aborted: Total exposure $5098.43 exceeds limit $2000.00
+2026-04-24 14:11:47,270 WARNING DCA aborted: Total exposure $5106.87 exceeds limit $2000.00
+2026-04-24 14:11:47,270 INFO SHORT stopped out @ 2407.37
+2026-04-24 14:11:47,270 INFO Trade closed — reason: stop_hit | side: short | entry: 2400.22 | stop: 2407.37
+2026-04-24 14:11:47,340 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:47,690 INFO Pending long @ 2289.52 | expiry bar 798 | placed=1 filled=0 expired=0
+2026-04-24 14:11:47,692 INFO Pending long expired at bar 799 | fill_rate=0% (0/1)
+2026-04-24 14:11:47,964 INFO Pending short @ 2127.07 | expiry bar 1498 | placed=2 filled=0 expired=1
+2026-04-24 14:11:47,967 INFO Pending short expired at bar 1499 | fill_rate=0% (0/2)
+2026-04-24 14:11:48,549 INFO Pending long @ 2048.05 | expiry bar 3166 | placed=3 filled=0 expired=2
+2026-04-24 14:11:48,549 INFO Pending long filled @ 2048.05 qty=1.1500 | fill_rate=33% (1/3)
+2026-04-24 14:11:48,549 INFO DCA L1 set at 2039.36
+2026-04-24 14:11:48,550 INFO Dynamic Trail raised 2036.97 → 2045.08 (from 2058.09)
+2026-04-24 14:11:48,551 INFO TP1 partial close 0.34 @ ~2064.68 | remaining=0.81
+2026-04-24 14:11:48,551 INFO Stop moved 2045.08 → 2048.05 (BE)
+2026-04-24 14:11:48,551 INFO Dynamic Trail raised 2048.05 → 2058.99 (from 2073.33)
+2026-04-24 14:11:48,552 INFO Dynamic Trail raised 2058.99 → 2064.08 (from 2078.24)
+2026-04-24 14:11:48,552 INFO TP2 level reached @ ~2081.3 | tp2_pct=0, runner continues to TP3
+2026-04-24 14:11:48,552 INFO Dynamic Trail raised 2064.08 → 2069.16 (from 2083.33)
+2026-04-24 14:11:48,553 INFO LONG stopped out @ 2069.16
+2026-04-24 14:11:48,553 INFO Trade closed — reason: stop_hit | side: long | entry: 2048.05 | stop: 2069.16
+2026-04-24 14:11:48,553 WARNING Telegram queue full — notification dropped
+2026-04-24 14:11:49,762 INFO Pending long @ 2143.39 | expiry bar 6495 | placed=4 filled=1 expired=2
+2026-04-24 14:11:49,762 INFO Pending long filled @ 2143.39 qty=1.2000 | fill_rate=50% (2/4)
+2026-04-24 14:11:49,762 INFO DCA L1 set at 2132.74
+2026-04-24 14:11:49,763 WARNING DCA aborted: Total exposure $5137.78 exceeds limit $2000.00
+2026-04-24 14:11:49,763 INFO LONG stopped out @ 2133.17
+2026-04-24 14:11:49,763 INFO Trade closed — reason: stop_hit | side: long | entry: 2143.39 | stop: 2133.17
+2026-04-24 14:11:50,020 INFO Pending short @ 2195.36 | expiry bar 7208 | placed=5 filled=2 expired=2
+2026-04-24 14:11:50,027 INFO Pending short expired at bar 7209 | fill_rate=40% (2/5)
+2026-04-24 14:11:50,507 INFO Pending short @ 2400.22 | expiry bar 8462 | placed=6 filled=2 expired=3
+2026-04-24 14:11:50,508 INFO Pending short filled @ 2400.22 qty=0.9600 | fill_rate=50% (3/6)
+2026-04-24 14:11:50,508 INFO DCA L1 set at 2406.06
+2026-04-24 14:11:50,509 WARNING DCA aborted: Total exposure $4617.45 exceeds limit $2000.00
+2026-04-24 14:11:50,509 WARNING DCA aborted: Total exposure $4625.09 exceeds limit $2000.00
+2026-04-24 14:11:50,509 INFO SHORT stopped out @ 2407.37
+2026-04-24 14:11:50,509 INFO Trade closed — reason: stop_hit | side: short | entry: 2400.22 | stop: 2407.37
+2026-04-24 14:11:50,575 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:53,843 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:11:57,150 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:12:00,430 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:12:03,641 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:12:06,894 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:12:10,170 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:12:13,461 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+2026-04-24 14:12:16,837 INFO ML Model loaded from /Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local/sniper_model.cbm
+Starting 90-day Optimization on CSV...
+ML    | THR   | R1    | Trades | Win%   | PnL      | MDD%  
+-----------------------------------------------------------------
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 55    | 0.5   | 33     | 54.5   | -270.06  | 92.05 
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 55    | 1.0   | 29     | 62.1   | -274.78  | 93.36 
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 55    | 1.5   | 31     | 58.1   | -271.91  | 93.06 
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 65    | 0.5   | 10     | 60.0   | -46.05   | 19.82 
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 65    | 1.0   | 9      | 55.6   | -178.64  | 69.1  
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 65    | 1.5   | 11     | 45.5   | -36.63   | 18.48 
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 75    | 0.5   | 5      | 60.0   | 5.32     | 3.44  
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 75    | 1.0   | 4      | 50.0   | -6.33    | 6.12  
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+0.9   | 75    | 1.5   | 6      | 33.3   | -184.58  | 59.8  
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+Loading historical data from data/eth_history_1y.csv...
+Running backtest on 8627 bars…
+
+TOP 3 BY BALANCE:
+    ml  thr   r1  trades  win_rate    pnl    mdd  balance
+6  0.9   75  0.5       5      60.0   5.32   3.44   318.27
+7  0.9   75  1.0       4      50.0  -6.33   6.12   306.23
+5  0.9   65  1.5      11      45.5 -36.63  18.48   275.65

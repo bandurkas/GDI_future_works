@@ -1,3 +1,27 @@
+# Project Ecosystem & Mapping
+
+This repository serves as a multi-project hub for two distinct systems. **NEVER confuse these two projects during deployment or review.**
+
+### 🌐 Project A: GDI FutureWorks (Web/CRM)
+- **Local Root**: `./` (current directory)
+- **VPS Target**: `/root/electric-sojourner`
+- **GitHub**: `https://github.com/bandurkas/GDI_future_works`
+- **Core Stack**: Next.js, Prisma, Tailwind.
+
+### 📈 Project B: SmartMoney Agent (Trading - Monitor)
+- **Local Root**: `./sm-playground`
+- **VPS Target**: `/root/SM_Agent`
+- **GitHub**: `https://github.com/bandurkas/SM.git`
+- **Core Stack**: Python (CCXT), SmartMoney MTF Multi-Agent.
+
+### 🤖 Project C: EthBot (Trading - Executor/Production)
+- **Local Root**: `./ethbot_local`
+- **VPS Target**: `/root/ethbot`
+- **GitHub**: `https://github.com/bandurkas/ethbot.git`
+- **Core Stack**: Python, ML (CatBoost), Risk/Trade Engines.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

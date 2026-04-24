@@ -1,0 +1,41 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+set host "31.97.105.238"
+set user "root"
+set pass "w7XBiu++Ph4t4dlB1nWRMwzznowtt6k5"
+set repo "https://github.com/bandurkas/SM.git"
+set target_dir "/root/SM_Agent"
+
+spawn ssh $user@$host
+
+expect {
+    "Are you sure you want to continue connecting" {
+        send "yes\r"
+        exp_continue
+    }
+    "password:" {
+        send "$pass\r"
+    }
+}
+
+expect "#"
+
+# Создаем папку и клонируем репозиторий
+send "mkdir -p $target_dir\r"
+send "cd $target_dir\r"
+send "if \[ ! -d .git \]; then git clone $repo . ; else git pull origin main; fi\r"
+
+# Установка зависимостей
+send "apt update && apt install -y python3-pip python3-venv\r"
+send "python3 -m venv venv\r"
+send "source venv/bin/activate\r"
+send "pip3 install -r requirements.txt\r"
+
+# Настройка PM2 для автозапуска (если есть)
+send "pm2 delete sm-agent || true\r"
+send "pm2 start main.py --name sm-agent --interpreter ./venv/bin/python3\r"
+send "pm2 save\r"
+
+send "exit\r"
+expect eof

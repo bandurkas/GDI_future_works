@@ -1,0 +1,27 @@
+{
+  "context": "Project separation and VPS mapping",
+  "decision": "Always distinguish between GDI FutureWorks, SmartMoney Agent, and EthBot",
+  "mapping": {
+    "Project A": {
+      "name": "GDI FutureWorks",
+      "type": "Web/CRM",
+      "local": "/Users/styserg/.gemini/antigravity/playground/void-chromosphere",
+      "vps": "/root/electric-sojourner",
+      "repo": "bandurkas/GDI_future_works"
+    },
+    "Project B": {
+      "name": "SmartMoney Agent",
+      "type": "Trading - Monitor",
+      "local": "/Users/styserg/.gemini/antigravity/playground/void-chromosphere/sm-playground",
+      "vps": "/root/SM_Agent",
+      "repo": "bandurkas/SM.git"
+    },
+    "Project C": {
+      "name": "EthBot",
+      "type": "Trading - Executor/Production",
+      "local": "/Users/styserg/.gemini/antigravity/playground/void-chromosphere/ethbot_local",
+      "vps": "/root/ethbot",
+      "repo": "bandurkas/ethbot.git"
+    }
+  }
+}

@@ -209,6 +209,62 @@
       "createdAt": "2026-04-24T04:12:38.027Z",
       "model": "sonnet",
       "modelRoutedBy": "router"
+    },
+    "agent-1777051180757-olwqlr": {
+      "agentId": "agent-1777051180757-olwqlr",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Deep review of SmartMoney MTF Monitor in sm-playground/. Focus on agent logic, multi-timeframe synchronization, and robustness of the new non-blocking notification system."
+      },
+      "createdAt": "2026-04-24T17:19:40.760Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1777051182539-gs1807": {
+      "agentId": "agent-1777051182539-gs1807",
+      "agentType": "performance-engineer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Analyze the performance of the main monitoring loop in sm-playground/main.py and the backtest execution in sm-playground/backtest.py."
+      },
+      "createdAt": "2026-04-24T17:19:42.543Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1777051183884-u23kti": {
+      "agentId": "agent-1777051183884-u23kti",
+      "agentType": "tester",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Generate comprehensive unit tests for all agents in sm-playground/agents/."
+      },
+      "createdAt": "2026-04-24T17:19:43.887Z",
+      "model": "haiku",
+      "modelRoutedBy": "router"
+    },
+    "agent-1777051239984-f7kdgh": {
+      "agentId": "agent-1777051239984-f7kdgh",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Review the code in sm-playground/. Focus on multi-agent coordination, structural analysis logic (BOS), and the new non-blocking Telegram notifier. Provide exact findings in Markdown."
+      },
+      "createdAt": "2026-04-24T17:20:39.987Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
     }
   },
   "version": "3.0.0"
