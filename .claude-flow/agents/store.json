@@ -139,6 +139,76 @@
       "createdAt": "2026-04-20T17:51:38.952Z",
       "model": "sonnet",
       "modelRoutedBy": "router"
+    },
+    "agent-1777003520709-lklpta": {
+      "agentId": "agent-1777003520709-lklpta",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Perform a deep architectural and logic review of the project. Focus on the recent bugfixes for ghost trades and auto-heal state desync in eth_bot.py. Audit the Telegram notification logic for production readiness."
+      },
+      "createdAt": "2026-04-24T04:05:20.714Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1777003530811-cipul0": {
+      "agentId": "agent-1777003530811-cipul0",
+      "agentType": "security-architect",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Audit the project for security vulnerabilities. Focus on eth_bot.py sensitive data handling and investigate the ACE risk in terminal_execute identified during the orchestration layer audit. Recommend hardening measures for production deployment."
+      },
+      "createdAt": "2026-04-24T04:05:30.815Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1777003954601-nf4nis": {
+      "agentId": "agent-1777003954601-nf4nis",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Perform a deep architectural and logic audit of the CRM (src/app/crm) and Lead API (src/app/api/leads). Check for state desync, race conditions in lead capture, and inconsistent UI transitions. Reference the recent CRM Restoration commits."
+      },
+      "createdAt": "2026-04-24T04:12:34.605Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1777003956300-afpofj": {
+      "agentId": "agent-1777003956300-afpofj",
+      "agentType": "security-architect",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Audit src/auth.ts, src/middleware.ts, and all routes in src/app/api/admin for auth bypass, privilege escalation, and sensitive data leaks in logs. Check CSP configuration in next.config.mjs."
+      },
+      "createdAt": "2026-04-24T04:12:36.304Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
+    },
+    "agent-1777003958023-q36bh4": {
+      "agentId": "agent-1777003958023-q36bh4",
+      "agentType": "performance-engineer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "provider": "anthropic",
+        "task": "Analyze the performance of CRM dashboards (AdReportDashboard.tsx) and lead processing routes. Check for N+1 queries in Prisma and blocking operations in Server Actions."
+      },
+      "createdAt": "2026-04-24T04:12:38.027Z",
+      "model": "sonnet",
+      "modelRoutedBy": "router"
     }
   },
   "version": "3.0.0"

@@ -1,0 +1,29 @@
+{
+  "swarmId": "swarm-moce3w8h",
+  "objective": "Perform a comprehensive review of the project and recent changes (ghost trades, auto-heal desync). Execute a security audit of eth_bot.py and the orchestration layer. Provide a unified audit report with production hardening recommendations.",
+  "strategy": "adaptive",
+  "status": "initialized",
+  "agents": 5,
+  "agentPlan": [
+    {
+      "role": "Coordinator",
+      "type": "coordinator",
+      "count": 1,
+      "purpose": "Dynamic orchestration"
+    },
+    {
+      "role": "Scout",
+      "type": "researcher",
+      "count": 1,
+      "purpose": "Task analysis"
+    },
+    {
+      "role": "Worker",
+      "type": "coder",
+      "count": 3,
+      "purpose": "Adaptive execution"
+    }
+  ],
+  "startedAt": "2026-04-24T04:07:56.658Z",
+  "parallel": true
+}

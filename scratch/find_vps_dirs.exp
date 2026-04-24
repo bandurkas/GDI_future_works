@@ -1,0 +1,18 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+spawn ssh root@31.97.105.238
+
+expect {
+    "password:" {
+        send "w7XBiu++Ph4t4dlB1nWRMwzznowtt6k5\r"
+    }
+}
+
+expect "# "
+send "ls -la /var/www/\r"
+expect "# "
+send "ls -la ~\r"
+expect "# "
+send "exit\r"
+expect eof

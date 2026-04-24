@@ -1,0 +1,19 @@
+#!/usr/bin/expect -f
+set timeout 300
+set password "w7XBiu++Ph4t4dlB1nWRMwzznowtt6k5"
+set user "root"
+set host "31.97.105.238"
+
+spawn ssh -o StrictHostKeyChecking=no $user@$host
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "root@" {
+        send "cd ethbot && apt-get update && apt-get install -y python3-pip && pip3 install -r requirements.txt --break-system-packages && echo '=== INSTALL OK ==='\r"
+        expect "=== INSTALL OK ==="
+        send "exit\r"
+    }
+}
+expect eof

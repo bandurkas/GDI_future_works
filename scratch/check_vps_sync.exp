@@ -1,0 +1,40 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+spawn ssh root@31.97.105.238
+
+expect {
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    "password:" {
+        send "w7XBiu++Ph4t4dlB1nWRMwzznowtt6k5\r"
+    }
+}
+
+expect "# "
+
+# Check ethbot
+send "cd ~/ethbot && git fetch origin && git log -n 1 --oneline\r"
+expect {
+    -re "(\[a-f0-9\]+) .*" {
+        set ethbot_hash $expect_out(1,string)
+    }
+}
+expect "# "
+
+# Check void-chromosphere (deployed at /var/www/gdi-futureworks as per DIARY.md)
+send "cd /var/www/gdi-futureworks && git fetch origin && git log -n 1 --oneline\r"
+expect {
+    -re "(\[a-f0-9\]+) .*" {
+        set void_hash $expect_out(1,string)
+    }
+}
+expect "# "
+
+send "exit\r"
+expect eof
+
+puts "\nRESULT_ETHBOT: $ethbot_hash"
+puts "RESULT_VOID: $void_hash"
