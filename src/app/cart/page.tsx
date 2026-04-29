@@ -26,23 +26,21 @@ import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import QRISPaymentBlock from '@/components/payment/QRISPaymentBlock';
 import PayPalPaymentBlock from '@/components/payment/PayPalPaymentBlock';
 import PaymentStatusBlock from '@/components/payment/PaymentStatusBlock';
-import { trackConversion, trackAddToCart } from '@/lib/analytics';
+import { trackConversion, trackAddToCart, trackInitiateCheckout, trackAddPaymentInfo } from '@/lib/analytics';
 
-type Step = 'summary' | 'details' | 'method' | 'payment';
+type Step = 'details' | 'method' | 'payment';
 type PaymentMethod = 'qris' | 'paypal' | null;
 
 const STEPS: { key: Step; label: string }[] = [
-  { key: 'summary', label: 'Order' },
   { key: 'details', label: 'Details' },
   { key: 'method', label: 'Payment' },
   { key: 'payment', label: 'Pay' },
 ];
 
 const STEP_INDEX: Record<Step, number> = {
-  summary: 0,
-  details: 1,
-  method: 2,
-  payment: 3,
+  details: 0,
+  method: 1,
+  payment: 2,
 };
 
 
@@ -62,7 +60,7 @@ export default function CartPage() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [step, setStep] = useState<Step>('summary');
+  const [step, setStep] = useState<Step>('details');
   const [direction, setDirection] = useState<'forward' | 'back'>('forward');
   const [method, setMethod] = useState<PaymentMethod>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -86,6 +84,13 @@ export default function CartPage() {
       }
     }
   }, [language]);
+
+  // Initial tracking
+  useEffect(() => {
+    if (totalItems > 0) {
+      trackInitiateCheckout(totalIDR, 'IDR', items);
+    }
+  }, []); // Run once on mount
 
   const handleRemoveItem = (courseId: string, dateId: string, title: string) => {
     removeItem(courseId, dateId);
@@ -220,15 +225,6 @@ export default function CartPage() {
 
     updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone, phoneVerified: true });
     
-    // ── ANALYTICS: Lead & AddToCart ──
-    // User has provided Name, Email, Phone. This is a high-quality Lead.
-    trackConversion('checkout_details_submitted', 'cart_page');
-    
-    // As they proceed to payment method, we track AddToCart for each item
-    items.forEach(item => {
-      trackAddToCart(item.slug, item.priceIDR, 'IDR');
-    });
-
     setDirection('forward');
     setStep('method');
   };
@@ -245,6 +241,10 @@ export default function CartPage() {
     if (!method) return;
     setCreateOrderLoading(true);
     setCreateOrderError(null);
+
+    // Track AddPaymentInfo
+    trackAddPaymentInfo(method, totalIDR, 'IDR');
+
     try {
       if (method === 'qris') {
         const res = await fetch('/api/payment/create', {
@@ -370,62 +370,39 @@ export default function CartPage() {
           <div className={styles.main}>
             <div key={step} className={`${styles.stepContent} ${direction === 'back' ? styles.stepContentBack : styles.stepContentForward}`}>
 
-              {/* ── Step 1: Order Summary ── */}
-              {step === 'summary' && (
-                <div className={styles.section}>
-                  <h2 className={styles.sectionTitle}>Your Order</h2>
-                  <div className={styles.itemList}>
-                    {items.map((item) => (
-                      <div key={`${item.courseId}-${item.dateId}`} className={styles.cartItem}>
-                        <div className={styles.itemMain}>
-                          <div className={styles.itemIcon}>{item.icon}</div>
-                          <div className={styles.itemInfo}>
-                            <h3>{item.courseTitle}</h3>
-                            <div className={styles.itemMeta}>
-                              <span className={styles.metaItem}><Calendar size={14} /> {item.dateLabel}</span>
-                              <span className={styles.metaItem}><Clock size={14} /> {item.timeLabel}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className={styles.itemActions}>
-                          <div className={styles.itemPrice}>
-                            {currency === 'MYR'
-                              ? formatPrice(item.priceMYR, 'MYR')
-                              : formatPrice(item.priceIDR, 'IDR')}
-                          </div>
-                          <button
-                            className={styles.removeBtn}
-                            onClick={() => handleRemoveItem(item.courseId, item.dateId, item.courseTitle)}
-                            aria-label={`Remove ${item.courseTitle} from cart`}
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    className="btn btn-primary btn-xl btn-full"
-                    style={{ marginTop: '8px' }}
-                    onClick={() => { setDirection('forward'); setStep('details'); }}
-                  >
-                    {language === 'id' ? 'Konfirmasi & Lanjutkan' : 'Confirm & Continue'} <ArrowRight size={18} />
-                  </button>
-                </div>
-              )}
-
-              {/* ── Step 2: Customer Details ── */}
+              {/* ── Step 1: Details & Order Review ── */}
               {step === 'details' && (
                 <div className={styles.section}>
+                  {/* Unified Section Header */}
                   <div className={styles.detailsHeader}>
                     <h2 className={styles.sectionTitle}>
-                      {language === 'id' ? '👤 Data Kamu' : '👤 Your Details'}
+                      {language === 'id' ? '🛒 Pesanan & Data Kamu' : '🛒 Your Order & Details'}
                     </h2>
                     <p className={styles.detailsSubtitle}>
                       {language === 'id'
-                        ? 'Kami butuh info ini untuk mengirim link kelas kamu.'
-                        : 'We need this to send your class access link.'}
+                        ? 'Tinjau pesanan dan lengkapi data untuk akses kelas.'
+                        : 'Review your order and complete details for class access.'}
                     </p>
+                  </div>
+
+                  {/* Order Review List (Condensed) */}
+                  <div className={styles.itemListCondensed}>
+                    {items.map((item) => (
+                      <div key={`${item.courseId}-${item.dateId}`} className={styles.cartItemSmall}>
+                        <div className={styles.itemIconSmall}>{item.icon}</div>
+                        <div className={styles.itemInfoSmall}>
+                          <h3>{item.courseTitle}</h3>
+                          <span className={styles.metaSmall}>{item.dateLabel} · {item.timeLabel}</span>
+                        </div>
+                        <button
+                            className={styles.removeBtnSmall}
+                            onClick={() => handleRemoveItem(item.courseId, item.dateId, item.courseTitle)}
+                            aria-label="Remove"
+                          >
+                            <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
                   </div>
 
                   <div className={styles.form}>
@@ -511,7 +488,7 @@ export default function CartPage() {
                       </p>
                     </div>
 
-                    {/* Email — optional */}
+                    {/* Email — required */}
                     <div className={styles.field}>
                       <label className={styles.label} htmlFor="cart-email">
                         {language === 'id' ? 'Email' : 'Email'}
@@ -551,10 +528,10 @@ export default function CartPage() {
 
                   <button
                     className="btn btn-primary btn-xl btn-full"
-                    style={{ marginTop: '8px' }}
+                    style={{ marginTop: '16px' }}
                     onClick={handleContinueDetails}
                   >
-                    {language === 'id' ? 'Bayar Sekarang' : 'Pay Now'} <ArrowRight size={18} />
+                    {language === 'id' ? 'Lanjut ke Pembayaran' : 'Continue to Payment'} <ArrowRight size={18} />
                   </button>
                 </div>
               )}
@@ -716,15 +693,13 @@ export default function CartPage() {
               className="btn btn-primary"
               style={{ padding: '12px 24px', borderRadius: '12px', fontWeight: 700 }}
               onClick={() => {
-                if (step === 'summary') { setDirection('forward'); setStep('details'); }
-                else if (step === 'details') handleContinueDetails();
+                if (step === 'details') handleContinueDetails();
                 else if (step === 'method') handleContinueMethod();
               }}
               disabled={step === 'method' && (!method || createOrderLoading)}
             >
               {step === 'method' && createOrderLoading ? '...' : 
-               step === 'summary' ? (language === 'id' ? 'Konfirmasi & Lanjutkan' : 'Confirm & Continue') :
-               step === 'details' ? (language === 'id' ? 'Bayar Sekarang' : 'Pay Now') :
+               step === 'details' ? (language === 'id' ? 'Lanjut ke Pembayaran' : 'Continue to Payment') :
                language === 'id' ? 'Lanjut' : 'Continue'}
             </button>
           </div>

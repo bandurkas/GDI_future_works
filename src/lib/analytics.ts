@@ -144,15 +144,72 @@ export const trackPurchase = (orderId: string, amount: number, currency: string 
     }
 
     // Meta Pixel
-    if ((window as any).fbq) {
-        (window as any).fbq('track', 'Purchase', {
-            value: amount,
-            currency,
-            content_ids: items.map(i => i.slug),
-            content_type: 'product',
-            ...utms
-        });
-    }
+  if ((window as any).fbq) {
+    (window as any).fbq('track', 'Purchase', {
+      value: amount,
+      currency,
+      content_ids: items.map(i => i.slug),
+      content_type: 'product',
+      ...utms
+    });
+  }
+};
+
+/**
+ * Tracks 'InitiateCheckout' across platforms.
+ */
+export const trackInitiateCheckout = (amount: number, currency: string = 'IDR', items: any[] = []) => {
+  if (typeof window === 'undefined') return;
+  const utms = getStoredUTMs() || {};
+
+  // GA4
+  if ((window as any).gtag) {
+    (window as any).gtag('event', 'begin_checkout', {
+      currency,
+      value: amount,
+      items: items.map(i => ({ item_id: i.slug, item_name: i.courseTitle, price: i.priceIDR })),
+      ...utms
+    });
+  }
+
+  // Meta Pixel
+  if ((window as any).fbq) {
+    (window as any).fbq('track', 'InitiateCheckout', {
+      value: amount,
+      currency,
+      content_ids: items.map(i => i.slug),
+      content_type: 'product',
+      ...utms
+    });
+  }
+};
+
+/**
+ * Tracks 'AddPaymentInfo' across platforms.
+ */
+export const trackAddPaymentInfo = (method: string, amount: number, currency: string = 'IDR') => {
+  if (typeof window === 'undefined') return;
+  const utms = getStoredUTMs() || {};
+
+  // GA4
+  if ((window as any).gtag) {
+    (window as any).gtag('event', 'add_payment_info', {
+      currency,
+      value: amount,
+      payment_type: method,
+      ...utms
+    });
+  }
+
+  // Meta Pixel
+  if ((window as any).fbq) {
+    (window as any).fbq('track', 'AddPaymentInfo', {
+      value: amount,
+      currency,
+      content_category: method,
+      ...utms
+    });
+  }
 };
 
 /**
