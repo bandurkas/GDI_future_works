@@ -1,11 +1,7 @@
-import { getCrmSession } from '@/lib/crm-session';
 import { prisma } from '@/lib/prisma';
-import { redirect } from 'next/navigation';
 import PaymentsView from './PaymentsView';
 
 export default async function PaymentsPage() {
-  const session = await getCrmSession();
-  if (!session) redirect('/crm/login');
 
   const raw = await prisma.payment.findMany({
     where: { provider: { in: ['QRIS', 'PAYPAL'] } },
