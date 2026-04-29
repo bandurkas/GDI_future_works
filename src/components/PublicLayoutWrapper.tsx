@@ -8,7 +8,6 @@ import dynamic from 'next/dynamic';
 
 const WhatsAppButton = dynamic(() => import('./WhatsAppButton'), { ssr: false });
 const DigitalAdvisor = dynamic(() => import('./DigitalAdvisor'), { ssr: false });
-const PromoPopup = dynamic(() => import('./PromoPopup'), { ssr: false });
 
 export default function PublicLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -29,7 +28,6 @@ export default function PublicLayoutWrapper({ children }: { children: React.Reac
       <ScrollReveal />
       <WhatsAppButton />
       <DigitalAdvisor />
-      <PromoPopup />
     </>
   );
 }
