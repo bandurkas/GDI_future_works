@@ -5,7 +5,7 @@ import { getCourseBySlug, type Schedule } from '@/data/courses';
 import { useCart } from '@/components/CartContext';
 import { useSession } from 'next-auth/react';
 import { useLanguage } from '@/components/LanguageContext';
-import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
+import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp, trackAddToCart } from '@/lib/analytics';
 import { getStoredUTMs } from '@/lib/utm';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
