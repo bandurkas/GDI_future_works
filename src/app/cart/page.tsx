@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
-import { validatePhone, buildFullPhone, phoneErrorText } from '@/lib/phone';
+import { validatePhone, buildFullPhone, phoneErrorText, parseStoredPhone, handlePhoneInput } from '@/lib/phone';
 import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import QRISPaymentBlock from '@/components/payment/QRISPaymentBlock';
 import PayPalPaymentBlock from '@/components/payment/PayPalPaymentBlock';
@@ -136,30 +136,9 @@ export default function CartPage() {
     if (customerInfo.name && !name) setName(customerInfo.name);
     if (customerInfo.email && !email) setEmail(customerInfo.email);
     if (customerInfo.phone && !phone) {
-      // Split stored full phone into countryCode + local digits
-      const stored = customerInfo.phone.trim();
-      const match = stored.match(/^(\+?\d{1,3})(.*)$/);
-      if (match) {
-        let cc = match[1];
-        if (!cc.startsWith('+')) cc = `+${cc}`;
-        let local = match[2].replace(/\D/g, '');
-        const ccDigits = cc.replace(/\D/g, '');
-        
-        // If local part still starts with country code (e.g. "62812..."), strip it
-        if (local.startsWith(ccDigits)) {
-          local = local.slice(ccDigits.length);
-        }
-
-        const knownCodes = ['+62', '+60', '+65', '+1'];
-        if (knownCodes.includes(cc)) {
-          setCountryCode(cc);
-          setPhone(local);
-        } else {
-          setPhone(stored.replace(/\D/g, ''));
-        }
-      } else {
-        setPhone(stored.replace(/\D/g, ''));
-      }
+      const { countryCode: cc, local } = parseStoredPhone(customerInfo.phone);
+      setCountryCode(cc);
+      setPhone(local);
       if (customerInfo.phoneVerified) setWaConfirmed(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -475,9 +454,9 @@ export default function CartPage() {
                           inputMode="numeric"
                           placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
                           value={phone}
-                          onChange={(e) => {
-                            const digits = e.target.value.replace(/[^\d\s]/g, '');
-                            setPhone(digits);
+                          onChange={e => {
+                            handlePhoneInput(e.target.value, setCountryCode, setPhone);
+                            setTouched(prev => ({ ...prev, phone: true }));
                             if (waConfirmed) setWaConfirmed(false);
                           }}
                           onBlur={() => setTouched(t => ({ ...t, phone: true }))}

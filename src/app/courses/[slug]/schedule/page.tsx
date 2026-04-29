@@ -9,7 +9,7 @@ import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp, trackAddToC
 import { getStoredUTMs } from '@/lib/utm';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import WhatsAppWarningPopup from '@/components/WhatsAppWarningPopup';
-import { validatePhone, buildFullPhone, phoneErrorText } from '@/lib/phone';
+import { validatePhone, buildFullPhone, phoneErrorText, parseStoredPhone, handlePhoneInput } from '@/lib/phone';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -51,8 +51,9 @@ export default function SchedulePage({ params }: Props) {
     const isID = language === 'id';
     const isAuthenticated = status === 'authenticated';
 
-    const [phone, setPhone] = useState(customerInfo.phone || '');
-    const [countryCode, setCountryCode] = useState('+62');
+    const initialPhone = parseStoredPhone(customerInfo.phone);
+    const [phone, setPhone] = useState(initialPhone.local);
+    const [countryCode, setCountryCode] = useState(initialPhone.countryCode || '+62');
     const [phoneTouched, setPhoneTouched] = useState(false);
     const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
     const [showWAPopup, setShowWAPopup] = useState(false);
@@ -498,7 +499,7 @@ export default function SchedulePage({ params }: Props) {
                                         placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
                                         value={phone}
                                         onChange={e => {
-                                            setPhone(e.target.value.replace(/[^\d\s]/g, ''));
+                                            handlePhoneInput(e.target.value, setCountryCode, setPhone);
                                             if (waConfirmed) setWaConfirmed(false);
                                         }}
                                         onFocus={handleFormStart}

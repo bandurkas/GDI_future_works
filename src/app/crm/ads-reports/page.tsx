@@ -44,8 +44,8 @@ export default async function AdsReportsPage() {
       acc[key] = { date: key, spend: 0, conversations: 0, clicks: 0, impressions: 0 };
     }
     acc[key].spend += Number(p.spend);
-    acc[key].conversations += p.conversations || 0;
-    acc[key].clicks += p.clicks || 0;
+    acc[key].conversations += (p as any).conversations || 0;
+    acc[key].clicks += (p as any).clicks || 0;
     acc[key].impressions += p.impressions;
     return acc;
   }, {} as Record<string, { date: string, spend: number, conversations: number, clicks: number, impressions: number }>);

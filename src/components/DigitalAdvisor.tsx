@@ -5,7 +5,7 @@ import { X, MessageCircle, Calendar } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
-import { validatePhone, buildFullPhone, phoneErrorText } from '@/lib/phone';
+import { validatePhone, buildFullPhone, phoneErrorText, handlePhoneInput } from '@/lib/phone';
 import WhatsAppWarningPopup from './WhatsAppWarningPopup';
 
 export default function DigitalAdvisor() {
@@ -232,7 +232,7 @@ export default function DigitalAdvisor() {
                                 className={styles.phoneInput}
                                 value={phone}
                                 onChange={(e) => {
-                                    setPhone(e.target.value.replace(/[^\d\s]/g, ''));
+                                    handlePhoneInput(e.target.value, setCountryCode, setPhone);
                                     if (waConfirmed) setWaConfirmed(false);
                                 }}
                                 onFocus={handleFormStart}

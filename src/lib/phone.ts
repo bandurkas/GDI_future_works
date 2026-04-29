@@ -43,3 +43,47 @@ export function phoneErrorText(errorId: PhoneValidation['errorId'], lang: 'id' |
   if (!errorId) return '';
   return map[errorId][lang];
 }
+
+export function parseStoredPhone(storedPhone: string | null | undefined): { countryCode: string, local: string } {
+  if (!storedPhone) return { countryCode: '+62', local: '' };
+  
+  const clean = storedPhone.replace(/[^\d+]/g, ''); // keep digits and plus
+  
+  // Known country codes we support in dropdowns
+  const knownCodes = ['+62', '+60', '+65', '+1', '62', '60', '65', '1'];
+  
+  for (const code of knownCodes) {
+    if (clean.startsWith(code)) {
+      const actualCode = code.startsWith('+') ? code : `+${code}`;
+      const local = clean.slice(code.length);
+      return { countryCode: actualCode, local };
+    }
+  }
+  
+  // If no known code is found, fallback
+  return { countryCode: '+62', local: clean.replace(/\D/g, '') };
+}
+
+export function handlePhoneInput(
+  inputValue: string,
+  setCountryCode: (cc: string) => void,
+  setPhone: (local: string) => void
+) {
+  const val = inputValue.replace(/[^\d+]/g, ''); // keep only digits and plus
+  
+  // Try to detect if the user pasted a full number with country code
+  if (val.startsWith('+') || val.startsWith('62') || val.startsWith('60') || val.startsWith('65') || val.startsWith('1')) {
+    // Check if it's long enough to be a full number, or if it explicitly starts with +
+    if (val.startsWith('+') || val.length > 5) {
+      const parsed = parseStoredPhone(val);
+      if (parsed.countryCode) {
+        setCountryCode(parsed.countryCode);
+      }
+      setPhone(parsed.local);
+      return;
+    }
+  }
+
+  // Otherwise, just strip non-digits and set the local phone
+  setPhone(inputValue.replace(/[^\d\s]/g, ''));
+}
