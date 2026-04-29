@@ -135,6 +135,10 @@
     opacity: 1;
 }
 
+.chevronRotate {
+    transform: rotate(180deg) !important;
+}
+
 .dropdownMenu {
     position: absolute;
     top: calc(100% - 4px);
@@ -155,10 +159,11 @@
     z-index: 1000;
 }
 
-.dropdown:hover .dropdownMenu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+.dropdown:hover .dropdownMenu,
+.dropdownMenuVisible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
 }
 
 /* Dropdown Items */

@@ -8,7 +8,7 @@ import styles from './CourseCard.module.css';
 import { useLanguage } from './LanguageContext';
 import { useCurrency } from './CurrencyContext';
 import { formatPrice } from '@/lib/currency';
-import { trackConversion } from '@/lib/analytics';
+import { trackConversion, trackAddToCart } from '@/lib/analytics';
 import {
     Video,
     MessageSquare,

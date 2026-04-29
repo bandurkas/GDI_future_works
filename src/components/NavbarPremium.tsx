@@ -33,6 +33,7 @@ export default function NavbarPremium() {
     const [scrolled, setScrolled] = useState(false);
     const { theme, toggleTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isCoursesOpen, setIsCoursesOpen] = useState(false);
 
     const pathname = usePathname();
     const router = useRouter();
@@ -67,8 +68,25 @@ export default function NavbarPremium() {
 
     useEffect(() => {
         setIsMenuOpen(false);
+        setIsCoursesOpen(false);
         document.body.style.overflow = '';
     }, [pathname]);
+
+    const toggleCourses = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsCoursesOpen(!isCoursesOpen);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (isCoursesOpen) {
+                setIsCoursesOpen(false);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [isCoursesOpen]);
 
     useEffect(() => {
         if (!isMounted) return;
@@ -149,11 +167,15 @@ export default function NavbarPremium() {
 
                     <nav className={styles.nav} aria-label="Main navigation">
                         <div className={styles.dropdown}>
-                            <Link href="/courses" className={styles.dropdownTrigger}>
+                            <button 
+                                className={styles.dropdownTrigger}
+                                onClick={toggleCourses}
+                                aria-expanded={isCoursesOpen}
+                            >
                                 <Translate tKey="nav.courses" defaultText="Courses" />
-                                <ChevronDown size={14} className={styles.chevron} />
-                            </Link>
-                            <div className={styles.dropdownMenu}>
+                                <ChevronDown size={14} className={`${styles.chevron} ${isCoursesOpen ? styles.chevronRotate : ''}`} />
+                            </button>
+                            <div className={`${styles.dropdownMenu} ${isCoursesOpen ? styles.dropdownMenuVisible : ''}`}>
                                 <Link href="/courses/python-programming" className={styles.dropdownItem}>
                                     <div className={styles.dropdownIcon}>🐍</div>
                                     <div className={styles.dropdownContent}>

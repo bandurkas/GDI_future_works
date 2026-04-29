@@ -8,7 +8,7 @@ import { formatPrice } from '@/lib/currency';
 import LeadConversionWidget from '@/components/LeadConversionWidget';
 import styles from './StickyBookingBar.module.css';
 import { Download } from 'lucide-react';
-import { trackConversion } from '@/lib/analytics';
+import { trackConversion, trackAddToCart } from '@/lib/analytics';
 
 interface Props { course: Course; }
 
