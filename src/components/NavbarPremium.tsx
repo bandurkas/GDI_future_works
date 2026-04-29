@@ -177,28 +177,24 @@ export default function NavbarPremium() {
                             </button>
                             <div className={`${styles.dropdownMenu} ${isCoursesOpen ? styles.dropdownMenuVisible : ''}`}>
                                 <Link href="/courses/python-programming" className={styles.dropdownItem}>
-                                    <div className={styles.dropdownIcon}>🐍</div>
                                     <div className={styles.dropdownContent}>
                                         <span className={styles.dropdownLabel}>Python for Beginners</span>
                                         <span className={styles.dropdownDesc}>{language === 'id' ? 'Otomatiskan Tugas & Bangun Alat Cerdas' : 'Automate Tasks & Build Smart Tools'}</span>
                                     </div>
                                 </Link>
                                 <Link href="/courses/data-analytics" className={styles.dropdownItem}>
-                                    <div className={styles.dropdownIcon}>📊</div>
                                     <div className={styles.dropdownContent}>
                                         <span className={styles.dropdownLabel}>Data Analytics</span>
                                         <span className={styles.dropdownDesc}>{language === 'id' ? 'Dari Data Mentah ke Wawasan Bisnis' : 'From Raw Data to Business Insights'}</span>
                                     </div>
                                 </Link>
                                 <Link href="/courses/graphic-design-ai" className={styles.dropdownItem}>
-                                    <div className={styles.dropdownIcon}>🎨</div>
                                     <div className={styles.dropdownContent}>
                                         <span className={styles.dropdownLabel}>Graphic Design with AI</span>
                                         <span className={styles.dropdownDesc}>{language === 'id' ? 'Buat Visual Memukau — Lebih Cepat' : 'Create Stunning Visuals — Faster'}</span>
                                     </div>
                                 </Link>
                                 <Link href="/courses/llm-ai-engineering" className={styles.dropdownItem}>
-                                    <div className={styles.dropdownIcon}>🤖</div>
                                     <div className={styles.dropdownContent}>
                                         <span className={styles.dropdownLabel}>LLM & AI Engineering</span>
                                         <span className={styles.dropdownDesc}>{language === 'id' ? 'Bangun Produk Cerdas Bertenaga AI' : 'Build Intelligent AI-Powered Products'}</span>

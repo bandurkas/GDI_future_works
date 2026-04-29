@@ -136,21 +136,29 @@ export default function CartPage() {
     if (customerInfo.name && !name) setName(customerInfo.name);
     if (customerInfo.email && !email) setEmail(customerInfo.email);
     if (customerInfo.phone && !phone) {
-      // Split stored full phone (e.g. "+6281219010408") into countryCode + local digits
+      // Split stored full phone into countryCode + local digits
       const stored = customerInfo.phone.trim();
-      const match = stored.match(/^\+(\d{1,3})(.*)$/);
+      const match = stored.match(/^(\+?\d{1,3})(.*)$/);
       if (match) {
-        const cc = `+${match[1]}`;
-        const local = match[2].replace(/\D/g, '');
+        let cc = match[1];
+        if (!cc.startsWith('+')) cc = `+${cc}`;
+        let local = match[2].replace(/\D/g, '');
+        const ccDigits = cc.replace(/\D/g, '');
+        
+        // If local part still starts with country code (e.g. "62812..."), strip it
+        if (local.startsWith(ccDigits)) {
+          local = local.slice(ccDigits.length);
+        }
+
         const knownCodes = ['+62', '+60', '+65', '+1'];
         if (knownCodes.includes(cc)) {
           setCountryCode(cc);
           setPhone(local);
         } else {
-          setPhone(stored.replace(/[^\d\s]/g, ''));
+          setPhone(stored.replace(/\D/g, ''));
         }
       } else {
-        setPhone(stored.replace(/[^\d\s]/g, ''));
+        setPhone(stored.replace(/\D/g, ''));
       }
       if (customerInfo.phoneVerified) setWaConfirmed(true);
     }
