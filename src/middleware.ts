@@ -15,6 +15,10 @@ export async function middleware(req: NextRequest) {
   const hostname = req.headers.get('host') || '';
   const isCrmSubdomain = hostname.startsWith('crm.');
 
+  // ── Forward pathname to server components via header ──
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set('x-pathname', pathname);
+
   // ── CRM Subdomain & Path Normalization ──────────────────────────────────────
   
   if (isCrmSubdomain) {
@@ -49,10 +53,6 @@ export async function middleware(req: NextRequest) {
   const secureCookies = process.env.NEXTAUTH_URL?.startsWith('https://') ?? process.env.NODE_ENV === 'production';
   const cookieName = secureCookies ? '__Secure-authjs.session-token' : 'authjs.session-token';
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, cookieName, salt: cookieName });
-
-  // ── Forward pathname to server components via header ──
-  const requestHeaders = new Headers(req.headers);
-  requestHeaders.set('x-pathname', pathname);
 
   // ─── CRM routes ─────────────────────────────────────────────────────────────
   if (pathname.startsWith('/crm')) {

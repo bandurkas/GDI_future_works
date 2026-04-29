@@ -14,8 +14,11 @@ rsync_cmd() {
     --exclude 'node_modules' \
     --exclude '.next' \
     --exclude '.git' \
+    --exclude '.env' \
     --exclude '.env.local' \
     --exclude '.env.production' \
+    --exclude 'scratch' \
+    --exclude '.agents' \
     --exclude '*.tar.gz' \
     --exclude '*.swp' \
     --exclude '.DS_Store' \

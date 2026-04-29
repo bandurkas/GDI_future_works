@@ -55,7 +55,7 @@ export default function StickyBookingBar({ course }: Props) {
                     id="sticky-booking-cta"
                     onClick={() => trackConversion('enroll_click', course.slug)}
                 >
-                    {isID ? 'Pilih' : 'Choose'}
+                    {isID ? 'Daftar Sekarang' : 'Enroll Now'}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>

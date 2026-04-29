@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useLanguage } from '@/components/LanguageContext';
 import { trackPurchase } from '@/lib/analytics';
 import styles from './page.module.css';

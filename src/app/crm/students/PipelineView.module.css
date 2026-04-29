@@ -8,6 +8,8 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  min-height: 0;
+  min-width: 0;
 }
 
 /* ── Header ─────────────────────────────────── */
@@ -109,6 +111,28 @@
   overflow-y: hidden;
   height: 100%;
   align-items: flex-start;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Custom Scrollbar for the Board ── */
+.board::-webkit-scrollbar {
+  height: 8px;
+}
+
+.board::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 0 24px;
+}
+
+.board::-webkit-scrollbar-thumb {
+  background: var(--crm-border);
+  border-radius: 10px;
+  border: 2px solid var(--crm-bg);
+}
+
+.board::-webkit-scrollbar-thumb:hover {
+  background: var(--crm-text-dim);
 }
 
 .column {
