@@ -91,9 +91,9 @@ export default function CourseLandingClient({ course, slug }: CourseLandingClien
                     </ul>
 
                     <div className={styles.heroCtas}>
-                        <div className={styles.ctaPrimary} style={{ cursor: 'pointer' }} onClick={() => scrollToSection('pricing')}>
+                        <Link href={`/courses/${slug}/schedule`} className={styles.ctaPrimary} style={{ cursor: 'pointer', textDecoration: 'none' }}>
                             {isID ? 'Mulai Belajar Sekarang' : 'Start Learning Now'} <ArrowRight size={16} />
-                        </div>
+                        </Link>
                         <button className={styles.ctaSecondary} onClick={() => openWidget('Syllabus')}>
                             <Download size={16} />
                             {isID ? 'Unduh Silabus' : 'Download Syllabus'}
@@ -259,9 +259,9 @@ export default function CourseLandingClient({ course, slug }: CourseLandingClien
                         <h2 className={styles.finalCtaTitle}>{isID ? 'Siap Memulai Karir Anda?' : 'Ready to Start Your Career?'}</h2>
                         <p className={styles.finalCtaDesc}>{isID ? 'Amankan tempat Anda di batch berikutnya. Slot terbatas.' : 'Secure your spot in the next batch. Limited slots available.'}</p>
                         <div className={styles.finalCtaButtons}>
-                            <button className={styles.primaryBtnLarge} onClick={() => scrollToSection('pricing')}>
+                            <Link href={`/courses/${slug}/schedule`} className={styles.primaryBtnLarge} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 {isID ? 'Daftar Sekarang' : 'Enroll Now'}
-                            </button>
+                            </Link>
                             <button className={styles.outlineBtnLarge} onClick={() => openWidget('Consultation')}>
                                 {isID ? 'Konsultasi Gratis' : 'Free Consultation'}
                             </button>
