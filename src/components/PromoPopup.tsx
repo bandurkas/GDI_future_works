@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { X, Calendar, Clock, Award, Video, CheckCircle2 } from 'lucide-react';
+import { trackConversion, trackAddToCart } from '@/lib/analytics';
 import s from './PromoPopup.module.css';
 
 const PROMO_STORAGE_KEY = 'gdi_hide_promo_python_apr24';
@@ -20,6 +21,8 @@ export default function PromoPopup() {
     if (!isHidden) {
       setIsOpen(true);
       setHasTriggered(true);
+      // Track view
+      trackConversion('promo_popup_view', 'python_mini');
     }
   }, [hasTriggered]);
 
@@ -64,6 +67,9 @@ export default function PromoPopup() {
 
   const handleEnrollClick = () => {
     handleClose();
+    // Track conversion
+    trackConversion('enroll_now_promo', 'python_mini');
+    trackAddToCart('python-programming', 400000);
     // Use the provided WhatsApp link
     const waLink = "https://wa.me/628211704707?text=" + encodeURIComponent("Hello GDI! I want to enroll in the Python 2-Day Mini Course.");
     window.open(waLink, '_blank');

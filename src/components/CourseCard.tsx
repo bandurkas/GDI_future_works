@@ -455,7 +455,10 @@ export default function CourseCard({ course, featured, index = 0 }: Props) {
                                 <Link 
                                     href={`/courses/${course.slug}/schedule`} 
                                     className={`btn btn-primary ${styles.scheduleBtn}`}
-                                    onClick={() => trackConversion('enroll_click', course.slug)}
+                                    onClick={() => {
+                                        trackConversion('enroll_click', course.slug);
+                                        trackAddToCart(course.slug, course.priceIDR);
+                                    }}
                                 >
                                     {t('card.schedule')}
                                 </Link>

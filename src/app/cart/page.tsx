@@ -225,6 +225,10 @@ export default function CartPage() {
 
     updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone, phoneVerified: true });
     
+    // Track journey step
+    trackConversion('continue_to_payment', currentSlug);
+    trackInitiateCheckout(totalIDR, 'IDR', items);
+
     setDirection('forward');
     setStep('method');
   };

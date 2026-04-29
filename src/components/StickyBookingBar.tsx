@@ -53,7 +53,10 @@ export default function StickyBookingBar({ course }: Props) {
                     href={`/courses/${course.slug}/schedule`}
                     className={`btn btn-primary btn-lg ${styles.cta}`}
                     id="sticky-booking-cta"
-                    onClick={() => trackConversion('enroll_click', course.slug)}
+                    onClick={() => {
+                        trackConversion('enroll_click', course.slug);
+                        trackAddToCart(course.slug, course.priceIDR);
+                    }}
                 >
                     {isID ? 'Daftar Sekarang' : 'Enroll Now'}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>

@@ -23,7 +23,9 @@ import {
     GraduationCap,
     Globe,
     Banknote,
-    Palette
+    Palette,
+    ChevronDown,
+    ChevronRight
 } from 'lucide-react';
 
 export default function NavbarPremium() {
@@ -146,7 +148,47 @@ export default function NavbarPremium() {
                     </Link>
 
                     <nav className={styles.nav} aria-label="Main navigation">
-                        <Link href="/courses" className={styles.navLink}><Translate tKey="nav.courses" defaultText="Courses" /></Link>
+                        <div className={styles.dropdown}>
+                            <Link href="/courses" className={styles.dropdownTrigger}>
+                                <Translate tKey="nav.courses" defaultText="Courses" />
+                                <ChevronDown size={14} className={styles.chevron} />
+                            </Link>
+                            <div className={styles.dropdownMenu}>
+                                <Link href="/courses/python-programming" className={styles.dropdownItem}>
+                                    <div className={styles.dropdownIcon}>🐍</div>
+                                    <div className={styles.dropdownContent}>
+                                        <span className={styles.dropdownLabel}>Python for Beginners</span>
+                                        <span className={styles.dropdownDesc}>{language === 'id' ? 'Otomatiskan Tugas & Bangun Alat Cerdas' : 'Automate Tasks & Build Smart Tools'}</span>
+                                    </div>
+                                </Link>
+                                <Link href="/courses/data-analytics" className={styles.dropdownItem}>
+                                    <div className={styles.dropdownIcon}>📊</div>
+                                    <div className={styles.dropdownContent}>
+                                        <span className={styles.dropdownLabel}>Data Analytics</span>
+                                        <span className={styles.dropdownDesc}>{language === 'id' ? 'Dari Data Mentah ke Wawasan Bisnis' : 'From Raw Data to Business Insights'}</span>
+                                    </div>
+                                </Link>
+                                <Link href="/courses/graphic-design-ai" className={styles.dropdownItem}>
+                                    <div className={styles.dropdownIcon}>🎨</div>
+                                    <div className={styles.dropdownContent}>
+                                        <span className={styles.dropdownLabel}>Graphic Design with AI</span>
+                                        <span className={styles.dropdownDesc}>{language === 'id' ? 'Buat Visual Memukau — Lebih Cepat' : 'Create Stunning Visuals — Faster'}</span>
+                                    </div>
+                                </Link>
+                                <Link href="/courses/llm-ai-engineering" className={styles.dropdownItem}>
+                                    <div className={styles.dropdownIcon}>🤖</div>
+                                    <div className={styles.dropdownContent}>
+                                        <span className={styles.dropdownLabel}>LLM & AI Engineering</span>
+                                        <span className={styles.dropdownDesc}>{language === 'id' ? 'Bangun Produk Cerdas Bertenaga AI' : 'Build Intelligent AI-Powered Products'}</span>
+                                    </div>
+                                </Link>
+                                <div className={styles.dropdownFooter}>
+                                    <Link href="/courses" className={styles.viewAllLink}>
+                                        {language === 'id' ? 'Lihat Semua Kursus' : 'View All Courses'} <ChevronRight size={14} style={{ marginLeft: 4 }} />
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
                         <Link href="/about" className={styles.navLink}><Translate tKey="nav.about" defaultText="About" /></Link>
                         <Link href="/study-english" className={styles.navLink}><Translate tKey="nav.studyEnglish" defaultText="Study English" /></Link>
                         <Link href="/for-tutors" className={styles.navLink}><Translate tKey="nav.forTutors" defaultText="For Tutors" /></Link>
@@ -329,6 +371,9 @@ export default function NavbarPremium() {
                         </Link>
                         <Link href="/courses" className={styles.mobileNavLink} onClick={closeMenu}>
                             <span className={styles.mobileLinkIcon}><BookOpen size={20} /></span> Courses
+                        </Link>
+                        <Link href="/courses/python-programming" className={styles.mobileNavLink} style={{ paddingLeft: '40px', fontSize: '0.95rem', opacity: 0.85 }} onClick={closeMenu}>
+                            🐍 Python for Beginners
                         </Link>
                         <Link href="/study-english" className={styles.mobileNavLink} onClick={closeMenu}>
                             <span className={styles.mobileLinkIcon}><Globe size={20} /></span> Study English

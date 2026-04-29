@@ -211,6 +211,7 @@ export default function SchedulePage({ params }: Props) {
         } catch (e) {}
 
         trackConversion('course_booking_start');
+        trackAddToCart(course.slug, course.priceIDR);
         updateCustomerInfo({ email: '', phone: fullPhone, phoneVerified: waVerified });
         addItem({
             courseId: course.id,
