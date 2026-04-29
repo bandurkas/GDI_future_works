@@ -32,6 +32,26 @@
   overflow-x: hidden;
 }
 
+.breadcrumb {
+  padding: 24px 0 0;
+  animation: fadeIn 0.8s ease both;
+}
+
+.breadcrumbLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumbLink:hover {
+  color: var(--accent);
+}
+
 /* ── HERO ─────────────────────────────────────────── */
 .hero {
   padding: 100px 0 88px;

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     CheckCircle2, Star, Users, Globe, BookOpen, Clock, 
@@ -56,6 +57,14 @@ export default function CourseLandingClient({ course, slug }: CourseLandingClien
 
     return (
         <div className={styles.page}>
+            <div className="container">
+                <div className={styles.breadcrumb}>
+                    <Link href="/courses" className={styles.breadcrumbLink}>
+                        {isID ? '← Kembali ke Kursus' : '← Back to Courses'}
+                    </Link>
+                </div>
+            </div>
+
             {/* ── HERO SECTION ── */}
             <section className={styles.hero}>
                 <div className="container">
