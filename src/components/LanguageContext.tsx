@@ -696,7 +696,7 @@ const translations: Record<Language, Record<string, string>> = {
         'courses.sub.link': 'Bicara dengan Konsultan',
         // Courses footer advisor
         'courses.notSure': 'Tidak yakin kursus mana yang cocok untukmu?',
-        'courses.advisor': 'Konsultasi Sekarang',
+        'courses.advisor': 'Konsultasikan Sekarang',
 
         // iTTi interest section
         'partner.title': 'Jelajahi Jalur Belajar & Mengajar Bahasa Inggris',
@@ -717,7 +717,7 @@ const translations: Record<Language, Record<string, string>> = {
         'partner.registerBtn': 'Daftarkan minatmu →',
 
         // CTA section bottom
-        'cta.consultAdvisor': '💬 Konsultasi Sekarang',
+        'cta.consultAdvisor': 'Konsultasi Gratis',
         // Course card drawer
         'card.trustedBy': 'Dipercaya oleh',
         'card.students': 'pelajar',

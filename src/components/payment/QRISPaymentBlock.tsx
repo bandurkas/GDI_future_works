@@ -1,17 +1,18 @@
 'use client';
 import { useState } from 'react';
 import { Download, CheckCircle, Loader2 } from 'lucide-react';
-import { trackConversion } from '@/lib/analytics';
+import { trackConversion, trackPurchase } from '@/lib/analytics';
 import ReceiptUploader from './ReceiptUploader';
 import styles from './QRISPaymentBlock.module.css';
 
 interface QRISPaymentBlockProps {
   orderId: string;
   amountIDR: number;
+  items: any[];
   onPaid: () => void;
 }
 
-export default function QRISPaymentBlock({ orderId, amountIDR, onPaid }: QRISPaymentBlockProps) {
+export default function QRISPaymentBlock({ orderId, amountIDR, items, onPaid }: QRISPaymentBlockProps) {
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,8 +56,9 @@ export default function QRISPaymentBlock({ orderId, amountIDR, onPaid }: QRISPay
         throw new Error(d.error || 'Confirmation failed');
       }
 
-      // Track successful receipt upload as Lead
+      // Track successful receipt upload as Purchase (and Lead for process tracking)
       trackConversion('payment_qris');
+      trackPurchase(orderId, amountIDR, 'IDR', items);
 
       onPaid();
     } catch (err: any) {

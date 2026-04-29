@@ -97,6 +97,65 @@ export const trackConversion = (eventName: string, source?: string) => {
 };
 
 /**
+ * Tracks 'AddToCart' across platforms.
+ */
+export const trackAddToCart = (slug: string, price: number, currency: string = 'IDR') => {
+    if (typeof window === 'undefined') return;
+    const utms = getStoredUTMs() || {};
+
+    // GA4
+    if ((window as any).gtag) {
+        (window as any).gtag('event', 'add_to_cart', {
+            currency,
+            value: price,
+            items: [{ item_id: slug, item_name: slug, price }],
+            ...utms
+        });
+    }
+
+    // Meta Pixel
+    if ((window as any).fbq) {
+        (window as any).fbq('track', 'AddToCart', {
+            content_ids: [slug],
+            content_type: 'product',
+            value: price,
+            currency,
+            ...utms
+        });
+    }
+};
+
+/**
+ * Tracks 'Purchase' across platforms.
+ */
+export const trackPurchase = (orderId: string, amount: number, currency: string = 'IDR', items: any[] = []) => {
+    if (typeof window === 'undefined') return;
+    const utms = getStoredUTMs() || {};
+
+    // GA4
+    if ((window as any).gtag) {
+        (window as any).gtag('event', 'purchase', {
+            transaction_id: orderId,
+            value: amount,
+            currency,
+            items: items.map(i => ({ item_id: i.slug, item_name: i.courseTitle, price: i.priceIDR })),
+            ...utms
+        });
+    }
+
+    // Meta Pixel
+    if ((window as any).fbq) {
+        (window as any).fbq('track', 'Purchase', {
+            value: amount,
+            currency,
+            content_ids: items.map(i => i.slug),
+            content_type: 'product',
+            ...utms
+        });
+    }
+};
+
+/**
  * Tracks generic UI interactions or non-conversion events.
  */
 export const trackEvent = (name: string, params?: any) => {

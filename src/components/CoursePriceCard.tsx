@@ -7,6 +7,7 @@ import { useCurrency } from '@/components/CurrencyContext';
 import { formatPrice } from '@/lib/currency';
 import LeadConversionWidget from '@/components/LeadConversionWidget';
 import { Download } from 'lucide-react';
+import { trackConversion } from '@/lib/analytics';
 
 interface Props {
     course: Course;
@@ -56,7 +57,7 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
                 <div className={styles.priceAmount}>{displayPrice}</div>
                 <div className={styles.priceRight}>
                     <span className={styles.priceOrig}>{displayOriginal}</span>
-                    <span className={`${styles.badge} ${styles.badgeAccent}`}>{discount}% {isID ? 'disкон' : 'off'}</span>
+                    <span className={`${styles.badge} ${styles.badgeAccent}`}>{discount}% {isID ? 'diskon' : 'off'}</span>
                 </div>
             </div>
 
@@ -77,6 +78,7 @@ export default function CoursePriceCard({ course, slug, variant, styles }: Props
                     className="btn btn-primary btn-lg btn-full"
                     id={ctaId}
                     style={{ marginBottom: 0 }}
+                    onClick={() => trackConversion('enroll_click', slug)}
                 >
                     {isID ? 'Pilih Tanggal & Waktu →' : 'Choose Date & Time →'}
                 </Link>

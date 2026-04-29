@@ -1,8 +1,8 @@
 'use client';
-import { use } from 'react';
+import { use, useEffect } from 'react';
 import Link from 'next/link';
 import { getCourseBySlug } from '@/data/courses';
-import { trackConversion } from '@/lib/analytics';
+import { trackConversion, trackPurchase } from '@/lib/analytics';
 import styles from './page.module.css';
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ method?: string }> };
@@ -13,6 +13,13 @@ export default function ConfirmationPage({ params, searchParams }: Props) {
     const course = getCourseBySlug(slug);
 
     const isQris = method === 'qris';
+
+    // ── ANALYTICS: Purchase ──
+    useEffect(() => {
+        if (course) {
+            trackPurchase(`confirm_${slug}`, course.priceIDR, 'IDR', [course]);
+        }
+    }, [course, slug]);
 
     return (
         <div className={styles.page}>

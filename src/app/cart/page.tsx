@@ -26,6 +26,7 @@ import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
 import QRISPaymentBlock from '@/components/payment/QRISPaymentBlock';
 import PayPalPaymentBlock from '@/components/payment/PayPalPaymentBlock';
 import PaymentStatusBlock from '@/components/payment/PaymentStatusBlock';
+import { trackConversion, trackAddToCart } from '@/lib/analytics';
 
 type Step = 'summary' | 'details' | 'method' | 'payment';
 type PaymentMethod = 'qris' | 'paypal' | null;
@@ -218,6 +219,16 @@ export default function CartPage() {
     }
 
     updateCustomerInfo({ name: name.trim(), email: email.trim(), phone: fullPhone, phoneVerified: true });
+    
+    // ── ANALYTICS: Lead & AddToCart ──
+    // User has provided Name, Email, Phone. This is a high-quality Lead.
+    trackConversion('checkout_details_submitted', 'cart_page');
+    
+    // As they proceed to payment method, we track AddToCart for each item
+    items.forEach(item => {
+      trackAddToCart(item.slug, item.priceIDR, 'IDR');
+    });
+
     setDirection('forward');
     setStep('method');
   };
@@ -572,6 +583,7 @@ export default function CartPage() {
                     <QRISPaymentBlock
                       orderId={orderId}
                       amountIDR={chargeAmountIDR}
+                      items={items}
                       onPaid={() => { setPaidSlug(currentSlug); clearCart(); setPaid(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     />
                   ) : method === 'qris' && !orderId ? (

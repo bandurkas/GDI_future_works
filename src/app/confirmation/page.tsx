@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useLanguage } from '@/components/LanguageContext';
+import { trackPurchase } from '@/lib/analytics';
 import styles from './page.module.css';
 
 function ConfirmationContent() {
@@ -15,6 +16,13 @@ function ConfirmationContent() {
     const orderId  = searchParams.get('orderId');
     const course   = searchParams.get('course');
     const date     = searchParams.get('date');
+
+    // ── ANALYTICS: Purchase ──
+    useEffect(() => {
+        if (orderId) {
+            trackPurchase(orderId, 0, 'IDR'); // Amount 0 as it's not known here, but captures the conversion
+        }
+    }, [orderId]);
 
     const nextSteps = isID ? [
         'Cek email/WhatsApp — kami kirimkan detail akses dalam 5 menit',

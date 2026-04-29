@@ -452,7 +452,11 @@ export default function CourseCard({ course, featured, index = 0 }: Props) {
                                         {t('card.askQuestion')}
                                     </a>
                                 )}
-                                <Link href={`/courses/${course.slug}/schedule`} className={`btn btn-primary ${styles.scheduleBtn}`}>
+                                <Link 
+                                    href={`/courses/${course.slug}/schedule`} 
+                                    className={`btn btn-primary ${styles.scheduleBtn}`}
+                                    onClick={() => trackConversion('enroll_click', course.slug)}
+                                >
                                     {t('card.schedule')}
                                 </Link>
                             </div>
