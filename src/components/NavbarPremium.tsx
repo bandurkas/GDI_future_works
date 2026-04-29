@@ -110,6 +110,7 @@ export default function NavbarPremium() {
                             <ThemeLogo className={styles.logoImage} />
                         </Link>
                         <nav className={styles.nav} aria-label="Main navigation">
+                            <Link href="/courses" className={styles.navLink}>Courses</Link>
                             <Link href="/about" className={styles.navLink}>About</Link>
                             <Link href="/study-english" className={styles.navLink}>Study English</Link>
                             <Link href="/for-tutors" className={styles.navLink}>For Tutors</Link>
@@ -145,6 +146,7 @@ export default function NavbarPremium() {
                     </Link>
 
                     <nav className={styles.nav} aria-label="Main navigation">
+                        <Link href="/courses" className={styles.navLink}><Translate tKey="nav.courses" defaultText="Courses" /></Link>
                         <Link href="/about" className={styles.navLink}><Translate tKey="nav.about" defaultText="About" /></Link>
                         <Link href="/study-english" className={styles.navLink}><Translate tKey="nav.studyEnglish" defaultText="Study English" /></Link>
                         <Link href="/for-tutors" className={styles.navLink}><Translate tKey="nav.forTutors" defaultText="For Tutors" /></Link>
