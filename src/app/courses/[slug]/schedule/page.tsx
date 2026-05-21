@@ -157,11 +157,11 @@ export default function SchedulePage({ params }: Props) {
     const handleNext = async () => {
         if (!canContinue || !day1Slot || !day2Slot || !course) return;
         if (submitInFlightRef.current) return;
-        if (!phoneValid) {
+        if (!isAuthenticated && !phoneValid) {
             setPhoneTouched(true);
             return;
         }
-        const fullPhone = buildFullPhone(countryCode, phone);
+        const fullPhone = isAuthenticated && !phoneValid ? '' : buildFullPhone(countryCode, phone);
 
         let waVerified = false;
         if (fullPhone.replace(/\D/g, '').length >= 8) {
