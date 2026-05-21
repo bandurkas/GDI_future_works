@@ -18,8 +18,13 @@ export async function sendEmail({
   subject: string;
   html: string;
 }) {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('RESEND_API_KEY not set - skipping email');
+  if (process.env.EMAIL_DISABLED === '1') {
+    console.log('[email] EMAIL_DISABLED=1 — skipping send', { to, subject });
+    return { id: 'e2e-skipped' } as any;
+  }
+
+  if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'STAGING_DISABLED') {
+    console.warn('RESEND_API_KEY not set or staging-disabled - skipping email');
     return;
   }
 

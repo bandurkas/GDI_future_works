@@ -14,6 +14,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ exists: true });
     }
 
+    if (process.env.E2E_MODE === '1') {
+      const flag = req.headers.get('x-e2e-wa');
+      if (flag === 'fail') return NextResponse.json({ exists: false, status: 'invalid', e2e: true });
+      return NextResponse.json({ exists: true, status: 'valid', e2e: true });
+    }
+
     const apiUrl = process.env.WHAPI_API_URL || 'https://gate.whapi.cloud';
     const token = process.env.WHAPI_TOKEN;
 
