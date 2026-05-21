@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getCrmSessionFromReq } from '@/lib/crm-session';
+import { auth } from '@/auth';
+import { requireAdminOrCrm, STUDENT_MANAGER_ROLES } from '@/lib/auth-guards';
 import { sendEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getCrmSessionFromReq(req);
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const session = await auth();
+  const guard = await requireAdminOrCrm(req, session, STUDENT_MANAGER_ROLES);
+  if (guard) return guard;
 
   const { id } = await params;
 
