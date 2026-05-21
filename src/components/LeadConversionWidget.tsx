@@ -9,6 +9,10 @@ import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 import WhatsAppWarningPopup from './WhatsAppWarningPopup';
 import { validatePhone, buildFullPhone, phoneErrorText, handlePhoneInput } from '@/lib/phone';
 
+const SYLLABUS_PDFS: Record<string, string> = {
+    'ai-vibe-coding': '/assets/AI Vibe Coding · GDI FutureWorks_Mobile_ID.pdf',
+};
+
 interface LeadConversionWidgetProps {
     courseId?: string;
     courseTitle?: string;
@@ -392,6 +396,11 @@ export default function LeadConversionWidget({ courseId, courseTitle, isOpen, on
                                                     onClick={() => {
                                                         const slug = courseId;
                                                         if (!slug) return;
+                                                        const pdf = SYLLABUS_PDFS[slug];
+                                                        if (pdf) {
+                                                            window.open(encodeURI(pdf), '_blank', 'noopener');
+                                                            return;
+                                                        }
                                                         window.open(`/syllabus/${slug}?print=1&lang=${isID ? 'id' : 'en'}`, '_blank', 'noopener');
                                                     }}
                                                 >
