@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -62,11 +62,42 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
   const [cards, setCards] = useState<KanbanCard[]>([]);
   const [search, setSearch] = useState('');
   const [isReady, setIsReady] = useState(false);
+  const [activeStage, setActiveStage] = useState<string>('NEW');
+  const boardRef = useRef<HTMLDivElement>(null);
+  const columnRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     setCards(normalizeCrmData(students, freshLeads));
     setIsReady(true);
   }, [students, freshLeads, refreshKey]);
+
+  // Mobile: track which column is visible to highlight the active tab
+  useEffect(() => {
+    if (!boardRef.current || !isReady) return;
+    if (typeof window === 'undefined' || window.innerWidth > 768) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const mostVisible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (mostVisible) {
+          const stage = (mostVisible.target as HTMLElement).dataset.stage;
+          if (stage) setActiveStage(stage);
+        }
+      },
+      { root: boardRef.current, threshold: [0.5, 0.75] }
+    );
+
+    Object.values(columnRefs.current).forEach(el => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, [isReady]);
+
+  const scrollToStage = (stage: string) => {
+    setActiveStage(stage);
+    const el = columnRefs.current[stage];
+    if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  };
 
   const filteredCards = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -152,12 +183,37 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
         </div>
       </header>
 
+      {/* Mobile stage tabs — hidden on desktop via CSS */}
+      <div className={s.mobileTabs} role="tablist" aria-label="Pipeline stages">
+        {Object.entries(STAGES).map(([key, label]) => {
+          const count = filteredCards.filter(c => c.status === key).length;
+          const isActive = activeStage === key;
+          return (
+            <button
+              key={key}
+              role="tab"
+              aria-selected={isActive}
+              className={`${s.mobileTab} ${isActive ? s.mobileTabActive : ''}`}
+              onClick={() => scrollToStage(key)}
+            >
+              <span>{label}</span>
+              <span className={s.mobileTabCount}>{count}</span>
+            </button>
+          );
+        })}
+      </div>
+
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className={s.board}>
+        <div className={s.board} ref={boardRef}>
           {Object.entries(STAGES).map(([key, label]) => {
             const columnCards = filteredCards.filter(c => c.status === key);
             return (
-              <div key={key} className={s.column}>
+              <div
+                key={key}
+                className={s.column}
+                data-stage={key}
+                ref={(el) => { columnRefs.current[key] = el; }}
+              >
                 <div className={s.columnHeader}>
                   <div className={s.columnTitle}>
                     {label}

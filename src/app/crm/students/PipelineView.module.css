@@ -449,6 +449,11 @@
   padding: 0 8px;
 }
 
+/* ── Mobile Stage Tabs (hidden on desktop) ── */
+.mobileTabs {
+  display: none;
+}
+
 /* ── Mobile ── */
 @media (max-width: 768px) {
   .header {
@@ -465,8 +470,69 @@
   .board {
     padding: 12px;
     gap: 12px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 12px;
   }
   .column {
-    flex: 0 0 calc(100vw - 48px);
+    flex: 0 0 calc(100vw - 24px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
+
+  .mobileTabs {
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--crm-border);
+    background: var(--crm-bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    scrollbar-width: none;
+  }
+  .mobileTabs::-webkit-scrollbar { display: none; }
+
+  .mobileTab {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--crm-text-muted);
+    background: transparent;
+    border: 1px solid var(--crm-border);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .mobileTabActive {
+    color: #fff;
+    background: var(--crm-accent);
+    border-color: var(--crm-accent);
+  }
+
+  .mobileTabCount {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.08);
+    color: inherit;
+    min-width: 18px;
+    text-align: center;
+  }
+  .mobileTabActive .mobileTabCount {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  /* Tighten card on small screens */
+  .card { padding: 12px 14px; }
+  .cardName { font-size: 15px; }
+  .phoneRow { font-size: 14px; }
 }
