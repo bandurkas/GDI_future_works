@@ -182,6 +182,12 @@ export default function NavbarPremium() {
                                         <span className={styles.dropdownDesc}>{language === 'id' ? 'Otomatiskan Tugas & Bangun Alat Cerdas' : 'Automate Tasks & Build Smart Tools'}</span>
                                     </div>
                                 </Link>
+                                <Link href="/courses/ai-vibe-coding" className={styles.dropdownItem}>
+                                    <div className={styles.dropdownContent}>
+                                        <span className={styles.dropdownLabel}>AI Vibe Coding</span>
+                                        <span className={styles.dropdownDesc}>{language === 'id' ? 'Rilis Kode Pakai AI Sebagai Co-Pilot Kamu' : 'Ship Code With AI as Your Co-Pilot'}</span>
+                                    </div>
+                                </Link>
                                 <Link href="/courses/data-analytics" className={styles.dropdownItem}>
                                     <div className={styles.dropdownContent}>
                                         <span className={styles.dropdownLabel}>Data Analytics</span>
@@ -392,6 +398,9 @@ export default function NavbarPremium() {
                         </Link>
                         <Link href="/courses/python-programming" className={styles.mobileNavLink} style={{ paddingLeft: '40px', fontSize: '0.95rem', opacity: 0.85 }} onClick={closeMenu}>
                             🐍 Python for Beginners
+                        </Link>
+                        <Link href="/courses/ai-vibe-coding" className={styles.mobileNavLink} style={{ paddingLeft: '40px', fontSize: '0.95rem', opacity: 0.85 }} onClick={closeMenu}>
+                            🤖 AI Vibe Coding
                         </Link>
                         <Link href="/study-english" className={styles.mobileNavLink} onClick={closeMenu}>
                             <span className={styles.mobileLinkIcon}><Globe size={20} /></span> Study English

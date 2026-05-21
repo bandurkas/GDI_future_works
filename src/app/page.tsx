@@ -162,6 +162,20 @@ export default async function Page() {
                     offers: { '@type': 'Offer', price: isID ? '400000' : '49', priceCurrency: isID ? 'IDR' : 'USD' },
                 },
             },
+            {
+                '@type': 'ListItem',
+                position: 5,
+                item: {
+                    '@type': 'Course',
+                    name: isID ? 'AI Vibe Coding: Rilis Kode Pakai AI' : 'AI Vibe Coding: Ship Code With AI',
+                    description: isID
+                        ? 'Arahkan Claude dan Gemini untuk menulis, memperbaiki, dan menerbitkan kode—dari skrip cepat sampai aplikasi lengkap.'
+                        : 'Direct Claude and Gemini to write, refine, and ship real code—from quick scripts to full apps.',
+                    url: 'https://gdifuture.works/courses/ai-vibe-coding',
+                    provider: { '@type': 'Organization', name: 'GDI FutureWorks' },
+                    offers: { '@type': 'Offer', price: isID ? '400000' : '49', priceCurrency: isID ? 'IDR' : 'USD' },
+                },
+            },
         ],
     };
 

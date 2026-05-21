@@ -136,6 +136,7 @@ const getNextWeekend = (staggerWeeks = 0) => {
 const cohorts = [
     { course: 'Basic Data Analyst', date: getNextWeekend(0), seatsLeft: 3, slug: 'data-analytics', color: '#667eea' },
     { course: 'Python for beginners', date: getNextWeekend(0), seatsLeft: 5, slug: 'python-programming', color: '#11998e' },
+    { course: 'AI Vibe Coding', date: getNextWeekend(0), seatsLeft: 4, slug: 'ai-vibe-coding', color: '#8b5cf6' },
     { course: 'Graphic Design with AI', date: getNextWeekend(1), seatsLeft: 6, slug: 'graphic-design-ai', color: '#f093fb' },
     { course: 'LLM & AI Engineering', date: getNextWeekend(1), seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
 ];

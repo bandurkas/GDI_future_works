@@ -45,6 +45,7 @@ export default function Footer() {
                                 title: 'Courses', items: [
                                     { label: 'Data Analytics', href: '/courses/data-analytics' },
                                     { label: 'Python Programming', href: '/courses/python-programming' },
+                                    { label: 'AI Vibe Coding', href: '/courses/ai-vibe-coding' },
                                     { label: 'Graphic Design & AI', href: '/courses/graphic-design-ai' },
                                     { label: 'LLM & AI Engineering', href: '/courses/llm-ai-engineering' },
                                 ]

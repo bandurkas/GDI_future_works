@@ -498,6 +498,203 @@ export const courses: Course[] = [
         },
     },
     {
+        id: 'ai-vibe-coding',
+        slug: 'ai-vibe-coding',
+        tutorEmail: 'bayusedana26@gmail.com',
+        category: 'AI Vibe Coding',
+        title: 'AI Vibe Coding',
+        subtitle: 'Ship Code With AI as Your Co-Pilot',
+        description: 'Stop typing every line by hand. In 4 hours, you’ll learn how to direct AI assistants like Claude and Gemini to write, refine, and ship real code—from quick scripts to full apps—faster than ever.',
+        icon: '🤖',
+        iconBg: 'linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%)',
+        duration: '4 hours',
+        format: '2 days \xd7 2 hours',
+        price: 49,
+        originalPrice: 99,
+        currency: 'USD',
+        rating: 4.8,
+        studentsCount: 247,
+        nextSession: 'May 24–25',
+        seatsLeft: 2,
+        targetRoles: ['AI Developer', 'Prompt Engineer', 'Solo Founder'],
+        priceMYR: 119,
+        originalPriceMYR: 380,
+        priceIDR: 400000,
+        originalPriceIDR: 1500000,
+        testimonialQuote: 'I shipped my first side project in a weekend by letting Claude handle the boilerplate while I focused on the logic. Total game-changer.',
+        testimonialAuthor: 'Rizky A. — Indie Hacker',
+        outcomes: [
+            'Direct Claude, Gemini, and GPT to write production-quality code',
+            'Cut prompt costs with token-efficient workflows and prompt caching',
+            'Set up multi-agent flows where AI plays Architect, Coder, and Reviewer',
+            'Build full apps from scratch—module by module—without rewriting',
+            'Verify AI output with tests, code review, and a second model',
+        ],
+        whoFor: [
+            'Developers who want to ship 3\xd7 faster by pairing with AI on every commit.',
+            'Solo founders and freelancers turning ideas into working prototypes in hours.',
+            'Career switchers who want to build real software without years of syntax memorization.',
+        ],
+        whatYouGet: [
+            'Live interactive training (4 hours total)',
+            'Real-time Q&A with your instructor',
+            'Certificate of completion',
+            'Hands-on portfolio project built with AI',
+            'Private student community access',
+            'Session recording for replay',
+            'Career guidance & job opportunity alerts',
+        ],
+        whyWorthIt: [
+            'The fastest-growing developer skill of 2025—every team is hiring for it',
+            'Works with the AI tools you already use (Claude, Gemini, Cursor, VS Code)',
+            'No need to memorize every API—the AI handles syntax, you handle design',
+            'Instructor ships real apps daily using these exact workflows',
+            'Skills transfer to any language, any framework, any stack',
+        ],
+        // Indonesian
+        titleID: 'AI Vibe Coding',
+        subtitleID: 'Rilis Kode Pakai AI Sebagai Co-Pilot Kamu',
+        descriptionID: 'Berhenti mengetik setiap baris kode secara manual. Dalam 4 jam, kamu akan belajar mengarahkan asisten AI seperti Claude dan Gemini untuk menulis, memperbaiki, dan menerbitkan kode nyata—dari skrip cepat sampai aplikasi lengkap—jauh lebih cepat dari sebelumnya.',
+        outcomesID: [
+            'Mengarahkan Claude, Gemini, dan GPT untuk menulis kode kualitas produksi',
+            'Memangkas biaya prompt dengan workflow hemat token dan prompt caching',
+            'Mengatur alur multi-agent—AI sebagai Arsitek, Coder, dan Reviewer sekaligus',
+            'Membangun aplikasi dari nol—modul demi modul—tanpa harus mengulang',
+            'Memverifikasi output AI dengan unit test, code review, dan model kedua',
+        ],
+        whoForID: [
+            'Developer yang ingin rilis 3\xd7 lebih cepat dengan pasangin AI di setiap commit.',
+            'Solo founder dan freelancer yang ingin ubah ide jadi prototipe kerja dalam hitungan jam.',
+            'Peralih karier yang ingin membangun software nyata tanpa hafal syntax bertahun-tahun.',
+        ],
+        whatYouGetID: [
+            'Pelatihan langsung interaktif (total 4 jam)',
+            'Tanya jawab real-time dengan instruktur',
+            'Sertifikat penyelesaian',
+            'Proyek portofolio yang kamu bangun bareng AI',
+            'Akses komunitas pelajar privat',
+            'Rekaman sesi untuk diputar ulang',
+            'Bimbingan karier & notifikasi peluang kerja',
+        ],
+        whyWorthItID: [
+            'Skill developer paling cepat tumbuh di 2025—semua tim lagi cari',
+            'Pakai tool AI yang sudah kamu pakai (Claude, Gemini, Cursor, VS Code)',
+            'Nggak perlu hafal semua API—AI urus syntax, kamu urus desain',
+            'Instruktur rilis aplikasi nyata setiap hari pakai workflow ini',
+            'Skill yang berlaku di bahasa, framework, dan stack apa pun',
+        ],
+        targetRolesID: ['Developer AI', 'Prompt Engineer', 'Founder Solo'],
+        durationID: '4 jam',
+        testimonialQuoteID: 'Saya rilis side project pertama saya dalam akhir pekan—Claude urus boilerplate, saya fokus ke logika. Beneran game changer.',
+        instructor: {
+            name: 'Bayu Sedana',
+            role: 'Senior Software Engineer & AI Coding Specialist',
+            company: 'IT Consultant',
+            experience: '6 years in software engineering, data analysis & QA. Daily user of Claude, Gemini, and Cursor for production work.',
+            credentials: [
+                'Backend developer with 6 years experience (Python, Node.js, Flask, FastAPI)',
+                'Ships features daily using AI Vibe Coding workflows in real client projects',
+                'Certified instructor at 2 Indonesian institutions',
+                'Advanced SQL certified—proficient in MySQL, PostgreSQL, SQLite',
+                '23+ GitHub projects covering Python automation, QA, and full-stack',
+            ],
+            initials: 'BS',
+            accentColor: '#8b5cf6',
+            bgGradient: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
+            photoUrl: '/assets/tutors/bayu.jpg',
+            linkedin: 'https://www.linkedin.com/in/bayusedana/',
+            github: 'https://github.com/bayusedana26',
+            loom: 'https://www.loom.com/share/02fd0509dbd24954a22d67c1a7c94d6d',
+        },
+        schedules: [
+            { id: 's1', date: 'May 24', dayOfWeek: 'Saturday', month: 'May', day: 24, time: '10:00', timeEnd: '12:00', seatsLeft: 4  },
+            { id: 's2', date: 'May 25', dayOfWeek: 'Sunday',   month: 'May', day: 25, time: '14:00', timeEnd: '16:00', seatsLeft: 6  },
+            { id: 's3', date: 'May 31', dayOfWeek: 'Saturday', month: 'May', day: 31, time: '10:00', timeEnd: '12:00', seatsLeft: 8  },
+            { id: 's4', date: 'Jun 1',  dayOfWeek: 'Sunday',   month: 'Jun', day: 1,  time: '19:00', timeEnd: '21:00', seatsLeft: 5  },
+            { id: 's5', date: 'Jun 7',  dayOfWeek: 'Saturday', month: 'Jun', day: 7,  time: '14:00', timeEnd: '16:00', seatsLeft: 10 },
+            { id: 's6', date: 'Jun 8',  dayOfWeek: 'Sunday',   month: 'Jun', day: 8,  time: '10:00', timeEnd: '12:00', seatsLeft: 12 },
+        ],
+        tags: ['AI', 'Claude', 'Gemini', 'Cursor', 'Prompt Engineering'],
+        syllabusDetails: {
+            sessions: [
+                {
+                    title: 'Session 1 (2 Hours): Foundations & Efficient Workflows',
+                    items: [
+                        'What AI Vibe Coding actually is—and when it beats hand-coding.',
+                        'Master Claude (artifacts, long context) and Google Gemini (2M tokens, AI Studio).',
+                        'Save 70% on prompt costs with caching, summarization, and diff-only outputs.',
+                        'Build a 2-agent system: Coder + Reviewer working from one prompt.'
+                    ]
+                },
+                {
+                    title: 'Session 2 (2 Hours): Build, Verify & Ship',
+                    items: [
+                        'Long-term memory: solve the context limit with memory palaces and RAG.',
+                        'Verify AI output with TDD prompts, static analysis, and a second model.',
+                        'Build a real app from scratch—module by module—with Cline in VS Code.',
+                        'Talk to AI for maximum results: role play, examples, and feedback loops.'
+                    ]
+                }
+            ],
+            project: 'Build and ship a working mini-app (note taker, currency converter, or task manager) entirely through AI Vibe Coding—from idea to deployable code in under 2 hours.',
+            careerOutcomes: {
+                roles: [
+                    'AI Developer, Prompt Engineer, or Indie Founder shipping faster than ever.',
+                    '3\xd7 faster delivery reported by past students.'
+                ]
+            }
+        },
+        syllabusDetailsID: {
+            sessions: [
+                {
+                    title: 'Sesi 1 (2 Jam): Dasar & Workflow Efisien',
+                    items: [
+                        'Apa itu AI Vibe Coding—dan kapan ini lebih cepat dari ngoding manual.',
+                        'Kuasai Claude (artifacts, konteks panjang) dan Gemini (2M token, AI Studio).',
+                        'Hemat 70% biaya prompt pakai caching, ringkasan, dan output diff aja.',
+                        'Bangun sistem 2-agent: Coder + Reviewer kerja dari satu prompt.'
+                    ]
+                },
+                {
+                    title: 'Sesi 2 (2 Jam): Bangun, Verifikasi, Rilis',
+                    items: [
+                        'Memori jangka panjang: atasi batas konteks pakai memory palace dan RAG.',
+                        'Verifikasi output AI lewat TDD prompt, analisis statis, dan model kedua.',
+                        'Bangun aplikasi nyata dari nol—modul demi modul—pakai Cline di VS Code.',
+                        'Cara ngobrol sama AI biar hasil maksimal: role play, contoh, dan feedback loop.'
+                    ]
+                }
+            ],
+            project: 'Bangun dan rilis mini-app yang beneran jalan (note taker, konverter mata uang, atau task manager) sepenuhnya pakai AI Vibe Coding—dari ide sampai kode siap deploy dalam kurang dari 2 jam.',
+            careerOutcomes: {
+                roles: [
+                    'AI Developer, Prompt Engineer, atau Indie Founder yang rilis lebih cepat dari biasanya.',
+                    'Kecepatan rilis 3\xd7 lebih cepat dilaporkan oleh siswa terdahulu.'
+                ]
+            }
+        },
+        instructorID: {
+            name: 'Bayu Sedana',
+            role: 'Senior Software Engineer & Spesialis AI Coding',
+            company: 'IT Consultant',
+            experience: '6 tahun di software engineering, analisis data & QA. Pemakai harian Claude, Gemini, dan Cursor untuk kerjaan produksi.',
+            credentials: [
+                'Backend developer dengan pengalaman 6 tahun (Python, Node.js, Flask, FastAPI)',
+                'Rilis fitur setiap hari pakai workflow AI Vibe Coding di proyek klien nyata',
+                'Instruktur tersertifikasi di 2 institusi Indonesia',
+                'Bersertifikasi Advanced SQL—mahir di MySQL, PostgreSQL, SQLite',
+                '23+ proyek GitHub mencakup otomatisasi Python, QA, dan full-stack',
+            ],
+            initials: 'BS',
+            accentColor: '#8b5cf6',
+            bgGradient: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
+            photoUrl: '/assets/tutors/bayu.jpg',
+            linkedin: 'https://www.linkedin.com/in/bayusedana/',
+            github: 'https://github.com/bayusedana26',
+            loom: 'https://www.loom.com/share/02fd0509dbd24954a22d67c1a7c94d6d',
+        },
+    },
+    {
         id: 'graphic-design-ai',
         slug: 'graphic-design-ai',
         tutorEmail: 'anumzulfiqar2@gamil.com',
