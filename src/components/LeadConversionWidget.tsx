@@ -5,6 +5,9 @@ import { X, ChevronRight, Download, Calendar, MessageCircle, CheckCircle2, Arrow
 import { trackConversion, trackEvent, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 import styles from './LeadConversionWidget.module.css';
 import { useLanguage } from './LanguageContext';
+import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
+import WhatsAppWarningPopup from './WhatsAppWarningPopup';
+import { validatePhone, buildFullPhone, phoneErrorText, handlePhoneInput } from '@/lib/phone';
 
 interface LeadConversionWidgetProps {
     courseId?: string;
@@ -28,13 +31,26 @@ export default function LeadConversionWidget({ courseId, courseTitle, isOpen, on
         phone: '',
         preferredTime: '',
     });
+    const [countryCode, setCountryCode] = useState('+62');
+    const [phoneTouched, setPhoneTouched] = useState(false);
+    const [waConfirmed, setWaConfirmed] = useState(false);
+    const [showWAPopup, setShowWAPopup] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { check: checkWA, loading: waLoading, exists: waExists } = useWhatsAppCheck();
+    const phoneInputRef = useRef<HTMLInputElement>(null);
+    const shouldResubmitRef = useRef(false);
+
+    const phoneValidation = validatePhone(countryCode, formData.phone);
+    const phoneValid = phoneValidation.valid;
 
     // Reset state when opening
     useEffect(() => {
         if (isOpen) {
             setStep('choice');
             setScenario(null);
+            setPhoneTouched(false);
+            setWaConfirmed(false);
+            setShowWAPopup(false);
             trackEvent('lead_widget_open', { course_title: courseTitle, lang: language });
         }
     }, [isOpen, courseTitle, language]);
@@ -52,8 +68,52 @@ export default function LeadConversionWidget({ courseId, courseTitle, isOpen, on
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const runWACheck = async () => {
+        setPhoneTouched(true);
+        if (!phoneValid) return;
+        await checkWA(buildFullPhone(countryCode, formData.phone));
+    };
+
+    const handleWAFix = () => {
+        setShowWAPopup(false);
+        setTimeout(() => phoneInputRef.current?.focus(), 50);
+    };
+
+    const handleWAContinue = () => {
+        setWaConfirmed(true);
+        setShowWAPopup(false);
+        shouldResubmitRef.current = true;
+    };
+
+    useEffect(() => {
+        if (waConfirmed && shouldResubmitRef.current) {
+            shouldResubmitRef.current = false;
+            void handleSubmit();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [waConfirmed]);
+
+    const handleSubmit = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        if (isSubmitting) return;
+        if (!phoneValid) {
+            setPhoneTouched(true);
+            phoneInputRef.current?.focus();
+            return;
+        }
+
+        const fullPhone = buildFullPhone(countryCode, formData.phone);
+
+        // Blocking WA verification (same pattern as schedule page)
+        let waVerified = false;
+        const waOk = await checkWA(fullPhone);
+        if (waOk === false && !waConfirmed) {
+            setShowWAPopup(true);
+            return;
+        }
+        if (waOk === true) waVerified = true;
+        const waStatus = waVerified ? 'VERIFIED' : waConfirmed ? 'BYPASSED' : null;
+
         setIsSubmitting(true);
 
         try {
@@ -70,6 +130,8 @@ export default function LeadConversionWidget({ courseId, courseTitle, isOpen, on
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...formData,
+                    phone: fullPhone,
+                    waStatus,
                     scenario,
                     courseTitle,
                     courseId,
@@ -229,43 +291,76 @@ export default function LeadConversionWidget({ courseId, courseTitle, isOpen, on
                                             />
                                         </div>
 
-                                        {scenario === 'Syllabus' ? (
+                                        {scenario === 'Syllabus' && (
                                             <div className={styles.field}>
                                                 <label>{t.email}</label>
-                                                <input 
-                                                    type="email" 
+                                                <input
+                                                    type="email"
                                                     placeholder={t.emailPlaceholder}
                                                     required
                                                     value={formData.email}
                                                     onChange={e => setFormData({...formData, email: e.target.value})}
                                                 />
                                             </div>
-                                        ) : (
-                                            <>
-                                                <div className={styles.field}>
-                                                    <label>{t.whatsapp}</label>
-                                                    <input 
-                                                        type="tel" 
-                                                        placeholder="+62..."
-                                                        required
-                                                        value={formData.phone}
-                                                        onChange={e => setFormData({...formData, phone: e.target.value})}
-                                                    />
-                                                </div>
-                                                <div className={styles.field}>
-                                                    <label>{t.time}</label>
-                                                    <select 
-                                                        required
-                                                        value={formData.preferredTime}
-                                                        onChange={e => setFormData({...formData, preferredTime: e.target.value})}
-                                                    >
-                                                        <option value="">{t.selectTime}</option>
-                                                        <option value="morning">{t.times.morning}</option>
-                                                        <option value="afternoon">{t.times.afternoon}</option>
-                                                        <option value="evening">{t.times.evening}</option>
-                                                    </select>
-                                                </div>
-                                            </>
+                                        )}
+
+                                        {/* Phone with country code + WA verification — required on BOTH flows */}
+                                        <div className={styles.field}>
+                                            <label>{t.whatsapp}</label>
+                                            <div style={{ display: 'flex', gap: 8 }}>
+                                                <select
+                                                    value={countryCode}
+                                                    onChange={e => setCountryCode(e.target.value)}
+                                                    style={{ flex: '0 0 96px' }}
+                                                    aria-label="Country code"
+                                                >
+                                                    <option value="+62">🇮🇩 +62</option>
+                                                    <option value="+60">🇲🇾 +60</option>
+                                                    <option value="+65">🇸🇬 +65</option>
+                                                    <option value="+1">🇺🇸 +1</option>
+                                                </select>
+                                                <input
+                                                    ref={phoneInputRef}
+                                                    type="tel"
+                                                    inputMode="numeric"
+                                                    autoComplete="tel"
+                                                    placeholder={countryCode === '+62' ? '812 3456 7890' : '12 3456 7890'}
+                                                    required
+                                                    value={formData.phone}
+                                                    onChange={e => {
+                                                        handlePhoneInput(e.target.value, setCountryCode, (p: string) => setFormData(d => ({ ...d, phone: p })));
+                                                        if (waConfirmed) setWaConfirmed(false);
+                                                    }}
+                                                    onBlur={runWACheck}
+                                                    style={{ flex: 1, minWidth: 0 }}
+                                                />
+                                            </div>
+                                            {phoneTouched && !phoneValid && (
+                                                <span style={{ display: 'block', marginTop: 6, fontSize: 12, color: '#dc2626' }}>
+                                                    ⚠ {phoneErrorText(phoneValidation.errorId, isID ? 'id' : 'en') || (isID ? 'Nomor telepon wajib diisi' : 'Phone is required')}
+                                                </span>
+                                            )}
+                                            <div style={{ marginTop: 6, fontSize: 12, minHeight: 16 }}>
+                                                {waLoading && <span style={{ color: '#888' }}>{isID ? 'Memeriksa WhatsApp…' : 'Checking WhatsApp…'}</span>}
+                                                {!waLoading && waExists === true && <span style={{ color: '#16a34a' }}>✓ {isID ? 'Nomor terdaftar di WhatsApp' : 'WhatsApp OK'}</span>}
+                                                {!waLoading && waExists === false && <span style={{ color: '#dc2626' }}>⚠ {isID ? 'Nomor tidak terdaftar di WhatsApp' : 'Not registered on WhatsApp'}</span>}
+                                            </div>
+                                        </div>
+
+                                        {scenario === 'Consultation' && (
+                                            <div className={styles.field}>
+                                                <label>{t.time}</label>
+                                                <select
+                                                    required
+                                                    value={formData.preferredTime}
+                                                    onChange={e => setFormData({...formData, preferredTime: e.target.value})}
+                                                >
+                                                    <option value="">{t.selectTime}</option>
+                                                    <option value="morning">{t.times.morning}</option>
+                                                    <option value="afternoon">{t.times.afternoon}</option>
+                                                    <option value="evening">{t.times.evening}</option>
+                                                </select>
+                                            </div>
                                         )}
 
                                         <button className={styles.submitBtn} disabled={isSubmitting}>
@@ -312,6 +407,13 @@ export default function LeadConversionWidget({ courseId, courseTitle, isOpen, on
                             </AnimatePresence>
                         </div>
                     </motion.div>
+                    {showWAPopup && (
+                        <WhatsAppWarningPopup
+                            onClose={() => setShowWAPopup(false)}
+                            onFix={handleWAFix}
+                            onContinue={handleWAContinue}
+                        />
+                    )}
                 </>
             )}
         </AnimatePresence>

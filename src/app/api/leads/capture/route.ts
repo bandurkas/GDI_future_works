@@ -15,30 +15,38 @@ export async function POST(req: NextRequest) {
     }
 
     const {
-        name, email, phone, scenario, courseTitle, courseId, 
+        name, email, phone, scenario, courseTitle, courseId,
         preferredTime, utmSource, utmMedium, utmCampaign,
-        gaClientId, fbClientId, fbBrowserId
+        gaClientId, fbClientId, fbBrowserId, waStatus
     } = bodyData;
 
     try {
-        if (!name || (!email && !phone)) {
-            return NextResponse.json({ error: 'Name and either Email or Phone are required' }, { status: 400 });
+        if (!name) {
+            return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+        }
+        if (!phone || phone.replace(/\D/g, '').length < 8) {
+            return NextResponse.json({ error: 'A valid WhatsApp/phone number is required' }, { status: 400 });
+        }
+        if (scenario === 'Syllabus' && !email) {
+            return NextResponse.json({ error: 'Email is required to receive the syllabus' }, { status: 400 });
         }
 
         const utm = normalizeUtm({ utmSource, utmMedium, utmCampaign });
         const source = `Lead Magnet: ${scenario === 'Syllabus' ? 'Syllabus' : 'Consultation'} (${courseTitle || 'General'})`;
         const country = req.headers.get('cf-ipcountry') || 'XX';
+        const waStatusNorm = waStatus === 'VERIFIED' || waStatus === 'BYPASSED' ? waStatus : null;
 
         // 1. Save to CRM
         const lead = await prisma.lead.create({
             data: {
                 name,
-                email: email || `lead_${Date.now()}@noemail.gdi`,
-                phone: phone || null,
+                email: email || `lead_${phone.replace(/\D/g, '')}@noemail.gdi`,
+                phone,
                 type: 'STUDENT',
                 status: 'NEW',
                 source,
                 country,
+                waStatus: waStatusNorm,
                 utmSource: utm.utmSource,
                 utmMedium: utm.utmMedium,
                 utmCampaign: utm.utmCampaign,
