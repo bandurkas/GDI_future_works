@@ -386,8 +386,15 @@ export default function LeadConversionWidget({ courseId, courseTitle, isOpen, on
                                         </p>
                                         
                                         <div className={styles.postActions}>
-                                            {scenario === 'Syllabus' && (
-                                                <button className={styles.downloadBtn}>
+                                            {scenario === 'Syllabus' && (courseId || courseTitle) && (
+                                                <button
+                                                    className={styles.downloadBtn}
+                                                    onClick={() => {
+                                                        const slug = courseId;
+                                                        if (!slug) return;
+                                                        window.open(`/syllabus/${slug}?print=1&lang=${isID ? 'id' : 'en'}`, '_blank', 'noopener');
+                                                    }}
+                                                >
                                                     <Download size={18} /> {t.downloadNow}
                                                 </button>
                                             )}

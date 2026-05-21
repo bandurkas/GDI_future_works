@@ -72,6 +72,9 @@ export async function POST(req: NextRequest) {
 
         // 3. Automation: Send Email for Syllabus
         if (scenario === 'Syllabus' && email) {
+            const syllabusUrl = courseId
+                ? `https://gdifuture.works/syllabus/${courseId}?print=1`
+                : `https://gdifuture.works/courses`;
             sendEmail({
                 to: email,
                 subject: `Your Course Syllabus: ${courseTitle}`,
@@ -79,7 +82,10 @@ export async function POST(req: NextRequest) {
                     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
                         <h2 style="color: #ff3b30;">Hello ${name}!</h2>
                         <p>Thank you for your interest in our <strong>${courseTitle}</strong> course.</p>
-                        <p>We've attached the detailed curriculum here (simulation) and our advisor will be in touch shortly to answer any of your questions.</p>
+                        <p>Click below to open and download the detailed syllabus as a PDF. Our advisor will also be in touch shortly to answer any questions.</p>
+                        <div style="margin: 24px 0; text-align: center;">
+                            <a href="${syllabusUrl}" style="display: inline-block; background: #ef4444; color: #fff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none;">📄 Download Syllabus (PDF)</a>
+                        </div>
                         <div style="margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 8px;">
                             <h3 style="margin-top: 0;">What's next?</h3>
                             <ul style="padding-left: 20px;">
