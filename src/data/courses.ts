@@ -553,35 +553,35 @@ export const courses: Course[] = [
         ],
         // Indonesian
         titleID: 'AI Vibe Coding',
-        subtitleID: 'Rilis Kode Pakai AI Sebagai Co-Pilot Kamu',
-        descriptionID: 'Berhenti mengetik setiap baris kode secara manual. Dalam 4 jam, kamu akan belajar mengarahkan asisten AI seperti Claude dan Gemini untuk menulis, memperbaiki, dan menerbitkan kode nyata—dari skrip cepat sampai aplikasi lengkap—jauh lebih cepat dari sebelumnya.',
+        subtitleID: 'Ship code 3× lebih cepet. AI yang ngetik, kamu yang ngarahin.',
+        descriptionID: 'Stop ngetik tiap baris pakai tangan. Pakai aja Claude, Gemini, dan GPT buat nulis, ngebenerin, dan nge-ship code beneran. Kamu konduktornya — AI orkestranya. Cuma butuh satu akhir pekan, dan kamu udah punya 1 app jalan + workflow yang bisa kamu pakai ulang di proyek apa pun.',
         outcomesID: [
-            'Mengarahkan Claude, Gemini, dan GPT untuk menulis kode kualitas produksi',
-            'Memangkas biaya prompt dengan workflow hemat token dan prompt caching',
-            'Mengatur alur multi-agent—AI sebagai Arsitek, Coder, dan Reviewer sekaligus',
-            'Membangun aplikasi dari nol—modul demi modul—tanpa harus mengulang',
-            'Memverifikasi output AI dengan unit test, code review, dan model kedua',
+            'Ngarahin Claude, Gemini, dan GPT buat nulis code level production — bukan cuma demo prototype',
+            'Pangkas biaya prompt sampai 90% pakai caching, ringkasan, dan workflow hemat token',
+            'Bangun multi-agent: AI sebagai Architect, Coder, dan Reviewer sekaligus — dari satu prompt',
+            'Build app dari nol modul per modul — stop jebakan "rewrite semuanya tiap ada bug kecil"',
+            'Verifikasi output AI pakai test, static analysis, dan cross-check sama model kedua',
         ],
         whoForID: [
-            'Developer yang ingin rilis 3\xd7 lebih cepat dengan pasangin AI di setiap commit.',
-            'Solo founder dan freelancer yang ingin ubah ide jadi prototipe kerja dalam hitungan jam.',
-            'Peralih karier yang ingin membangun software nyata tanpa hafal syntax bertahun-tahun.',
+            'Developer yang mau ship 3\xd7 lebih cepet dengan AI sebagai partner di tiap commit.',
+            'Solo founder & freelancer yang mau ubah ide jadi prototype jalan dalam hitungan jam.',
+            'Switch karir yang mau bangun software beneran tanpa harus hafal syntax bertahun-tahun.',
         ],
         whatYouGetID: [
-            'Pelatihan langsung interaktif (total 4 jam)',
-            'Tanya jawab real-time dengan instruktur',
+            'Live training 4 jam, interaktif (bukan rekaman)',
+            'Tanya jawab langsung sama instruktur — selama kelas dan setelahnya',
             'Sertifikat penyelesaian',
-            'Proyek portofolio yang kamu bangun bareng AI',
-            'Akses komunitas pelajar privat',
-            'Rekaman sesi untuk diputar ulang',
-            'Bimbingan karier & notifikasi peluang kerja',
+            '1 portfolio project yang kamu build bareng AI di kelas',
+            'Akses private community pelajar',
+            'Rekaman sesi buat ditonton ulang',
+            'Bimbingan karir & info lowongan AI',
         ],
         whyWorthItID: [
-            'Skill developer paling cepat tumbuh di 2025—semua tim lagi cari',
-            'Pakai tool AI yang sudah kamu pakai (Claude, Gemini, Cursor, VS Code)',
-            'Nggak perlu hafal semua API—AI urus syntax, kamu urus desain',
-            'Instruktur rilis aplikasi nyata setiap hari pakai workflow ini',
-            'Skill yang berlaku di bahasa, framework, dan stack apa pun',
+            'Skill developer paling cepet naik di 2025 — semua tim lagi cari',
+            'Pakai tool yang kamu udah punya: Claude, Gemini, Cursor, VS Code',
+            'Gak perlu hafal API — AI urus syntax, kamu urus desain & logika',
+            'Instruktur tiap hari ship app pakai workflow yang sama dia ajarin di kelas',
+            'Skill yang nempel di bahasa, framework, dan stack apa pun',
         ],
         targetRolesID: ['Developer AI', 'Prompt Engineer', 'Founder Solo'],
         durationID: '4 jam',
@@ -647,29 +647,29 @@ export const courses: Course[] = [
         syllabusDetailsID: {
             sessions: [
                 {
-                    title: 'Sesi 1 (2 Jam): Dasar & Workflow Efisien',
+                    title: 'Sesi 1 (2 Jam): Fondasi & Workflow Hemat Token',
                     items: [
-                        'Apa itu AI Vibe Coding—dan kapan ini lebih cepat dari ngoding manual.',
-                        'Kuasai Claude (artifacts, konteks panjang) dan Gemini (2M token, AI Studio).',
-                        'Hemat 70% biaya prompt pakai caching, ringkasan, dan output diff aja.',
-                        'Bangun sistem 2-agent: Coder + Reviewer kerja dari satu prompt.'
+                        'Apa itu AI Vibe Coding — kapan dia menang dari ngoding manual (analogi: kamu konduktornya, AI orkestranya).',
+                        'Adu Claude vs. Gemini head-to-head: harga, konteks (200K vs 2M token), kapan pakai yang mana.',
+                        'Pangkas biaya prompt sampai 90% pakai caching, ringkasan, dan output diff aja — bukan file utuh.',
+                        'Bangun multi-agent pertama kamu: Coder + Reviewer kerja bareng dari satu prompt, pakai pola RUFLO.'
                     ]
                 },
                 {
-                    title: 'Sesi 2 (2 Jam): Bangun, Verifikasi, Rilis',
+                    title: 'Sesi 2 (2 Jam): Memory, Verifikasi & Ship 1 App Beneran',
                     items: [
-                        'Memori jangka panjang: atasi batas konteks pakai memory palace dan RAG.',
-                        'Verifikasi output AI lewat TDD prompt, analisis statis, dan model kedua.',
-                        'Bangun aplikasi nyata dari nol—modul demi modul—pakai Cline di VS Code.',
-                        'Cara ngobrol sama AI biar hasil maksimal: role play, contoh, dan feedback loop.'
+                        'Atasi batas memory AI pakai 4 metode: summarization, memory palace, RAG (vector DB), dan function calling.',
+                        'Verifikasi output AI: TDD prompt, static analysis, run di sandbox, cross-check sama model kedua.',
+                        'Live build bareng instruktur — 1 app jalan dari nol, modul per modul, pakai Cline + VS Code.',
+                        '7 prinsip ngobrol sama AI biar hasilnya 10× lebih bagus + full toolchain (Cursor, Cline, AI Studio).'
                     ]
                 }
             ],
-            project: 'Bangun dan rilis mini-app yang beneran jalan (note taker, konverter mata uang, atau task manager) sepenuhnya pakai AI Vibe Coding—dari ide sampai kode siap deploy dalam kurang dari 2 jam.',
+            project: 'Bangun 1 app yang jalan — pilihan kamu (kalkulator, note-taker, atau konverter mata uang) — pakai full loop vibe-coding: tulis context.md → Claude generate struktur → Gemini Flash nulis test → implement di VS Code + Cline → cross-review sama model kedua → refactor → commit → ship. Selesai di kelas, bisa langsung kamu pajang di portfolio atau push ke GitHub.',
             careerOutcomes: {
                 roles: [
-                    'AI Developer, Prompt Engineer, atau Indie Founder yang rilis lebih cepat dari biasanya.',
-                    'Kecepatan rilis 3\xd7 lebih cepat dilaporkan oleh siswa terdahulu.'
+                    'AI Developer, Prompt Engineer, atau Indie Founder yang ship 3\xd7 lebih cepet dari kompetitor.',
+                    'Rata-rata siswa selesai project pertama mereka sebelum kelas berakhir.'
                 ]
             }
         },
@@ -677,7 +677,7 @@ export const courses: Course[] = [
             name: 'Bayu Sedana',
             role: 'Senior Software Engineer & Spesialis AI Coding',
             company: 'IT Consultant',
-            experience: '6 tahun di software engineering, analisis data & QA. Pemakai harian Claude, Gemini, dan Cursor untuk kerjaan produksi.',
+            experience: '6 tahun di software engineering, analisis data & QA. Pemakai harian Claude, Gemini, dan Cursor untuk kerjaan production di proyek klien IT consulting. Filosofinya: "Pakai AI buat ngoding itu bukan curang — yang penting kamu ngerti hasil yang dia kasih, dan bisa ngarahin outputnya."',
             credentials: [
                 'Backend developer dengan pengalaman 6 tahun (Python, Node.js, Flask, FastAPI)',
                 'Rilis fitur setiap hari pakai workflow AI Vibe Coding di proyek klien nyata',
