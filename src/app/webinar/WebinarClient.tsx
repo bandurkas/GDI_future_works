@@ -1,0 +1,671 @@
+'use client';
+
+import { useEffect, useRef, useState, FormEvent } from 'react';
+import styles from './webinar.module.css';
+
+/* ─────────────────────────────────────────────────────────────────
+   EDIT THESE TWO CONSTANTS TO RESCHEDULE THE WEBINAR
+   ───────────────────────────────────────────────────────────────── */
+const WEBINAR_DATE = new Date('2026-06-05T19:00:00+07:00'); // 5 Juni 2026, 19:00 WIB
+const BONUS_DOWNLOAD_URL = '/assets/ai-prompts-pack.pdf';   // upload nanti
+
+const WEBINAR_DATE_LABEL = '5 Juni 2026';
+const WEBINAR_TIME_LABEL = '19:00 WIB';
+
+/* ─────────────────────────────────────────────────────────────────
+   Countdown hook
+   ───────────────────────────────────────────────────────────────── */
+function useCountdown(target: Date) {
+    const [now, setNow] = useState<number>(() => Date.now());
+    useEffect(() => {
+        const id = setInterval(() => setNow(Date.now()), 1000);
+        return () => clearInterval(id);
+    }, []);
+    const diff = Math.max(0, target.getTime() - now);
+    const days = Math.floor(diff / 86_400_000);
+    const hours = Math.floor((diff % 86_400_000) / 3_600_000);
+    const mins = Math.floor((diff % 3_600_000) / 60_000);
+    const secs = Math.floor((diff % 60_000) / 1_000);
+    return { days, hours, mins, secs, ended: diff === 0 };
+}
+
+const pad = (n: number) => n.toString().padStart(2, '0');
+
+/* ─────────────────────────────────────────────────────────────────
+   Scroll reveal hook (IntersectionObserver, runs once per element)
+   ───────────────────────────────────────────────────────────────── */
+function useReveal() {
+    useEffect(() => {
+        const els = document.querySelectorAll<HTMLElement>(`.${styles.reveal}`);
+        const io = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add(styles.revealIn);
+                        io.unobserve(e.target);
+                    }
+                });
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+        );
+        els.forEach((el) => io.observe(el));
+        return () => io.disconnect();
+    }, []);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Component
+   ───────────────────────────────────────────────────────────────── */
+export default function WebinarClient() {
+    const { days, hours, mins, secs, ended } = useCountdown(WEBINAR_DATE);
+    useReveal();
+
+    return (
+        <div className={styles.page}>
+            <StickyCountdown days={days} hours={hours} mins={mins} secs={secs} ended={ended} />
+            <Hero ended={ended} />
+            <BonusBanner />
+            <SocialProof />
+            <Personas />
+            <PainBridge />
+            <Agenda />
+            <Process />
+            <Takeaway />
+            <Urgency />
+            <Speaker />
+            <FinalClosing days={days} hours={hours} mins={mins} secs={secs} ended={ended} />
+            <MiniFooter />
+        </div>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   1. Sticky countdown bar
+   ───────────────────────────────────────────────────────────────── */
+function StickyCountdown({ days, hours, mins, secs, ended }: { days: number; hours: number; mins: number; secs: number; ended: boolean }) {
+    return (
+        <div className={styles.stickyBar}>
+            <span className={styles.stickyDot} aria-hidden />
+            <span>
+                {ended ? 'Webinar sedang berlangsung' : 'Webinar mulai dalam:'}{' '}
+                {!ended && (
+                    <span className={styles.stickyTime}>
+                        {days > 0 && `${days}h `}
+                        {pad(hours)}:{pad(mins)}:{pad(secs)}
+                    </span>
+                )}
+            </span>
+            <a href="#daftar" className={styles.stickyCta}>Daftar Gratis →</a>
+        </div>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   2. Hero + form
+   ───────────────────────────────────────────────────────────────── */
+function Hero({ ended }: { ended: boolean }) {
+    return (
+        <section className={styles.hero}>
+            <div className={styles.heroInner}>
+                <div className={styles.reveal}>
+                    <div className={styles.heroEyebrow}>Webinar Gratis · Live 60 Menit</div>
+                    <h1 className={styles.heroTitle}>
+                        Ngebuild app tanpa <em>ngetik tiap baris</em>.
+                    </h1>
+                    <p className={styles.heroSub}>
+                        Pakai aja Claude, Gemini, dan GPT buat nulis code yang langsung jalan. Dalam 60 menit kamu bakal liat <strong>workflow lengkap</strong> yang dipakai developer pro tiap hari — dan langsung bisa kamu praktekin malam itu juga.
+                    </p>
+                    <div className={styles.heroMeta}>
+                        <div className={styles.heroMetaItem}>
+                            <span className={styles.heroMetaKey}>Tanggal</span>
+                            <span className={styles.heroMetaVal}>{WEBINAR_DATE_LABEL}</span>
+                        </div>
+                        <div className={styles.heroMetaItem}>
+                            <span className={styles.heroMetaKey}>Waktu</span>
+                            <span className={styles.heroMetaVal}>{WEBINAR_TIME_LABEL}</span>
+                        </div>
+                        <div className={styles.heroMetaItem}>
+                            <span className={styles.heroMetaKey}>Format</span>
+                            <span className={styles.heroMetaVal}>Live di Zoom</span>
+                        </div>
+                        <div className={styles.heroMetaItem}>
+                            <span className={styles.heroMetaKey}>Bahasa</span>
+                            <span className={styles.heroMetaVal}>Indonesia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.reveal} id="daftar">
+                    <RegistrationForm />
+                </div>
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Registration form (with loading/error/success states)
+   ───────────────────────────────────────────────────────────────── */
+function RegistrationForm() {
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [done, setDone] = useState(false);
+
+    const submit = async (e: FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        if (!name.trim()) { setError('Nama lengkap wajib diisi.'); return; }
+        if (phone.replace(/\D/g, '').length < 8) { setError('Nomor WhatsApp gak valid (min 8 digit).'); return; }
+        setLoading(true);
+        try {
+            const res = await fetch('/api/leads/capture', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: name.trim(),
+                    phone: phone.trim(),
+                    email: email.trim() || undefined,
+                    scenario: 'Consultation',
+                    courseId: 'ai-vibe-coding',
+                    courseTitle: `Webinar: AI Vibe Coding (${WEBINAR_DATE_LABEL})`,
+                }),
+            });
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}));
+                throw new Error(data?.error || 'Gagal daftar. Coba lagi atau chat WA admin.');
+            }
+            setDone(true);
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Terjadi kesalahan.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (done) {
+        return (
+            <div className={styles.successCard}>
+                <h3>Mantap! Slot kamu diamankan ✓</h3>
+                <p>
+                    Link Zoom + reminder bakal dikirim ke WhatsApp kamu 1 jam sebelum webinar mulai. Sambil nunggu, langsung unduh bonus kamu di bawah ini.
+                </p>
+                <a className={styles.successDownload} href={BONUS_DOWNLOAD_URL} target="_blank" rel="noopener">
+                    📦 Unduh 30+ AI Prompts Pack
+                </a>
+                <div className={styles.successHint}>
+                    Belum dapet WA dari kami dalam 5 menit? Chat admin: <a href="https://wa.me/628211704707" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <form className={styles.formCard} onSubmit={submit} noValidate>
+            <span className={styles.formBadge}>100% Gratis</span>
+            <h2 className={styles.formTitle}>Amankan slot kamu</h2>
+            <p className={styles.formSub}>Bonus 30+ AI Prompts Pack langsung dikirim begitu kamu daftar.</p>
+
+            {error && <div className={styles.formError}>{error}</div>}
+
+            <input
+                className={styles.formField}
+                type="text"
+                placeholder="Nama lengkap"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                autoComplete="name"
+            />
+            <input
+                className={styles.formField}
+                type="tel"
+                placeholder="Nomor WhatsApp (cth: 08123456789)"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                autoComplete="tel"
+            />
+            <input
+                className={styles.formField}
+                type="email"
+                placeholder="Email (buat link Zoom)"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+            />
+
+            <button className={styles.formCta} type="submit" disabled={loading}>
+                {loading ? 'Mengamankan slot…' : 'Daftar Sekarang →'}
+            </button>
+
+            <div className={styles.formFoot}>
+                Cuma butuh 30 detik. Zero spam — datamu cuma buat kirim link Zoom & follow-up.
+            </div>
+        </form>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   3. Bonus banner
+   ───────────────────────────────────────────────────────────────── */
+function BonusBanner() {
+    return (
+        <section className={`${styles.bonusBanner} ${styles.reveal}`}>
+            <div className={styles.bonusInner}>
+                <div className={styles.bonusIcon}>🎁</div>
+                <div>
+                    <h3 className={styles.bonusTitle}>Bonus: 30+ AI Prompts Pack — Gratis Begitu Daftar</h3>
+                    <p className={styles.bonusDesc}>
+                        Koleksi prompt yang udah dites di Claude, Gemini, dan GPT — buat ngoding, debug, refactor, dan review code. Pakai aja, copy-paste, modifikasi.
+                    </p>
+                </div>
+                <span className={styles.bonusPill}>PDF · Instant</span>
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   4. Social proof bar
+   ───────────────────────────────────────────────────────────────── */
+function SocialProof() {
+    const avatars: { letter: string; bg: string }[] = [
+        { letter: 'R', bg: '#D42B2B' },
+        { letter: 'A', bg: '#0D0D0D' },
+        { letter: 'S', bg: '#A81E1E' },
+        { letter: 'F', bg: '#2a2a2a' },
+        { letter: 'M', bg: '#FF4040' },
+    ];
+    return (
+        <section className={`${styles.proofBar} ${styles.reveal}`}>
+            <div className={styles.proofInner}>
+                <div className={styles.avatarRow} aria-hidden>
+                    {avatars.map((a, i) => (
+                        <div key={i} className={styles.avatar} style={{ background: a.bg }}>{a.letter}</div>
+                    ))}
+                </div>
+                <div className={styles.proofText}>
+                    Udah <strong>247+ developer Indonesia</strong> ikut training AI Vibe Coding bareng GDI
+                </div>
+                <div className={styles.proofRating}>
+                    <span className={styles.proofStars}>★★★★★</span>
+                    <span>4.8/5 dari 247 alumni</span>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   5. Persona segmentation
+   ───────────────────────────────────────────────────────────────── */
+const personas = [
+    {
+        tag: 'Buat Developer',
+        title: 'Capek ngetik boilerplate yang itu-itu aja?',
+        points: [
+            'AI handle scaffolding & repetitive code',
+            'Autocomplete level senior dev di tiap file',
+            'Ship feature 3× lebih cepet dari kompetitor',
+            'Fokus ke arsitektur & logic, bukan syntax',
+        ],
+    },
+    {
+        tag: 'Buat Solo Founder',
+        title: 'Punya ide tapi gak punya tim?',
+        points: [
+            'Bangun MVP dalam hitungan jam, bukan minggu',
+            'Gak perlu hire CTO atau dev mahal',
+            'Validasi ide ke market secepat mungkin',
+            'Investor lebih percaya kalau prototype-nya udah jalan',
+        ],
+    },
+    {
+        tag: 'Buat Freelancer',
+        title: 'Mau ambil lebih banyak project tapi gak ada waktu?',
+        points: [
+            '2× kapasitas project dengan jam kerja sama',
+            'Charge premium karena delivery lebih cepet',
+            'Klien happy karena turnaround singkat',
+            'Margin per project naik tanpa naik harga',
+        ],
+    },
+    {
+        tag: 'Buat Career Switcher',
+        title: 'Mau pindah ke tech tapi takut hafal syntax?',
+        points: [
+            'AI urus syntax — kamu fokus problem solving',
+            'Portfolio jadi lebih cepet, gak perlu nunggu jago',
+            'Skill yang transferable ke bahasa & framework apa pun',
+            'Tetap bayar gaji dev — tanpa CS degree',
+        ],
+    },
+];
+
+function Personas() {
+    return (
+        <section className={styles.section}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>Cocok Buat Siapa</div>
+                <h2 className={styles.sectionTitle}>
+                    Webinar ini buat kamu yang <em>udah tau AI lagi ngubah game</em> — tapi belum tau cara naik kapalnya.
+                </h2>
+            </div>
+            <div className={styles.personaGrid}>
+                {personas.map((p, i) => (
+                    <div key={i} className={`${styles.personaCard} ${styles.reveal}`}>
+                        <div className={styles.personaTag}>{p.tag}</div>
+                        <h3 className={styles.personaTitle}>{p.title}</h3>
+                        <ul className={styles.personaList}>
+                            {p.points.map((pt, j) => <li key={j}>{pt}</li>)}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   6. Pain → bridge
+   ───────────────────────────────────────────────────────────────── */
+const painPoints = [
+    'Output AI sering ngaco — debug malah lebih lama daripada nulis sendiri',
+    'Boros budget API karena prompt panjang & gak efisien',
+    'Bingung kapan pakai Claude vs Gemini vs GPT',
+    'Code yang dihasilin keliatan jago, tapi gak production-ready',
+    'Sekali project gede, AI lupa konteks dan keputusan sebelumnya',
+];
+
+function PainBridge() {
+    return (
+        <section className={`${styles.section}`} style={{ paddingTop: 32 }}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>Kenapa Kebanyakan Orang Gagal</div>
+                <h2 className={styles.sectionTitle}>
+                    Kamu udah tau AI bisa nulis code. <em>Tapi pas dicoba sendiri…</em>
+                </h2>
+            </div>
+            <div className={styles.painList}>
+                {painPoints.map((p, i) => (
+                    <div key={i} className={`${styles.painItem} ${styles.reveal}`}>
+                        <span className={styles.painIcon}>✗</span>
+                        <span className={styles.painText}>{p}</span>
+                    </div>
+                ))}
+            </div>
+            <div className={`${styles.painBridge} ${styles.reveal}`}>
+                Yang kamu butuhin bukan tool AI baru. Tapi <em>workflow yang udah kebukti jalan</em> — dan itu yang bakal kamu dapet di 60 menit webinar ini.
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   7. Agenda — 60 menit timed
+   ───────────────────────────────────────────────────────────────── */
+const agenda = [
+    {
+        time: '19:00 – 19:10',
+        dur: '10 menit',
+        title: 'Apa itu AI Vibe Coding — kapan menang dari ngoding manual',
+        desc: 'Mindset shift: kamu konduktornya, AI orkestranya. Kapan pakai vibe coding, kapan tetep manual.',
+    },
+    {
+        time: '19:10 – 19:25',
+        dur: '15 menit',
+        title: 'Adu Claude vs Gemini vs GPT — pilih yang pas per use case',
+        desc: 'Konteks 200K vs 2M token. Harga API. Kekuatan & kelemahan tiap model dari pemakai harian.',
+    },
+    {
+        time: '19:25 – 19:45',
+        dur: '20 menit',
+        title: 'LIVE BUILD: Bikin tool dari nol pakai AI dalam 20 menit',
+        desc: 'Demo penuh — kamu liat tiap prompt, tiap iterasi, tiap bug yang muncul dan cara fix-nya.',
+    },
+    {
+        time: '19:45 – 19:55',
+        dur: '10 menit',
+        title: '5 prinsip prompting yang naekin output 10× sekali jadi',
+        desc: 'Template prompt siap pakai. Cara minta AI debug. Cara dapet code production-ready, bukan demo.',
+    },
+    {
+        time: '19:55 – 20:00',
+        dur: '5 menit',
+        title: 'Q&A + Bonus + Cara lanjut ke kursus lengkap',
+        desc: 'Tanya bebas. Info kursus penuh AI Vibe Coding + diskon khusus peserta webinar.',
+    },
+];
+
+function Agenda() {
+    return (
+        <section className={styles.section}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>Agenda · 60 Menit</div>
+                <h2 className={styles.sectionTitle}>
+                    Apa yang kamu pelajari, <em>menit per menit</em>.
+                </h2>
+                <p className={styles.sectionLede}>
+                    Bukan webinar generic yang isinya "AI is the future". Ini breakdown spesifik per segmen waktu, plus live demo beneran.
+                </p>
+            </div>
+            <div className={styles.agendaList}>
+                {agenda.map((a, i) => (
+                    <div key={i} className={`${styles.agendaRow} ${styles.reveal}`}>
+                        <div>
+                            <div className={styles.agendaTime}>{a.time}</div>
+                            <div className={styles.agendaTimeDuration}>{a.dur}</div>
+                        </div>
+                        <div>
+                            <h3 className={styles.agendaTitle}>{a.title}</h3>
+                            <p className={styles.agendaDesc}>{a.desc}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   8. Process visualization — 6-step loop
+   ───────────────────────────────────────────────────────────────── */
+const processSteps = [
+    { n: 'Step 01', name: 'Context.md', what: 'Tulis file konteks: goal, stack, batasan. Pondasi semua workflow.' },
+    { n: 'Step 02', name: 'Plan dengan AI', what: 'Claude generate struktur folder, modul, & todo.md.' },
+    { n: 'Step 03', name: 'Generate per modul', what: 'Cline + VS Code bikin code per file, bukan all-in-one.' },
+    { n: 'Step 04', name: 'Test otomatis', what: 'Gemini Flash (model murah) nulis unit test buat tiap modul.' },
+    { n: 'Step 05', name: 'Cross-review', what: 'Model kedua review code — tangkep bug sebelum kamu liat.' },
+    { n: 'Step 06', name: 'Refactor → Ship', what: 'Cleanup, commit, deploy. Loop balik ke step 1 buat fitur berikutnya.' },
+];
+
+function Process() {
+    return (
+        <section className={`${styles.sectionDark}`}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>The Loop</div>
+                <h2 className={styles.sectionTitle}>
+                    Workflow 6-langkah yang dipakai <em>Bayu tiap hari</em> di proyek production.
+                </h2>
+                <p className={styles.sectionLede}>
+                    Bukan teori. Ini loop yang bener-bener dipakai di proyek klien IT consulting — dan bakal kamu liat live di webinar.
+                </p>
+            </div>
+            <div className={styles.processGrid}>
+                {processSteps.map((s, i) => (
+                    <div key={i} className={`${styles.processStep} ${styles.reveal}`}>
+                        <div className={styles.processNum}>{s.n}</div>
+                        <h3 className={styles.processName}>{s.name}</h3>
+                        <p className={styles.processWhat}>{s.what}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   9. Takeaway summary
+   ───────────────────────────────────────────────────────────────── */
+const takeaways = [
+    { i: '01', t: 'Loop vibe-coding lengkap yang bisa kamu praktekin malam itu juga' },
+    { i: '02', t: 'Cheat sheet 5 template prompt yang ngasih output 10× lebih bagus' },
+    { i: '03', t: 'Comparison matrix Claude vs Gemini vs GPT per use case' },
+    { i: '04', t: 'Bonus: 30+ AI Prompts Pack siap pakai (PDF, instant download)' },
+    { i: '05', t: 'Akses replay 24 jam — bisa ditonton ulang sambil ngoding' },
+];
+
+function Takeaway() {
+    return (
+        <section className={styles.section}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>Yang Kamu Bawa Pulang</div>
+                <h2 className={styles.sectionTitle}>
+                    5 hal yang langsung kamu <em>dapet & pake</em> setelah webinar.
+                </h2>
+            </div>
+            <div className={styles.takeawayGrid}>
+                {takeaways.map((t, i) => (
+                    <div key={i} className={`${styles.takeawayCard} ${styles.reveal}`}>
+                        <div className={styles.takeawayIcon}>{t.i}</div>
+                        <p className={styles.takeawayText}>{t.t}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   10. Urgency / market narrative
+   ───────────────────────────────────────────────────────────────── */
+function Urgency() {
+    return (
+        <section className={styles.sectionDark}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>Kenapa Sekarang</div>
+                <h2 className={styles.sectionTitle}>
+                    Skill paling cepet naik value-nya di 2026. <em>Yang skip, ketinggalan.</em>
+                </h2>
+                <p className={styles.sectionLede}>
+                    AI Vibe Coding bukan tren sebulan. Tiap minggu yang kamu skip, kompetitor kamu udah ship 3 feature lebih dari kamu. Gap-nya melebar tiap hari.
+                </p>
+            </div>
+            <div className={`${styles.urgencyStat} ${styles.reveal}`}>
+                <div>
+                    <div className={styles.urgencyStatNum}>+40%</div>
+                    <div className={styles.urgencyStatLabel}>Gaji rata-rata developer yang pakai AI (Stack Overflow Dev Survey)</div>
+                </div>
+                <div>
+                    <div className={styles.urgencyStatNum}>3×</div>
+                    <div className={styles.urgencyStatLabel}>Kecepatan delivery developer yang udah punya workflow AI</div>
+                </div>
+                <div>
+                    <div className={styles.urgencyStatNum}>92%</div>
+                    <div className={styles.urgencyStatLabel}>Tim engineering yang minimal 1 anggotanya pakai AI assistant tiap hari</div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   11. Speaker — Bayu Sedana
+   ───────────────────────────────────────────────────────────────── */
+function Speaker() {
+    return (
+        <section className={styles.section}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>Pembicara</div>
+                <h2 className={styles.sectionTitle}>
+                    Belajar dari yang <em>tiap hari pakai AI</em> di kerjaan real.
+                </h2>
+            </div>
+            <div className={`${styles.speakerCard} ${styles.reveal}`}>
+                <div className={styles.speakerPhoto} role="img" aria-label="Foto Bayu Sedana" />
+                <div className={styles.speakerInfo}>
+                    <div className={styles.speakerRoleTag}>Senior Software Engineer · AI Coding Specialist</div>
+                    <h3 className={styles.speakerName}>Bayu Sedana</h3>
+                    <p className={styles.speakerBio}>
+                        6 tahun di software engineering, data analysis & QA. Pemakai harian Claude, Gemini, dan Cursor untuk kerjaan production di proyek klien IT consulting. Instruktur tersertifikasi di 2 institusi Indonesia.
+                    </p>
+                    <div className={styles.speakerCreds}>
+                        <span className={styles.speakerCred}>6 thn · Engineering</span>
+                        <span className={styles.speakerCred}>AI Coding Daily</span>
+                        <span className={styles.speakerCred}>23+ GitHub Projects</span>
+                        <span className={styles.speakerCred}>Jakarta · Bandung</span>
+                    </div>
+                    <p className={styles.speakerQuote}>
+                        Pakai AI buat ngoding itu bukan curang — yang penting kamu ngerti hasil yang dia kasih, dan bisa ngarahin outputnya.
+                    </p>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   12 + 13. Closing hero + countdown + final CTA
+   ───────────────────────────────────────────────────────────────── */
+function FinalClosing({ days, hours, mins, secs, ended }: { days: number; hours: number; mins: number; secs: number; ended: boolean }) {
+    return (
+        <section className={styles.finalCta}>
+            <div className={styles.reveal}>
+                <div className={styles.eyebrow}>Slot Terbatas</div>
+                <h2 className={styles.sectionTitle}>
+                    Webinar mulai dalam:
+                </h2>
+                {!ended ? (
+                    <div className={styles.countdownBig}>
+                        <div className={styles.countdownBlock}>
+                            <div className={styles.countdownNum}>{pad(days)}</div>
+                            <div className={styles.countdownLabel}>Hari</div>
+                        </div>
+                        <div className={styles.countdownBlock}>
+                            <div className={styles.countdownNum}>{pad(hours)}</div>
+                            <div className={styles.countdownLabel}>Jam</div>
+                        </div>
+                        <div className={styles.countdownBlock}>
+                            <div className={styles.countdownNum}>{pad(mins)}</div>
+                            <div className={styles.countdownLabel}>Menit</div>
+                        </div>
+                        <div className={styles.countdownBlock}>
+                            <div className={styles.countdownNum}>{pad(secs)}</div>
+                            <div className={styles.countdownLabel}>Detik</div>
+                        </div>
+                    </div>
+                ) : (
+                    <p style={{ fontSize: 18, color: '#cfcfcf', margin: '32px 0' }}>
+                        Webinar lagi berlangsung. Daftar sekarang buat dapet akses replay 24 jam.
+                    </p>
+                )}
+                <p className={styles.sectionLede} style={{ textAlign: 'center', margin: '0 auto 0' }}>
+                    100% gratis. Plus 30+ AI Prompts Pack langsung dikirim begitu kamu daftar.
+                </p>
+            </div>
+            <div className={`${styles.finalCtaForm} ${styles.reveal}`}>
+                <RegistrationForm />
+            </div>
+        </section>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   14. Mini footer
+   ───────────────────────────────────────────────────────────────── */
+function MiniFooter() {
+    return (
+        <footer className={styles.miniFooter}>
+            <div>© {new Date().getFullYear()} GDI FutureWorks · Global Digital Informasi</div>
+            <div style={{ marginTop: 8 }}>
+                <a href="/privacy">Privasi</a>·
+                <a href="/terms">Ketentuan</a>·
+                <a href="https://wa.me/628211704707" target="_blank" rel="noopener">WhatsApp</a>·
+                <a href="/courses/ai-vibe-coding">Kursus Lengkap</a>
+            </div>
+        </footer>
+    );
+}

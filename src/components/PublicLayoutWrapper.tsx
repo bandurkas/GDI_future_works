@@ -16,7 +16,10 @@ export default function PublicLayoutWrapper({ children }: { children: React.Reac
   const isCrmSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('crm.');
   const isAdminRoute = pathname.startsWith('/admin') || isCrmSubdomain;
 
-  if (isAdminRoute) {
+  // Standalone landing pages: strip nav/footer to maximize conversion
+  const isStandaloneLanding = pathname.startsWith('/webinar');
+
+  if (isAdminRoute || isStandaloneLanding) {
     return <>{children}</>;
   }
 
