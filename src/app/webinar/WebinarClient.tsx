@@ -95,7 +95,7 @@ function StickyCountdown({ days, hours, mins, secs, ended }: { days: number; hou
                     </span>
                 )}
             </span>
-            <a href="#daftar" className={styles.stickyCta}>Daftar Gratis →</a>
+            <a href="#daftar" className={styles.stickyCta}>Amankan Slot · Rp 400rb →</a>
         </div>
     );
 }
@@ -108,7 +108,7 @@ function Hero({ ended }: { ended: boolean }) {
         <section className={styles.hero}>
             <div className={styles.heroInner}>
                 <div className={styles.reveal}>
-                    <div className={styles.heroEyebrow}>Webinar Gratis · Live 60 Menit</div>
+                    <div className={styles.heroEyebrow}>Webinar Premium · Live 60 Menit · Slot Terbatas</div>
                     <h1 className={styles.heroTitle}>
                         Ngebuild app tanpa <em>ngetik tiap baris</em>.
                     </h1>
@@ -131,6 +131,10 @@ function Hero({ ended }: { ended: boolean }) {
                         <div className={styles.heroMetaItem}>
                             <span className={styles.heroMetaKey}>Bahasa</span>
                             <span className={styles.heroMetaVal}>Indonesia</span>
+                        </div>
+                        <div className={styles.heroMetaItem}>
+                            <span className={styles.heroMetaKey}>Investasi</span>
+                            <span className={styles.heroMetaVal} style={{ color: '#D42B2B' }}>Rp 400.000</span>
                         </div>
                     </div>
                 </div>
@@ -188,15 +192,18 @@ function RegistrationForm() {
     if (done) {
         return (
             <div className={styles.successCard}>
-                <h3>Mantap! Slot kamu diamankan ✓</h3>
+                <h3>Mantap! Tinggal selangkah lagi ✓</h3>
                 <p>
-                    Link Zoom + reminder bakal dikirim ke WhatsApp kamu 1 jam sebelum webinar mulai. Sambil nunggu, langsung unduh bonus kamu di bawah ini.
+                    Admin kami bakal kontak kamu via WhatsApp dalam <strong>5 menit</strong> dengan link pembayaran <strong>Rp 400.000</strong> (QRIS atau transfer bank). Slot baru terkunci setelah pembayaran masuk.
+                </p>
+                <p style={{ marginBottom: 18 }}>
+                    Sambil nunggu, langsung unduh bonus kamu di bawah ini sebagai goodwill 👇
                 </p>
                 <a className={styles.successDownload} href={BONUS_DOWNLOAD_URL} target="_blank" rel="noopener">
                     📦 Unduh 30+ AI Prompts Pack
                 </a>
                 <div className={styles.successHint}>
-                    Belum dapet WA dari kami dalam 5 menit? Chat admin: <a href="https://wa.me/628211704707" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
+                    Belum dapet WA dari kami dalam 5 menit? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20link%20pembayaran" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
                 </div>
             </div>
         );
@@ -204,9 +211,9 @@ function RegistrationForm() {
 
     return (
         <form className={styles.formCard} onSubmit={submit} noValidate>
-            <span className={styles.formBadge}>100% Gratis</span>
+            <span className={styles.formBadge}>Rp 400.000 · Akses Live + Replay</span>
             <h2 className={styles.formTitle}>Amankan slot kamu</h2>
-            <p className={styles.formSub}>Bonus 30+ AI Prompts Pack langsung dikirim begitu kamu daftar.</p>
+            <p className={styles.formSub}>Sudah termasuk bonus 30+ AI Prompts Pack + akses replay 24 jam.</p>
 
             {error && <div className={styles.formError}>{error}</div>}
 
@@ -238,11 +245,11 @@ function RegistrationForm() {
             />
 
             <button className={styles.formCta} type="submit" disabled={loading}>
-                {loading ? 'Mengamankan slot…' : 'Daftar Sekarang →'}
+                {loading ? 'Mengamankan slot…' : 'Amankan Slot · Rp 400rb →'}
             </button>
 
             <div className={styles.formFoot}>
-                Cuma butuh 30 detik. Zero spam — datamu cuma buat kirim link Zoom & follow-up.
+                Setelah daftar, admin kirim link pembayaran ke WhatsApp kamu dalam 5 menit. Bayar via QRIS atau transfer bank. Slot baru aman setelah pembayaran masuk.
             </div>
         </form>
     );
@@ -257,9 +264,9 @@ function BonusBanner() {
             <div className={styles.bonusInner}>
                 <div className={styles.bonusIcon}>🎁</div>
                 <div>
-                    <h3 className={styles.bonusTitle}>Bonus: 30+ AI Prompts Pack — Gratis Begitu Daftar</h3>
+                    <h3 className={styles.bonusTitle}>Bonus: 30+ AI Prompts Pack — Termasuk di harga Rp 400rb</h3>
                     <p className={styles.bonusDesc}>
-                        Koleksi prompt yang udah dites di Claude, Gemini, dan GPT — buat ngoding, debug, refactor, dan review code. Pakai aja, copy-paste, modifikasi.
+                        Koleksi prompt yang udah dites di Claude, Gemini, dan GPT — buat ngoding, debug, refactor, dan review code. Pakai aja, copy-paste, modifikasi. Senilai Rp 250rb, gratis buat semua peserta webinar.
                     </p>
                 </div>
                 <span className={styles.bonusPill}>PDF · Instant</span>
@@ -643,7 +650,7 @@ function FinalClosing({ days, hours, mins, secs, ended }: { days: number; hours:
                     </p>
                 )}
                 <p className={styles.sectionLede} style={{ textAlign: 'center', margin: '0 auto 0' }}>
-                    100% gratis. Plus 30+ AI Prompts Pack langsung dikirim begitu kamu daftar.
+                    Investasi <strong style={{ color: '#FF4040' }}>Rp 400.000</strong> · Akses live + replay 24 jam + bonus 30+ AI Prompts Pack. Slot terbatas.
                 </p>
             </div>
             <div className={`${styles.finalCtaForm} ${styles.reveal}`}>
