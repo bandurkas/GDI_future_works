@@ -110,10 +110,10 @@ function Hero({ ended }: { ended: boolean }) {
                 <div className={styles.reveal}>
                     <div className={styles.heroEyebrow}>Webinar Premium · Live 60 Menit · Slot Terbatas</div>
                     <h1 className={styles.heroTitle}>
-                        Ngebuild app tanpa <em>ngetik tiap baris</em>.
+                        Master <em>AI-Assisted</em> Coding Workflow
                     </h1>
                     <p className={styles.heroSub}>
-                        Pakai aja Claude, Gemini, dan GPT buat nulis code yang langsung jalan. Dalam 60 menit kamu bakal liat <strong>workflow lengkap</strong> yang dipakai developer pro tiap hari — dan langsung bisa kamu praktekin malam itu juga.
+                        Pelajari cara developer modern memakai Claude, Gemini, Cursor, dan GPT untuk planning, coding, debugging, review, dan shipping aplikasi secara <strong>end-to-end</strong>.
                     </p>
                     <div className={styles.heroMeta}>
                         <div className={styles.heroMetaItem}>
