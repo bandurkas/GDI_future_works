@@ -95,7 +95,7 @@ function StickyCountdown({ days, hours, mins, secs, ended }: { days: number; hou
                     </span>
                 )}
             </span>
-            <a href="#daftar" className={styles.stickyCta}>Amankan Slot · Rp 400rb →</a>
+            <a href="#daftar" className={styles.stickyCta}>Amankan Slot Gratis →</a>
         </div>
     );
 }
@@ -134,7 +134,10 @@ function Hero({ ended }: { ended: boolean }) {
                         </div>
                         <div className={styles.heroMetaItem}>
                             <span className={styles.heroMetaKey}>Investasi</span>
-                            <span className={styles.heroMetaVal} style={{ color: '#D42B2B' }}>Rp 400.000</span>
+                            <span className={styles.heroMetaVal} style={{ color: '#D42B2B' }}>
+                                <span style={{ textDecoration: 'line-through', opacity: 0.5, fontWeight: 600, marginRight: 8 }}>Rp 400.000</span>
+                                <span style={{ fontWeight: 800 }}>GRATIS</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -194,7 +197,7 @@ function RegistrationForm() {
             <div className={styles.successCard}>
                 <h3>Mantap! Tinggal selangkah lagi ✓</h3>
                 <p>
-                    Admin kami bakal kontak kamu via WhatsApp dalam <strong>5 menit</strong> dengan link pembayaran <strong>Rp 400.000</strong> (QRIS atau transfer bank). Slot baru terkunci setelah pembayaran masuk.
+                    Admin kami bakal kontak kamu via WhatsApp dalam <strong>5 menit</strong> buat konfirmasi slot + kirim link Zoom dan reminder H-1. Slot kamu udah terkunci ✓
                 </p>
                 <p style={{ marginBottom: 18 }}>
                     Sambil nunggu, langsung unduh bonus kamu di bawah ini sebagai goodwill 👇
@@ -203,7 +206,7 @@ function RegistrationForm() {
                     📦 Unduh 30+ AI Prompts Pack
                 </a>
                 <div className={styles.successHint}>
-                    Belum dapet WA dari kami dalam 5 menit? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20link%20pembayaran" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
+                    Belum dapet WA dari kami dalam 5 menit? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20konfirmasi%20slot" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
                 </div>
             </div>
         );
@@ -211,7 +214,10 @@ function RegistrationForm() {
 
     return (
         <form className={styles.formCard} onSubmit={submit} noValidate>
-            <span className={styles.formBadge}>Rp 400.000 · Akses Live + Replay</span>
+            <span className={styles.formBadge}>
+                <span style={{ textDecoration: 'line-through', opacity: 0.55, fontWeight: 600, marginRight: 8 }}>Rp 400.000</span>
+                GRATIS · Akses Live + Replay
+            </span>
             <h2 className={styles.formTitle}>Amankan slot kamu</h2>
             <p className={styles.formSub}>Sudah termasuk bonus 30+ AI Prompts Pack + akses replay 24 jam.</p>
 
@@ -245,11 +251,11 @@ function RegistrationForm() {
             />
 
             <button className={styles.formCta} type="submit" disabled={loading}>
-                {loading ? 'Mengamankan slot…' : 'Amankan Slot · Rp 400rb →'}
+                {loading ? 'Mengamankan slot…' : 'Amankan Slot Gratis →'}
             </button>
 
             <div className={styles.formFoot}>
-                Setelah daftar, admin kirim link pembayaran ke WhatsApp kamu dalam 5 menit. Bayar via QRIS atau transfer bank. Slot baru aman setelah pembayaran masuk.
+                Setelah daftar, admin kirim konfirmasi + link Zoom ke WhatsApp kamu dalam 5 menit. Sebelumnya webinar ini Rp 400.000 — sekarang gratis, slot terbatas.
             </div>
         </form>
     );
@@ -264,9 +270,9 @@ function BonusBanner() {
             <div className={styles.bonusInner}>
                 <div className={styles.bonusIcon}>🎁</div>
                 <div>
-                    <h3 className={styles.bonusTitle}>Bonus: 30+ AI Prompts Pack — Termasuk di harga Rp 400rb</h3>
+                    <h3 className={styles.bonusTitle}>Bonus: 30+ AI Prompts Pack — Termasuk gratis buat semua peserta</h3>
                     <p className={styles.bonusDesc}>
-                        Koleksi prompt yang udah dites di Claude, Gemini, dan GPT — buat ngoding, debug, refactor, dan review code. Pakai aja, copy-paste, modifikasi. Senilai Rp 250rb, gratis buat semua peserta webinar.
+                        Koleksi prompt yang udah dites di Claude, Gemini, dan GPT — buat ngoding, debug, refactor, dan review code. Pakai aja, copy-paste, modifikasi. Senilai Rp 250rb, kamu dapet gratis.
                     </p>
                 </div>
                 <span className={styles.bonusPill}>PDF · Instant</span>
@@ -650,7 +656,7 @@ function FinalClosing({ days, hours, mins, secs, ended }: { days: number; hours:
                     </p>
                 )}
                 <p className={styles.sectionLede} style={{ textAlign: 'center', margin: '0 auto 0' }}>
-                    Investasi <strong style={{ color: '#FF4040' }}>Rp 400.000</strong> · Akses live + replay 24 jam + bonus 30+ AI Prompts Pack. Slot terbatas.
+                    Sebelumnya <span style={{ textDecoration: 'line-through', opacity: 0.55 }}>Rp 400.000</span> — sekarang <strong style={{ color: '#FF4040' }}>GRATIS</strong>. Akses live + replay 24 jam + bonus 30+ AI Prompts Pack. Slot terbatas.
                 </p>
             </div>
             <div className={`${styles.finalCtaForm} ${styles.reveal}`}>
