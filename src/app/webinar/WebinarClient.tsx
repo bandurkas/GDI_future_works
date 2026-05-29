@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, FormEvent } from 'react';
 import styles from './webinar.module.css';
+import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 
 /* ─────────────────────────────────────────────────────────────────
    EDIT THESE TWO CONSTANTS TO RESCHEDULE THE WEBINAR
@@ -167,6 +168,14 @@ function RegistrationForm() {
         if (phone.replace(/\D/g, '').length < 8) { setError('Nomor WhatsApp gak valid (min 8 digit).'); return; }
         setLoading(true);
         try {
+            const [gaClientId, fbClientId, fbBrowserId] = await Promise.all([
+                getGAClientId(),
+                Promise.resolve(getFbc()),
+                Promise.resolve(getFbp()),
+            ]);
+
+            const urlParams = new URLSearchParams(window.location.search);
+
             const res = await fetch('/api/leads/capture', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -177,12 +186,23 @@ function RegistrationForm() {
                     scenario: 'Consultation',
                     courseId: 'ai-vibe-coding',
                     courseTitle: `Webinar: AI Vibe Coding (${WEBINAR_DATE_LABEL})`,
+                    gaClientId,
+                    fbClientId,
+                    fbBrowserId,
+                    utmSource: urlParams.get('utm_source'),
+                    utmMedium: urlParams.get('utm_medium'),
+                    utmCampaign: urlParams.get('utm_campaign'),
                 }),
             });
             if (!res.ok) {
                 const data = await res.json().catch(() => ({}));
                 throw new Error(data?.error || 'Gagal daftar. Coba lagi atau chat WA admin.');
             }
+
+            // Fire browser-side Meta Pixel 'Lead' + GA4 'generate_lead'.
+            // Server-side CAPI 'Lead' fires from /api/leads/capture; fbc/fbp passed above let Meta dedup.
+            trackConversion('webinar_register', `AI Vibe Coding Webinar (${WEBINAR_DATE_LABEL})`);
+
             setDone(true);
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Terjadi kesalahan.');
