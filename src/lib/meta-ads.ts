@@ -1,6 +1,16 @@
 import { prisma } from './prisma';
+import { createHash } from 'crypto';
 
 const META_API_VERSION = 'v25.0';
+
+const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
+
+// Normalize Indonesian phone to E.164 digits (no +): "08123..." → "628123...", "+628123..." → "628123..."
+const normalizePhoneID = (raw: string) => {
+    const digits = raw.replace(/\D/g, '');
+    if (digits.startsWith('0')) return '62' + digits.slice(1);
+    return digits;
+};
 const META_ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
 const AD_ACCOUNT_ID = process.env.META_AD_ACCOUNT_ID;
 
@@ -117,11 +127,12 @@ export async function sendMetaConversionEvent({
             action_source: 'website',
             event_source_url: sourceUrl || 'https://gdifuture.works',
             user_data: {
-                em: userData.email ? [userData.email.toLowerCase().trim()] : undefined,
-                ph: userData.phone ? [userData.phone.replace(/\D/g, '')] : undefined,
+                // Meta requires SHA256-hashed PII for em/ph/external_id; fbc/fbp/ip/UA stay raw.
+                em: userData.email ? [sha256(userData.email.toLowerCase().trim())] : undefined,
+                ph: userData.phone ? [sha256(normalizePhoneID(userData.phone))] : undefined,
                 fbc: userData.fbc,
                 fbp: userData.fbp,
-                external_id: userData.externalId,
+                external_id: userData.externalId ? sha256(userData.externalId) : undefined,
                 client_ip_address: userData.clientIpAddress,
                 client_user_agent: userData.clientUserAgent
             },
