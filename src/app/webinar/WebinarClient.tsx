@@ -7,7 +7,6 @@ import styles from './webinar.module.css';
    EDIT THESE TWO CONSTANTS TO RESCHEDULE THE WEBINAR
    ───────────────────────────────────────────────────────────────── */
 const WEBINAR_DATE = new Date('2026-06-05T19:00:00+07:00'); // 5 Juni 2026, 19:00 WIB
-const BONUS_DOWNLOAD_URL = '/assets/ai-prompts-pack.pdf';   // upload nanti
 
 const WEBINAR_DATE_LABEL = '5 Juni 2026';
 const WEBINAR_TIME_LABEL = '19:00 WIB';
@@ -195,18 +194,15 @@ function RegistrationForm() {
     if (done) {
         return (
             <div className={styles.successCard}>
-                <h3>Mantap! Tinggal selangkah lagi ✓</h3>
+                <h3>Terima kasih sudah daftar ✓</h3>
                 <p>
-                    Admin kami bakal kontak kamu via WhatsApp dalam <strong>5 menit</strong> buat konfirmasi slot + kirim link Zoom dan reminder H-1. Slot kamu udah terkunci ✓
+                    Admin kami akan kontak kamu via WhatsApp dalam <strong>5 menit</strong> untuk <strong>konfirmasi pendaftaran</strong> + kirim link Zoom dan bonus 30+ AI Prompts Pack.
                 </p>
-                <p style={{ marginBottom: 18 }}>
-                    Sambil nunggu, langsung unduh bonus kamu di bawah ini sebagai goodwill 👇
+                <p style={{ marginBottom: 0 }}>
+                    Slot kamu sudah terkunci. Sampai jumpa di webinar! 🎉
                 </p>
-                <a className={styles.successDownload} href={BONUS_DOWNLOAD_URL} target="_blank" rel="noopener">
-                    📦 Unduh 30+ AI Prompts Pack
-                </a>
                 <div className={styles.successHint}>
-                    Belum dapet WA dari kami dalam 5 menit? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20konfirmasi%20slot" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
+                    Belum dapet WA dari kami dalam 5 menit? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20konfirmasi%20pendaftaran" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
                 </div>
             </div>
         );
