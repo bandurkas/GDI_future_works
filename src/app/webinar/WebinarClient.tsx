@@ -108,7 +108,7 @@ function HeroTitleMedia() {
             {reduced ? (
                 <img
                     className={styles.heroVideo}
-                    src="/webinar/webinar-title-poster.jpg"
+                    src="/webinar/webinar-title-poster.jpg?v=2"
                     alt="Master AI-Assisted Coding Workflow"
                 />
             ) : (
@@ -119,10 +119,10 @@ function HeroTitleMedia() {
                     muted
                     playsInline
                     preload="auto"
-                    poster="/webinar/webinar-title-poster.jpg"
+                    poster="/webinar/webinar-title-poster.jpg?v=2"
                     aria-hidden="true"
                 >
-                    <source src="/webinar/webinar-title-hero.mp4" type="video/mp4" />
+                    <source src="/webinar/webinar-title-hero.mp4?v=2" type="video/mp4" />
                 </video>
             )}
         </div>
