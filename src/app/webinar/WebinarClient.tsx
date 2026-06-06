@@ -53,6 +53,55 @@ function usePrefersReducedMotion() {
    ───────────────────────────────────────────────────────────────── */
 function HeroTitleMedia() {
     const reduced = usePrefersReducedMotion();
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    // The HTML `autoplay` attribute is silently blocked by some browsers/devices
+    // (iOS low-power mode, data-saver, etc.). Explicitly drive playback from JS as
+    // soon as the element is visible, restarting from frame 0 so the full assemble
+    // animation always rolls on page load — no click required.
+    useEffect(() => {
+        const v = videoRef.current;
+        if (!v) return;
+        v.muted = true; // required for autoplay policies
+        let played = false;
+        const play = () => {
+            if (played) return;
+            played = true;
+            try {
+                v.currentTime = 0;
+            } catch {
+                /* ignore if metadata not ready yet */
+            }
+            const p = v.play();
+            if (p && typeof p.catch === 'function') {
+                p.catch(() => {
+                    // Autoplay rejected — retry once on the first user interaction.
+                    played = false;
+                    const retry = () => {
+                        play();
+                        window.removeEventListener('pointerdown', retry);
+                        window.removeEventListener('scroll', retry);
+                    };
+                    window.addEventListener('pointerdown', retry, { once: true });
+                    window.addEventListener('scroll', retry, { once: true });
+                });
+            }
+        };
+
+        // Play when the headline scrolls into view (it's above the fold, so this
+        // fires immediately after the page becomes visible).
+        const io = new IntersectionObserver(
+            (entries) => entries.forEach((e) => e.isIntersecting && play()),
+            { threshold: 0.25 },
+        );
+        io.observe(v);
+
+        if (v.readyState >= 2) play();
+        else v.addEventListener('loadeddata', play, { once: true });
+
+        return () => io.disconnect();
+    }, [reduced]);
+
     return (
         <div className={styles.heroVideoWrap}>
             <h1 className={styles.srOnly}>Master AI-Assisted Coding Workflow</h1>
@@ -64,6 +113,7 @@ function HeroTitleMedia() {
                 />
             ) : (
                 <video
+                    ref={videoRef}
                     className={styles.heroVideo}
                     autoPlay
                     muted
