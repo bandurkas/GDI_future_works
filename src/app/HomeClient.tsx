@@ -9,6 +9,7 @@ import CourseCardLazy from '@/components/CourseCardLazy';
 import CourseCarousel from '@/components/CourseCarousel';
 import PathCard from '@/components/PathCard';
 import HomeFAQ from '@/components/HomeFAQ';
+import WebinarAnnouncement from '@/components/WebinarAnnouncement';
 import { courses } from '@/data/courses';
 import { Sparkles, ArrowRight, Calendar } from 'lucide-react';
 import { trackConversion } from '@/lib/analytics';
@@ -260,6 +261,9 @@ export default function HomeClient() {
                     </div>
                 </div>
             </section>
+
+            {/* ── WEBINAR ANNOUNCEMENT ── */}
+            <WebinarAnnouncement />
 
             {/* ── PROOF BAR ── */}
             {/* 
