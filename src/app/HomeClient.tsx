@@ -1,5 +1,4 @@
 'use client';
-import { Metadata } from 'next';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
 import Link from 'next/link';
@@ -7,7 +6,6 @@ import Image from 'next/image';
 import { Translate } from '@/components/LanguageContext';
 import CourseCardLazy from '@/components/CourseCardLazy';
 import CourseCarousel from '@/components/CourseCarousel';
-import PathCard from '@/components/PathCard';
 import HomeFAQ from '@/components/HomeFAQ';
 import { courses } from '@/data/courses';
 import { Sparkles, ArrowRight, Calendar } from 'lucide-react';
@@ -22,80 +20,7 @@ const CourseCard = CourseCardLazy;
 
 const proofCompanies = ['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Gojek', 'Tokopedia', 'Grab'];
 
-const instructors = [
-    {
-        name: 'Arman Rahman',
-        role: 'Senior Data Analyst',
-        company: 'Google',
-        initials: 'AR',
-        gradient: 'linear-gradient(135deg, #667eea, #764ba2)',
-        tools: ['Python', 'BigQuery', 'Looker'],
-        course: 'Basic Data Analyst',
-    },
-    {
-        name: 'Dian Pratiwi',
-        role: 'Senior Software Engineer',
-        company: 'Tokopedia',
-        initials: 'DP',
-        gradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
-        tools: ['Python', 'Django', 'AWS'],
-        course: 'Python for beginners',
-    },
-    {
-        name: 'Siti Nurhaliza',
-        role: 'Creative Director & AI Lead',
-        company: 'Grab',
-        initials: 'SN',
-        gradient: 'linear-gradient(135deg, #f093fb, #f5576c)',
-        tools: ['Midjourney', 'Figma', 'DALL-E'],
-        course: 'Graphic Design with AI',
-    },
-    {
-        name: 'Rizky Firmansyah',
-        role: 'AI Engineering Lead',
-        company: 'Microsoft',
-        initials: 'RF',
-        gradient: 'linear-gradient(135deg, #4facfe, #00f2fe)',
-        tools: ['OpenAI', 'LangChain', 'Azure'],
-        course: 'LLM & AI Engineering',
-    },
-];
 
-const testimonials = [
-    {
-        name: 'Arif Setiyawan',
-        before: 'Office admin with no tech background',
-        after: 'Junior Data Analyst at a Jakarta startup',
-        quote: 'After the course I built my first dashboard and landed a data analyst role within 3 weeks.',
-        outcome: '🎯 Hired in 3 weeks',
-        course: 'Basic Data Analyst',
-        initials: 'AS',
-        gradient: 'linear-gradient(135deg, #667eea, #764ba2)',
-        flag: '🇮🇩',
-    },
-    {
-        name: 'Mei Rahayu',
-        before: 'Business analyst doing manual Excel reports',
-        after: 'Python Automation Specialist — same company, 40% pay rise',
-        quote: 'Python finally clicked. I automated half my monthly reporting. My boss noticed immediately.',
-        outcome: '💰 40% salary increase',
-        course: 'Python for beginners',
-        initials: 'MR',
-        gradient: 'linear-gradient(135deg, #11998e, #38ef7d)',
-        flag: '🇲🇾',
-    },
-    {
-        name: 'Budi Santoso',
-        before: 'Freelance designer, losing clients to cheaper competitors',
-        after: 'AI-augmented designer charging 3× his previous rate',
-        quote: 'By day 2 I was creating assets I used in actual client projects. Nothing comes close.',
-        outcome: '📈 Revenue tripled in 2 months',
-        course: 'Graphic Design with AI',
-        initials: 'BS',
-        gradient: 'linear-gradient(135deg, #f093fb, #f5576c)',
-        flag: '🇮🇩',
-    },
-];
 
 const getNextWeekend = (staggerWeeks = 0) => {
     let now = new Date();
@@ -141,13 +66,6 @@ const cohorts = [
     { course: 'LLM & AI Engineering', date: getNextWeekend(1), seatsLeft: 4, slug: 'llm-ai-engineering', color: '#4facfe' },
 ];
 
-const trustBadges = [
-    { icon: '🎥', label: 'Live Expert Sessions' },
-    { icon: '🛠️', label: 'Real Projects Included' },
-    { icon: '🎓', label: 'Certificate of Completion' },
-    { icon: '🚀', label: 'Job-Ready in 4 Weeks' },
-    { icon: '🌏', label: 'Southeast Asia & Remote' },
-];
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -190,7 +108,6 @@ export default function HomeClient() {
                             width={500}
                             height={500}
                             priority
-                            unoptimized
                             sizes="(max-width: 1200px) 280px, 380px"
                         />
                     </div>
@@ -228,7 +145,6 @@ export default function HomeClient() {
                                 width={360}
                                 height={360}
                                 priority
-                                unoptimized
                                 sizes="(max-width: 768px) 280px, 360px"
                             />
                         </div>
@@ -254,7 +170,6 @@ export default function HomeClient() {
                             width={500}
                             height={500}
                             priority
-                            unoptimized
                             sizes="(max-width: 1200px) 280px, 380px"
                         />
                     </div>
@@ -276,7 +191,7 @@ export default function HomeClient() {
             {/* ── COURSES ── */}
             <section className={styles.coursesSection} id="courses">
                 <div className="container">
-                    <div className={styles.sectionHeader}>
+                    <div className={`${styles.sectionHeader} reveal`}>
                         <p className={styles.sectionLabel}><Translate tKey="courses.sub" /></p>
                         <h2 className={styles.sectionH2}><Translate tKey="courses.h2" /></h2>
                     </div>
@@ -293,11 +208,11 @@ export default function HomeClient() {
             {/* ── COHORT URGENCY ── */}
             <section className={styles.cohortSection} id="cohort">
                 <div className="container">
-                    <div className={styles.sectionHeader} style={{ color: 'white' }}>
+                    <div className={`${styles.sectionHeader} reveal`} style={{ color: 'white' }}>
                         <p className={styles.cohortLabel}><Translate tKey="cohort.sub" /></p>
                         <h2 className={styles.cohortH2}><Translate tKey="cohort.h2" /></h2>
                     </div>
-                    <div className={styles.cohortGrid}>
+                    <div className={`${styles.cohortGrid} reveal-stagger`}>
                         {cohorts.map((c) => (
                             <div key={c.slug} className={styles.cohortCard}>
                                 <div className={styles.cohortTop}>
@@ -320,8 +235,8 @@ export default function HomeClient() {
             {/* ── WHY US ── */}
             <section className={styles.diffSection}>
                 <div className="container">
-                    <h2><Translate tKey="diff.h2" /></h2>
-                    <div className={styles.benefitsGrid}>
+                    <h2 className="reveal"><Translate tKey="diff.h2" /></h2>
+                    <div className={`${styles.benefitsGrid} reveal-stagger`}>
                         {[
                             {
                                 tk: 'benefit1.title', 
@@ -369,9 +284,9 @@ export default function HomeClient() {
             {/* ── 3-STEP ENROLLMENT ── */}
             <section className={styles.enrollStepsSection} id="enroll">
                 <div className="container">
-                    <h2><Translate tKey="enroll.h2" /></h2>
-                    <p className={styles.enrollSubtitle}><Translate tKey="enroll.sub" /></p>
-                    <div className={styles.stepsWrapper}>
+                    <h2 className="reveal"><Translate tKey="enroll.h2" /></h2>
+                    <p className={`${styles.enrollSubtitle} reveal`}><Translate tKey="enroll.sub" /></p>
+                    <div className={`${styles.stepsWrapper} reveal-stagger`}>
                         {[
                             { num: '1', h: 'step1.h3', p: 'step1.p' },
                             { num: '2', h: 'step2.h3', p: 'step2.p' },
@@ -392,7 +307,7 @@ export default function HomeClient() {
 
             {/* ── FINAL CTA ── */}
             <section className={styles.finalCta}>
-                <div className="container">
+                <div className="container reveal">
                     <h2>
                         <Translate tKey="cta.h2" /><br />
                         <Translate tKey="cta.h2b" />

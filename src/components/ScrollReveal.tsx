@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export default function ScrollReveal() {
     useEffect(() => {
-        const els = document.querySelectorAll('.reveal');
+        const els = document.querySelectorAll('.reveal, .reveal-stagger');
         if (!els.length) return;
 
         const observer = new IntersectionObserver(

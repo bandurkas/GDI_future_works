@@ -572,3 +572,56 @@ h6 {
     transform: scale(1);
   }
 }
+
+/* ===== SCROLL REVEAL =====
+   Wired to ScrollReveal.tsx (IntersectionObserver adds `.visible`).
+   Mounted globally via PublicLayoutWrapper. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered children — container animates its direct children in sequence */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.reveal-stagger.visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.07s; }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.14s; }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.21s; }
+.reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.28s; }
+.reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.35s; }
+
+/* ===== ACCESSIBILITY: RESPECT REDUCED MOTION =====
+   Disables marquee/float/glow/reveal for users who opt out. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

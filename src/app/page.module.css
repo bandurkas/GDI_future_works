@@ -663,29 +663,23 @@
     letter-spacing: 0.1em;
 }
 
-/* Marquee outer — clips the scrolling track, shows glow border */
+/* Marquee outer — clips the scrolling track with soft edge fade (premium logo-wall feel) */
 .marqueeOuter {
-    width: min(680px, 88vw);
+    width: min(720px, 90vw);
     overflow: hidden;
-    border-radius: 100px;
-    border: 1.5px solid rgba(212, 43, 43, 0.3);
-    padding: 12px 0;
-    animation: glowPulse 3s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 6px rgba(212, 43, 43, 0.15); }
-    50%       { box-shadow: 0 0 20px rgba(212, 43, 43, 0.45); }
+    padding: 8px 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
 }
 
 /* Scrolling track — width: max-content is key, no flex on parent */
 .marqueeTrack {
     display: flex;
     align-items: center;
-    gap: 48px;
+    gap: 56px;
     width: max-content;
-    animation: marqueeScroll 22s linear infinite;
-    padding: 0 24px;
+    animation: marqueeScroll 30s linear infinite;
+    padding: 0 28px;
 }
 
 .marqueeOuter:hover .marqueeTrack {
@@ -698,12 +692,20 @@
 }
 
 .miniLogoText {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #555;
-    letter-spacing: -0.01em;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.005em;
     white-space: nowrap;
     flex-shrink: 0;
+    opacity: 0.6;
+    filter: grayscale(1);
+    transition: opacity var(--transition-base), color var(--transition-base);
+}
+
+.marqueeOuter:hover .miniLogoText {
+    opacity: 0.95;
+    color: var(--text-primary);
 }
 
 /* keep old class name unused but harmless */
