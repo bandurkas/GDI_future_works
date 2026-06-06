@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import WebinarClient from './WebinarClient';
+import MixpanelScript from './MixpanelScript';
 
 export const metadata: Metadata = {
     title: 'Webinar AI Vibe Coding · GRATIS (sebelumnya Rp 400rb) · Master AI-Assisted Coding Workflow',
@@ -16,5 +17,10 @@ export const metadata: Metadata = {
 };
 
 export default function WebinarPage() {
-    return <WebinarClient />;
+    return (
+        <>
+            <MixpanelScript />
+            <WebinarClient />
+        </>
+    );
 }

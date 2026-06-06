@@ -7,10 +7,10 @@ import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics'
 /* ─────────────────────────────────────────────────────────────────
    EDIT THESE TWO CONSTANTS TO RESCHEDULE THE WEBINAR
    ───────────────────────────────────────────────────────────────── */
-const WEBINAR_DATE = new Date('2026-06-05T19:00:00+07:00'); // 5 Juni 2026, 19:00 WIB
+const WEBINAR_DATE = new Date('2026-06-13T10:00:00+07:00'); // 13 Juni 2026, 10:00 WIB
 
-const WEBINAR_DATE_LABEL = '5 Juni 2026';
-const WEBINAR_TIME_LABEL = '19:00 WIB';
+const WEBINAR_DATE_LABEL = '13 Juni 2026';
+const WEBINAR_TIME_LABEL = '10:00 WIB';
 
 /* ─────────────────────────────────────────────────────────────────
    Countdown hook
@@ -438,31 +438,31 @@ function PainBridge() {
    ───────────────────────────────────────────────────────────────── */
 const agenda = [
     {
-        time: '19:00 – 19:10',
+        time: '10:00 – 10:10',
         dur: '10 menit',
         title: 'Apa itu AI Vibe Coding — kapan menang dari ngoding manual',
         desc: 'Mindset shift: kamu konduktornya, AI orkestranya. Kapan pakai vibe coding, kapan tetep manual.',
     },
     {
-        time: '19:10 – 19:25',
+        time: '10:10 – 10:25',
         dur: '15 menit',
         title: 'Adu Claude vs Gemini vs GPT — pilih yang pas per use case',
         desc: 'Konteks 200K vs 2M token. Harga API. Kekuatan & kelemahan tiap model dari pemakai harian.',
     },
     {
-        time: '19:25 – 19:45',
+        time: '10:25 – 10:45',
         dur: '20 menit',
         title: 'LIVE BUILD: Bikin tool dari nol pakai AI dalam 20 menit',
         desc: 'Demo penuh — kamu liat tiap prompt, tiap iterasi, tiap bug yang muncul dan cara fix-nya.',
     },
     {
-        time: '19:45 – 19:55',
+        time: '10:45 – 10:55',
         dur: '10 menit',
         title: '5 prinsip prompting yang naekin output 10× sekali jadi',
         desc: 'Template prompt siap pakai. Cara minta AI debug. Cara dapet code production-ready, bukan demo.',
     },
     {
-        time: '19:55 – 20:00',
+        time: '10:55 – 11:00',
         dur: '5 menit',
         title: 'Q&A + Bonus + Cara lanjut ke kursus lengkap',
         desc: 'Tanya bebas. Info kursus penuh AI Vibe Coding + diskon khusus peserta webinar.',

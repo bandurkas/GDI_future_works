@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { auth } from '@/auth';
 import { notifyNewLead } from '@/lib/sales-notifications';
 import { normalizeUtm } from '@/lib/utm-normalize';
 import fs from 'fs';
@@ -27,24 +28,46 @@ export async function POST(req: NextRequest) {
         const sourceNorm = typeof srcInput === 'string' && srcInput.trim() ? srcInput.trim() : 'Schedule Form';
         const utm = normalizeUtm({ utmSource, utmMedium, utmCampaign, utmContent, utmTerm });
 
-        if (!phone) {
-            return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
-        }
-
         const country = req.headers.get('cf-ipcountry') || 'XX';
 
-        // Find existing or create new lead using raw SQL to ensure field compatibility
-        const cleanPhone = phone.replace(/\D/g, '');
-        const pseudoEmail = `lead_${cleanPhone}@noemail.gdi`;
+        // Resolve lead identity. Anonymous visitors are keyed by phone (pseudo-email).
+        // Authenticated visitors skip the contact form, so `phone` is empty — key them by
+        // their real account email (phone pulled from profile) so the booking still lands
+        // in CRM instead of being silently dropped by the old `if (!phone) return 400`.
+        let leadEmail: string;
+        let leadName: string;
+        let leadPhone: string = phone || '';
 
+        if (phone) {
+            const cleanPhone = phone.replace(/\D/g, '');
+            leadEmail = `lead_${cleanPhone}@noemail.gdi`;
+            leadName = phone;
+        } else {
+            const session = await auth();
+            const sessEmail = session?.user?.email?.toLowerCase();
+            if (!sessEmail) {
+                return NextResponse.json({ error: 'Phone is required' }, { status: 400 });
+            }
+            const user = await prisma.user.findUnique({
+                where: { email: sessEmail },
+                select: { email: true, name: true, phone: true },
+            });
+            leadEmail = (user?.email || sessEmail).toLowerCase();
+            leadPhone = user?.phone || '';
+            leadName = user?.name || leadPhone || leadEmail;
+        }
+
+        // Find existing or create new lead using raw SQL to ensure field compatibility
         let leadId: string;
-        const existingLeads: any[] = await prisma.$queryRaw`SELECT id FROM "Lead" WHERE email = ${pseudoEmail} LIMIT 1`;
+        const existingLeads: any[] = await prisma.$queryRaw`SELECT id FROM "Lead" WHERE email = ${leadEmail} LIMIT 1`;
 
         if (existingLeads.length > 0) {
             leadId = existingLeads[0].id;
             await prisma.$executeRaw`
                 UPDATE "Lead"
-                SET phone = ${phone}, name = ${phone}, status = 'NEW', "deletedAt" = NULL, source = ${sourceNorm}, country = ${country},
+                SET phone = COALESCE(NULLIF(${leadPhone}, ''), phone),
+                    name = COALESCE(NULLIF(${leadName}, ''), name),
+                    status = 'NEW', "deletedAt" = NULL, source = ${sourceNorm}, country = ${country},
                     "gaClientId" = ${gaClientId}, "fbClientId" = ${fbClientId}, "fbBrowserId" = ${fbBrowserId},
                     "utmSource" = ${utm.utmSource}, "utmMedium" = ${utm.utmMedium}, "utmCampaign" = ${utm.utmCampaign},
                     "waStatus" = COALESCE(${waStatusNorm}, "waStatus"),
@@ -55,7 +78,7 @@ export async function POST(req: NextRequest) {
             leadId = crypto.randomUUID();
             await prisma.$executeRaw`
                 INSERT INTO "Lead" (id, email, name, phone, country, type, status, source, "gaClientId", "fbClientId", "fbBrowserId", "utmSource", "utmMedium", "utmCampaign", "waStatus", "createdAt", "updatedAt")
-                VALUES (${leadId}, ${pseudoEmail}, ${phone}, ${phone}, ${country}, 'STUDENT', 'NEW', ${sourceNorm}, ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utm.utmSource}, ${utm.utmMedium}, ${utm.utmCampaign}, ${waStatusNorm}, NOW(), NOW())
+                VALUES (${leadId}, ${leadEmail}, ${leadName}, ${leadPhone}, ${country}, 'STUDENT', 'NEW', ${sourceNorm}, ${gaClientId}, ${fbClientId}, ${fbBrowserId}, ${utm.utmSource}, ${utm.utmMedium}, ${utm.utmCampaign}, ${waStatusNorm}, NOW(), NOW())
             `;
         }
 
@@ -78,7 +101,7 @@ export async function POST(req: NextRequest) {
         notifyNewLead({
             id: leadId,
             source: sourceNorm,
-            phone,
+            phone: leadPhone || phone,
             course: courseTitle || courseSlug,
         }).catch(err => console.error('[Schedule] Notification failed:', err));
 

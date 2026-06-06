@@ -14,9 +14,10 @@ import {
   Search, 
   Menu, 
   LogOut, 
-  Sun, 
-  Moon, 
-  ChevronRight
+  Sun,
+  Moon,
+  ChevronRight,
+  Award
 } from 'lucide-react';
 import { useManagement } from './ManagementContext';
 import LeadDialog from './components/LeadDialog';
@@ -49,6 +50,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
   const isTutors = pathname.startsWith('/crm/tutors') || pathname.startsWith('/tutors');
   const isPayments = pathname.startsWith('/crm/payments') || pathname.startsWith('/payments');
   const isAdsReports = pathname.startsWith('/crm/ads-reports') || pathname.startsWith('/ads-reports');
+  const isCommission = pathname.startsWith('/crm/commission') || pathname.startsWith('/commission');
   const { openAddLeadDialog } = useManagement();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
@@ -136,7 +138,7 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const pageLabel = isStudents ? 'Students' : isTutors ? 'Tutors' : isPayments ? 'Payments' : isAdsReports ? 'Ads Reports' : 'Dashboard';
+  const pageLabel = isStudents ? 'Students' : isTutors ? 'Tutors' : isPayments ? 'Payments' : isAdsReports ? 'Ads Reports' : isCommission ? 'Commission' : 'Dashboard';
     // ── CRM Navigation Helpers ──
     const formatLink = (path: string) => {
         if (!isCrmSubdomain) return path;
@@ -187,6 +189,10 @@ export default function CrmShell({ children }: { children: React.ReactNode }) {
 
                     <NavItem href={formatLink('/crm/ads-reports')} active={isAdsReports} collapsed={collapsed} icon={<BarChart3 size={18} />}>
                         Ads Reports
+                    </NavItem>
+
+                    <NavItem href={formatLink('/crm/commission')} active={isCommission} collapsed={collapsed} icon={<Award size={18} />}>
+                        Commission
                     </NavItem>
                 </nav>
 

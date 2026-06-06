@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendEmail } from '@/lib/email';
 import { sendMetaConversionEvent } from '@/lib/meta-ads';
+import { notifyNewLead } from '@/lib/sales-notifications';
 import { normalizeUtm } from '@/lib/utm-normalize';
 import fs from 'fs';
 import path from 'path';
@@ -36,25 +37,50 @@ export async function POST(req: NextRequest) {
         const country = req.headers.get('cf-ipcountry') || 'XX';
         const waStatusNorm = waStatus === 'VERIFIED' || waStatus === 'BYPASSED' ? waStatus : null;
 
-        // 1. Save to CRM
-        const lead = await prisma.lead.create({
-            data: {
-                name,
-                email: email || `lead_${phone.replace(/\D/g, '')}@noemail.gdi`,
-                phone,
-                type: 'STUDENT',
-                status: 'NEW',
-                source,
-                country,
-                waStatus: waStatusNorm,
-                utmSource: utm.utmSource,
-                utmMedium: utm.utmMedium,
-                utmCampaign: utm.utmCampaign,
-                gaClientId,
-                fbClientId,
-                fbBrowserId,
-            }
-        });
+        // 1. Save to CRM — dedupe by normalized phone within the same source so a repeated
+        //    form submit updates the existing lead instead of creating a duplicate row.
+        const cleanPhone = phone.replace(/\D/g, '');
+        const dup: Array<{ id: string }> = await prisma.$queryRaw`
+            SELECT id FROM "Lead"
+            WHERE source = ${source} AND "deletedAt" IS NULL
+              AND regexp_replace(phone, '[^0-9]', '', 'g') = ${cleanPhone}
+            ORDER BY "createdAt" ASC LIMIT 1`;
+        const isNewLead = dup.length === 0;
+
+        const lead = isNewLead
+            ? await prisma.lead.create({
+                data: {
+                    name,
+                    email: email || `lead_${cleanPhone}@noemail.gdi`,
+                    phone,
+                    type: 'STUDENT',
+                    status: 'NEW',
+                    source,
+                    country,
+                    waStatus: waStatusNorm,
+                    utmSource: utm.utmSource,
+                    utmMedium: utm.utmMedium,
+                    utmCampaign: utm.utmCampaign,
+                    gaClientId,
+                    fbClientId,
+                    fbBrowserId,
+                }
+            })
+            : await prisma.lead.update({
+                where: { id: dup[0].id },
+                data: {
+                    name,
+                    ...(email ? { email } : {}),
+                    country,
+                    ...(waStatusNorm ? { waStatus: waStatusNorm } : {}),
+                    utmSource: utm.utmSource,
+                    utmMedium: utm.utmMedium,
+                    utmCampaign: utm.utmCampaign,
+                    gaClientId,
+                    fbClientId,
+                    fbBrowserId,
+                }
+            });
 
         // 2. Track activity
         await prisma.leadActivity.create({
@@ -69,6 +95,20 @@ export async function POST(req: NextRequest) {
                 })
             }
         });
+
+        // 2.5 Notify sales team (WhatsApp group + Telegram + email) — only for genuinely new
+        //     leads, so a repeated submit doesn't fire a duplicate alert. Non-blocking.
+        if (isNewLead) {
+            notifyNewLead({
+                id: lead.id,
+                source,
+                name,
+                email: email || undefined,
+                phone,
+                course: courseTitle,
+                country,
+            }).catch(e => console.error('[Capture] notify failed', e));
+        }
 
         // 3. Automation: Send Email for Syllabus
         if (scenario === 'Syllabus' && email) {

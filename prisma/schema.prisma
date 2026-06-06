@@ -281,12 +281,17 @@ model Lead {
   fbBrowserId String?
   fbClientId  String?
   waStatus    String?        // 'VERIFIED' | 'BYPASSED' | null — WhatsApp validation result at capture
-  manager     String?        // Telegram username or name of assigned manager
+  manager     String?        // Telegram username or WhatsApp name of assigned manager (who claimed)
   tgMessageId String?        // Telegram message_id in group (for editing)
   tgUserId    String?        // Telegram user_id of assigned manager
+  waMessageId String?        // WhatsApp group message_id of the lead alert (to delete on claim)
+  claimedById String?        // WhatsApp phone of the manager who claimed (commission payee)
+  claimedAt   DateTime?      // when the lead was claimed
   activities  LeadActivity[]
 
   @@index([email, status])
+  @@index([manager])
+  @@index([claimedAt])
 }
 
 model LeadActivity {

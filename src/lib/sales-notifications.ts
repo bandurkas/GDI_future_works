@@ -96,7 +96,49 @@ export async function notifyNewLead(lead: LeadInfo) {
     }
   }
 
-  // 4. Make.com Webhook — disabled (set MAKE_WEBHOOK_ENABLED=true in .env to re-enable)
+  // 4. WhatsApp group via Whapi. Reply buttons aren't tappable in WhatsApp groups, so the lead
+  //    is claimed by REPLYING "take" to the alert (handled in /api/whatsapp/webhook, which records
+  //    who replied). The "Message Lead" URL button DOES work in groups and opens the lead's chat.
+  if (process.env.WHAPI_TOKEN && process.env.WHAPI_GROUP_ID && lead.id) {
+    try {
+      const apiUrl = process.env.WHAPI_API_URL || 'https://gate.whapi.cloud';
+      const mentionIds = (process.env.WHAPI_MENTION_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+
+      let text = buildWhatsAppText(lead);
+      text += '\n\n↩️ Reply *take* to this message to claim the lead.';
+      if (mentionIds.length) text += '\n' + mentionIds.map(id => `@${id}`).join(' ');
+
+      const payload: Record<string, unknown> = waLink
+        ? { to: process.env.WHAPI_GROUP_ID, type: 'button', body: { text }, action: { buttons: [{ type: 'url', id: 'msg', title: 'Message Lead', url: waLink }] } }
+        : { to: process.env.WHAPI_GROUP_ID, body: text };
+      if (mentionIds.length) payload.mentions = mentionIds;
+      const endpoint = waLink ? '/messages/interactive' : '/messages/text';
+
+      const res = await fetch(`${apiUrl}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.WHAPI_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        // Save the group message id so the webhook can match replies and delete it on claim
+        const json = await res.json().catch(() => null);
+        const msgId = json?.message?.id;
+        if (msgId) {
+          prisma.lead.update({ where: { id: lead.id }, data: { waMessageId: String(msgId) } })
+            .catch(e => console.error('[SalesNotify] waMessageId save failed:', e));
+        }
+      } else {
+        console.error('[SalesNotify] Whapi group failed:', res.status, await res.text());
+      }
+    } catch (err) {
+      console.error('[SalesNotify] Whapi group failed:', err);
+    }
+  }
+
+  // 5. Make.com Webhook — disabled (set MAKE_WEBHOOK_ENABLED=true in .env to re-enable)
   if (process.env.MAKE_WEBHOOK_ENABLED === 'true' && process.env.MAKE_WEBHOOK_URL) {
     try {
       await fetch(process.env.MAKE_WEBHOOK_URL, {
@@ -124,6 +166,16 @@ function buildTelegramText(lead: LeadInfo, crmLink: string): string {
   if (lead.email && !lead.email.includes('@noemail.gdi')) lines.push(`<b>Email:</b> ${esc(lead.email)}`);
   if (lead.course || lead.interest) lines.push(`<b>Interest:</b> ${esc(lead.course || lead.interest || '')}`);
   lines.push(`<b>Source:</b> ${esc(lead.source)}`, '', `<a href="${crmLink}">📊 Open CRM</a>`);
+  return lines.join('\n');
+}
+
+function buildWhatsAppText(lead: LeadInfo): string {
+  const lines = ['🔥 NEW LEAD'];
+  if (lead.name && lead.name !== lead.phone) lines.push(`Name: ${lead.name}`);
+  if (lead.phone) lines.push(`Phone: ${lead.phone}`);
+  if (lead.email && !lead.email.includes('@noemail.gdi')) lines.push(`Email: ${lead.email}`);
+  if (lead.course || lead.interest) lines.push(`Interest: ${lead.course || lead.interest}`);
+  lines.push(`Source: ${lead.source}`);
   return lines.join('\n');
 }
 
