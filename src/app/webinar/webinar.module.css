@@ -223,11 +223,11 @@
     width: 100%;
     aspect-ratio: 1920 / 720;
     height: auto;
-    border-radius: 18px;
-    background: #06060d; /* prevents a white flash before the video paints */
+    border-radius: 16px;
+    background: #FFF8F8; /* matches the hero bg — blends seamlessly, no card */
     object-fit: cover;
-    border: 1px solid rgba(124, 58, 237, 0.18);
-    box-shadow: 0 18px 50px rgba(10, 8, 30, 0.35);
+    border: 1px solid rgba(13, 13, 13, 0.06);
+    box-shadow: 0 10px 34px rgba(168, 30, 30, 0.08);
 }
 
 @media (max-width: 900px) {
