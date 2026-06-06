@@ -32,6 +32,54 @@ function useCountdown(target: Date) {
 const pad = (n: number) => n.toString().padStart(2, '0');
 
 /* ─────────────────────────────────────────────────────────────────
+   Reduced-motion preference (show a static poster instead of video)
+   ───────────────────────────────────────────────────────────────── */
+function usePrefersReducedMotion() {
+    const [reduced, setReduced] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setReduced(mq.matches);
+        const handler = () => setReduced(mq.matches);
+        mq.addEventListener('change', handler);
+        return () => mq.removeEventListener('change', handler);
+    }, []);
+    return reduced;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Animated hero headline (Remotion). Plays once on load and holds the
+   composed title; falls back to a static poster for reduced-motion users.
+   An sr-only <h1> preserves the heading for SEO / screen readers.
+   ───────────────────────────────────────────────────────────────── */
+function HeroTitleMedia() {
+    const reduced = usePrefersReducedMotion();
+    return (
+        <div className={styles.heroVideoWrap}>
+            <h1 className={styles.srOnly}>Master AI-Assisted Coding Workflow</h1>
+            {reduced ? (
+                <img
+                    className={styles.heroVideo}
+                    src="/webinar/webinar-title-poster.jpg"
+                    alt="Master AI-Assisted Coding Workflow"
+                />
+            ) : (
+                <video
+                    className={styles.heroVideo}
+                    autoPlay
+                    muted
+                    playsInline
+                    preload="auto"
+                    poster="/webinar/webinar-title-poster.jpg"
+                    aria-hidden="true"
+                >
+                    <source src="/webinar/webinar-title-hero.mp4" type="video/mp4" />
+                </video>
+            )}
+        </div>
+    );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    Scroll reveal hook (IntersectionObserver, runs once per element)
    ───────────────────────────────────────────────────────────────── */
 function useReveal() {
@@ -109,9 +157,7 @@ function Hero({ ended }: { ended: boolean }) {
             <div className={styles.heroInner}>
                 <div className={styles.reveal}>
                     <div className={styles.heroEyebrow}>Webinar Premium · Live 60 Menit · Slot Terbatas</div>
-                    <h1 className={styles.heroTitle}>
-                        Master <em>AI-Assisted</em> Coding Workflow
-                    </h1>
+                    <HeroTitleMedia />
                     <p className={styles.heroSub}>
                         Pelajari cara developer modern memakai Claude, Gemini, Cursor, dan GPT untuk planning, coding, debugging, review, dan shipping aplikasi secara <strong>end-to-end</strong>.
                     </p>
