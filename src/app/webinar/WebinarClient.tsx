@@ -162,13 +162,9 @@ export default function WebinarClient() {
         <div className={styles.page}>
             <StickyCountdown days={days} hours={hours} mins={mins} secs={secs} ended={ended} />
             <Hero ended={ended} />
-            <BonusBanner />
             <SocialProof />
             <Personas />
-            <PainBridge />
             <Agenda />
-            <Process />
-            <Takeaway />
             <Urgency />
             <Speaker />
             <FinalClosing days={days} hours={hours} mins={mins} secs={secs} ended={ended} />
@@ -374,26 +370,6 @@ function RegistrationForm() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   3. Bonus banner
-   ───────────────────────────────────────────────────────────────── */
-function BonusBanner() {
-    return (
-        <section className={`${styles.bonusBanner} ${styles.reveal}`}>
-            <div className={styles.bonusInner}>
-                <div className={styles.bonusIcon}>🎁</div>
-                <div>
-                    <h3 className={styles.bonusTitle}>Bonus: 30+ AI Prompts Pack — Termasuk gratis buat semua peserta</h3>
-                    <p className={styles.bonusDesc}>
-                        Koleksi prompt yang udah dites di Claude, Gemini, dan GPT — buat ngoding, debug, refactor, dan review code. Pakai aja, copy-paste, modifikasi. Senilai Rp 250rb, kamu dapet gratis.
-                    </p>
-                </div>
-                <span className={styles.bonusPill}>PDF · Instant</span>
-            </div>
-        </section>
-    );
-}
-
-/* ─────────────────────────────────────────────────────────────────
    4. Social proof bar
    ───────────────────────────────────────────────────────────────── */
 function SocialProof() {
@@ -495,41 +471,6 @@ function Personas() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   6. Pain → bridge
-   ───────────────────────────────────────────────────────────────── */
-const painPoints = [
-    'Output AI sering ngaco — debug malah lebih lama daripada nulis sendiri',
-    'Boros budget API karena prompt panjang & gak efisien',
-    'Bingung kapan pakai Claude vs Gemini vs GPT',
-    'Code yang dihasilin keliatan jago, tapi gak production-ready',
-    'Sekali project gede, AI lupa konteks dan keputusan sebelumnya',
-];
-
-function PainBridge() {
-    return (
-        <section className={`${styles.section}`} style={{ paddingTop: 32 }}>
-            <div className={styles.reveal}>
-                <div className={styles.eyebrow}>Kenapa Kebanyakan Orang Gagal</div>
-                <h2 className={styles.sectionTitle}>
-                    Kamu udah tau AI bisa nulis code. <em>Tapi pas dicoba sendiri…</em>
-                </h2>
-            </div>
-            <div className={styles.painList}>
-                {painPoints.map((p, i) => (
-                    <div key={i} className={`${styles.painItem} ${styles.reveal}`}>
-                        <span className={styles.painIcon}>✗</span>
-                        <span className={styles.painText}>{p}</span>
-                    </div>
-                ))}
-            </div>
-            <div className={`${styles.painBridge} ${styles.reveal}`}>
-                Yang kamu butuhin bukan tool AI baru. Tapi <em>workflow yang udah kebukti jalan</em> — dan itu yang bakal kamu dapet di 60 menit webinar ini.
-            </div>
-        </section>
-    );
-}
-
-/* ─────────────────────────────────────────────────────────────────
    7. Agenda — 60 menit timed
    ───────────────────────────────────────────────────────────────── */
 const agenda = [
@@ -596,75 +537,6 @@ function Agenda() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   8. Process visualization — 6-step loop
-   ───────────────────────────────────────────────────────────────── */
-const processSteps = [
-    { n: 'Step 01', name: 'Context.md', what: 'Tulis file konteks: goal, stack, batasan. Pondasi semua workflow.' },
-    { n: 'Step 02', name: 'Plan dengan AI', what: 'Claude generate struktur folder, modul, & todo.md.' },
-    { n: 'Step 03', name: 'Generate per modul', what: 'Cline + VS Code bikin code per file, bukan all-in-one.' },
-    { n: 'Step 04', name: 'Test otomatis', what: 'Gemini Flash (model murah) nulis unit test buat tiap modul.' },
-    { n: 'Step 05', name: 'Cross-review', what: 'Model kedua review code — tangkep bug sebelum kamu liat.' },
-    { n: 'Step 06', name: 'Refactor → Ship', what: 'Cleanup, commit, deploy. Loop balik ke step 1 buat fitur berikutnya.' },
-];
-
-function Process() {
-    return (
-        <section className={`${styles.sectionDark}`}>
-            <div className={styles.reveal}>
-                <div className={styles.eyebrow}>The Loop</div>
-                <h2 className={styles.sectionTitle}>
-                    Workflow 6-langkah yang dipakai <em>Bayu tiap hari</em> di proyek production.
-                </h2>
-                <p className={styles.sectionLede}>
-                    Bukan teori. Ini loop yang bener-bener dipakai di proyek klien IT consulting — dan bakal kamu liat live di webinar.
-                </p>
-            </div>
-            <div className={styles.processGrid}>
-                {processSteps.map((s, i) => (
-                    <div key={i} className={`${styles.processStep} ${styles.reveal}`}>
-                        <div className={styles.processNum}>{s.n}</div>
-                        <h3 className={styles.processName}>{s.name}</h3>
-                        <p className={styles.processWhat}>{s.what}</p>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   9. Takeaway summary
-   ───────────────────────────────────────────────────────────────── */
-const takeaways = [
-    { i: '01', t: 'Loop vibe-coding lengkap yang bisa kamu praktekin malam itu juga' },
-    { i: '02', t: 'Cheat sheet 5 template prompt yang ngasih output 10× lebih bagus' },
-    { i: '03', t: 'Comparison matrix Claude vs Gemini vs GPT per use case' },
-    { i: '04', t: 'Bonus: 30+ AI Prompts Pack siap pakai (PDF, instant download)' },
-    { i: '05', t: 'Akses replay 24 jam — bisa ditonton ulang sambil ngoding' },
-];
-
-function Takeaway() {
-    return (
-        <section className={styles.section}>
-            <div className={styles.reveal}>
-                <div className={styles.eyebrow}>Yang Kamu Bawa Pulang</div>
-                <h2 className={styles.sectionTitle}>
-                    5 hal yang langsung kamu <em>dapet & pake</em> setelah webinar.
-                </h2>
-            </div>
-            <div className={styles.takeawayGrid}>
-                {takeaways.map((t, i) => (
-                    <div key={i} className={`${styles.takeawayCard} ${styles.reveal}`}>
-                        <div className={styles.takeawayIcon}>{t.i}</div>
-                        <p className={styles.takeawayText}>{t.t}</p>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
-}
-
-/* ─────────────────────────────────────────────────────────────────
    10. Urgency / market narrative
    ───────────────────────────────────────────────────────────────── */
 function Urgency() {
@@ -675,9 +547,6 @@ function Urgency() {
                 <h2 className={styles.sectionTitle}>
                     Skill paling cepet naik value-nya di 2026. <em>Yang skip, ketinggalan.</em>
                 </h2>
-                <p className={styles.sectionLede}>
-                    AI Vibe Coding bukan tren sebulan. Tiap minggu yang kamu skip, kompetitor kamu udah ship 3 feature lebih dari kamu. Gap-nya melebar tiap hari.
-                </p>
             </div>
             <div className={`${styles.urgencyStat} ${styles.reveal}`}>
                 <div>
