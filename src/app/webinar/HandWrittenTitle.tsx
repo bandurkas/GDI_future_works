@@ -45,11 +45,12 @@ export function HandWrittenTitle({ title = 'Hand Written', subtitle }: HandWritt
                     animate="visible"
                 >
                     <motion.path
-                        d="M 950 90
-                           C 1250 300, 1050 480, 600 520
-                           C 250 520, 150 480, 150 300
-                           C 150 120, 350 80, 600 80
-                           C 850 80, 950 180, 950 180"
+                        d="M 600 60
+                           C 912 60, 1170 168, 1170 300
+                           C 1170 432, 912 540, 600 540
+                           C 288 540, 30 432, 30 300
+                           C 30 168, 288 60, 600 60
+                           C 772 60, 900 88, 968 124"
                         fill="none"
                         strokeWidth={4}
                         stroke="var(--red, #D42B2B)"
