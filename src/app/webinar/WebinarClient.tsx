@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent } from 'react';
 import styles from './webinar.module.css';
+import { HandWrittenTitle } from './HandWrittenTitle';
 import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
 
 /* ─────────────────────────────────────────────────────────────────
@@ -30,104 +31,6 @@ function useCountdown(target: Date) {
 }
 
 const pad = (n: number) => n.toString().padStart(2, '0');
-
-/* ─────────────────────────────────────────────────────────────────
-   Reduced-motion preference (show a static poster instead of video)
-   ───────────────────────────────────────────────────────────────── */
-function usePrefersReducedMotion() {
-    const [reduced, setReduced] = useState(false);
-    useEffect(() => {
-        const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-        setReduced(mq.matches);
-        const handler = () => setReduced(mq.matches);
-        mq.addEventListener('change', handler);
-        return () => mq.removeEventListener('change', handler);
-    }, []);
-    return reduced;
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   Animated hero headline (Remotion). Plays once on load and holds the
-   composed title; falls back to a static poster for reduced-motion users.
-   An sr-only <h1> preserves the heading for SEO / screen readers.
-   ───────────────────────────────────────────────────────────────── */
-function HeroTitleMedia() {
-    const reduced = usePrefersReducedMotion();
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    // The HTML `autoplay` attribute is silently blocked by some browsers/devices
-    // (iOS low-power mode, data-saver, etc.). Explicitly drive playback from JS as
-    // soon as the element is visible, restarting from frame 0 so the full assemble
-    // animation always rolls on page load — no click required.
-    useEffect(() => {
-        const v = videoRef.current;
-        if (!v) return;
-        v.muted = true; // required for autoplay policies
-        let played = false;
-        const play = () => {
-            if (played) return;
-            played = true;
-            try {
-                v.currentTime = 0;
-            } catch {
-                /* ignore if metadata not ready yet */
-            }
-            const p = v.play();
-            if (p && typeof p.catch === 'function') {
-                p.catch(() => {
-                    // Autoplay rejected — retry once on the first user interaction.
-                    played = false;
-                    const retry = () => {
-                        play();
-                        window.removeEventListener('pointerdown', retry);
-                        window.removeEventListener('scroll', retry);
-                    };
-                    window.addEventListener('pointerdown', retry, { once: true });
-                    window.addEventListener('scroll', retry, { once: true });
-                });
-            }
-        };
-
-        // Play when the headline scrolls into view (it's above the fold, so this
-        // fires immediately after the page becomes visible).
-        const io = new IntersectionObserver(
-            (entries) => entries.forEach((e) => e.isIntersecting && play()),
-            { threshold: 0.25 },
-        );
-        io.observe(v);
-
-        if (v.readyState >= 2) play();
-        else v.addEventListener('loadeddata', play, { once: true });
-
-        return () => io.disconnect();
-    }, [reduced]);
-
-    return (
-        <div className={styles.heroVideoWrap}>
-            <h1 className={styles.srOnly}>Master AI-Assisted Coding Workflow</h1>
-            {reduced ? (
-                <img
-                    className={styles.heroVideo}
-                    src="/webinar/webinar-title-poster.jpg?v=3"
-                    alt="Master AI-Assisted Coding Workflow"
-                />
-            ) : (
-                <video
-                    ref={videoRef}
-                    className={styles.heroVideo}
-                    autoPlay
-                    muted
-                    playsInline
-                    preload="auto"
-                    poster="/webinar/webinar-title-poster.jpg?v=3"
-                    aria-hidden="true"
-                >
-                    <source src="/webinar/webinar-title-hero.mp4?v=3" type="video/mp4" />
-                </video>
-            )}
-        </div>
-    );
-}
 
 /* ─────────────────────────────────────────────────────────────────
    Scroll reveal hook (IntersectionObserver, runs once per element)
@@ -203,7 +106,7 @@ function Hero({ ended }: { ended: boolean }) {
             <div className={styles.heroInner}>
                 <div className={styles.reveal}>
                     <div className={styles.heroEyebrow}>Webinar Premium · Live 60 Menit · Slot Terbatas</div>
-                    <HeroTitleMedia />
+                    <HandWrittenTitle title="Master AI-Assisted Coding Workflow" />
                     <p className={styles.heroSub}>
                         Pelajari cara developer modern memakai Claude, Gemini, Cursor, dan GPT untuk planning, coding, debugging, review, dan shipping aplikasi secara <strong>end-to-end</strong>.
                     </p>
