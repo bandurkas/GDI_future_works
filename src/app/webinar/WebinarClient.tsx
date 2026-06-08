@@ -4,14 +4,9 @@ import { useEffect, useState, FormEvent } from 'react';
 import styles from './webinar.module.css';
 import { HandWrittenTitle } from './HandWrittenTitle';
 import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
-
-/* ─────────────────────────────────────────────────────────────────
-   EDIT THESE TWO CONSTANTS TO RESCHEDULE THE WEBINAR
-   ───────────────────────────────────────────────────────────────── */
-const WEBINAR_DATE = new Date('2026-06-13T10:00:00+07:00'); // 13 Juni 2026, 10:00 WIB
-
-const WEBINAR_DATE_LABEL = '13 Juni 2026';
-const WEBINAR_TIME_LABEL = '10:00 WIB';
+// Schedule is the single source of truth in src/lib/webinar.ts (shared with the
+// automation backend) — edit it there to reschedule.
+import { WEBINAR_DATE, WEBINAR_DATE_LABEL, WEBINAR_TIME_LABEL } from '@/lib/webinar';
 
 /* ─────────────────────────────────────────────────────────────────
    Countdown hook

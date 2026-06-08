@@ -486,3 +486,40 @@ enum ApplicationStatus {
   REJECTED
   ARCHIVED
 }
+
+// ───────────────────────────────────────────────────────────────────────────
+// Webinar funnel automation: Google-Form registration → Zoom link + reminders.
+// ───────────────────────────────────────────────────────────────────────────
+
+model WebinarRegistration {
+  id          String   @id @default(uuid())
+  name        String
+  phone       String // normalized international digits (e.g. 62812…)
+  email       String?
+  gender      String?
+  reason      String? // "Kenapa Anda tertarik…"
+  webinarDate DateTime
+  source      String   @default("google_form")
+  createdAt   DateTime @default(now())
+
+  @@unique([phone, webinarDate]) // one registration per number per webinar (idempotent)
+  @@index([webinarDate])
+}
+
+model ScheduledMessage {
+  id          String    @id @default(uuid())
+  to          String // normalized international digits
+  name        String?
+  kind        String // zoom_confirm | reminder_1d | reminder_30m | reminder_start
+  body        String
+  webinarDate DateTime
+  sendAt      DateTime
+  status      String    @default("PENDING") // PENDING | SENT | FAILED
+  attempts    Int       @default(0)
+  lastError   String?
+  sentAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@unique([to, kind, webinarDate]) // never double-schedule the same reminder
+  @@index([status, sendAt])
+}

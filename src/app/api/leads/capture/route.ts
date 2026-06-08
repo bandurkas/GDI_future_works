@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { sendEmail } from '@/lib/email';
 import { sendMetaConversionEvent } from '@/lib/meta-ads';
 import { notifyNewLead } from '@/lib/sales-notifications';
+import { sendWhatsAppMessage } from '@/lib/whatsapp-send';
+import { buildFormInviteMessage } from '@/lib/webinar';
 import { normalizeUtm } from '@/lib/utm-normalize';
 import fs from 'fs';
 import path from 'path';
@@ -108,6 +110,15 @@ export async function POST(req: NextRequest) {
                 course: courseTitle,
                 country,
             }).catch(e => console.error('[Capture] notify failed', e));
+        }
+
+        // 2.6 Webinar funnel: WhatsApp the Google Form link to genuinely new
+        //     webinar leads so they complete registration (→ Zoom + reminders).
+        const isWebinarLead = String(courseTitle || '').toLowerCase().includes('webinar');
+        if (isNewLead && isWebinarLead) {
+            sendWhatsAppMessage(phone, buildFormInviteMessage(name))
+                .then((r) => { if (!r.ok) console.error('[Capture] form-invite WA failed', r.error); })
+                .catch((e) => console.error('[Capture] form-invite WA error', e));
         }
 
         // 3. Automation: Send Email for Syllabus
