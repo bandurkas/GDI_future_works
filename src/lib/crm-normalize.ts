@@ -29,6 +29,7 @@ export interface KanbanCard {
   fbClientId?: string | null;
   fbBrowserId?: string | null;
   waStatus?: 'VERIFIED' | 'BYPASSED' | null;
+  reRegistered?: boolean;
 }
 
 /**
@@ -127,7 +128,8 @@ export function normalizeCrmData(students: any[], leads: any[]): KanbanCard[] {
       gaClientId: ld.gaClientId,
       fbClientId: ld.fbClientId,
       fbBrowserId: ld.fbBrowserId,
-      waStatus: (ld.waStatus === 'VERIFIED' || ld.waStatus === 'BYPASSED') ? ld.waStatus : null
+      waStatus: (ld.waStatus === 'VERIFIED' || ld.waStatus === 'BYPASSED') ? ld.waStatus : null,
+      reRegistered: !!ld.reRegistered
     });
   });
 

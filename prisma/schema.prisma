@@ -287,6 +287,7 @@ model Lead {
   waMessageId String?        // WhatsApp group message_id of the lead alert (to delete on claim)
   claimedById String?        // WhatsApp phone of the manager who claimed (commission payee)
   claimedAt   DateTime?      // when the lead was claimed
+  reRegistered Boolean       @default(false) // existing lead registered again (e.g. re-invite) — shown as 🔁 in CRM
   activities  LeadActivity[]
 
   @@index([email, status])

@@ -38,15 +38,25 @@ export async function POST(req: NextRequest) {
         const country = req.headers.get('cf-ipcountry') || 'XX';
         const waStatusNorm = waStatus === 'VERIFIED' || waStatus === 'BYPASSED' ? waStatus : null;
 
-        // 1. Save to CRM — dedupe by normalized phone within the same source so a repeated
-        //    form submit updates the existing lead instead of creating a duplicate row.
+        // 1. Save to CRM — dedupe by normalized phone. Non-webinar forms dedupe
+        //    within the same source (separate campaigns stay separate cards).
+        //    Webinar submits dedupe across ALL sources so a returning lead is NOT
+        //    duplicated — instead the existing card gets a 🔁 reRegistered mark.
         const cleanPhone = phone.replace(/\D/g, '');
-        const dup: Array<{ id: string }> = await prisma.$queryRaw`
-            SELECT id FROM "Lead"
-            WHERE source = ${source} AND "deletedAt" IS NULL
-              AND regexp_replace(phone, '[^0-9]', '', 'g') = ${cleanPhone}
-            ORDER BY "createdAt" ASC LIMIT 1`;
+        const isWebinarLead = String(courseTitle || '').toLowerCase().includes('webinar');
+        const dup: Array<{ id: string }> = isWebinarLead
+            ? await prisma.$queryRaw`
+                SELECT id FROM "Lead"
+                WHERE "deletedAt" IS NULL
+                  AND regexp_replace(phone, '[^0-9]', '', 'g') = ${cleanPhone}
+                ORDER BY "createdAt" ASC LIMIT 1`
+            : await prisma.$queryRaw`
+                SELECT id FROM "Lead"
+                WHERE source = ${source} AND "deletedAt" IS NULL
+                  AND regexp_replace(phone, '[^0-9]', '', 'g') = ${cleanPhone}
+                ORDER BY "createdAt" ASC LIMIT 1`;
         const isNewLead = dup.length === 0;
+        const isReturningWebinar = isWebinarLead && !isNewLead; // existing lead registering again
 
         const lead = isNewLead
             ? await prisma.lead.create({
@@ -74,9 +84,13 @@ export async function POST(req: NextRequest) {
                     ...(email ? { email } : {}),
                     country,
                     ...(waStatusNorm ? { waStatus: waStatusNorm } : {}),
-                    utmSource: utm.utmSource,
-                    utmMedium: utm.utmMedium,
-                    utmCampaign: utm.utmCampaign,
+                    // Don't overwrite original source/UTM attribution for a returning
+                    // webinar lead — just flag the re-registration.
+                    ...(isReturningWebinar ? { reRegistered: true } : {
+                        utmSource: utm.utmSource,
+                        utmMedium: utm.utmMedium,
+                        utmCampaign: utm.utmCampaign,
+                    }),
                     gaClientId,
                     fbClientId,
                     fbBrowserId,
@@ -113,10 +127,10 @@ export async function POST(req: NextRequest) {
 
         // 2.6 Webinar funnel: the landing registration IS the trigger. Arm the
         //     automation straight from the data we already have — confirmation now
-        //     + Zoom link via the H-1/30m/start reminders. (The Google Form runs in
+        //     + Zoom link via the H-1/30m/start reminders. Idempotent, so returning
+        //     leads are safely re-run (no duplicate sends). (The Google Form runs in
         //     parallel just for record-keeping; it no longer gates anything.)
-        const isWebinarLead = String(courseTitle || '').toLowerCase().includes('webinar');
-        if (isNewLead && isWebinarLead) {
+        if (isWebinarLead) {
             registerForWebinar({ name, phone, email, source: 'webinar_landing' })
                 .then((r) => console.log('[Capture] webinar registration:', r.status))
                 .catch((e) => console.error('[Capture] webinar registration error', e));

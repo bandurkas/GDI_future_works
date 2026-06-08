@@ -259,7 +259,12 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
 
                                 {/* Section 2: Contact Info — Primary Focus */}
                                 <div className={s.contactSection}>
-                                  <div className={s.cardName}>{card.name}</div>
+                                  <div className={s.cardName}>
+                                    {card.name}
+                                    {card.reRegistered && (
+                                      <span title="Mendaftar ulang — sudah jadi lead sebelumnya" style={{ marginLeft: 6 }}>🔁</span>
+                                    )}
+                                  </div>
                                   {card.phone && (
                                     <a
                                       href={`https://wa.me/${card.phone.replace(/\D/g, '')}`}
