@@ -17,10 +17,6 @@ export function getZoomLink(): string {
     return process.env.ZOOM_LINK || '';
 }
 
-export function getGoogleFormUrl(): string {
-    return process.env.GOOGLE_FORM_URL || 'https://forms.gle/PnbxXmyPs8cxkPcL6';
-}
-
 /** Reminder kinds, in send order. Offsets are relative to WEBINAR_DATE. */
 export const REMINDER_OFFSETS_MS: Record<'reminder_1d' | 'reminder_30m' | 'reminder_start', number> = {
     reminder_1d: -24 * 60 * 60 * 1000,
@@ -51,11 +47,12 @@ export function buildWebinarMessage(kind: MessageKind, name?: string): string {
     switch (kind) {
         case 'zoom_confirm':
             return (
-                `Yeay, slot kamu resmi kekunci! ✅\n\n` +
+                `${hi}slot kamu resmi kekunci! ✅\n\n` +
                 `Sampai ketemu di webinar *AI Vibe Coding* ya:\n` +
                 `🗓️ ${WEBINAR_DATE_LABEL}\n` +
-                `⏰ ${WEBINAR_TIME_LABEL}\n\n` +
-                `📩 Link Zoom-nya bakal aku kirim ke WhatsApp ini *H-1* (sehari sebelum webinar), plus pengingat lagi pas hari-H biar kamu nggak kelewatan. Pantau terus ya! 🎉`
+                `⏰ ${WEBINAR_TIME_LABEL}\n` +
+                `💻 Link Zoom: ${zoom}\n\n` +
+                `Simpen pesan ini biar gampang dicari pas harinya 🙂 Nanti aku ingetin lagi sebelum mulai, jadi kamu nggak bakal kelewatan. Sampai jumpa! 🎉`
             );
         case 'reminder_1d':
             return (
@@ -76,16 +73,4 @@ export function buildWebinarMessage(kind: MessageKind, name?: string): string {
                 `Ditunggu ya! 🙌`
             );
     }
-}
-
-/** The WhatsApp message sent to a fresh webinar lead, inviting them to the form. */
-export function buildFormInviteMessage(name?: string): string {
-    const first = name ? name.split(' ')[0] : '';
-    const hi = first ? `Halo ${first}! ` : 'Halo! ';
-    return (
-        `${hi}😊 Makasih ya udah daftar webinar *AI Vibe Coding*.\n\n` +
-        `Tinggal satu langkah kecil lagi biar slot kamu kekunci — isi formulir singkat ini, cuma butuh ±1 menit kok:\n` +
-        `👉 ${getGoogleFormUrl()}\n\n` +
-        `Begitu selesai, slot kamu langsung kekunci 🔒 Link Zoom-nya aku kirim ke sini *H-1* (sehari sebelum webinar). Ditunggu ya! 🙌`
-    );
 }

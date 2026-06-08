@@ -1,19 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { WEBINAR_DATE, WEBINAR_DATE_LABEL, normalizeIdPhone } from '@/lib/webinar';
-import { enqueueWebinarMessages, processDueMessages } from '@/lib/webinar-dispatch';
-import { whatsappExists, notifyWhatsAppGroup } from '@/lib/whatsapp-send';
+import { registerForWebinar } from '@/lib/webinar-dispatch';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
- * Receives a Google-Form submission (via the bound Apps Script onFormSubmit
- * trigger) and arms the WhatsApp automation: store the registration, send the
- * Zoom confirmation immediately, and queue the 1-day / 30-min / start reminders.
- *
- * Auth: shared secret in `x-webinar-secret` header or `?secret=` query, matched
- * against env WEBINAR_SECRET. Idempotent per (phone, webinarDate).
+ * Optional Google-Form entry point (parallel record channel). The primary
+ * trigger is the landing-page lead capture; this endpoint just reuses the same
+ * registerForWebinar() so a bound Apps Script onFormSubmit can also arm the
+ * automation. Auth: shared secret in `x-webinar-secret` header or `?secret=`.
  */
 export async function POST(req: NextRequest) {
     const secret = process.env.WEBINAR_SECRET;
@@ -33,54 +28,19 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'invalid JSON' }, { status: 400 });
     }
 
-    const name = String(body.name || '').trim();
-    const rawPhone = String(body.phone || '').trim();
-    const email = body.email ? String(body.email).trim() : null;
-    const gender = body.gender ? String(body.gender).trim() : null;
-    const reason = body.reason ? String(body.reason).trim() : null;
-
-    const phone = normalizeIdPhone(rawPhone);
-    if (phone.length < 10) {
-        return NextResponse.json({ error: 'invalid phone', phone: rawPhone }, { status: 400 });
-    }
-
     try {
-        // Idempotent: if this number already registered for this webinar, do nothing.
-        const existing = await prisma.webinarRegistration.findUnique({
-            where: { phone_webinarDate: { phone, webinarDate: WEBINAR_DATE } },
+        const result = await registerForWebinar({
+            name: body.name ? String(body.name) : null,
+            phone: String(body.phone || ''),
+            email: body.email ? String(body.email) : null,
+            gender: body.gender ? String(body.gender) : null,
+            reason: body.reason ? String(body.reason) : null,
+            source: 'google_form',
         });
-        if (existing) {
-            return NextResponse.json({ ok: true, status: 'already_registered', id: existing.id });
+        if (result.status === 'invalid_phone') {
+            return NextResponse.json({ error: 'invalid phone', phone: body.phone }, { status: 400 });
         }
-
-        // Verify the number is on WhatsApp — we deliver the Zoom link + reminders
-        // there, so an unreachable number is a dead registration. Only treat as bad
-        // when Whapi is sure (known && !valid); otherwise fail-open so infra hiccups
-        // don't drop real attendees.
-        const wa = await whatsappExists(phone);
-        const waValid = !(wa.known && !wa.valid);
-
-        const reg = await prisma.webinarRegistration.create({
-            data: { name: name || 'Peserta', phone, email, gender, reason, webinarDate: WEBINAR_DATE, waValid },
-        });
-
-        if (!waValid) {
-            // No point queuing 4 guaranteed-failed sends — flag it and ping the
-            // team to follow up for a working WhatsApp number.
-            notifyWhatsAppGroup(
-                `⚠️ Pendaftar webinar dengan nomor TIDAK aktif di WhatsApp\n\n` +
-                    `Nama: ${reg.name}\nNomor: ${phone}\nWebinar: AI Vibe Coding (${WEBINAR_DATE_LABEL})\n\n` +
-                    `Mohon follow up untuk minta nomor WhatsApp yang aktif — kalau tidak, dia tidak akan terima link Zoom & pengingat.`,
-            ).catch((e) => console.error('[webinar/registered] group alert failed', e));
-            return NextResponse.json({ ok: true, status: 'registered_no_wa', id: reg.id });
-        }
-
-        // Queue confirmation + reminders, then flush the now-due confirmation inline
-        // so the registrant gets the Zoom link instantly (cron handles the rest).
-        await enqueueWebinarMessages({ to: phone, name: reg.name });
-        const flushed = await processDueMessages();
-
-        return NextResponse.json({ ok: true, status: 'registered', id: reg.id, flushed });
+        return NextResponse.json({ ok: true, ...result });
     } catch (error) {
         console.error('[webinar/registered] error', error);
         return NextResponse.json({ error: 'internal error' }, { status: 500 });

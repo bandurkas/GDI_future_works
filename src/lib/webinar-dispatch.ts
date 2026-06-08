@@ -1,13 +1,85 @@
 import { prisma } from './prisma';
-import { sendWhatsAppMessage } from './whatsapp-send';
+import { sendWhatsAppMessage, whatsappExists, notifyWhatsAppGroup } from './whatsapp-send';
 import {
     WEBINAR_DATE,
+    WEBINAR_DATE_LABEL,
     REMINDER_OFFSETS_MS,
     buildWebinarMessage,
+    normalizeIdPhone,
     type MessageKind,
 } from './webinar';
 
 const MAX_ATTEMPTS = 5;
+
+/**
+ * Register a person for the webinar and arm the WhatsApp automation. This is the
+ * single entry point — driven by the landing-page lead capture (the data we
+ * already have). The Google Form is a parallel, optional record channel and no
+ * longer gates anything.
+ *
+ * - Idempotent per (phone, webinarDate).
+ * - Verifies the number is on WhatsApp; if Whapi is sure it isn't, flags
+ *   waValid=false, skips the (doomed) queue, and alerts the sales group.
+ * - On success: sends the confirmation (with the Zoom link) immediately and
+ *   queues the H-1 / 30-min / start reminders as follow-up nudges.
+ */
+export async function registerForWebinar(input: {
+    name?: string | null;
+    phone: string;
+    email?: string | null;
+    gender?: string | null;
+    reason?: string | null;
+    source?: string;
+}): Promise<{ status: 'registered' | 'already_registered' | 'registered_no_wa' | 'invalid_phone'; id?: string }> {
+    const phone = normalizeIdPhone(input.phone);
+    if (phone.length < 10) return { status: 'invalid_phone' };
+
+    const existing = await prisma.webinarRegistration.findUnique({
+        where: { phone_webinarDate: { phone, webinarDate: WEBINAR_DATE } },
+    });
+    if (existing) return { status: 'already_registered', id: existing.id };
+
+    const wa = await whatsappExists(phone);
+    const waValid = !(wa.known && !wa.valid);
+
+    let reg: { id: string; name: string };
+    try {
+        reg = await prisma.webinarRegistration.create({
+            data: {
+                name: input.name?.trim() || 'Peserta',
+                phone,
+                email: input.email || null,
+                gender: input.gender || null,
+                reason: input.reason || null,
+                webinarDate: WEBINAR_DATE,
+                source: input.source || 'webinar_landing',
+                waValid,
+            },
+        });
+    } catch (e) {
+        // Concurrent double-submit lost the unique race — already registered.
+        if (e && typeof e === 'object' && (e as { code?: string }).code === 'P2002') {
+            const ex = await prisma.webinarRegistration.findUnique({
+                where: { phone_webinarDate: { phone, webinarDate: WEBINAR_DATE } },
+            });
+            return { status: 'already_registered', id: ex?.id };
+        }
+        throw e;
+    }
+
+    if (!waValid) {
+        notifyWhatsAppGroup(
+            `⚠️ Pendaftar webinar dengan nomor TIDAK aktif di WhatsApp\n\n` +
+                `Nama: ${reg.name}\nNomor: ${phone}\nWebinar: AI Vibe Coding (${WEBINAR_DATE_LABEL})\n\n` +
+                `Mohon follow up untuk minta nomor WhatsApp yang aktif — kalau tidak, dia tidak akan terima link Zoom & pengingat.`,
+        ).catch((e) => console.error('[registerForWebinar] group alert failed', e));
+        return { status: 'registered_no_wa', id: reg.id };
+    }
+
+    await enqueueWebinarMessages({ to: phone, name: reg.name });
+    await processDueMessages();
+    return { status: 'registered', id: reg.id };
+}
 
 /**
  * Enqueue the confirmation + the three reminders for a registration.

@@ -3,8 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { sendEmail } from '@/lib/email';
 import { sendMetaConversionEvent } from '@/lib/meta-ads';
 import { notifyNewLead } from '@/lib/sales-notifications';
-import { sendWhatsAppMessage } from '@/lib/whatsapp-send';
-import { buildFormInviteMessage } from '@/lib/webinar';
+import { registerForWebinar } from '@/lib/webinar-dispatch';
 import { normalizeUtm } from '@/lib/utm-normalize';
 import fs from 'fs';
 import path from 'path';
@@ -112,13 +111,15 @@ export async function POST(req: NextRequest) {
             }).catch(e => console.error('[Capture] notify failed', e));
         }
 
-        // 2.6 Webinar funnel: WhatsApp the Google Form link to genuinely new
-        //     webinar leads so they complete registration (→ Zoom + reminders).
+        // 2.6 Webinar funnel: the landing registration IS the trigger. Arm the
+        //     automation straight from the data we already have — confirmation now
+        //     + Zoom link via the H-1/30m/start reminders. (The Google Form runs in
+        //     parallel just for record-keeping; it no longer gates anything.)
         const isWebinarLead = String(courseTitle || '').toLowerCase().includes('webinar');
         if (isNewLead && isWebinarLead) {
-            sendWhatsAppMessage(phone, buildFormInviteMessage(name))
-                .then((r) => { if (!r.ok) console.error('[Capture] form-invite WA failed', r.error); })
-                .catch((e) => console.error('[Capture] form-invite WA error', e));
+            registerForWebinar({ name, phone, email, source: 'webinar_landing' })
+                .then((r) => console.log('[Capture] webinar registration:', r.status))
+                .catch((e) => console.error('[Capture] webinar registration error', e));
         }
 
         // 3. Automation: Send Email for Syllabus

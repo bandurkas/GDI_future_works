@@ -226,12 +226,12 @@ function RegistrationForm() {
     if (done) {
         return (
             <div className={styles.successCard}>
-                <h3>Satu langkah lagi 👇</h3>
+                <h3>Slot kamu terkunci 🎉</h3>
                 <p>
-                    Kami baru saja kirim <strong>formulir singkat</strong> ke <strong>WhatsApp</strong> kamu. Isi ya (±1 menit) biar slot kamu resmi terkunci.
+                    Kami baru saja kirim <strong>konfirmasi + link Zoom</strong> ke <strong>WhatsApp</strong> kamu — cek ya!
                 </p>
                 <p style={{ marginBottom: 0 }}>
-                    Setelah itu, link Zoom kami kirim ke WhatsApp kamu <strong>H-1 (sehari sebelum webinar)</strong> + pengingat pas hari-H. Sampai jumpa! 🎉
+                    Nanti kami ingatkan lagi sebelum webinar mulai, biar kamu nggak kelewatan. Sampai jumpa! 🎉
                 </p>
                 <div className={styles.successHint}>
                     Belum dapet WA dari kami? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20konfirmasi%20pendaftaran" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
