@@ -54,9 +54,8 @@ export function buildWebinarMessage(kind: MessageKind, name?: string): string {
                 `Yeay, slot kamu resmi kekunci! ✅\n\n` +
                 `Sampai ketemu di webinar *AI Vibe Coding* ya:\n` +
                 `🗓️ ${WEBINAR_DATE_LABEL}\n` +
-                `⏰ ${WEBINAR_TIME_LABEL}\n` +
-                `💻 Link Zoom: ${zoom}\n\n` +
-                `Simpen pesan ini biar gampang dicari pas harinya 🙂 Nanti aku ingetin lagi sebelum mulai, jadi kamu nggak bakal kelewatan. Sampai jumpa! 🎉`
+                `⏰ ${WEBINAR_TIME_LABEL}\n\n` +
+                `📩 Link Zoom-nya bakal aku kirim ke WhatsApp ini *H-1* (sehari sebelum webinar), plus pengingat lagi pas hari-H biar kamu nggak kelewatan. Pantau terus ya! 🎉`
             );
         case 'reminder_1d':
             return (
@@ -87,6 +86,6 @@ export function buildFormInviteMessage(name?: string): string {
         `${hi}😊 Makasih ya udah daftar webinar *AI Vibe Coding*.\n\n` +
         `Tinggal satu langkah kecil lagi biar slot kamu kekunci — isi formulir singkat ini, cuma butuh ±1 menit kok:\n` +
         `👉 ${getGoogleFormUrl()}\n\n` +
-        `Begitu selesai, aku langsung kirim link Zoom-nya ke sini. Ditunggu ya! 🙌`
+        `Begitu selesai, slot kamu langsung kekunci 🔒 Link Zoom-nya aku kirim ke sini *H-1* (sehari sebelum webinar). Ditunggu ya! 🙌`
     );
 }

@@ -226,15 +226,15 @@ function RegistrationForm() {
     if (done) {
         return (
             <div className={styles.successCard}>
-                <h3>Terima kasih sudah daftar ✓</h3>
+                <h3>Satu langkah lagi 👇</h3>
                 <p>
-                    Admin kami akan kontak kamu via WhatsApp dalam <strong>5 menit</strong> untuk <strong>konfirmasi pendaftaran</strong> + kirim link Zoom dan bonus 30+ AI Prompts Pack.
+                    Kami baru saja kirim <strong>formulir singkat</strong> ke <strong>WhatsApp</strong> kamu. Isi ya (±1 menit) biar slot kamu resmi terkunci.
                 </p>
                 <p style={{ marginBottom: 0 }}>
-                    Slot kamu sudah terkunci. Sampai jumpa di webinar! 🎉
+                    Setelah itu, link Zoom kami kirim ke WhatsApp kamu <strong>H-1 (sehari sebelum webinar)</strong> + pengingat pas hari-H. Sampai jumpa! 🎉
                 </p>
                 <div className={styles.successHint}>
-                    Belum dapet WA dari kami dalam 5 menit? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20konfirmasi%20pendaftaran" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
+                    Belum dapet WA dari kami? Langsung chat admin: <a href="https://wa.me/628211704707?text=Halo%20admin%2C%20saya%20baru%20daftar%20webinar%20AI%20Vibe%20Coding%20dan%20butuh%20konfirmasi%20pendaftaran" target="_blank" rel="noopener" style={{ color: '#D42B2B', fontWeight: 700 }}>+62 821-1704-707</a>
                 </div>
             </div>
         );
