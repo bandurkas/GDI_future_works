@@ -43,47 +43,50 @@ export function normalizeIdPhone(raw: string): string {
     return d;
 }
 
-/** Build the WhatsApp body for a given message kind. */
+/** Build the WhatsApp body for a given message kind. Warm, human Indonesian. */
 export function buildWebinarMessage(kind: MessageKind, name?: string): string {
     const zoom = getZoomLink();
-    const hi = name ? `Halo ${name.split(' ')[0]}! ` : 'Halo! ';
+    const first = name ? name.split(' ')[0] : '';
+    const hi = first ? `Halo ${first}! ` : 'Halo! ';
     switch (kind) {
         case 'zoom_confirm':
             return (
-                `Slot kamu terkunci ✅\n\n` +
-                `*Webinar AI Vibe Coding*\n` +
+                `Yeay, slot kamu resmi kekunci! ✅\n\n` +
+                `Sampai ketemu di webinar *AI Vibe Coding* ya:\n` +
                 `🗓️ ${WEBINAR_DATE_LABEL}\n` +
                 `⏰ ${WEBINAR_TIME_LABEL}\n` +
-                `💻 Zoom: ${zoom}\n\n` +
-                `Simpan pesan ini ya. Kami ingatkan lagi sebelum mulai. Sampai jumpa! 🎉`
+                `💻 Link Zoom: ${zoom}\n\n` +
+                `Simpen pesan ini biar gampang dicari pas harinya 🙂 Nanti aku ingetin lagi sebelum mulai, jadi kamu nggak bakal kelewatan. Sampai jumpa! 🎉`
             );
         case 'reminder_1d':
             return (
-                `${hi}Pengingat: *besok* webinar AI Vibe Coding jam ${WEBINAR_TIME_LABEL} 🚀\n\n` +
-                `Link Zoom kamu:\n${zoom}\n\n` +
-                `Siapkan laptop & kopi ya ☕`
+                `${hi}Besok hari-H nya nih 🎉\n\n` +
+                `Webinar *AI Vibe Coding* mulai jam ${WEBINAR_TIME_LABEL}. Simpen dulu link Zoom-nya ya, biar besok tinggal klik:\n${zoom}\n\n` +
+                `Siapin laptop sama kopi favorit kamu — kita bakal langsung praktek bareng ☕ Sampai ketemu besok!`
             );
         case 'reminder_30m':
             return (
-                `30 menit lagi kita mulai! 🔴\n\n` +
-                `*AI Vibe Coding* — ${WEBINAR_TIME_LABEL}\n` +
-                `Gabung sekarang biar gak ketinggalan:\n${zoom}`
+                `${hi}Bentar lagi mulai — 30 menit lagi ya ⏳\n\n` +
+                `Webinar *AI Vibe Coding* jam ${WEBINAR_TIME_LABEL}. Yuk masuk Zoom-nya dari sekarang biar nggak buru-buru:\n👉 ${zoom}\n\n` +
+                `Aku tunggu di dalam! 🙌`
             );
         case 'reminder_start':
             return (
-                `Kita LIVE sekarang 🔴\n\n` +
-                `Webinar AI Vibe Coding udah dimulai — buruan gabung, jangan sampai kelewatan!\n👉 ${zoom}`
+                `Kita udah mulai, lho! 🔴\n\n` +
+                `Webinar *AI Vibe Coding* lagi jalan sekarang. Masih keburu kok — yuk langsung gabung, sayang banget kalau kelewatan:\n👉 ${zoom}\n\n` +
+                `Ditunggu ya! 🙌`
             );
     }
 }
 
 /** The WhatsApp message sent to a fresh webinar lead, inviting them to the form. */
 export function buildFormInviteMessage(name?: string): string {
-    const hi = name ? `Halo ${name.split(' ')[0]}! ` : 'Halo! ';
+    const first = name ? name.split(' ')[0] : '';
+    const hi = first ? `Halo ${first}! ` : 'Halo! ';
     return (
-        `${hi}🎉 Terima kasih sudah daftar webinar *AI Vibe Coding* (${WEBINAR_DATE_LABEL}, ${WEBINAR_TIME_LABEL}).\n\n` +
-        `Langkah terakhir biar slot kamu terkunci — isi formulir singkat ini (±1 menit):\n` +
+        `${hi}😊 Makasih ya udah daftar webinar *AI Vibe Coding*.\n\n` +
+        `Tinggal satu langkah kecil lagi biar slot kamu kekunci — isi formulir singkat ini, cuma butuh ±1 menit kok:\n` +
         `👉 ${getGoogleFormUrl()}\n\n` +
-        `Setelah kamu isi, kami kirim link Zoom-nya ke sini ya.`
+        `Begitu selesai, aku langsung kirim link Zoom-nya ke sini. Ditunggu ya! 🙌`
     );
 }
