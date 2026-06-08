@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { WEBINAR_DATE, normalizeIdPhone } from '@/lib/webinar';
+import { WEBINAR_DATE, WEBINAR_DATE_LABEL, normalizeIdPhone } from '@/lib/webinar';
 import { enqueueWebinarMessages, processDueMessages } from '@/lib/webinar-dispatch';
+import { whatsappExists, notifyWhatsAppGroup } from '@/lib/whatsapp-send';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -52,9 +53,27 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ ok: true, status: 'already_registered', id: existing.id });
         }
 
+        // Verify the number is on WhatsApp — we deliver the Zoom link + reminders
+        // there, so an unreachable number is a dead registration. Only treat as bad
+        // when Whapi is sure (known && !valid); otherwise fail-open so infra hiccups
+        // don't drop real attendees.
+        const wa = await whatsappExists(phone);
+        const waValid = !(wa.known && !wa.valid);
+
         const reg = await prisma.webinarRegistration.create({
-            data: { name: name || 'Peserta', phone, email, gender, reason, webinarDate: WEBINAR_DATE },
+            data: { name: name || 'Peserta', phone, email, gender, reason, webinarDate: WEBINAR_DATE, waValid },
         });
+
+        if (!waValid) {
+            // No point queuing 4 guaranteed-failed sends — flag it and ping the
+            // team to follow up for a working WhatsApp number.
+            notifyWhatsAppGroup(
+                `⚠️ Pendaftar webinar dengan nomor TIDAK aktif di WhatsApp\n\n` +
+                    `Nama: ${reg.name}\nNomor: ${phone}\nWebinar: AI Vibe Coding (${WEBINAR_DATE_LABEL})\n\n` +
+                    `Mohon follow up untuk minta nomor WhatsApp yang aktif — kalau tidak, dia tidak akan terima link Zoom & pengingat.`,
+            ).catch((e) => console.error('[webinar/registered] group alert failed', e));
+            return NextResponse.json({ ok: true, status: 'registered_no_wa', id: reg.id });
+        }
 
         // Queue confirmation + reminders, then flush the now-due confirmation inline
         // so the registrant gets the Zoom link instantly (cron handles the rest).

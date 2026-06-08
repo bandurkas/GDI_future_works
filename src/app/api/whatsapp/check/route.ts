@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { normalizeIdPhone } from '@/lib/webinar';
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,9 +9,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ exists: true });
     }
 
-    const cleanPhone = String(phone).replace(/\D/g, '');
+    // Normalize to international digits (62…, no "+") — Whapi needs this, else
+    // local "08…" numbers never match and the check silently passes everyone.
+    const cleanPhone = normalizeIdPhone(phone);
 
-    if (cleanPhone.length < 8) {
+    if (cleanPhone.length < 10) {
       return NextResponse.json({ exists: true });
     }
 

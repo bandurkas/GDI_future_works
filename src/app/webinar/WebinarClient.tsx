@@ -4,6 +4,7 @@ import { useEffect, useState, FormEvent } from 'react';
 import styles from './webinar.module.css';
 import { HandWrittenTitle } from './HandWrittenTitle';
 import { trackConversion, getGAClientId, getFbc, getFbp } from '@/lib/analytics';
+import { useWhatsAppCheck } from '@/hooks/useWhatsAppCheck';
 // Schedule is the single source of truth in src/lib/webinar.ts (shared with the
 // automation backend) — edit it there to reschedule.
 import { WEBINAR_DATE, WEBINAR_DATE_LABEL, WEBINAR_TIME_LABEL } from '@/lib/webinar';
@@ -150,12 +151,32 @@ function RegistrationForm() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [done, setDone] = useState(false);
+    // WhatsApp gate: we send the Zoom link + reminders over WhatsApp, so the
+    // number must be reachable. Warn once on a number that isn't on WhatsApp;
+    // if the user insists (same number), let it through flagged as BYPASSED so a
+    // false-negative never permanently blocks a real registration.
+    const [waWarn, setWaWarn] = useState(false);
+    const { check: checkWhatsApp } = useWhatsAppCheck();
 
     const submit = async (e: FormEvent) => {
         e.preventDefault();
         setError(null);
         if (!name.trim()) { setError('Nama lengkap wajib diisi.'); return; }
         if (phone.replace(/\D/g, '').length < 8) { setError('Nomor WhatsApp gak valid (min 8 digit).'); return; }
+
+        let waStatus: 'VERIFIED' | 'BYPASSED' = 'VERIFIED';
+        if (waWarn) {
+            waStatus = 'BYPASSED'; // user confirmed the same number despite the warning
+        } else {
+            setLoading(true);
+            const onWhatsApp = await checkWhatsApp(phone);
+            if (onWhatsApp === false) {
+                setWaWarn(true);
+                setLoading(false);
+                return; // block this attempt, ask to fix the number
+            }
+        }
+
         setLoading(true);
         try {
             const [gaClientId, fbClientId, fbBrowserId] = await Promise.all([
@@ -173,6 +194,7 @@ function RegistrationForm() {
                     name: name.trim(),
                     phone: phone.trim(),
                     email: email.trim() || undefined,
+                    waStatus,
                     scenario: 'Consultation',
                     courseId: 'ai-vibe-coding',
                     courseTitle: `Webinar: AI Vibe Coding (${WEBINAR_DATE_LABEL})`,
@@ -243,7 +265,7 @@ function RegistrationForm() {
                 type="tel"
                 placeholder="Nomor WhatsApp (cth: 08123456789)"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => { setPhone(e.target.value); if (waWarn) setWaWarn(false); }}
                 required
                 autoComplete="tel"
             />
@@ -256,8 +278,14 @@ function RegistrationForm() {
                 autoComplete="email"
             />
 
+            {waWarn && (
+                <div className={styles.formError} style={{ background: '#fff7ed', color: '#9a3412', border: '1px solid #fed7aa' }}>
+                    Hmm, nomor ini sepertinya belum aktif di WhatsApp. Kami kirim link Zoom &amp; pengingat lewat WhatsApp, jadi pastikan nomornya benar ya 🙏 Perbaiki nomornya, atau tekan tombol sekali lagi untuk tetap lanjut.
+                </div>
+            )}
+
             <button className={styles.formCta} type="submit" disabled={loading}>
-                {loading ? 'Mengamankan slot…' : 'Amankan Slot Gratis →'}
+                {loading ? 'Mengamankan slot…' : waWarn ? 'Tetap lanjutkan →' : 'Amankan Slot Gratis →'}
             </button>
 
             <div className={styles.formFoot}>

@@ -500,6 +500,7 @@ model WebinarRegistration {
   reason      String? // "Kenapa Anda tertarik…"
   webinarDate DateTime
   source      String   @default("google_form")
+  waValid     Boolean  @default(true) // false = Whapi says number isn't on WhatsApp (needs manual follow-up)
   createdAt   DateTime @default(now())
 
   @@unique([phone, webinarDate]) // one registration per number per webinar (idempotent)
