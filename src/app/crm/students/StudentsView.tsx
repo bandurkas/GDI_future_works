@@ -56,7 +56,7 @@ const STAGES: Partial<Record<KanbanStatus, string>> = {
   'ARCHIVED': 'Archived',
 };
 
-export default function StudentsView({ students, freshLeads = [] }: { students: any[], freshLeads?: any[] }) {
+export default function StudentsView({ students, freshLeads = [], webinarCount = 0, webinarToday = 0, webinarLabel = '' }: { students: any[], freshLeads?: any[], webinarCount?: number, webinarToday?: number, webinarLabel?: string }) {
   const router = useRouter();
   const { openEditLeadDialog, openAddLeadDialog, refreshKey } = useManagement();
   const [cards, setCards] = useState<KanbanCard[]>([]);
@@ -182,6 +182,46 @@ export default function StudentsView({ students, freshLeads = [] }: { students: 
           </div>
         </div>
       </header>
+
+      {/* Upcoming-webinar registration counter */}
+      {webinarLabel && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            margin: '12px 16px 0',
+            padding: '10px 16px',
+            background: 'linear-gradient(90deg, rgba(212,43,43,0.14), rgba(212,43,43,0.04))',
+            border: '1px solid rgba(212,43,43,0.30)',
+            borderRadius: 10,
+            fontSize: 14,
+            fontWeight: 600,
+            color: 'inherit',
+          }}
+        >
+          <span style={{ fontSize: 18 }} aria-hidden>🎥</span>
+          <span style={{ opacity: 0.85 }}>Webinar {webinarLabel} —</span>
+          <span style={{ fontSize: 20, fontWeight: 800, color: '#D42B2B' }}>{webinarCount}</span>
+          <span style={{ opacity: 0.7, fontWeight: 500 }}>pendaftar</span>
+          {webinarToday > 0 && (
+            <span
+              style={{
+                marginLeft: 'auto',
+                fontSize: 12,
+                fontWeight: 700,
+                color: '#16a34a',
+                background: 'rgba(22,163,74,0.12)',
+                border: '1px solid rgba(22,163,74,0.30)',
+                borderRadius: 999,
+                padding: '3px 10px',
+              }}
+            >
+              +{webinarToday} hari ini
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Mobile stage tabs — hidden on desktop via CSS */}
       <div className={s.mobileTabs} role="tablist" aria-label="Pipeline stages">

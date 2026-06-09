@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import StudentsView from './StudentsView';
+import { WEBINAR_DATE, WEBINAR_DATE_LABEL } from '@/lib/webinar';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,5 +53,21 @@ export default async function CrmStudentsPage() {
     orderBy: { createdAt: 'desc' }
   });
 
-  return <StudentsView students={studentsWithPhone} freshLeads={JSON.parse(JSON.stringify(leads))} />;
+  // Upcoming-webinar registration counter for the CRM banner.
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const [webinarCount, webinarToday] = await Promise.all([
+    prisma.webinarRegistration.count({ where: { webinarDate: WEBINAR_DATE } }),
+    prisma.webinarRegistration.count({ where: { webinarDate: WEBINAR_DATE, createdAt: { gte: startOfToday } } }),
+  ]);
+
+  return (
+    <StudentsView
+      students={studentsWithPhone}
+      freshLeads={JSON.parse(JSON.stringify(leads))}
+      webinarCount={webinarCount}
+      webinarToday={webinarToday}
+      webinarLabel={WEBINAR_DATE_LABEL}
+    />
+  );
 }
