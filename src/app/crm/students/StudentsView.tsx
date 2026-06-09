@@ -185,40 +185,13 @@ export default function StudentsView({ students, freshLeads = [], webinarCount =
 
       {/* Upcoming-webinar registration counter */}
       {webinarLabel && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            margin: '12px 16px 0',
-            padding: '10px 16px',
-            background: 'linear-gradient(90deg, rgba(212,43,43,0.14), rgba(212,43,43,0.04))',
-            border: '1px solid rgba(212,43,43,0.30)',
-            borderRadius: 10,
-            fontSize: 14,
-            fontWeight: 600,
-            color: 'inherit',
-          }}
-        >
-          <span style={{ fontSize: 18 }} aria-hidden>🎥</span>
-          <span style={{ opacity: 0.85 }}>Webinar {webinarLabel} —</span>
-          <span style={{ fontSize: 20, fontWeight: 800, color: '#D42B2B' }}>{webinarCount}</span>
-          <span style={{ opacity: 0.7, fontWeight: 500 }}>pendaftar</span>
+        <div className={s.webinarBanner}>
+          <span className={s.webinarBannerIcon} aria-hidden>🎥</span>
+          <span className={s.webinarBannerLabel}>Webinar {webinarLabel} —</span>
+          <span className={s.webinarBannerCount}>{webinarCount}</span>
+          <span className={s.webinarBannerUnit}>pendaftar</span>
           {webinarToday > 0 && (
-            <span
-              style={{
-                marginLeft: 'auto',
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#16a34a',
-                background: 'rgba(22,163,74,0.12)',
-                border: '1px solid rgba(22,163,74,0.30)',
-                borderRadius: 999,
-                padding: '3px 10px',
-              }}
-            >
-              +{webinarToday} hari ini
-            </span>
+            <span className={s.webinarBannerToday}>+{webinarToday} hari ini</span>
           )}
         </div>
       )}
