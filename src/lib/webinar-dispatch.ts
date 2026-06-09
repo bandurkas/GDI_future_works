@@ -12,6 +12,25 @@ import {
 const MAX_ATTEMPTS = 5;
 
 /**
+ * Move the matching CRM lead(s) into the QUALIFIED pipeline column once the Zoom
+ * link has been sent. Matches by normalized phone (62-form + local 0-form, both
+ * occur in stored leads). Never downgrades a lead already past QUALIFIED.
+ */
+async function qualifyLeadByPhone(phone: string): Promise<void> {
+    const local0 = phone.startsWith('62') ? '0' + phone.slice(2) : phone;
+    try {
+        await prisma.$executeRaw`
+            UPDATE "Lead"
+            SET status = 'QUALIFIED', "updatedAt" = now()
+            WHERE "deletedAt" IS NULL
+              AND status IN ('NEW', 'IN_PROGRESS', 'CONTACTED')
+              AND regexp_replace(phone, '[^0-9]', '', 'g') IN (${phone}, ${local0})`;
+    } catch (e) {
+        console.error('[qualifyLeadByPhone] failed', e);
+    }
+}
+
+/**
  * Register a person for the webinar and arm the WhatsApp automation. This is the
  * single entry point — driven by the landing-page lead capture (the data we
  * already have). The Google Form is a parallel, optional record channel and no
@@ -37,7 +56,10 @@ export async function registerForWebinar(input: {
     const existing = await prisma.webinarRegistration.findUnique({
         where: { phone_webinarDate: { phone, webinarDate: WEBINAR_DATE } },
     });
-    if (existing) return { status: 'already_registered', id: existing.id };
+    if (existing) {
+        if (existing.waValid) await qualifyLeadByPhone(phone); // link already sent → keep them in Qualified
+        return { status: 'already_registered', id: existing.id };
+    }
 
     const wa = await whatsappExists(phone);
     const waValid = !(wa.known && !wa.valid);
@@ -78,6 +100,7 @@ export async function registerForWebinar(input: {
 
     await enqueueWebinarMessages({ to: phone, name: reg.name });
     await processDueMessages();
+    await qualifyLeadByPhone(phone); // link sent → move lead to Qualified
     return { status: 'registered', id: reg.id };
 }
 
