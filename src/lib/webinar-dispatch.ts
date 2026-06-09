@@ -29,12 +29,17 @@ async function claimAndSend(m: { id: string; attempts: number; to: string; body:
     return r.ok ? 'sent' : 'failed';
 }
 
-/** Send a single queued message of a kind for one phone, immediately (no throttle). */
-async function sendQueued(to: string, kind: MessageKind): Promise<void> {
+/**
+ * Send a single queued message of a kind for one phone, immediately (no throttle).
+ * Returns true only when the send actually succeeded — callers use this to decide
+ * whether downstream side effects (e.g. advancing the lead to CONTACTED) should run.
+ */
+async function sendQueued(to: string, kind: MessageKind): Promise<boolean> {
     const m = await prisma.scheduledMessage.findFirst({
         where: { to, kind, webinarDate: WEBINAR_DATE, status: { in: ['PENDING', 'FAILED'] }, attempts: { lt: MAX_ATTEMPTS } },
     });
-    if (m) await claimAndSend(m);
+    if (!m) return false;
+    return (await claimAndSend(m)) === 'sent';
 }
 
 /**
@@ -126,8 +131,11 @@ export async function registerForWebinar(input: {
     }
 
     await enqueueWebinarMessages({ to: phone, name: reg.name });
-    await sendQueued(phone, 'zoom_confirm'); // confirmation: instant, no throttle (single message)
-    await markLeadContacted(phone); // link sent → move lead to Contacted
+    const confirmed = await sendQueued(phone, 'zoom_confirm'); // confirmation: instant, no throttle (single message)
+    // Only advance to CONTACTED when the Zoom link actually went out. If the send
+    // failed (e.g. WhatsApp/Whapi channel down), keep the lead in Fresh so the
+    // sales team picks it up manually instead of it looking already-contacted.
+    if (confirmed) await markLeadContacted(phone);
     return { status: 'registered', id: reg.id };
 }
 
