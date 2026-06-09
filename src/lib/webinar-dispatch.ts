@@ -10,6 +10,32 @@ import {
 } from './webinar';
 
 const MAX_ATTEMPTS = 5;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Claim a queued message (CAS on attempts) and send it. Race-safe across cron + inline. */
+async function claimAndSend(m: { id: string; attempts: number; to: string; body: string }): Promise<'sent' | 'failed' | 'skipped'> {
+    const claim = await prisma.scheduledMessage.updateMany({
+        where: { id: m.id, attempts: m.attempts, status: { in: ['PENDING', 'FAILED'] } },
+        data: { attempts: m.attempts + 1 },
+    });
+    if (claim.count !== 1) return 'skipped'; // another worker already took it
+    const r = await sendWhatsAppMessage(m.to, m.body);
+    await prisma.scheduledMessage.update({
+        where: { id: m.id },
+        data: r.ok
+            ? { status: 'SENT', sentAt: new Date(), lastError: null }
+            : { status: 'FAILED', lastError: (r.error || 'unknown').slice(0, 500) },
+    });
+    return r.ok ? 'sent' : 'failed';
+}
+
+/** Send a single queued message of a kind for one phone, immediately (no throttle). */
+async function sendQueued(to: string, kind: MessageKind): Promise<void> {
+    const m = await prisma.scheduledMessage.findFirst({
+        where: { to, kind, webinarDate: WEBINAR_DATE, status: { in: ['PENDING', 'FAILED'] }, attempts: { lt: MAX_ATTEMPTS } },
+    });
+    if (m) await claimAndSend(m);
+}
 
 /**
  * Move the matching CRM lead(s) into the QUALIFIED pipeline column once the Zoom
@@ -99,7 +125,7 @@ export async function registerForWebinar(input: {
     }
 
     await enqueueWebinarMessages({ to: phone, name: reg.name });
-    await processDueMessages();
+    await sendQueued(phone, 'zoom_confirm'); // confirmation: instant, no throttle (single message)
     await qualifyLeadByPhone(phone); // link sent → move lead to Qualified
     return { status: 'registered', id: reg.id };
 }
@@ -145,47 +171,36 @@ export async function enqueueWebinarMessages(reg: { to: string; name?: string | 
 }
 
 /**
- * Send all messages whose sendAt has passed. Idempotent and safe to run
- * concurrently: each row is claimed via a compare-and-set on `attempts`, so two
- * overlapping runs (cron + inline flush) never send the same row twice.
- * At-least-once semantics — a crash mid-send may retry, which is fine for reminders.
+ * Send due REMINDERS one-by-one with a delay between each (anti-spam, so WhatsApp
+ * doesn't flag the channel for bulk-blasting). Driven by the VPS cron.
+ *
+ * No lock needed: `maxRunMs` is kept below the cron interval so ticks don't
+ * overlap (effectively a single sender); the CAS claim in claimAndSend covers any
+ * rare edge. Bounded per tick — leftover messages drain on the next tick. The
+ * immediate zoom_confirm does NOT go through here (sent inline, unthrottled).
  */
-export async function processDueMessages(limit = 100) {
-    const now = new Date();
+export async function processDueMessages(
+    opts: { limit?: number; delayMinMs?: number; delayMaxMs?: number; maxRunMs?: number } = {},
+) {
+    const { limit = 500, delayMinMs = 0, delayMaxMs = 0, maxRunMs = 90_000 } = opts;
+    const startedAt = Date.now();
+
     const due = await prisma.scheduledMessage.findMany({
-        where: {
-            status: { in: ['PENDING', 'FAILED'] },
-            attempts: { lt: MAX_ATTEMPTS },
-            sendAt: { lte: now },
-        },
+        where: { status: { in: ['PENDING', 'FAILED'] }, attempts: { lt: MAX_ATTEMPTS }, sendAt: { lte: new Date() } },
         orderBy: { sendAt: 'asc' },
         take: limit,
     });
 
     let sent = 0;
     let failed = 0;
-    for (const m of due) {
-        // Claim: only one worker wins the attempts bump for this (id, attempts).
-        const claim = await prisma.scheduledMessage.updateMany({
-            where: { id: m.id, attempts: m.attempts, status: { in: ['PENDING', 'FAILED'] } },
-            data: { attempts: m.attempts + 1 },
-        });
-        if (claim.count !== 1) continue;
-
-        const result = await sendWhatsAppMessage(m.to, m.body);
-        if (result.ok) {
-            sent++;
-            await prisma.scheduledMessage.update({
-                where: { id: m.id },
-                data: { status: 'SENT', sentAt: new Date(), lastError: null },
-            });
-        } else {
-            failed++;
-            await prisma.scheduledMessage.update({
-                where: { id: m.id },
-                data: { status: 'FAILED', lastError: (result.error || 'unknown').slice(0, 500) },
-            });
-        }
+    for (let i = 0; i < due.length; i++) {
+        if (Date.now() - startedAt > maxRunMs) break; // time budget — rest drains next tick
+        const res = await claimAndSend(due[i]);
+        if (res === 'sent') sent++;
+        else if (res === 'failed') failed++;
+        else continue; // skipped (claimed elsewhere) — no throttle delay
+        // Throttle between actual sends so messages go out one-by-one.
+        if (delayMaxMs > 0 && i < due.length - 1) await sleep(delayMinMs + Math.random() * (delayMaxMs - delayMinMs));
     }
 
     return { picked: due.length, sent, failed };

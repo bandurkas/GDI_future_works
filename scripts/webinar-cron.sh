@@ -5,4 +5,4 @@
 cd /var/www/gdi-futureworks || exit 0
 S=$(grep '^WEBINAR_SECRET=' .env | cut -d= -f2)
 [ -n "$S" ] || exit 0
-curl -fsS --max-time 60 "http://localhost:3000/api/webinar/cron?secret=$S" -o /dev/null
+curl -fsS --max-time 150 "http://localhost:3000/api/webinar/cron?secret=$S" -o /dev/null

@@ -20,7 +20,9 @@ async function handle(req: NextRequest) {
     }
 
     try {
-        const result = await processDueMessages();
+        // Throttle reminders: one-by-one, 10–20s apart, bounded to stay under the
+        // 2-min cron interval so ticks don't overlap (leftover drains next tick).
+        const result = await processDueMessages({ delayMinMs: 10_000, delayMaxMs: 20_000, maxRunMs: 90_000 });
         return NextResponse.json({ ok: true, ...result });
     } catch (error) {
         console.error('[webinar/cron] error', error);
