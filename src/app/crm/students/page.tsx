@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import StudentsView from './StudentsView';
-import { WEBINAR_DATE, WEBINAR_DATE_LABEL } from '@/lib/webinar';
+import { WEBINAR_DATE, WEBINAR_DATE_LABEL, WEBINAR_TIME_LABEL } from '@/lib/webinar';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,6 +68,8 @@ export default async function CrmStudentsPage() {
       webinarCount={webinarCount}
       webinarToday={webinarToday}
       webinarLabel={WEBINAR_DATE_LABEL}
+      webinarTimeLabel={WEBINAR_TIME_LABEL}
+      webinarDateIso={WEBINAR_DATE.toISOString()}
     />
   );
 }

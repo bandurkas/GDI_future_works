@@ -9,6 +9,7 @@ import { KanbanCard, KanbanStatus, normalizeCrmData } from '@/lib/crm-normalize'
 import { fmt } from '@/lib/utils';
 import AIGlow from '@/components/AIGlow/AIGlow';
 import s from './PipelineView.module.css';
+import WebinarHeatCard from './WebinarHeatCard';
 import { useManagement } from '../ManagementContext';
 
 const countryFlag = {
@@ -56,7 +57,7 @@ const STAGES: Partial<Record<KanbanStatus, string>> = {
   'ARCHIVED': 'Archived',
 };
 
-export default function StudentsView({ students, freshLeads = [], webinarCount = 0, webinarToday = 0, webinarLabel = '' }: { students: any[], freshLeads?: any[], webinarCount?: number, webinarToday?: number, webinarLabel?: string }) {
+export default function StudentsView({ students, freshLeads = [], webinarCount = 0, webinarToday = 0, webinarLabel = '', webinarTimeLabel = '', webinarDateIso = '' }: { students: any[], freshLeads?: any[], webinarCount?: number, webinarToday?: number, webinarLabel?: string, webinarTimeLabel?: string, webinarDateIso?: string }) {
   const router = useRouter();
   const { openEditLeadDialog, openAddLeadDialog, refreshKey } = useManagement();
   const [cards, setCards] = useState<KanbanCard[]>([]);
@@ -184,16 +185,14 @@ export default function StudentsView({ students, freshLeads = [], webinarCount =
       </header>
 
       {/* Upcoming-webinar registration counter */}
-      {webinarLabel && (
-        <div className={s.webinarBanner}>
-          <span className={s.webinarBannerIcon} aria-hidden>🎥</span>
-          <span className={s.webinarBannerLabel}>Webinar {webinarLabel} —</span>
-          <span className={s.webinarBannerCount}>{webinarCount}</span>
-          <span className={s.webinarBannerUnit}>pendaftar</span>
-          {webinarToday > 0 && (
-            <span className={s.webinarBannerToday}>+{webinarToday} hari ini</span>
-          )}
-        </div>
+      {webinarLabel && webinarDateIso && (
+        <WebinarHeatCard
+          count={webinarCount}
+          today={webinarToday}
+          dateLabel={webinarLabel}
+          timeLabel={webinarTimeLabel}
+          dateIso={webinarDateIso}
+        />
       )}
 
       {/* Mobile stage tabs — hidden on desktop via CSS */}
