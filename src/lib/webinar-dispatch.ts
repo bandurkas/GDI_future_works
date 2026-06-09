@@ -38,21 +38,22 @@ async function sendQueued(to: string, kind: MessageKind): Promise<void> {
 }
 
 /**
- * Move the matching CRM lead(s) into the QUALIFIED pipeline column once the Zoom
- * link has been sent. Matches by normalized phone (62-form + local 0-form, both
- * occur in stored leads). Never downgrades a lead already past QUALIFIED.
+ * Advance the matching CRM lead(s) into the CONTACTED pipeline column once the
+ * Zoom link has been sent. Matches by normalized phone (62-form + local 0-form).
+ * Only advances early-stage leads (NEW/IN_PROGRESS) — never downgrades a lead
+ * already at CONTACTED or beyond (QUALIFIED/CONVERTED/DONE).
  */
-async function qualifyLeadByPhone(phone: string): Promise<void> {
+async function markLeadContacted(phone: string): Promise<void> {
     const local0 = phone.startsWith('62') ? '0' + phone.slice(2) : phone;
     try {
         await prisma.$executeRaw`
             UPDATE "Lead"
-            SET status = 'QUALIFIED', "updatedAt" = now()
+            SET status = 'CONTACTED', "updatedAt" = now()
             WHERE "deletedAt" IS NULL
-              AND status IN ('NEW', 'IN_PROGRESS', 'CONTACTED')
+              AND status IN ('NEW', 'IN_PROGRESS')
               AND regexp_replace(phone, '[^0-9]', '', 'g') IN (${phone}, ${local0})`;
     } catch (e) {
-        console.error('[qualifyLeadByPhone] failed', e);
+        console.error('[markLeadContacted] failed', e);
     }
 }
 
@@ -83,7 +84,7 @@ export async function registerForWebinar(input: {
         where: { phone_webinarDate: { phone, webinarDate: WEBINAR_DATE } },
     });
     if (existing) {
-        if (existing.waValid) await qualifyLeadByPhone(phone); // link already sent → keep them in Qualified
+        if (existing.waValid) await markLeadContacted(phone); // link already sent → ensure Contacted
         return { status: 'already_registered', id: existing.id };
     }
 
@@ -126,7 +127,7 @@ export async function registerForWebinar(input: {
 
     await enqueueWebinarMessages({ to: phone, name: reg.name });
     await sendQueued(phone, 'zoom_confirm'); // confirmation: instant, no throttle (single message)
-    await qualifyLeadByPhone(phone); // link sent → move lead to Qualified
+    await markLeadContacted(phone); // link sent → move lead to Contacted
     return { status: 'registered', id: reg.id };
 }
 
